@@ -19,7 +19,6 @@
       font-family: system-ui, -apple-system, sans-serif;
     }
 
-    /* Carte Krea Style */
     .krea-card {
       background-color: #161e2e;
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -29,7 +28,6 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Bouton interactif avec Logo */
     .hub-btn {
       background: rgba(30, 41, 59, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.12);
@@ -87,59 +85,8 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         
-        <!-- Bouton NotebookLM Photoshop/Lightroom -->
-        <a href="https://notebook.google.com/notebook/6d50ce7a-4470-48f4-bdcd-e761f7b73529" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center font-black text-white text-lg shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
-            Nb
-          </div>
-          <div>
-            <div class="flex items-center gap-2">
-              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Notebook Gemini</h3>
-              <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-semibold border border-purple-500/30">IA</span>
-            </div>
-            <p class="text-xs text-slate-400">Cours & fiches interactives Photoshop / Lightroom</p>
-          </div>
-        </a>
-
-        <!-- Bouton Exemple Nouveau Projet (à personnaliser) -->
-        <a href="notebook.html" class="hub-btn hub-btn-new group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center font-black text-white text-lg shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
-            PRO
-          </div>
-          <div>
-            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Portail WebApp Dedicated</h3>
-            <p class="text-xs text-slate-400">Interface 100% sur mesure (Option WebApp)</p>
-          </div>
-        </a>
-
-      </div>
-    </section>
-
-    <!-- SECTION 2 : LIENS -->
-    <section class="krea-card p-6 md:p-8">
-      <div class="flex items-center gap-3 mb-6">
-        <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">🚀</span>
-        <div>
-          <h2 class="text-xl font-bold text-white">Liens & Applications</h2>
-          <p class="text-xs text-slate-400">Vos outils principaux de création et d'entraînement</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        
-        <!-- Bouton Shortcut PRO -->
-        <a href="#" class="hub-btn group">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-xl shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
-            ⚡
-          </div>
-          <div>
-            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Shortcut PRO</h3>
-            <p class="text-xs text-slate-400">Entraîneur interactif aux raccourcis clavier</p>
-          </div>
-        </a>
-
-        <!-- Bouton Krea Actu -->
-        <a href="https://krea-actu.streamlit.app/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <!-- 1. KREA -->
+        <a href="https://krea-actu.streamlit.app/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-12 h-12 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gk1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -153,6 +100,70 @@
           <div>
             <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Krea</h3>
             <p class="text-xs text-slate-400">L'actualité créative & IA en continu</p>
+          </div>
+        </a>
+
+        <!-- 2. SHORTCUT PRO -->
+        <a href="https://studiographis-create.github.io/" class="hub-btn hub-btn-new group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-12 h-12 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gs1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gs2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gs2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gs1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="34" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Sc</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Shortcut PRO</h3>
+            <p class="text-xs text-slate-400">Entraîneur de raccourcis Photoshop & Lightroom</p>
+          </div>
+        </a>
+
+        <!-- 3. NOTEBOOK GEMINI -->
+        <a href="https://notebook.google.com/notebook/6d50ce7a-4470-48f4-bdcd-e761f7b73529" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group md:col-span-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-12 h-12 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gn1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gn2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gn2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gn1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="34" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Nb</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Notebook Gemini</h3>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-semibold border border-purple-500/30">IA</span>
+            </div>
+            <p class="text-xs text-slate-400">Cours & fiches interactives Photoshop / Lightroom</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- SECTION 2 : LIENS -->
+    <section class="krea-card p-6 md:p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">🚀</span>
+        <div>
+          <h2 class="text-xl font-bold text-white">Liens & Applications</h2>
+          <p class="text-xs text-slate-400">Vos accès secondaires et raccourcis externes</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        
+        <a href="notebook.html" class="hub-btn group">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center font-black text-white text-lg shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
+            PRO
+          </div>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Portail WebApp Dedicated</h3>
+            <p class="text-xs text-slate-400">Interface 100% sur mesure (Option WebApp)</p>
           </div>
         </a>
 
@@ -171,7 +182,6 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         
-        <!-- École 1 (À personnaliser avec votre URL) -->
         <a href="https://votre-ecole-1.com" target="_blank" rel="noopener noreferrer" class="hub-btn group">
           <div class="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-300 text-lg shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
             🏫
@@ -182,7 +192,6 @@
           </div>
         </a>
 
-        <!-- École 2 (À personnaliser avec votre URL) -->
         <a href="https://votre-ecole-2.com" target="_blank" rel="noopener noreferrer" class="hub-btn group">
           <div class="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-slate-300 text-lg shadow-lg flex-shrink-0 group-hover:scale-105 transition-transform">
             📚
