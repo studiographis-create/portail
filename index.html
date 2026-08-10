@@ -38,6 +38,7 @@
       gap: 1rem;
       transition: all 0.25s ease;
       text-decoration: none;
+      height: 100%;
     }
     .hub-btn:hover {
       border-color: rgba(244, 114, 182, 0.5);
@@ -58,7 +59,7 @@
 <body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
 
   <!-- En-tête -->
-  <header class="max-w-4xl w-full my-6 text-center space-y-3">
+  <header class="max-w-5xl w-full my-6 text-center space-y-3">
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold uppercase tracking-widest">
       Portail Officiel
     </div>
@@ -71,7 +72,7 @@
   </header>
 
   <!-- Conteneur des 3 Sections -->
-  <main class="max-w-4xl w-full space-y-8 my-auto">
+  <main class="max-w-5xl w-full space-y-8 my-auto">
 
     <!-- SECTION 1 : NOUVEAU -->
     <section class="krea-card p-6 md:p-8">
@@ -83,7 +84,8 @@
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Alignement sur 3 colonnes -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         <!-- 1. KREA -->
         <a href="https://krea-actu.streamlit.app/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
@@ -99,12 +101,12 @@
           </svg>
           <div>
             <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Krea</h3>
-            <p class="text-xs text-slate-400">L'actualité créative & IA en continu</p>
+            <p class="text-xs text-slate-400">L'actualité créative &amp; IA en continu</p>
           </div>
         </a>
 
-        <!-- 2. SHORTCUT PRO -->
-        <a href="https://studiographis-create.github.io/" class="hub-btn hub-btn-new group">
+        <!-- 2. SHORTCUT PRO (pointer vers le fichier HTML correspondant, ex: shortcut.html) -->
+        <a href="shortcut.html" class="hub-btn hub-btn-new group">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-12 h-12 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gs1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -117,12 +119,12 @@
           </svg>
           <div>
             <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Shortcut PRO</h3>
-            <p class="text-xs text-slate-400">Entraîneur de raccourcis Photoshop & Lightroom</p>
+            <p class="text-xs text-slate-400">Entraîneur de raccourcis Photoshop &amp; Lightroom</p>
           </div>
         </a>
 
         <!-- 3. NOTEBOOK GEMINI -->
-        <a href="https://notebook.google.com/notebook/6d50ce7a-4470-48f4-bdcd-e761f7b73529" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group md:col-span-2">
+        <a href="https://notebook.google.com/notebook/6d50ce7a-4470-48f4-bdcd-e761f7b73529" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-12 h-12 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gn1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -138,7 +140,7 @@
               <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Notebook Gemini</h3>
               <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-semibold border border-purple-500/30">IA</span>
             </div>
-            <p class="text-xs text-slate-400">Cours & fiches interactives Photoshop / Lightroom</p>
+            <p class="text-xs text-slate-400">Cours &amp; fiches interactives Photoshop / Lightroom</p>
           </div>
         </a>
 
@@ -150,7 +152,7 @@
       <div class="flex items-center gap-3 mb-6">
         <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">🚀</span>
         <div>
-          <h2 class="text-xl font-bold text-white">Liens & Applications</h2>
+          <h2 class="text-xl font-bold text-white">Liens &amp; Applications</h2>
           <p class="text-xs text-slate-400">Vos accès secondaires et raccourcis externes</p>
         </div>
       </div>
@@ -175,7 +177,7 @@
       <div class="flex items-center gap-3 mb-6">
         <span class="p-2 rounded-xl bg-pink-500/20 text-pink-400 border border-pink-500/30">🎓</span>
         <div>
-          <h2 class="text-xl font-bold text-white">Écoles & Formations</h2>
+          <h2 class="text-xl font-bold text-white">Écoles &amp; Formations</h2>
           <p class="text-xs text-slate-400">Accès direct aux plateformes et espaces étudiants</p>
         </div>
       </div>
@@ -188,7 +190,7 @@
           </div>
           <div>
             <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Plateforme École 1</h3>
-            <p class="text-xs text-slate-400">Espace de cours & devoirs</p>
+            <p class="text-xs text-slate-400">Espace de cours &amp; devoirs</p>
           </div>
         </a>
 
@@ -198,7 +200,7 @@
           </div>
           <div>
             <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Plateforme École 2</h3>
-            <p class="text-xs text-slate-400">Ressources & messagerie</p>
+            <p class="text-xs text-slate-400">Ressources &amp; messagerie</p>
           </div>
         </a>
 
