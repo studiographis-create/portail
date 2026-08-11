@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Graphis Studio — Hub Central</title>
+  <title>Hub Central — Graphis Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     html { scroll-behavior: smooth; }
@@ -46,25 +46,33 @@
       transform: translateY(-2px);
       box-shadow: 0 8px 20px -4px rgba(244, 114, 182, 0.25);
     }
+
+    .hub-btn-new {
+      border-color: rgba(139, 92, 246, 0.4);
+    }
+    .hub-btn-new:hover {
+      border-color: #8B5CF6;
+      box-shadow: 0 8px 20px -4px rgba(139, 92, 246, 0.35);
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
 
   <!-- En-tête -->
   <header class="max-w-5xl w-full my-6 text-center space-y-4">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold uppercase tracking-widest">
-      Portail Pédagogique &amp; Studio
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold uppercase tracking-widest">
+      Portail Officiel
     </div>
     
     <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
-      Graphis Studio <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">Hub</span>
+      Graphis <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">Hub</span>
     </h1>
     
-    <p class="text-xs md:text-sm text-slate-400 font-medium max-w-md mx-auto">
-      Accès rapide aux applications, outils de révision, actualités et banques de ressources.
+    <p class="text-xs md:text-sm text-slate-400 font-medium whitespace-nowrap overflow-x-auto max-w-full mx-auto px-2">
+      Accès centralisé à mes applications, liens et ressources pédagogiques.
     </p>
 
-    <!-- Indication Favoris -->
+    <!-- Indication Favoris en haut -->
     <div class="pt-2">
       <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs text-slate-300 shadow-md">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -75,27 +83,108 @@
     </div>
   </header>
 
-  <!-- Conteneur principal -->
+  <!-- Conteneur des Sections -->
   <main class="max-w-5xl w-full space-y-8 my-auto">
 
-    <!-- SECTION : OUTILS & APPLICATIONS -->
+    <!-- SECTION 1 : OUTILS -->
     <section class="krea-card p-6 md:p-8">
       <div class="flex items-center gap-3 mb-6">
         <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400 flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
           </svg>
         </div>
         <div>
-          <h2 class="text-xl font-bold text-white">Outils &amp; Applications</h2>
-          <p class="text-xs text-slate-400">Applications pédagogiques et entraînements interactifs</p>
+          <h2 class="text-xl font-bold text-white">Outils</h2>
+          <p class="text-xs text-slate-400">Applications et utilitaires en ligne</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Première ligne (Outils) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- 1. MAJ DES SUPPORTS -->
+        <a href="https://script.google.com/macros/s/AKfycbwdu4h2wjH1G11ORoJrOHbB-4Aju8qkjok2DojTR2lU80b_lzuldCexnSlmmCWWFPqWCQ/exec" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gk1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gk2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gk2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gk1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">MAJ</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">MAJ des supports</h3>
+            <p class="text-xs text-slate-400">Outil de mise à jour</p>
+          </div>
+        </a>
 
-        <!-- QCM PHOTOSHOP & LIGHTROOM -->
-        <a href="https://studiographis-create.github.io/portail/qcm.html" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <!-- 2. KREA -->
+        <a href="https://krea-actu.streamlit.app/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gk1_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gk2_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gk2_2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gk1_2)"/>
+            <text x="48" y="61" font-family="sans-serif" font-weight="900" font-size="44" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 61)">k</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Krea</h3>
+            <p class="text-xs text-slate-400">L'actualité créative &amp; IA en continu</p>
+          </div>
+        </a>
+
+        <!-- 3. SHORTCUT PRO -->
+        <a href="https://studiographis-create.github.io/shortcut/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gs1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gs2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gs2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gs1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="34" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Sc</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Shortcut PRO</h3>
+            <p class="text-xs text-slate-400">Entraîneur de raccourcis Photoshop &amp; Lightroom</p>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Seconde ligne (Outils) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        
+        <!-- 4. NOTEBOOK GEMINI -->
+        <a href="https://notebook.google.com/notebook/6d50ce7a-4470-48f4-bdcd-e761f7b73529" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gn1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gn2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gn2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gn1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="34" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Nb</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Notebook Gemini</h3>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-semibold border border-purple-500/30">IA</span>
+            </div>
+            <p class="text-xs text-slate-400">Assistant de cours propulsé par l'IA</p>
+          </div>
+        </a>
+
+        <!-- 5. QCM PHOTOSHOP & LIGHTROOM -->
+        <a href="https://studiographis-create.github.io/portail/qcm.html" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gqcm1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#EC4899"/></linearGradient>
@@ -112,57 +201,349 @@
           </div>
         </a>
 
-        <!-- ENTRAÎNEUR DE RACCOURCIS -->
-        <a href="raccourcis.html" class="hub-btn group">
+      </div>
+    </section>
+
+    <!-- SECTION 2 : LIENS -->
+    <section class="krea-card p-6 md:p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Liens</h2>
+          <p class="text-xs text-slate-400">Vos raccourcis externes</p>
+        </div>
+      </div>
+
+      <!-- Première ligne de liens -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- GROUPE FACEBOOK -->
+        <a href="https://www.facebook.com/groups/photoshop.lightroom.Evere.Philippeville" target="_blank" rel="noopener noreferrer" class="hub-btn group">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
-              <linearGradient id="grac1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
-              <linearGradient id="grac2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              <linearGradient id="gfb1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
+              <linearGradient id="gfb2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
             </defs>
-            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#grac2)" transform="rotate(-6 54 54)"/>
-            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#grac1)"/>
-            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Key</text>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gfb2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gfb1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">fb</text>
             <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
           </svg>
           <div>
-            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Entraîneur de Raccourcis</h3>
-            <p class="text-xs text-slate-400">Mémoriser les raccourcis clavier essentiels</p>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Groupe Facebook</h3>
+            <p class="text-xs text-slate-400">Communauté Photoshop &amp; Lightroom</p>
           </div>
         </a>
 
-        <!-- APP ACTUALITÉ -->
-        <a href="actualite.html" class="hub-btn group">
+        <!-- SITE GRAPHISTUDIO.BE -->
+        <a href="https://graphistudio.be/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
-              <linearGradient id="gact1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#10B981"/><stop offset="100%" stop-color="#047857"/></linearGradient>
-              <linearGradient id="gact2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#34D399" stop-opacity="0.6"/><stop offset="100%" stop-color="#059669" stop-opacity="0.3"/></linearGradient>
+              <linearGradient id="ggs1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EC4899"/><stop offset="100%" stop-color="#BE185D"/></linearGradient>
+              <linearGradient id="ggs2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F472B6" stop-opacity="0.6"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.3"/></linearGradient>
             </defs>
-            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gact2)" transform="rotate(-6 54 54)"/>
-            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gact1)"/>
-            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Actu</text>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#ggs2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#ggs1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">GS</text>
             <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
           </svg>
           <div>
-            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Actualités Design</h3>
-            <p class="text-xs text-slate-400">Veille graphique &amp; nouveautés IA</p>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Graphis Studio</h3>
+            <p class="text-xs text-slate-400">Site professionnel de graphisme</p>
           </div>
         </a>
 
-        <!-- BIBLIOTHÈQUE RESSOURCES -->
-        <a href="ressources.html" class="hub-btn group">
+        <!-- BROL.SHOP -->
+        <a href="https://brol.shop/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
-              <linearGradient id="gres1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EC4899"/><stop offset="100%" stop-color="#BE185D"/></linearGradient>
-              <linearGradient id="gres2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F472B6" stop-opacity="0.6"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.3"/></linearGradient>
+              <linearGradient id="gbr1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FACC15"/><stop offset="100%" stop-color="#CA8A04"/></linearGradient>
+              <linearGradient id="gbr2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF08A" stop-opacity="0.6"/><stop offset="100%" stop-color="#EAB308" stop-opacity="0.3"/></linearGradient>
             </defs>
-            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gres2)" transform="rotate(-6 54 54)"/>
-            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gres1)"/>
-            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Res</text>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gbr2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gbr1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#1E293B" text-anchor="middle" transform="rotate(-10 48 60)">Br</text>
             <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
           </svg>
           <div>
-            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Page Ressources</h3>
-            <p class="text-xs text-slate-400">Banques d'images, typographies, textures &amp; outils IA</p>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Brol.shop</h3>
+            <p class="text-xs text-slate-400">La petite boutique</p>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Seconde ligne de liens -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        
+        <!-- 1. YOUTUBE -->
+        <a href="https://www.youtube.com/@graphisstudio" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gyt1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#DC2626"/><stop offset="100%" stop-color="#991B1B"/></linearGradient>
+              <linearGradient id="gyt2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FCA5A5" stop-opacity="0.6"/><stop offset="100%" stop-color="#DC2626" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gyt2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gyt1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Y</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">YouTube</h3>
+            <p class="text-xs text-slate-400">Chaîne Graphis Studio</p>
+          </div>
+        </a>
+
+        <!-- 2. URBEX WORLD -->
+        <a href="https://www.facebook.com/worldofurbex/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="guw1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#0F172A"/></linearGradient>
+              <linearGradient id="guw2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#94A3B8" stop-opacity="0.6"/><stop offset="100%" stop-color="#334155" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#guw2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#guw1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Uw</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Urbex World</h3>
+            <p class="text-xs text-slate-400">Photos de lieux abandonnés</p>
+          </div>
+        </a>
+
+        <!-- 3. PHOTOGRAPHES DU PASSÉ -->
+        <a href="https://photographesdupasse.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gpdp1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1E293B"/><stop offset="100%" stop-color="#020617"/></linearGradient>
+              <linearGradient id="gpdp2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#475569" stop-opacity="0.6"/><stop offset="100%" stop-color="#0F172A" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gpdp2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gpdp1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="30" fill="#FACC15" text-anchor="middle" transform="rotate(-10 48 60)">PdP</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Photographes du passé</h3>
+            <p class="text-xs text-slate-400">Collectif de photographes urbex</p>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Troisième ligne de liens -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        
+        <!-- PHOTOSHOP FORMATION -->
+        <a href="https://photoshop-formation.be/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gpf1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#172554"/><stop offset="100%" stop-color="#020617"/></linearGradient>
+              <linearGradient id="gpf2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1E40AF" stop-opacity="0.6"/><stop offset="100%" stop-color="#0F172A" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gpf2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gpf1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="30" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Pf</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Photoshop Formation</h3>
+            <p class="text-xs text-slate-400">Site de formations</p>
+          </div>
+        </a>
+
+        <!-- EAFC PHILIPPEVILLE -->
+        <a href="https://coursdusoir-philippeville-florennes.be/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="geafc1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FACC15"/><stop offset="100%" stop-color="#CA8A04"/></linearGradient>
+              <linearGradient id="geafc2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF08A" stop-opacity="0.6"/><stop offset="100%" stop-color="#EAB308" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#geafc2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#geafc1)"/>
+            <text x="48" y="61" font-family="sans-serif" font-weight="900" font-size="24" fill="#1E293B" text-anchor="middle" transform="rotate(-10 48 61)">EAFC</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">EAFC Philippeville</h3>
+            <p class="text-xs text-slate-400">Le site de l'école</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3 : ÉCOLES -->
+    <section class="krea-card p-6 md:p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Ecoles</h2>
+          <p class="text-xs text-slate-400">Accès direct aux espaces étudiants</p>
+        </div>
+      </div>
+
+      <!-- Première ligne d'écoles -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- 1. PHOTOSHOP & LIGHTROOM 1 (GROUPE PHILIPPEVILLE) -->
+        <a href="https://drive.google.com/drive/folders/1RFm1_2iHxqhyC3XE1eSPPdt79RY0kIWB?usp=sharing" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gk1_3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gk2_3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gk2_3)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gk1_3)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">P&amp;L</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Photoshop &amp; Lightroom 1</h3>
+            <p class="text-xs text-slate-400">Groupe Philippeville</p>
+          </div>
+        </a>
+
+        <!-- 2. PHOTOSHOP & LIGHTROOM 1 (GROUPE THUIN) -->
+        <a href="https://drive.google.com/drive/folders/1ekD6j2f66k-2PS-XlVD4LSW_D1KGx3Z2?usp=sharing" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gthu1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient>
+              <linearGradient id="gthu2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#22D3EE" stop-opacity="0.6"/><stop offset="100%" stop-color="#60A5FA" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gthu2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gthu1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">P&amp;L</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Photoshop &amp; Lightroom 1</h3>
+            <p class="text-xs text-slate-400">Groupe Thuin</p>
+          </div>
+        </a>
+
+        <!-- 3. PHOTOSHOP & LIGHTROOM 2 (PHILIPPEVILLE) -->
+        <a href="https://drive.google.com/drive/folders/103WSM_Nep_weSDWEtyyX_8XhjqPX56ui?usp=sharing" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gdark1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1E40AF"/><stop offset="100%" stop-color="#1E3A8A"/></linearGradient>
+              <linearGradient id="gdark2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6" stop-opacity="0.6"/><stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gdark2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gdark1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">P&amp;L</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Photoshop &amp; Lightroom 2</h3>
+            <p class="text-xs text-slate-400">Philippeville</p>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Seconde ligne d'écoles -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        
+        <!-- 4. PHOTOSHOP ARTISTIQUE (PHILIPPEVILLE) -->
+        <a href="https://drive.google.com/drive/folders/1P9JiqQGoXC38bRgqfDKabCPY_aEc39pg?usp=sharing" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gdeep1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#172554"/><stop offset="100%" stop-color="#020617"/></linearGradient>
+              <linearGradient id="gdeep2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1E40AF" stop-opacity="0.6"/><stop offset="100%" stop-color="#0F172A" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gdeep2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gdeep1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Pa</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Photoshop artistique</h3>
+            <p class="text-xs text-slate-400">Philippeville</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- SECTION 4 : CONTACT -->
+    <section class="krea-card p-6 md:p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Contact</h2>
+          <p class="text-xs text-slate-400">Contactez-moi</p>
+        </div>
+      </div>
+
+      <!-- Grille de contact -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- EMAIL -->
+        <a href="mailto:graphisstudio@me.com" class="hub-btn hub-btn-new group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gmail1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gmail2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gmail2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gmail1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Mail</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">graphisstudio@me.com</h3>
+            <p class="text-xs text-slate-400">Envoyez-moi un mail</p>
+          </div>
+        </a>
+
+        <!-- MESSENGER -->
+        <a href="https://m.me/lost.urbex.the.past" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gmsg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gmsg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gmsg2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gmsg1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="30" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Msg</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">Messenger</h3>
+            <p class="text-xs text-slate-400">Une petite conversation?</p>
+          </div>
+        </a>
+
+        <!-- WETRANSFER -->
+        <a href="https://graphisstudio.wetransfer.com" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gwt1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gwt2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gwt2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gwt1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="38" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">W</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div>
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors">WeTransfer</h3>
+            <p class="text-xs text-slate-400">Un fichier à envoyer ?</p>
           </div>
         </a>
 
