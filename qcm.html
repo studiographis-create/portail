@@ -375,7 +375,7 @@
           { q: "À quoi sert la pipette (Eyedropper Tool) ?", options: ["À peindre des lignes", "À échantillonner une couleur précise sur l'image pour l'utiliser en premier plan", "À mesurer des distances en pixels", "À nettoyer les poussières"], answer: 1, exp: "La pipette clique sur n'importe quel pixel pour capturer son code couleur exact." },
           { q: "Quel menu permet d'accéder à l'historique complet des actions pour revenir en arrière sur plusieurs étapes ?", options: ["Menu Fichier", "Menu Édition", "Menu Fenêtre > Historique", "Menu Calque"], answer: 2, exp: "Le panneau Historique conserve les états successifs de votre travail pour un retour en arrière visuel." },
           { q: "Que signifie un damier gris et blanc à l'arrière-plan d'une image dans Photoshop ?", options: ["Un motif de tissu", "Une zone de transparence", "Une erreur d'affichage", "Un calque verrouillé"], answer: 1, exp: "Le damier gris et blanc est la convention visuelle universelle pour représenter la transparence numérique." },
-          { q: "Quel outil de sélection géométrique permet de tracer des lignes droites successive en cliquant de point en point ?", options: ["Le Lasso simple", "Le Lasso polygonal", "Le Lasso magnétique", "Le Rectangle de sélection"], answer: 1, exp: "Le Lasso polygonal est idéal pour sélectionner des formes géométriques aux contours rectilignes." },
+          { q: "Quel outil de sélection géométrique permet de tracer des lignes droites successives en cliquant de point en point ?", options: ["Le Lasso simple", "Le Lasso polygonal", "Le Lasso magnétique", "Le Rectangle de sélection"], answer: 1, exp: "Le Lasso polygonal est idéal pour sélectionner des formes géométriques aux contours rectilignes." },
           { q: "Quelle option de l'outil Texte permet d'écrire le long d'une forme ou d'un tracé vectoriel ?", options: ["Le Texte horizontal standard", "Le Texte vertical", "L'outil Texte vertical orienté", "L'outil Texte sur tracé"], answer: 3, exp: "L'outil Texte sur tracé épouse la courbure d'une ligne vectorielle ou d'une forme." },
           { q: "Comment inverser une sélection active (sélectionner tout sauf la zone actuelle) ?", options: ["Ctrl / Cmd + I", "Ctrl / Cmd + Shift + I", "Alt + I", "Ctrl / Cmd + C"], answer: 1, exp: "Le raccourci Inverser la sélection (Select Inverse) est Ctrl + Shift + I." },
           { q: "Quel panneau permet de modifier précisément la police, la taille, l'interlignage et le crénage d'un texte ?", options: ["Panneau Caractère (Character)", "Panneau Propriétés", "Panneau Styles de calque", "Panneau Canaux"], answer: 0, exp: "Le panneau Caractère réunit l'ensemble des paramètres typographiques avancés." },
@@ -423,36 +423,331 @@
           { q: "Quelle est l'utilité de la commande 'aplatir l'image' (Flatten Image) ?", options: ["De regrouper tous les calques en un seul calque d'arrière-plan unique en supprimant la transparence", "De sauvegarder le fichier en PSD", "D'isoler le sujet", "De vectoriser le projet"], answer: 0, exp: "Aplatir l'image réduit le poids du fichier mais détruit la structure en calques." }
         ],
         hard: [
-          { q: "Quelle technique professionnelle de retouche avancée utilise la 'Séparation de fréquences' sur 3 niveaux (texture, modelé, couleur) ?", options: ["Le traitement par lot automatique", "L'isolation des fréquences hautes, moyennes et basses via des filtres passe-haut et flou gaussien", "La conversion en indexé", "Le masquage vectoriel"], answer: 1, exp: "La séparation sur 3 niveaux isole la micro-texture, les volumes intermédiaires et la teinte globale pour un contrôle ultime." },
-          { q: "Comment configurer l'espace de travail pour préserver un flux colorimétrique rigoureux compatible ISO 12647 ?", options: ["Utiliser l'espace ProPhoto RVB avec une conversion en CMJN PSO Coated V3", "Travailler en sRGB sans gestion des couleurs", "Désactiver les profils ICC", "Utiliser le mode Lab sans profil"], answer: 0, exp: "Le respect des normes ISO d'impression passe par des profils ICC normalisés comme PSO Coated." },
-          { q: "Quel est le comportement mathématique exact du mode de fusion 'Lumière crue' (Hard Light) ?", options: ["Il applique un effet de superposition si le calque supérieur est clair, et produit si le calque supérieur est sombre", "Il soustrait les pixels", "Il inverse les couches", "Il applique un flou directionnel"], answer: 0, exp: "Lumière crue combine les modes Multiplier et Superposition avec une intensité doublée selon la valeur 50% de gris." },
-          { q: "Quelle est l'utilité d'un profil ICC de liaison (DeviceLink) dans un flux prepress lourd ?", options: ["De convertir directement un espace colorimétrique vers un autre en contournant le profil de connexion PCS standard", "D'accélérer le processeur", "De créer des animations 3D", "De compresser les fichiers TIFF"], answer: 0, exp: "Les profils DeviceLink optimisent la conversion d'encrage CMJN lourd vers un profil cible sans perte intermédiaire." },
-          { q: "Comment exploiter les 'Objets Intelligents Multi-liens' pour la création de templates publicitaires dynamiques ?", options: ["En imbriquant des fichiers sources modifiables partagés à travers plusieurs maquettes PSD distinctes", "En fusionnant tous les calques", "En vectorisant les polices", "En supprimant les masques"], answer: 0, exp: "Les objets liés multiples permettent de mettre à jour un visuel publicitaire dans des dizaines de formats en une seule modification." },
-          { q: "Quelle est la particularité d'un masque de fusion alimenté par un canal alpha externe chargé via 'Sélection > Charger la sélection' ?", options: ["Il traduit les valeurs de gris du canal en opacité de masque de manière dynamique", "Il détruit les pixels", "Il fusionne les calques", "Il convertit en tracé vectoriel"], answer: 0, exp: "Les canaux alpha stockent des sélections complexes réutilisables sous forme de masques gradués." },
-          { q: "En colorimétrie avancée, que permet d'analyser l'outil 'Épreuve écran' (Soft Proofing) avec l'option 'Alerte de gamut' ?", options: ["D'afficher en surbrillance les couleurs in-imprimables qui dépassent l'espace CMJN cible", "De vérifier la vitesse de l'ordinateur", "De tester les liens web", "De calibrer la souris"], answer: 0, exp: "L'alerte de gamut prévient le graphiste des teintes saturées qui se satureront mal à l'impression." },
-          { q: "Quelle est la structure d'un script Photoshop complexe intégrant des conditions et des boîtes de dialogue interactives ?", options: ["Un script enregistré avec des pauses d'arrêt et des commandes conditionnelles via JavaScript (ExtendScript)", "Un simple fichier texte", "Une macro enregistrée en JPG", "Un calque de réglage"], answer: 0, exp: "Les scripts avancés (ExtendScript / UXP) permettent d'automatiser des logiques conditionnelles complexes." },
-          { q: "Comment neutraliser une dominante colorimétrique parasite sur les tons ombrés sans altérer les hautes lumières ?", options: ["En utilisant les Courbes sur le canal RVB combinées ou des calques de réglage en mode de fusion 'Couleur' écrêtés", "En baissant l'exposition globale", "En appliquant un flou", "En inversant l'image"], answer: 0, exp: "Le mode de fusion 'Couleur' sur un calque écrêté isole l'action colorimétrique de la luminance." },
-          { q: "Quel est l'intérêt de la fonction 'Remplacement de couleur avancé' via les calques de correction sélective par rapport au simple remplacement de teinte ?", options: ["Un contrôle mathématique des pourcentages d'encres CMJN indépendants pour chaque couleur neutre ou primaire", "Une suppression automatique du fond", "Un gain de mémoire vive", "Une vectorisation des contours"], answer: 0, exp: "La correction sélective modifie finement les pourcentages d'encre sans générer d'aberrations chromatiques." },
-          { q: "Comment fonctionne l'algorithme de 'Réduction de bruit' intelligent basé sur l'apprentissage profond dans Photoshop ?", options: ["Il analyse la structure du détail et du grain pour lisser le bruit de luminance tout en restaurant les micro-contrastes", "Il supprime les calques", "Il baisse la résolution", "Il floute uniformément"], answer: 0, exp: "L'IA analyse le bruit numérique pour le dissocier des textures réelles de l'image." },
-          { q: "Quelle est la méthode idéale pour incruster un élément 3D ou un packaging dans une perspective complexe avec éclairage réaliste ?", options: ["Utiliser un Objet Dynamique déformé en perspective avec des calques de lumière en mode Incrustation / Lumière tamisée et masques de fusion", "Coller l'image à plat", "Utiliser le pot de peinture", "Appliquer un contour simple"], answer: 0, exp: "L'intégration professionnelle combine transformation intelligente, calques d'ombre portée et modes de fusion." },
-          { q: "Quel est le rôle de la gestion des profils colorimétriques 'Conversion en profil' (Convert to Profile) par rapport à 'Attribuer un profil' (Assign Profile) ?", options: ["Convertir modifie les valeurs RVB pour conserver l'apparence des couleurs dans un nouvel espace, tandis qu'attribuer force un profil sans modifier les valeurs", "C'est strictement la même chose", "Attribuer convertit en CMJN", "Convertir supprime les couleurs"], answer: 0, exp: "Attribuer change l'interprétation des couleurs (risque de dérive), Convertir recalcule les valeurs pour garder la même fidélité visuelle." },
-          { q: "Comment automatiser le traitement par lot (Batch) de centaines d'images en intégrant un renommage dynamique et un redimensionnement conditionnel ?", options: ["Via le module Automatisation > Traitement par lot combiné avec une action personnalisée ou un script UXP", "En ouvrant chaque image manuellement", "En utilisant le format GIF", "En copiant collant les calques"], answer: 0, exp: "Le traitement par lot automatise les actions sur des dossiers entiers de fichiers." },
-          { q: "Qu'est-ce qu'un fichier de script 'Droplet' généré par Photoshop ?", options: ["Une icône exécutable sur le bureau sur laquelle glisser-déposer des images pour leur appliquer une action automatique", "Un virus informatique", "Un format de brosse", "Un plugin de flou"], answer: 0, exp: "Un Droplet transforme une action Photoshop en raccourci de bureau par simple glisser-déposer." },
-          { q: "Comment créer un masque de fusion basé sur la luminance pure de l'image (les zones claires contrôlent la transparence) ?", options: ["En effectuant un Ctrl + Clic sur la vignette du canal RVB (ou commande de plage de couleurs / calque de réglage basé sur la luminosité)", "En gommant à la main", "En inversant le calque", "En appliquant un filtre artistique"], answer: 0, exp: "Les masques de luminance (luminosity masks) isolent les hautes ou basses lumières de manière mathématique." },
-          { q: "Quel est l'impact de l'option 'Dithering' lors de l'exportation d'une image en format PNG-8 ou GIF indexé ?", options: ["Il ajoute un micro-bruit aléatoire pour adoucir les transitions de bandes de couleur et simuler les teintes manquantes", "Il supprime les métadonnées", "Il augmente la résolution", "Il compresse le fichier en ZIP"], answer: 0, exp: "Le dithering évite les aplats de couleur trop tranchés (effet de banding) sur les petits formats indexés." },
-          { q: "Comment exploiter la fonction 'Fusion panoramique' (Photomerge) pour assembler des images complexes sans raccord visible ?", options: ["En combinant des prises de vues en projection sphérique ou perspective avec fusion automatique des tons et des masques par IA", "En superposant les images à 50% d'opacité", "En utilisant la gomme", "En aplatissant les calques"], answer: 0, exp: "Photomerge aligne et fusionne les photos de paysages en harmonisant les expositions." },
-          { q: "Quelle est la structure interne d'un fichier Photoshop (PSD) au-delà de 2 Go ?", options: ["Le format PSB (Large Document Format) qui gère les dimensions et poids démesurés", "Le format JPEG XL", "Le format RAW", "Le format PDF multipage"], answer: 0, exp: "Le format PSB est indispensable pour les très grands affiches et les fichiers lourds dépassant 2 Go." },
-          { q: "Comment simuler un grain argentique argentique réaliste et non destructif sur un calque numérique ?", options: ["En créant un calque gris neutre à 50%, mode de fusion Incrustation, avec application d'un filtre de bruit monochromatique", "En baissant la luminosité", "En floutant l'image", "En augmentant la saturation"], answer: 0, exp: "Le calque de gris en mode Incrustation avec du bruit imite parfaitement le grain photographique." },
-          { q: "Quel est l'intérêt d'utiliser l'option 'Profondeur de couleur 32 bits par canal (HDR)' pour certaines images d'architecture ou de paysage ?", options: ["De conserver une plage dynamique (dynamic range) infinie sans écrêtage des hautes lumières ou des ombres profondes", "De réduire la taille du fichier", "D'accélérer l'impression", "De supprimer le bruit"], answer: 0, exp: "Le 32 bits gère l'ensemble des écarts de lumière extrêmes de la scène réelle." },
-          { q: "Comment configurer un style de calque complexe pour qu'il se comporte comme une ombre portée indépendante détachable du calque principal ?", options: ["Via l'option du menu contextuel 'Créer des calques' à partir du style d'effet appliqué", "En fusionnant le calque", "En dupliquant le groupe", "En appliquant un masque vectoriel"], answer: 0, exp: "La commande 'Créer des calques' sépare l'ombre portée en un calque de pixels modifiable à part." },
-          { q: "Quelle est la fonction d'un 'Composé de calques' (Layer Comps) dans un projet de design d'interface ou d'affiche ?", options: ["D'enregistrer différents états de visibilité, de position et de style des calques au sein d'un même fichier", "De compresser le projet", "D'exporter en HTML", "De fusionner les calques finaux"], answer: 0, exp: "Les composés de calques comparent des variantes de design dans un seul fichier PSD." },
-          { q: "Quel est l'effet du filtre 'Passe-haut' (High Pass) utilisé en combinaison avec le mode de fusion 'Incrustation' ou 'Lumière linéaire' ?", options: ["Il accentue la netteté en isolant les contours et les hautes fréquences de l'image", "Il floute l'arrière-plan", "Il supprime les couleurs", "Il éclaircit l'exposition"], answer: 0, exp: "Le filtre passe-haut est la base de l'accentuation de netteté professionnelle (High Pass Sharpening)." },
-          { q: "Comment créer un motif répétitif (Pattern) vectoriel ou bitmap parfaitement raccord sans couture visible ?", options: ["Via le menu 'Édition > Définir un motif' après avoir préparé un cadre aux dimensions exactes, ou via le générateur de motifs", "En étirant l'image", "En appliquant un flou radial", "En convertissant en CMJN"], answer: 0, exp: "L'outil de définition de motif crée des trames répétables automatiquement." },
-          { q: "Quelle est l'utilité des 'Objets 3D et calques de projection' historiques dans Photoshop ?", options: ["De plaquer des textures graphiques sur des volumes 3D simples (canettes, boîtes, sphères)", "De créer des jeux vidéo", "De modéliser des personnages", "De remplacer Lightroom"], answer: 0, exp: "Photoshop intègre des fonctions de mapping 3D de base pour les mockups." },
-          { q: "Comment optimiser un fichier PSD lourd comportant des centaines de calques superflus ?", options: ["En supprimant les masques inutiles, en aplatissant les groupes validés et en purgeant la mémoire cache", "En changeant d'écran", "En augmentant la résolution", "En exportant en GIF"], answer: 0, exp: "Le nettoyage régulier des calques invisibles allège la mémoire et accélère l'ordinateur." },
-          { q: "Quel est le rôle du format de fichier 'OpenEXR' ou 'HDR' souvent manipulé en post-production avancée avec Photoshop ?", options: ["De stocker des images à haute gamme dynamique (HDR) sur 32 bits pour les effets spéciaux et le compositing", "D'imprimer des factures", "De lire de la musique", "De compresser des documents bureautiques"], answer: 0, exp: "OpenEXR est le standard des industries du cinéma et des effets visuels numériques." },
-          { q: "Quelle est la finalité de l'outil 'Ligne de temps' (Timeline) dans Photoshop ?", options: ["De créer des animations d'images par image ou des montages vidéo simples avec des calques", "De chronométrer la vitesse de l'ordinateur", "D'ajuster la balance des blancs", "De classer les photos par date"], answer: 0, exp: "La timeline permet de produire des GIF animés ou des exports vidéo MP4 directement depuis Photoshop." },
-          { q: "Comment garantir qu'un texte inséré dans une maquette graphique respecte les normes d'accessibilité du contraste colorimétrique (WCAG) ?", options: ["En vérifiant le ratio de luminance entre la couleur du texte et celle du fond via un outil de mesure ou un vérificateur", "En mettant tout en blanc", "En augmentant la taille de police", "En appliquant une ombre portée"], answer: 0, exp: "Le respect des contrastes WCAG assure la lisibilité pour tous les utilisateurs." }
+          { 
+            q: "Quelle technique professionnelle de retouche avancée utilise la 'Séparation de fréquences' sur 3 niveaux (texture, modelé, couleur) ?", 
+            options: [
+              "Le traitement par lot automatique d'un dossier de prises de vues studio via une macro d'automatisation globale", 
+              "L'isolation des fréquences hautes, moyennes et basses via des filtres passe-haut et flou gaussien appliqués en cascade", 
+              "La conversion de l'espace colorimétrique RVB en mode indexé pour réduire drastiquement le poids du fichier final", 
+              "Le masquage vectoriel par points d'ancrage multiples pour détourer des éléments architecturaux complexes"
+            ], 
+            answer: 1, 
+            exp: "La séparation sur 3 niveaux isole la micro-texture, les volumes intermédiaires et la teinte globale pour un contrôle ultime." 
+          },
+          { 
+            q: "Comment configurer l'espace de travail pour préserver un flux colorimétrique rigoureux compatible ISO 12647 ?", 
+            options: [
+              "Utiliser l'espace ProPhoto RVB avec une conversion en CMJN PSO Coated V3 intégrée au profil de sortie du document", 
+              "Travailler en mode sRGB strict sans aucune gestion logicielle des profils ICC de calibration de l'écran", 
+              "Désactiver totalement les profils ICC d'affichage pour forcer le moniteur à restituer les bruts de capteur bruts", 
+              "Utiliser exclusivement l'espace Lab sans profil de liaison pour imprimer directement sur traceur grand format"
+            ], 
+            answer: 0, 
+            exp: "Le respect des normes ISO d'impression passe par des profils ICC normalisés comme PSO Coated." 
+          },
+          { 
+            q: "Quel est le comportement mathématique exact du mode de fusion 'Lumière crue' (Hard Light) ?", 
+            options: [
+              "Il applique un effet de superposition si le calque supérieur est clair, et un mode produit si le calque supérieur est sombre", 
+              "Il soustrait systématiquement les pixels du calque inférieur par les valeurs de luminance du calque supérieur", 
+              "Il inverse l'intégralité des couches colorimétriques en multipliant le canal alpha par le niveau de gris moyen", 
+              "Il applique un flou directionnel proportionnel à l'opacité globale du dossier de calques actif"
+            ], 
+            answer: 0, 
+            exp: "Lumière crue combine les modes Multiplier et Superposition avec une intensité doublée selon la valeur 50% de gris." 
+          },
+          { 
+            q: "Quelle est l'utilité d'un profil ICC de liaison (DeviceLink) dans un flux prepress lourd ?", 
+            options: [
+              "De convertir directement un espace colorimétrique vers un autre en contournant le profil de connexion PCS standard", 
+              "D'accélérer les performances du processeur graphique lors du rendu des filtres dynamiques complexes", 
+              "De créer automatiquement des animations 3D stéréoscopiques à partir d'un ensemble de calques plats", 
+              "De compresser les fichiers TIFF multipages sans perte de métadonnées pour l'archivage distant"
+            ], 
+            answer: 0, 
+            exp: "Les profils DeviceLink optimisent la conversion d'encrage CMJN lourd vers un profil cible sans perte intermédiaire." 
+          },
+          { 
+            q: "Comment exploiter les 'Objets Intelligents Multi-liens' pour la création de templates publicitaires dynamiques ?", 
+            options: [
+              "En imbriquant des fichiers sources modifiables partagés à travers plusieurs maquettes PSD distinctes de dimensions variées", 
+              "En fusionnant tous les calques textuels en un calque de pixels unique avant l'exportation des formats", 
+              "En vectorisant l'ensemble des polices de caractères pour bloquer les modifications ultérieures non désirées", 
+              "En supprimant tous les masques de fusion pour alléger la structure interne du fichier de travail partagé"
+            ], 
+            answer: 0, 
+            exp: "Les objets liés multiples permettent de mettre à jour un visuel publicitaire dans des dizaines de formats en une seule modification." 
+          },
+          { 
+            q: "Quelle est la particularité d'un masque de fusion alimenté par un canal alpha externe chargé via 'Sélection > Charger la sélection' ?", 
+            options: [
+              "Il traduit les valeurs de gris du canal en opacité de masque de manière dynamique et non destructive", 
+              "Il détruit définitivement les pixels situés en dehors de la zone de sélection active du canal", 
+              "Il fusionne instantanément les calques visibles du groupe sans préserver la transparence du fond", 
+              "Il convertit automatiquement le masque bitmap en tracé vectoriel à bords géométriques nets"
+            ], 
+            answer: 0, 
+            exp: "Les canaux alpha stockent des sélections complexes réutilisables sous forme de masques gradués." 
+          },
+          { 
+            q: "En colorimétrie avancée, que permet d'analyser l'outil 'Épreuve écran' (Soft Proofing) avec l'option 'Alerte de gamut' ?", 
+            options: [
+              "D'afficher en surbrillance les couleurs in-imprimables qui dépassent l'espace CMJN cible de l'imprimeur", 
+              "De vérifier en temps réel la vitesse de calcul du processeur graphique lors de l'affichage du zoom 100%", 
+              "De tester la validité des liens hypertextes intégrés dans le document destiné à une diffusion web", 
+              "De calibrer automatiquement la sonde de luminosité de l'écran par rapport à la lumière ambiante de la pièce"
+            ], 
+            answer: 0, 
+            exp: "L'alerte de gamut prévient le graphiste des teintes saturées qui se satureront mal à l'impression." 
+          },
+          { 
+            q: "Quelle est la structure d'un script Photoshop complexe intégrant des conditions et des boîtes de dialogue interactives ?", 
+            options: [
+              "Un script enregistré avec des pauses d'arrêt et des commandes conditionnelles via JavaScript (ExtendScript / UXP)", 
+              "Un simple fichier texte brut enregistré au format d'extension TXT sans instruction de programmation", 
+              "Une macro de commandes enregistrée directement en JPEG haute qualité sans métadonnées modifiables", 
+              "Un calque de réglage unitaire associé à un masque vectoriel de forme circulaire complexe"
+            ], 
+            answer: 0, 
+            exp: "Les scripts avancés (ExtendScript / UXP) permettent d'automatiser des logiques conditionnelles complexes." 
+          },
+          { 
+            q: "Comment neutraliser une dominante colorimétrique parasite sur les tons ombrés sans altérer les hautes lumières ?", 
+            options: [
+              "En utilisant les Courbes sur le canal RVB combinées ou des calques de réglage en mode de fusion 'Couleur' écrêtés", 
+              "En baissant l'exposition globale de l'ensemble de la composition à l'aide d'un calque de réglage unique", 
+              "En appliquant un filtre de flou gaussien de fort rayon directement sur le calque d'arrière-plan verrouillé", 
+              "En inversant les couleurs de l'image pour forcer un équilibrage automatique de la balance des blancs"
+            ], 
+            answer: 0, 
+            exp: "Le mode de fusion 'Couleur' sur un calque écrêté isole l'action colorimétrique de la luminance." 
+          },
+          { 
+            q: "Quel est l'intérêt de la fonction 'Remplacement de couleur avancé' via les calques de correction sélective par rapport au simple remplacement de teinte ?", 
+            options: [
+              "Un contrôle mathématique des pourcentages d'encres CMJN indépendants pour chaque couleur neutre ou primaire", 
+              "Une suppression automatique et définitive du fond transparent ou uni de la composition graphique", 
+              "Un gain de mémoire vive considérable lors de la manipulation de fichiers très lourds en multipages", 
+              "Une vectorisation automatique des contours de la zone ciblée pour une découpe au plotter"
+            ], 
+            answer: 0, 
+            exp: "La correction sélective modifie finement les pourcentages d'encre sans générer d'aberrations chromatiques." 
+          },
+          { 
+            q: "Comment fonctionne l'algorithme de 'Réduction de bruit' intelligent basé sur l'apprentissage profond dans Photoshop ?", 
+            options: [
+              "Il analyse la structure du détail et du grain pour lisser le bruit de luminance tout en restaurant les micro-contrastes", 
+              "Il supprime l'intégralité des calques de texte pour alléger le calcul des pixels adjacents de l'image", 
+              "Il baisse de moitié la résolution globale en DPI pour masquer les artéfacts de compression numérique", 
+              "Il applique un flou uniforme et destructif sur l'ensemble des couches colorimétriques de la composition"
+            ], 
+            answer: 0, 
+            exp: "L'IA analyse le bruit numérique pour le dissocier des textures réelles de l'image." 
+          },
+          { 
+            q: "Quelle est la méthode idéale pour incruster un élément 3D ou un packaging dans une perspective complexe avec éclairage réaliste ?", 
+            options: [
+              "Utiliser un Objet Dynamique déformé en perspective avec des calques de lumière en mode Incrustation / Lumière tamisée et masques de fusion", 
+              "Coller l'image à plat sur le plan de travail sans modifier l'angle ni l'orientation des repères géométriques", 
+              "Utiliser le pot de peinture pour remplir les contours extérieurs avec une couleur unie similaire au décor", 
+              "Appliquer un simple contour vectoriel noir de forte épaisseur autour de l'objet pour simuler le relief"
+            ], 
+            answer: 0, 
+            exp: "L'intégration professionnelle combine transformation intelligente, calques d'ombre portée et modes de fusion." 
+          },
+          { 
+            q: "Quel est le rôle de la gestion des profils colorimétriques 'Conversion en profil' (Convert to Profile) par rapport à 'Attribuer un profil' (Assign Profile) ?", 
+            options: [
+              "Convertir modifie les valeurs RVB pour conserver l'apparence des couleurs dans un nouvel espace, tandis qu'attribuer force un profil sans modifier les valeurs", 
+              "C'est strictement la même commande informatique, seule l'appellation change selon la version linguistique du logiciel", 
+              "Attribuer convertit automatiquement l'image en mode CMJN, alors que convertir supprime les profils ICC", 
+              "Convertir supprime les couches de transparence, tandis qu'attribuer aplatit l'ensemble des calques du projet"
+            ], 
+            answer: 0, 
+            exp: "Attribuer change l'interprétation des couleurs (risque de dérive), Convertir recalcule les valeurs pour garder la même fidélité visuelle." 
+          },
+          { 
+            q: "Comment automatiser le traitement par lot (Batch) de centaines d'images en intégrant un renommage dynamique et un redimensionnement conditionnel ?", 
+            options: [
+              "Via le module Automatisation > Traitement par lot combiné avec une action personnalisée ou un script UXP", 
+              "En ouvrant chaque image manuellement l'une après l'autre pour appliquer les modifications au clavier", 
+              "En enregistrant l'ensemble des projets sous un format GIF animé destiné à une lecture séquentielle", 
+              "En copiant collant les calques de réglage de manière empirique à l'aide de la souris sur le bureau"
+            ], 
+            answer: 0, 
+            exp: "Le traitement par lot automatise les actions sur des dossiers entiers de fichiers." 
+          },
+          { 
+            q: "Qu'est-ce qu'un fichier de script 'Droplet' généré par Photoshop ?", 
+            options: ["Une icône exécutable sur le bureau sur laquelle glisser-déposer des images pour leur appliquer une action automatique", "Un virus informatique conçu pour corrompre la structure interne des fichiers de projets PSD", "Un format de brosse texturée dynamique utilisé pour la peinture numérique haute définition", "Un plugin externe payant servant à simuler des effets de flou de mouvement optique"], 
+            answer: 0, 
+            exp: "Un Droplet transforme une action Photoshop en raccourci de bureau par simple glisser-déposer." 
+          },
+          { 
+            q: "Comment créer un masque de fusion basé sur la luminance pure de l'image (les zones claires contrôlent la transparence) ?", 
+            options: [
+              "En effectuant un Ctrl + Clic sur la vignette du canal RVB (ou commande de plage de couleurs / calque de réglage basé sur la luminosité)", 
+              "En gommant à la main de manière destructive l'ensemble des zones d'ombres situées à gauche de l'histogramme", 
+              "En inversant les couleurs du calque actif puis en appliquant un filtre artistique de flou directionnel", 
+              "En convertissant le projet entier en mode Niveaux de gris sans possibilité de revenir aux couleurs d'origine"
+            ], 
+            answer: 0, 
+            exp: "Les masques de luminance (luminosity masks) isolent les hautes ou basses lumières de manière mathématique." 
+          },
+          { 
+            q: "Quel est l'impact de l'option 'Dithering' lors de l'exportation d'une image en format PNG-8 ou GIF indexé ?", 
+            options: [
+              "Il ajoute un micro-bruit aléatoire pour adoucir les transitions de bandes de couleur et simuler les teintes manquantes", 
+              "Il supprime l'intégralité des métadonnées EXIF pour alléger le poids du fichier sur le serveur web", 
+              "Il augmente la résolution globale de l'image en interpolant les pixels à l'aide d'un algorithme vectoriel", 
+              "Il compresse le fichier final dans une archive de type ZIP protégée par un mot de passe chiffré"
+            ], 
+            answer: 0, 
+            exp: "Le dithering évite les aplats de couleur trop tranchés (effet de banding) sur les petits formats indexés." 
+          },
+          { 
+            q: "Comment exploiter la fonction 'Fusion panoramique' (Photomerge) pour assembler des images complexes sans raccord visible ?", 
+            options: [
+              "En combinant des prises de vues en projection sphérique ou perspective avec fusion automatique des tons et des masques par IA", 
+              "En superposant les différentes images à exactement 50% d'opacité sans utiliser de masques de fusion", 
+              "En effaçant manuellement à la gomme les bords de chaque photo pour les faire se chevaucher de force", 
+              "En aplatissant l'ensemble des calques de chaque prise de vue avant de lancer la commande de recadrage"
+            ], 
+            answer: 0, 
+            exp: "Photomerge aligne et fusionne les photos de paysages en harmonisant les expositions." 
+          },
+          { 
+            q: "Quelle est la structure interne d'un fichier Photoshop (PSD) au-delà de 2 Go ?", 
+            options: [
+              "Le format PSB (Large Document Format) qui gère les dimensions et poids démesurés", 
+              "Le format JPEG XL compressé sans perte avec prise en charge native des calques multiples", 
+              "Le format RAW universel DNG doté d'une arborescence de masques vectoriels imbriqués", 
+              "Le format PDF multipage vectoriel optimisé pour l'impression offset haute définition"
+            ], 
+            answer: 0, 
+            exp: "Le format PSB est indispensable pour les très grands affiches et les fichiers lourds dépassant 2 Go." 
+          },
+          { 
+            q: "Comment simuler un grain argentique réaliste et non destructif sur un calque numérique ?", 
+            options: [
+              "En créant un calque gris neutre à 50%, mode de fusion Incrustation, avec application d'un filtre de bruit monochromatique", 
+              "En baissant drastiquement la luminosité globale de la composition à l'aide d'un niveau de gris uni", 
+              "En appliquant un flou gaussien de fort rayon sur un calque dupliqué converti en noir et blanc", 
+              "En augmentant au maximum la saturation des couleurs primaires dans le panneau Teinte/Saturation"
+            ], 
+            answer: 0, 
+            exp: "Le calque de gris en mode Incrustation avec du bruit imite parfaitement le grain photographique." 
+          },
+          { 
+            q: "Quel est l'intérêt d'utiliser l'option 'Profondeur de couleur 32 bits par canal (HDR)' pour certaines images d'architecture ou de paysage ?", 
+            options: [
+              "De conserver une plage dynamique (dynamic range) infinie sans écrêtage des hautes lumières ou des ombres profondes", 
+              "De réduire la taille du fichier sur le disque dur pour faciliter son envoi rapide par messagerie", 
+              "D'accélérer considérablement la vitesse d'impression offset de l'agence graphique partenaire", 
+              "De supprimer totalement le bruit électronique inhérent aux petits capteurs numériques"
+            ], 
+            answer: 0, 
+            exp: "Le 32 bits gère l'ensemble des écarts de lumière extrêmes de la scène réelle." 
+          },
+          { 
+            q: "Comment configurer un style de calque complexe pour qu'il se comporte comme une ombre portée indépendante détachable du calque principal ?", 
+            options: [
+              "Via l'option du menu contextuel 'Créer des calques' à partir du style d'effet appliqué", 
+              "En fusionnant définitivement le calque de texte avec un calque vide de pixels transparents", 
+              "En dupliquant le groupe de calques puis en appliquant un masque vectoriel de forme circulaire", 
+              "En convertissant l'élément en objet dynamique lié sans utiliser de styles d'effets visuels"
+            ], 
+            answer: 0, 
+            exp: "La commande 'Créer des calques' sépare l'ombre portée en un calque de pixels modifiable à part." 
+          },
+          { 
+            q: "Quelle est la fonction d'un 'Composé de calques' (Layer Comps) dans un projet de design d'interface ou d'affiche ?", 
+            options: [
+              "D'enregistrer différents états de visibilité, de position et de style des calques au sein d'un même fichier", 
+              "De compresser le poids global du projet en fusionnant les calques inactifs de la composition", 
+              "D'exporter automatiquement le code source en HTML et CSS pour la création de pages web interactives", 
+              "De fusionner les calques finaux en une seule couche bitmap prête pour l'impression numérique"
+            ], 
+            answer: 0, 
+            exp: "Les composés de calques comparent des variantes de design dans un seul fichier PSD." 
+          },
+          { 
+            q: "Quel est l'effet du filtre 'Passe-haut' (High Pass) utilisé en combinaison avec le mode de fusion 'Incrustation' ou 'Lumière linéaire' ?", 
+            options: [
+              "Il accentue la netteté en isolant les contours et les hautes fréquences de l'image", 
+              "Il floute l'arrière-plan de manière artistique pour simuler une grande ouverture de diaphragme", 
+              "Il supprime l'intégralité des informations colorimétriques pour forcer un rendu sépia ancien", 
+              "Il éclaircit l'exposition globale de la composition en neutralisant les zones d'ombres profondes"
+            ], 
+            answer: 0, 
+            exp: "Le filtre passe-haut est la base de l'accentuation de netteté professionnelle (High Pass Sharpening)." 
+          },
+          { 
+            q: "Comment créer un motif répétitif (Pattern) vectoriel ou bitmap parfaitement raccord sans couture visible ?", 
+            options: [
+              "Via le menu 'Édition > Définir un motif' après avoir préparé un cadre aux dimensions exactes, ou via le générateur de motifs", 
+              "En étirant de force l'image sur toute la largeur du plan de travail à l'aide de l'outil Transformation", 
+              "En appliquant un filtre de flou radial de forte intensité sur les bords extérieurs du calque actif", 
+              "En convertissant le projet en mode CMJN pour forcer l'alignement des trames d'impression offset"
+            ], 
+            answer: 0, 
+            exp: "L'outil de définition de motif crée des trames répétables automatiquement." 
+          },
+          { 
+            q: "Quelle est l'utilité des 'Objets 3D et calques de projection' historiques dans Photoshop ?", 
+            options: [
+              "De plaquer des textures graphiques sur des volumes 3D simples (canettes, boîtes, sphères)", 
+              "De créer des jeux vidéo interactifs en temps réel dotés d'moteurs physiques complexes", 
+              "De modéliser des personnages humanoïdes complexes pour l'industrie du cinéma d'animation", 
+              "De remplacer définitivement le logiciel Lightroom pour la gestion des catalogues de flux RAW"
+            ], 
+            answer: 0, 
+            exp: "Photoshop intègre des fonctions de mapping 3D de base pour les mockups." 
+          },
+          { 
+            q: "Comment optimiser un fichier PSD lourd comportant des centaines de calques superflus ?", 
+            options: [
+              "En supprimant les masques inutiles, en aplatissant les groupes validés et en purgeant la mémoire cache", 
+              "En changeant la résolution de l'écran de travail pour un modèle compatible 4K HDR", 
+              "En augmentant la résolution en DPI des images incorporées pour saturer les tampons RAM", 
+              "En exportant l'intégralité du projet au format de compression vidéo MP4 haute cadence"
+            ], 
+            answer: 0, 
+            exp: "Le nettoyage régulier des calques invisibles allège la mémoire et accélère l'ordinateur." 
+          },
+          { 
+            q: "Quel est le rôle du format de fichier 'OpenEXR' ou 'HDR' souvent manipulé en post-production avancée avec Photoshop ?", 
+            options: [
+              "De stocker des images à haute gamme dynamique (HDR) sur 32 bits pour les effets spéciaux et le compositing", 
+              "D'imprimer des factures normalisées pour la comptabilité des agences de design graphique", 
+              "De lire des pistes audio multicanal synchronisées avec la timeline vidéo du projet", 
+              "De compresser des documents bureautiques textuels pour un transfert sécurisé par e-mail"
+            ], 
+            answer: 0, 
+            exp: "OpenEXR est le standard des industries du cinéma et des effets visuels numériques." 
+          },
+          { 
+            q: "Quelle est la finalité de l'outil 'Ligne de temps' (Timeline) dans Photoshop ?", 
+            options: [
+              "De créer des animations d'images par image ou des montages vidéo simples avec des calques", 
+              "De chronométrer précisément la vitesse d'exécution du processeur lors du rendu des filtres complexes", 
+              "D'ajuster en continu la balance des blancs des fichiers RAW d'un reportage photo de mariage", 
+              "De classer automatiquement les photos de vacances par ordre chronologique de prise de vue GPS"
+            ], 
+            answer: 0, 
+            exp: "La timeline permet de produire des GIF animés ou des exports vidéo MP4 directement depuis Photoshop." 
+          },
+          { 
+            q: "Comment garantir qu'un texte inséré dans une maquette graphique respecte les normes d'accessibilité du contraste colorimétrique (WCAG) ?", 
+            options: [
+              "En vérifiant le ratio de luminance entre la couleur du texte et celle du fond via un outil de mesure ou un vérificateur", 
+              "En mettant l'intégralité des polices de caractères en couleur blanche pure sur fond transparent", 
+              "En augmentant simplement la taille de police au-delà de 24 points sans tester les teintes", 
+              "En appliquant un style de calque d'ombre portée noire pour dissimuler les défauts de lisibilité"
+            ], 
+            answer: 0, 
+            exp: "Le respect des contrastes WCAG assure la lisibilité pour tous les utilisateurs." 
+          }
         ]
       },
       lr: {
@@ -508,7 +803,7 @@
           { q: "Quel est le rôle du panneau 'Mixeur de couleurs' (Color Mixer) dans le développement ?", options: ["D'ajuster indépendamment la Teinte, la Saturation et la Luminance (TSL) de 8 canaux de couleurs distincts", "De mélanger la peinture", "De supprimer le rouge", "De calibrer l'imprimante"], answer: 0, exp: "Le mixeur TSL est l'outil roi pour cibler une couleur spécifique (ex: rendre le ciel plus bleu)." },
           { q: "Comment identifier rapidement toutes les photos floues ou mal notées dans un large dossier ?", options: ["En utilisant la barre de filtre de bibliothèque (Library Filter) par mots-clés, notes ou attributs", "En regardant chaque photo une par une pendant des heures", "En réimportant tout le disque", "En fermant Lightroom"], answer: 0, exp: "Le filtre de bibliothèque trie instantanément les critères recherchés." },
           { q: "Quelle est l'utilité des 'Collections dynamiques' (Smart Collections) ?", options: ["Des dossiers de tri intelligents qui regroupent automatiquement les photos selon des règles prédéfinies (ex: toutes les photos notées 4 étoiles)", "Des albums payants", "Des sauvegardes automatiques", "Des scripts Photoshop"], answer: 0, exp: "Les collections dynamiques se mettent à jour seules dès qu'une photo correspond aux critères." },
-          { q: "Comment masquer les zones écrêtées (cramées ou bouchées) lors des réglages de base dans Lightroom ?", options: ["En cliquant sur les petits triangles situés aux coins supérieurs de l'histogramme (ou en maintenant la touche Alt/Option)", "En éteignant l'écran", "En appuyant sur Échap", "En changeant de module"], answer: 0, exp: "Les triangles d'écrêtage révèlent en fausses couleurs les pertes de détails extrêmes." },
+          { q: "Comment masquer les zones écrêtées (cramées ou bouchées) lors des réglages de base dans Lightroom ?", options: ["En cliquant sur les petits triangles situés aux coins supérieurs de l'histogramme (ou en maintenant la touche Alt/Option)", "En éteignant l'écran", "En appuyant sur Échap", "En changeant de module"], answer: 0, exp: "Les triangles d'écrêtage révèlen en fausses couleurs les pertes de détails extrêmes." },
           { q: "Quel est l'impact du curseur 'Grain' situé dans le panneau Effets ?", options: ["Il simule un grain argentique esthétique sur la photo numérique", "Il ajoute du bruit numérique coloré indésirable", "Il pixelise l'image", "Il floute les bords"], answer: 0, exp: "Le grain ajoute une texture organique inspirée de la pellicule argentique." },
           { q: "Que permet de réaliser la fonction 'Création de livres' (Book module) dans Lightroom ?", options: ["De concevoir et mettre en page des livres photos professionnels à exporter en PDF ou commander chez un imprimeur", "D'écrire des romans", "De gérer les factures", "De faire des QCM"], answer: 0, exp: "Le module Livre met en page vos collections de photos directement." },
           { q: "Comment paramétrer un filigrane (Watermark) personnalisé lors de l'exportation des photos ?", options: ["Via l'option 'Filigrane' du panneau Exporter pour y insérer son nom ou son logo en surimpression", "En écrivant sur l'écran avec un feutre", "Dans Photoshop uniquement", "Dans les préférences système"], answer: 0, exp: "Le filigrane protège vos images exportées avec une signature textuelle ou graphique." },
@@ -678,18 +973,15 @@
       }
     }
 
-    // Fonction pour mélanger les options de réponse d'une question
     function shuffleQuestionOptions(q) {
       let qCopy = { ...q, options: [...q.options] };
       let correctOptText = qCopy.options[qCopy.answer];
       
-      // Mélange de Fisher-Yates des options
       for (let i = qCopy.options.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [qCopy.options[i], qCopy.options[j]] = [qCopy.options[j], qCopy.options[i]];
       }
       
-      // Réattribution de l'index de la bonne réponse
       qCopy.answer = qCopy.options.indexOf(correctOptText);
       return qCopy;
     }
@@ -710,7 +1002,6 @@
       if (selectedLevel === 'mix') {
         currentQuestions = generateMixData();
       } else {
-        // Mélange des options pour chaque question de la sélection
         currentQuestions = questionsDB[selectedApp][selectedLevel].map(q => shuffleQuestionOptions(q));
       }
 
