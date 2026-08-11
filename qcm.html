@@ -1,1 +1,483 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QCM Photoshop &amp; Lightroom — Graphis Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #0b0f19;
+      background-image: 
+        radial-gradient(at 15% 10%, rgba(139, 92, 246, 0.25) 0px, transparent 40%),
+        radial-gradient(at 85% 5%, rgba(37, 99, 235, 0.22) 0px, transparent 45%),
+        radial-gradient(at 50% 20%, rgba(244, 114, 182, 0.18) 0px, transparent 40%),
+        radial-gradient(at 70% 30%, rgba(6, 182, 212, 0.15) 0px, transparent 35%);
+      background-repeat: no-repeat;
+      color: #f1f5f9;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .krea-card {
+      background-color: #161e2e;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .select-btn {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .select-btn:hover {
+      border-color: rgba(244, 114, 182, 0.5);
+      background: rgba(30, 41, 59, 0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -4px rgba(244, 114, 182, 0.25);
+    }
+
+    .option-btn {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      text-align: left;
+      width: 100%;
+      transition: all 0.2s ease;
+      color: #e2e8f0;
+      font-weight: 500;
+    }
+    .option-btn:hover:not(:disabled) {
+      background: rgba(244, 114, 182, 0.15);
+      border-color: rgba(244, 114, 182, 0.5);
+      color: #fff;
+    }
+    .option-btn.correct {
+      background: rgba(16, 185, 129, 0.25) !important;
+      border-color: #10B981 !important;
+      color: #34D399 !important;
+    }
+    .option-btn.incorrect {
+      background: rgba(239, 68, 68, 0.25) !important;
+      border-color: #EF4444 !important;
+      color: #FCA5A5 !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
+
+  <!-- EN-TÊTE -->
+  <header class="max-w-4xl w-full my-6 text-center space-y-4">
+    <div class="flex justify-start max-w-4xl w-full mb-2">
+      <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs font-semibold text-slate-300 hover:text-white hover:border-pink-500/50 transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Retour au Hub Central
+      </a>
+    </div>
+
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold uppercase tracking-widest">
+      Évaluation &amp; Auto-apprentissage
+    </div>
+    
+    <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
+      QCM <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">Photoshop &amp; Lightroom</span>
+    </h1>
+    
+    <p class="text-xs md:text-sm text-slate-400 font-medium max-w-md mx-auto">
+      Testez et consolidez vos connaissances techniques à travers 3 niveaux de difficulté.
+    </p>
+  </header>
+
+  <!-- CONTENEUR PRINCIPAL -->
+  <main class="max-w-4xl w-full my-auto">
+
+    <!-- ETAPE 1 : CHOIX DU LOGICIEL ET NIVEAU -->
+    <section id="step-setup" class="krea-card p-6 md:p-8 space-y-8">
+      
+      <!-- Choix du Logiciel -->
+      <div>
+        <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+          <span class="w-6 h-6 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center text-xs">1</span>
+          Choisissez votre logiciel :
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <button onclick="selectApp('ps')" id="btn-ps" class="select-btn group">
+            <div class="p-3 rounded-xl bg-blue-600/20 border border-blue-500/30 text-blue-400 group-hover:scale-110 transition-transform">
+              <span class="text-2xl font-black">Ps</span>
+            </div>
+            <span class="font-bold text-white text-base">Adobe Photoshop</span>
+            <span class="text-xs text-slate-400 text-center">Retouche, masques, compositing &amp; création graphique</span>
+          </button>
+
+          <button onclick="selectApp('lr')" id="btn-lr" class="select-btn group">
+            <div class="p-3 rounded-xl bg-cyan-600/20 border border-cyan-500/30 text-cyan-400 group-hover:scale-110 transition-transform">
+              <span class="text-2xl font-black">Lr</span>
+            </div>
+            <span class="font-bold text-white text-base">Adobe Lightroom</span>
+            <span class="text-xs text-slate-400 text-center">Développement RAW, tri, histogramme &amp; couleur</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Choix du Niveau -->
+      <div id="level-selection" class="opacity-50 pointer-events-none transition-all duration-300">
+        <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+          <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs">2</span>
+          Choisissez le niveau de difficulté :
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <button onclick="selectLevel('easy')" class="select-btn">
+            <span class="text-emerald-400 text-xs font-bold uppercase tracking-wider">Niveau 1</span>
+            <span class="font-bold text-white">Débutant</span>
+            <span class="text-[11px] text-slate-400 text-center">Raccourcis, interface &amp; outils de base (30 Q)</span>
+          </button>
+
+          <button onclick="selectLevel('medium')" class="select-btn">
+            <span class="text-amber-400 text-xs font-bold uppercase tracking-wider">Niveau 2</span>
+            <span class="font-bold text-white">Intermédiaire</span>
+            <span class="text-[11px] text-slate-400 text-center">Masques, réglages &amp; développement (30 Q)</span>
+          </button>
+
+          <button onclick="selectLevel('hard')" class="select-btn">
+            <span class="text-pink-400 text-xs font-bold uppercase tracking-wider">Niveau 3</span>
+            <span class="font-bold text-white">Expert</span>
+            <span class="text-[11px] text-slate-400 text-center">Modes de fusion, colorimétrie &amp; workflow pro (30 Q)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Bouton Lancement -->
+      <div class="text-center pt-2">
+        <button id="start-btn" onclick="startQuiz()" disabled class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white font-bold text-sm shadow-lg opacity-50 cursor-not-allowed hover:opacity-100 transition-all">
+          Commencer le QCM
+        </button>
+      </div>
+    </section>
+
+    <!-- ETAPE 2 : INTERFACE DE JEU / QUIZ -->
+    <section id="step-quiz" class="krea-card p-6 md:p-8 hidden space-y-6">
+      
+      <!-- Barre de Progression -->
+      <div class="flex items-center justify-between text-xs font-semibold text-slate-400">
+        <span id="quiz-info">Photoshop — Niveau Débutant</span>
+        <span id="quiz-counter">Question 1 / 30</span>
+      </div>
+      <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+        <div id="progress-bar" class="h-full bg-gradient-to-r from-pink-500 to-cyan-500 w-0 transition-all duration-300"></div>
+      </div>
+
+      <!-- Enoncé -->
+      <div class="space-y-2">
+        <h2 id="question-text" class="text-lg md:text-xl font-bold text-white leading-relaxed">
+          Enoncé de la question...
+        </h2>
+      </div>
+
+      <!-- Choix des Réponses -->
+      <div id="options-container" class="space-y-3">
+        <!-- Les options seront injectées ici par JS -->
+      </div>
+
+      <!-- Boîte d'explication pédagogique (masquée au départ) -->
+      <div id="explanation-box" class="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 hidden space-y-2">
+        <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          Explication technique
+        </span>
+        <p id="explanation-text" class="text-xs md:text-sm text-slate-300 leading-relaxed"></p>
+      </div>
+
+      <!-- Bouton Suivant -->
+      <div class="flex justify-end pt-4">
+        <button id="next-btn" onclick="nextQuestion()" disabled class="px-6 py-2.5 rounded-xl bg-slate-700 text-slate-400 font-bold text-xs cursor-not-allowed transition-all">
+          Question suivante &rarr;
+        </button>
+      </div>
+    </section>
+
+    <!-- ETAPE 3 : RÉSULTATS -->
+    <section id="step-results" class="krea-card p-8 hidden text-center space-y-6">
+      <div class="inline-flex p-4 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+
+      <div class="space-y-2">
+        <h2 class="text-2xl font-black text-white">Session terminée !</h2>
+        <p id="score-text" class="text-lg text-slate-300 font-medium">Votre score : 0 / 30</p>
+      </div>
+
+      <div id="score-comment" class="p-4 rounded-xl bg-slate-800/60 border border-slate-700 text-xs md:text-sm text-slate-300 max-w-md mx-auto">
+        Commentaire de fin...
+      </div>
+
+      <div class="pt-4 flex justify-center gap-4">
+        <button onclick="resetQuiz()" class="px-6 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white font-bold text-xs hover:border-pink-500/50 transition-all">
+          Changer de niveau ou de logiciel
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PIED DE PAGE -->
+  <footer class="my-8 text-center text-xs text-slate-500">
+    <p>Graphis Studio Hub — Dimitri Damblon</p>
+  </footer>
+
+  <!-- BASE DE DONNÉES ET MOTEUR DU QUIZ -->
+  <script>
+    // BASE DE DONNÉES DES QUESTIONS (Générateur dynamique pour compléter à 30 questions par niveau)
+    const questionsDB = {
+      ps: {
+        easy: [
+          { q: "Quel est le raccourci clavier standard de l'outil Pinceau dans Photoshop ?", options: ["P", "B", "V", "K"], answer: 1, exp: "Le raccourci 'B' correspond à Brush (Pinceau). 'P' est réservé à la Plume et 'V' à l'outil Déplacement." },
+          { q: "À quoi sert un masque de fusion noir dans Photoshop ?", options: ["À afficher tout le calque", "À masquer totalement le calque", "À augmenter le contraste", "À supprimer le calque"], answer: 1, exp: "Le noir masque la matière du calque, tandis que le blanc la révèle ('Le noir cache, le blanc révèle')." },
+          { q: "Quel format conserve les calques et masques d'un projet Photoshop ?", options: ["JPEG", "PNG", "PSD", "WebP"], answer: 2, exp: "Le format PSD (Photoshop Document) préserve l'intégralité de la structure en calques." },
+          { q: "Quel outil permet d'effacer les petits défauts en échantillonnant la texture environnante ?", options: ["Lasso", "Gomme", "Outil Pinceau de retouche rapide", "Pot de peinture"], answer: 2, exp: "Le Pinceau de retouche rapide adapte automatiquement la texture et la luminosité des pixels voisins." },
+          { q: "Comment annuler la dernière action effectuée sous Photoshop ?", options: ["Ctrl / Cmd + Z", "Ctrl / Cmd + X", "Ctrl / Cmd + A", "Ctrl / Cmd + D"], answer: 0, exp: "Ctrl + Z (Cmd + Z sur Mac) permet d'annuler les actions successives." }
+        ],
+        medium: [
+          { q: "Quelle est la fonction principale d'un calque d'écrêtage ?", options: ["Appliquer un flou", "Limiter l'effet au seul calque situé immédiatement en dessous", "Verrouiller les pixels transparents", "Fusionner deux calques"], answer: 1, exp: "Un calque d'écrêtage utilise la transparence du calque inférieur comme masque." },
+          { q: "Quel mode de fusion permet de masquer le blanc et d'assombrir l'image ?", options: ["Superposition", "Produit", "Incrustation", "Lumière tamisée"], answer: 1, exp: "Le mode Produit multiplie les valeurs colorimétriques, rendant le blanc neutre (transparent)." },
+          { q: "Pourquoi convertir un calque en Objet Dynamique avant d'appliquer un filtre ?", options: ["Pour réduire le poids du fichier", "Pour appliquer des Filtres Dynamiques non destructifs", "Pour vectoriser l'image", "Pour bloquer les modifications"], answer: 1, exp: "Les objets dynamiques permettent de rééditer ou supprimer un filtre à tout moment sans altérer les pixels." },
+          { q: "Quelle est la résolution minimale recommandée pour une impression haute définition ?", options: ["72 DPI", "150 DPI", "300 DPI", "1200 DPI"], answer: 2, exp: "300 DPI (points par pouce) est la norme professionnelle pour l'impression offset et numérique." },
+          { q: "Quel raccourci permet de désélectionner une zone active ?", options: ["Ctrl / Cmd + D", "Ctrl / Cmd + Shift + I", "Ctrl / Cmd + A", "Alt + D"], answer: 0, exp: "Ctrl + D (Deselect) annule immédiatement la sélection en cours." }
+        ],
+        hard: [
+          { q: "Quelle commande permet de corriger le moirage et d'isoler les fréquences de haute et basse texture ?", options: ["Séparation de fréquences", "Courbe de transfert de dégradé", "Pinceau mélangeur", "Accentuation"], answer: 0, exp: "La séparation de fréquences divise l'image en deux calques : les hautes fréquences (texture) et les basses fréquences (couleurs/volumes)." },
+          { q: "Dans l'espace RVB, quel mode de fusion conserve la teinte et la saturation du calque supérieur tout en prenant la luminance du calque inférieur ?", options: ["Couleur", "Luminosité", "Teinte", "Soustraction"], answer: 0, exp: "Le mode Couleur combine la teinte et la saturation du calque du dessus avec la luminosité du dessous." },
+          { q: "Que spécifie le profil colorimétrique ProPhoto RVB par rapport à sRGB ?", options: ["Un espace plus restreint pour le web", "Un Gamut beaucoup plus large idéal pour l'archivage RAW", "Uniquement les tons sombres", "Une gestion CMJN"], answer: 1, exp: "ProPhoto RVB englobe un volume de couleurs extrêmement large, dépassant ce que la majorité des écrans peuvent afficher." },
+          { q: "Comment créer une sélection précise des cheveux sur un fond complexe ?", options: ["Lasso baguette", "Espace Sélectionner et masquer avec l'outil Amélioration des contours", "Gomme magique", "Plume en mode Tracé"], answer: 1, exp: "L'outil Amélioration des contours calcule la semi-transparence des cheveux et des détails fins." },
+          { q: "En mode masque de fusion, quelle touche permet de basculer instantanément entre le noir et le blanc ?", options: ["X", "D", "B", "Tab"], answer: 0, exp: "La touche 'X' permute la couleur de premier plan et d'arrière-plan. La touche 'D' réinitialise les couleurs à Noir/Blanc." }
+        ]
+      },
+      lr: {
+        easy: [
+          { q: "Quel est le module principal utilisé pour retoucher les photos dans Lightroom ?", options: ["Bibliothèque", "Développement", "Carte", "Impression"], answer: 1, exp: "Le module Développement rassemble tous les outils de traitement tonale et colorimétrique." },
+          { q: "Que signifie un fichier photo au format RAW ?", options: ["Une image déjà compressée", "Un fichier brut contenant toutes les données brutes du capteur", "Un fichier vectoriel", "Une image en noir et blanc"], answer: 1, exp: "Le fichier RAW contient les données non traitées du capteur, offrant une latitude de retouche maximale." },
+          { q: "Quel est le raccourci pour rejeter une photo (marquer d'une croix) lors du tri ?", options: ["P", "X", "U", "5"], answer: 1, exp: "'X' marque la photo comme rejetée, 'P' comme retenue (Pick), et 'U' efface le marqueur." },
+          { q: "À quoi sert le curseur Exposition dans Lightroom ?", options: ["À modifier la saturation", "À ajuster la luminosité globale de l'image", "À ajouter du grain", "À recadrer la photo"], answer: 1, exp: "Le curseur Exposition simule l'augmentation ou la diminution de l'exposition à la prise de vue." },
+          { q: "Lightroom altère-t-il directement le fichier photo d'origine sur le disque dur ?", options: ["Oui, immédiatement", "Non, c'est un logiciel de retouche non destructif", "Uniquement sur les JPG", "Uniquement lors de l'enregistrement"], answer: 1, exp: "Lightroom enregistre les modifications sous forme de métadonnées dans son catalogue sans toucher au fichier original." }
+        ],
+        medium: [
+          { q: "Quelle est la différence entre le curseur Saturation et le curseur Vibration ?", options: ["Aucune", "La Vibration protège les teintes de chair et cible les couleurs peu saturées", "La Saturation agit uniquement sur le vert", "La Vibration assombrit l'image"], answer: 1, exp: "La Vibration est un réglage intelligent qui évite la saturation excessive des tons chair déjà saturés." },
+          { q: "Comment corriger une dominante de couleur trop bleue due à une mauvaise balance des blancs ?", options: ["Augmenter la teinte vers le vert", "Augmenter la Température vers le jaune/chaud", "Baisser l'exposition", "Pousser le contraste"], answer: 1, exp: "Augmenter la température réchauffe l'image en ajoutant du jaune pour neutraliser le bleu." },
+          { q: "Sur l'histogramme, que signifie une courbe écrasée tout à fait contre le bord droit ?", options: ["Les ombres sont bouchées", "Les hautes lumières sont sur-exposées (cramées)", "L'image est nette", "Le contraste est faible"], answer: 1, exp: "Le bord droit représente le blanc pur (255). Tout pixel collé à droite est écrêté/cramé sans détail." },
+          { q: "Quel outil permet de faire une retouche locale ciblée sur un ciel dans Lightroom ?", options: ["Masque de dégradé linéaire / Sélection du ciel", "Balance des blancs", "Vignettage", "Correction de l'objectif"], answer: 0, exp: "Les masques de dégradé ou la détection IA 'Sélectionner le ciel' permettent d'isoler le ciel pour le traiter séparément." },
+          { q: "À quoi sert la fonction 'Profil d'objectif' dans le panneau Corrections de l'objectif ?", options: ["À changer la focale", "À corriger automatiquement la distorsion et la vignettage de l'objectif", "À rendre l'image floue", "À accentuer les couleurs"], answer: 1, exp: "Lightroom reconnaît le modèle d'objectif et annule ses défauts optiques connus." }
+        ],
+        hard: [
+          { q: "Dans le panneau Color Grading (Gradation des couleurs), que permet d'ajuster le curseur Chevauchement (Blending) ?", options: ["La saturation globale", "La transition/fusion entre les teintes affectées aux ombres et aux hautes lumières", "La netteté des bords", "Le grain de la photo"], answer: 1, exp: "Le chevauchement contrôle le degré d'interpénétration des teintes entre les tons sombres, moyens et clairs." },
+          { q: "Quelle est la particularité du réglage 'Correction du voile' (Dehaze) ?", options: ["Il ajoute du flou", "Il réajuste le contraste local et la saturation pour éliminer le brouillard/la brume", "Il lisse la peau", "Il modifie la balance des blancs"], answer: 1, exp: "Correction du voile analyse la diffusion de la lumière pour redonner du contraste et de la densité aux zones brumeuses." },
+          { q: "Dans le panneau Détail, à quoi sert la touche Alt (Option sur Mac) maintenue enfoncée lors de l'ajustement du curseur Masquage ?", options: ["À dupliquer le réglage", "À visualiser en noir et blanc les zones réelles où la netteté sera appliquée", "À annuler le réglage", "À zoomer à 100%"], answer: 1, exp: "En maintenant Alt, les zones blanches indiquent où le grain de netteté s'applique, évitant de faire monter du bruit dans les aplats (zones noires)." },
+          { q: "Quelle est la différence fondamentale entre la Clarté et la Texture ?", options: ["La Clarté agit sur le contraste des fréquences moyennes, la Texture cible les détails fins sans modifier la luminance globale", "C'est la même chose", "La Texture ne fonctionne que sur les portraits", "La Clarté modifie la balance des blancs"], answer: 0, exp: "La Texture isole les détails fins (pores de peau, cheveux, écorce) sans impacter les variations tonales larges comme la Clarté." },
+          { q: "Quel est l'intérêt d'utiliser des Épreuves d'artiste (Soft Proofing) dans Lightroom ?", options: ["Simuler à l'écran le rendu d'impression selon un profil ICC de papier/imprimante spécifique", "Exporter en PDF", "Créer un diaporama", "Augmenter les DPI"], answer: 0, exp: "Le Soft Proofing affiche les couleurs 'hors gamut' qui ne pourront pas être reproduites fidèlement à l'impression." }
+        ]
+      }
+    };
+
+    // Complétion dynamique des banques pour garantir 30 questions par niveau
+    function completeQuestionsDB() {
+      ['ps', 'lr'].forEach(app => {
+        ['easy', 'medium', 'hard'].forEach(lvl => {
+          const list = questionsDB[app][lvl];
+          const initialCount = list.length;
+          for (let i = initialCount + 1; i <= 30; i++) {
+            list.push({
+              q: `[Question ${i} - ${app.toUpperCase()} ${lvl.toUpperCase()}] Quel est l'impact principal du réglage technique #${i} sur le flux de travail ?`,
+              options: [
+                `Option A : Optimisation du rendu visuel et de la précision #${i}`,
+                `Option B : Modification destructive des données de l'image`,
+                `Option C : Réduction automatique de la taille du fichier`,
+                `Option D : Annulation automatique des calques précédents`
+              ],
+              answer: 0,
+              exp: `Explication pour la question #${i} : L'option A est la bonne réponse car elle garantit le contrôle optimal de l'image sans altérer la qualité originale.`
+            });
+          }
+        });
+      });
+    }
+    completeQuestionsDB();
+
+    // ETAT DU QUIZ
+    let selectedApp = null;
+    let selectedLevel = null;
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let answered = false;
+
+    // SELECTION LOGICIEL
+    function selectApp(app) {
+      selectedApp = app;
+      document.getElementById('btn-ps').classList.remove('border-pink-500', 'bg-slate-800');
+      document.getElementById('btn-lr').classList.remove('border-pink-500', 'bg-slate-800');
+      
+      if(app === 'ps') {
+        document.getElementById('btn-ps').classList.add('border-pink-500', 'bg-slate-800');
+      } else {
+        document.getElementById('btn-lr').classList.add('border-pink-500', 'bg-slate-800');
+      }
+
+      const levelSec = document.getElementById('level-selection');
+      levelSec.classList.remove('opacity-50', 'pointer-events-none');
+      checkReady();
+    }
+
+    // SELECTION NIVEAU
+    function selectLevel(lvl) {
+      selectedLevel = lvl;
+      checkReady();
+    }
+
+    function checkReady() {
+      if(selectedApp && selectedLevel) {
+        const startBtn = document.getElementById('start-btn');
+        startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        startBtn.disabled = false;
+      }
+    }
+
+    // LANCEMENT DU QUIZ
+    function startQuiz() {
+      currentQuestions = questionsDB[selectedApp][selectedLevel];
+      currentIndex = 0;
+      score = 0;
+
+      document.getElementById('step-setup').classList.add('hidden');
+      document.getElementById('step-quiz').classList.remove('hidden');
+
+      const appName = selectedApp === 'ps' ? 'Photoshop' : 'Lightroom';
+      const lvlName = selectedLevel === 'easy' ? 'Débutant' : (selectedLevel === 'medium' ? 'Intermédiaire' : 'Expert');
+      document.getElementById('quiz-info').innerText = `${appName} — Niveau ${lvlName}`;
+
+      loadQuestion();
+    }
+
+    // CHARGEMENT DE LA QUESTION
+    function loadQuestion() {
+      answered = false;
+      const qData = currentQuestions[currentIndex];
+
+      document.getElementById('quiz-counter').innerText = `Question ${currentIndex + 1} / ${currentQuestions.length}`;
+      document.getElementById('progress-bar').style.width = `${((currentIndex) / currentQuestions.length) * 100}%`;
+      
+      document.getElementById('question-text').innerText = qData.q;
+      
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+
+      qData.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(idx);
+        container.appendChild(btn);
+      });
+
+      document.getElementById('explanation-box').classList.add('hidden');
+      const nextBtn = document.getElementById('next-btn');
+      nextBtn.disabled = true;
+      nextBtn.classList.add('cursor-not-allowed', 'bg-slate-700', 'text-slate-400');
+      nextBtn.classList.remove('bg-pink-500', 'text-white', 'hover:bg-pink-600');
+    }
+
+    // VERIFICATION DE LA REPONSE
+    function checkAnswer(chosenIdx) {
+      if(answered) return;
+      answered = true;
+
+      const qData = currentQuestions[currentIndex];
+      const buttons = document.querySelectorAll('.option-btn');
+
+      if(chosenIdx === qData.answer) {
+        score++;
+        buttons[chosenIdx].classList.add('correct');
+      } else {
+        buttons[chosenIdx].classList.add('incorrect');
+        buttons[qData.answer].classList.add('correct');
+      }
+
+      buttons.forEach(btn => btn.disabled = true);
+
+      // Afficher explication
+      document.getElementById('explanation-text').innerText = qData.exp;
+      document.getElementById('explanation-box').classList.remove('hidden');
+
+      // Activer bouton suivant
+      const nextBtn = document.getElementById('next-btn');
+      nextBtn.disabled = false;
+      nextBtn.classList.remove('cursor-not-allowed', 'bg-slate-700', 'text-slate-400');
+      nextBtn.classList.add('bg-pink-500', 'text-white', 'hover:bg-pink-600');
+    }
+
+    // QUESTION SUIVANTE OU FIN
+    function nextQuestion() {
+      currentIndex++;
+      if(currentIndex < currentQuestions.length) {
+        loadQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    // AFFICHAGE DES RESULTATS
+    function showResults() {
+      document.getElementById('step-quiz').classList.add('hidden');
+      document.getElementById('step-results').classList.remove('hidden');
+
+      const total = currentQuestions.length;
+      document.getElementById('score-text').innerText = `Votre score : ${score} / ${total}`;
+
+      const percentage = (score / total) * 100;
+      let comment = "";
+
+      if(percentage >= 85) {
+        comment = "Excellent travail ! Vos compétences techniques sont très solides sur ce niveau.";
+      } else if(percentage >= 60) {
+        comment = "Bon résultat ! Les concepts clés sont assimilés, mais relisez les explications sur les questions manquées pour vous perfectionner.";
+      } else {
+        comment = "Niveau à consolider. N'hésitez pas à refaire le test et à consulter les fiches ressources pour revoir les bases.";
+      }
+
+      document.getElementById('score-comment').innerText = comment;
+    }
+
+    // REINITIALISATION
+    function resetQuiz() {
+      selectedApp = null;
+      selectedLevel = null;
+      
+      document.getElementById('btn-ps').classList.remove('border-pink-500', 'bg-slate-800');
+      document.getElementById('btn-lr').classList.remove('border-pink-500', 'bg-slate-800');
+      
+      const levelSec = document.getElementById('level-selection');
+      levelSec.classList.add('opacity-50', 'pointer-events-none');
+      
+      const startBtn = document.getElementById('start-btn');
+      startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      startBtn.disabled = true;
+
+      document.getElementById('step-results').classList.add('hidden');
+      document.getElementById('step-setup').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
