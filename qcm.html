@@ -119,7 +119,7 @@
   </header>
 
   <!-- CONTENEUR PRINCIPAL -->
-  <main class="max-w-4xl w-full my-auto">
+  <main class="max-w-4xl w-full my-auto space-y-8">
 
     <!-- ETAPE 1 : CONFIGURATION (PSEUDO, LOGICIEL, NIVEAU) -->
     <section id="step-setup" class="krea-card p-6 md:p-8 space-y-8">
@@ -209,6 +209,48 @@
       </div>
     </section>
 
+    <!-- SECTION CLASSEMENT PERMANENT SUR LA PAGE D'ACCUEIL -->
+    <section class="krea-card p-6 md:p-8 space-y-4">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-bold text-white flex items-center gap-2">
+            🏆 Classement Général Permanent
+          </h2>
+          <p class="text-xs text-slate-400">Consultez les meilleurs scores enregistrés par catégorie.</p>
+        </div>
+
+        <!-- Sélecteurs pour filtrer le classement affiché à l'accueil -->
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <select id="home-filter-app" onchange="renderHomeLeaderboard()" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500">
+            <option value="ps">Photoshop</option>
+            <option value="lr">Lightroom</option>
+          </select>
+          <select id="home-filter-lvl" onchange="renderHomeLeaderboard()" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500">
+            <option value="easy">Niveau 1 (Débutant)</option>
+            <option value="medium">Niveau 2 (Intermédiaire)</option>
+            <option value="hard">Niveau 3 (Expert)</option>
+            <option value="mix">Mode Mix (Aléatoire)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="bg-slate-900/90 rounded-xl border border-slate-800 overflow-hidden max-h-48 overflow-y-auto">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="bg-slate-800/80 text-slate-400 border-b border-slate-700">
+              <th class="py-2.5 px-3 font-bold w-12 text-center">#</th>
+              <th class="py-2.5 px-3 font-bold">Pseudo</th>
+              <th class="py-2.5 px-3 font-bold text-right">Score</th>
+              <th class="py-2.5 px-3 font-bold text-right">Réussite</th>
+            </tr>
+          </thead>
+          <tbody id="home-leaderboard-tbody" class="divide-y divide-slate-800 text-slate-300">
+            <!-- Injecté dynamiquement par JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
     <!-- ETAPE 2 : INTERFACE DE JEU / QUIZ -->
     <section id="step-quiz" class="krea-card p-6 md:p-8 hidden space-y-6">
       
@@ -266,13 +308,9 @@
         <p id="player-score-summary" class="text-slate-300 text-sm font-semibold">Bravo Alex, vous avez obtenu 0 / 30</p>
       </div>
 
-      <!-- TABLEAU DE CLASSEMENT (LEADERBOARD) -->
+      <!-- TABLEAU DE CLASSEMENT DE LA SESSION -->
       <div class="space-y-3 pt-2">
-        <div class="flex items-center justify-between">
-          <h3 class="text-sm font-bold text-slate-200 text-left">🏆 Classement des participants :</h3>
-          <span id="leaderboard-subtitle" class="text-[11px] text-purple-400 font-semibold">Top scores</span>
-        </div>
-        
+        <h3 class="text-sm font-bold text-slate-200 text-left">🏆 Classement de la catégorie :</h3>
         <div class="bg-slate-900/90 rounded-xl border border-slate-800 overflow-hidden max-h-56 overflow-y-auto">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
@@ -367,7 +405,7 @@
           { q: "Quel mode de fusion inverse les couleurs et est souvent utilisé pour l'alignement précis de calques ou de photos ?", options: ["Densité couleur -", "Différence (Difference)", "Luminance", "Produit"], answer: 1, exp: "Le mode Différence affiche le négatif des écarts ; deux calques parfaitement superposés deviennent noirs." },
           { q: "À quoi sert le panneau 'Bibliothèques CC' (Creative Cloud Libraries) ?", options: ["À stocker des palettes de couleurs, des logos et des brosses synchronisés dans le cloud", "À archiver les messages du support", "À gérer l'historique des modifications", "À exporter les vidéos"], answer: 0, exp: "Les bibliothèques CC centralisent vos ressources graphiques pour les réutiliser d'un logiciel Adobe à l'autre." },
           { q: "Quelle est l'utilité d'un calque de réglage 'Courbe de transfert de dégradé' ?", options: ["À créer des effets de bicoloration ou de virage tonique artistique basés sur la luminance", "À tracer des dégradés géométriques", "À coloriser uniquement le fond transparent", "À exporter en PNG-24"], answer: 0, exp: "Le transfert de dégradé mappe les zones sombres et claires de l'image vers les couleurs choisies du dégradé." },
-          { q: "Comment associer un masque de fusion à un groupe de calques (Dossier) ?", options: ["Ce n'est pas possible", "En sélectionnant le groupe et en cliquant sur l'icône de masque de fusion", "En dupliquant le groupe", "En appliquant un filtre dynamique"], answer: 1, exp: "Les groupes de calques acceptent les masques de fusion pour masquer l'ensemble de leur contenu d'un seul coup." },
+          { q: "Comment associer un masque de fusion à un groupe de calques (Dossier) ?", options: ["Ce n'est pas possible", "En sélectionnant le groupe et en cliquant sur l'icône de masque de fusion", "En dupliquant le groupe", "En appliquant un filtre dynamique"], answer: 1, exp: "Les groupes de calques acceptent les masques de fusion pour masquer l'ensemble leur contenu d'un seul coup." },
           { q: "Quel outil de sélection utilise l'intelligence artificielle d'Adobe pour détecter automatiquement le sujet principal de l'image ?", options: ["La baguette magique", "La commande 'Sélectionner le sujet' (Select Subject)", "Le lasso magnétique", "Le pinceau d'historique"], answer: 1, exp: "L'option 'Sélectionner le sujet' analyse l'image par IA pour détourer instantanément la personne ou l'objet principal." },
           { q: "Quel est l'avantage d'utiliser un 'Objet Dynamique lié' (Linked Smart Object) par rapport à un objet incorporé ?", options: ["Le fichier lié se met à jour automatiquement si le fichier source externe est modifié", "Il pèse plus lourd sur le disque", "Il bloque la modification des couleurs", "Il supprime les calques"], answer: 0, exp: "Le lien externe permet de modifier une ressource partagée (ex: un logo) qui se met à jour dans tous les documents." },
           { q: "Quelle est la fonction du mode de fusion 'Incrustation' (Overlay) ?", options: ["Il assombrit les tons sombres et éclaircit les tons clairs en conservant les demi-teintes", "Il supprime les couleurs", "Il inverse le signal", "Il applique un flou"], answer: 0, exp: "L'incrustation combine les modes Produit et Superposition selon la luminosité du calque supérieur." },
@@ -497,7 +535,7 @@
           { q: "Comment exploiter le panneau 'Gradation des couleurs' (Color Grading) pour créer un accord colorimétrique de type 'Teal and Orange' (bleu et orangé) très prisé au cinéma ?", options: ["En affectant des teintes bleutées aux ombres (Shadows) et des teintes orangées/dorées aux hautes lumières (Highlights) avec un réglage de luminance équilibré", "En mettant tout en vert", "En augmentant la netteté", "En supprimant le contraste"], answer: 0, exp: "Le teal and orange oppose artistiquement les tons chauds sur les visages et froids dans les ombres." },
           { q: "Quelle est la différence entre un fichier catalogue Lightroom (.lrcat) et les fichiers de sauvegarde compressés (.zip) générés régulièrement ?", options: ["Le .lrcat est la base de données active en cours d'utilisation, le .zip est une archive de sécurité compressée de cette même base", "C'est le même fichier", "Le zip contient les photos RAW", "Le lrcat ne contient pas les réglages"], answer: 0, exp: "La sauvegarde zippée protège la base SQLite contre toute corruption accidentelle." },
           { q: "Comment configurer l'espace colorimétrique d'exportation dans Lightroom pour un client exigeant une impression offset sur papier journal (Papier non couché) ?", options: ["Exporter en TIFF ou JPEG avec le profil ICC spécifique de l'imprimeur (ex: ISO Newspaper 26v4) au lieu du sRGB", "Exporter en sRGB strict", "Utiliser le profil ProPhoto RVB", "Désactiver la couleur"], answer: 0, exp: "Les papiers non couchés nécessitent des profils d'exportation adaptés au gain d'point d'encre." },
-          { q: "Quel est le rôle technique des métadonnées XMP dans Lightroom ?", options: ["De stocker les instructions de développement et les mots-clés sous forme de fichier texte annexe ou directement incrustées dans les en-têtes du fichier", "De compresser l'image en vidéo", "De protéger les mots de passe", "De calibrer l'imprimante"], answer: 0, exp: "Le fichier XMP normalise l'échange des métadonnées et réglages entre logiciels compatibles." },
+          { q: "Quel est l'rôle technique des métadonnées XMP dans Lightroom ?", options: ["De stocker les instructions de développement et les mots-clés sous forme de fichier texte annexe ou directement incrustées dans les en-têtes du fichier", "De compresser l'image en vidéo", "De protéger les mots de passe", "De calibrer l'imprimante"], answer: 0, exp: "Le fichier XMP normalise l'échange des métadonnées et réglages entre logiciels compatibles." },
           { q: "Comment diagnostiquer une saturation anormale des rouges ou des teintes de peau lors du développement d'un RAW provenant d'un boîtier spécifique ?", options: ["En ajustant la matrice d'étalonnage des primaires rouges dans le panneau Étalonnage ou en modifiant le profil d'appareil photo", "En baissant l'exposition", "En appliquant un flou", "En changeant d'écran"], answer: 0, exp: "L'étalonnage corrige les dérives colorimétriques natives propres à certains capteurs." },
           { q: "Quelle est l'utilité des 'Collections interactives' ou du partage de collection via Lightroom Web pour la validation de projets avec un client ?", options: ["De permettre au client de noter (étoiles), commenter et valider les photos à distance via un lien web synchronisé en temps réel avec le catalogue", "De vendre les photos en ligne", "De faire un QCM", "De stocker des virus"], answer: 0, exp: "Lightroom Web fluidifie la collaboration et les retours clients sans export manuel." },
           { q: "Comment optimiser la vitesse de génération des aperçus sur un catalogue contenant plus de 100 000 photos ?", options: ["En configurant la suppression automatique des aperçus 1:1 après un délai (ex: 30 jours) et en privilégiant des aperçus Standard adaptés à la taille de l'écran", "En gardant tous les aperçus 1:1 à vie", "En supprimant les RAW", "En éteignant l'ordinateur"], answer: 0, exp: "Purger les gros aperçus 1:1 non utilisés libère un espace disque considérable." },
@@ -543,7 +581,6 @@
       const key = getLeaderboardKey(app, lvl);
       let leaderboard = getLeaderboard(app, lvl);
 
-      // Ajouter la nouvelle entrée
       leaderboard.push({
         name: name,
         score: scoreVal,
@@ -552,10 +589,7 @@
         date: new Date().toLocaleDateString()
       });
 
-      // Trier du plus grand score au plus petit (puis par pourcentage)
       leaderboard.sort((a, b) => b.score - a.score || b.percent - a.percent);
-
-      // Conserver les 15 meilleurs scores
       leaderboard = leaderboard.slice(0, 15);
 
       localStorage.setItem(key, JSON.stringify(leaderboard));
@@ -571,36 +605,59 @@
             localStorage.removeItem(getLeaderboardKey(app, lvl));
           });
         });
+        renderHomeLeaderboard();
         alert("Le classement a été réinitialisé.");
       }
+    }
+
+    // RENDU DU CLASSEMENT SUR LA PAGE D'ACCUEIL
+    function renderHomeLeaderboard() {
+      const app = document.getElementById('home-filter-app').value;
+      const lvl = document.getElementById('home-filter-lvl').value;
+      const leaderboard = getLeaderboard(app, lvl);
+      const tbody = document.getElementById('home-leaderboard-tbody');
+
+      if (leaderboard.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-500 italic">Aucun score enregistré pour cette catégorie. Soyez le premier !</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = leaderboard.map((entry, idx) => {
+        let medal = `#${idx + 1}`;
+        if (idx === 0) medal = '🥇 1er';
+        else if (idx === 1) medal = '🥈 2e';
+        else if (idx === 2) medal = '🥉 3e';
+
+        return `
+          <tr class="hover:bg-slate-800/50 transition-colors">
+            <td class="py-2.5 px-3 text-center font-bold text-slate-400">${medal}</td>
+            <td class="py-2.5 px-3 truncate max-w-[140px] font-medium text-slate-200">${entry.name}</td>
+            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">${entry.score} / ${entry.total}</td>
+            <td class="py-2.5 px-3 text-right text-sky-400">${entry.percent}%</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     // SELECTION LOGICIEL
     function selectApp(app) {
       selectedApp = app;
-      
       const btnPs = document.getElementById('btn-ps');
       const btnLr = document.getElementById('btn-lr');
 
       btnPs.classList.remove('select-btn-active');
       btnLr.classList.remove('select-btn-active');
       
-      if(app === 'ps') {
-        btnPs.classList.add('select-btn-active');
-      } else {
-        btnLr.classList.add('select-btn-active');
-      }
+      if(app === 'ps') btnPs.classList.add('select-btn-active');
+      else btnLr.classList.add('select-btn-active');
 
-      const levelSec = document.getElementById('level-selection');
-      levelSec.classList.remove('opacity-50', 'pointer-events-none');
-      
+      document.getElementById('level-selection').classList.remove('opacity-50', 'pointer-events-none');
       checkReady();
     }
 
     // SELECTION NIVEAU
     function selectLevel(lvl) {
       selectedLevel = lvl;
-
       const lvlBtns = ['easy', 'medium', 'hard', 'mix'];
       lvlBtns.forEach(l => {
         const btn = document.getElementById(`lvl-btn-${l}`);
@@ -620,12 +677,11 @@
       const nameInput = document.getElementById('username-input').value.trim();
       playerName = nameInput;
 
+      const startBtn = document.getElementById('start-btn');
       if(playerName && selectedApp && selectedLevel) {
-        const startBtn = document.getElementById('start-btn');
         startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         startBtn.disabled = false;
       } else {
-        const startBtn = document.getElementById('start-btn');
         startBtn.classList.add('opacity-50', 'cursor-not-allowed');
         startBtn.disabled = true;
       }
@@ -662,6 +718,7 @@
       historyResults = [];
 
       document.getElementById('step-setup').classList.add('hidden');
+      document.querySelector('main > section:nth-of-type(2)').classList.add('hidden'); // Cache le bloc classement d'accueil pendant le quiz
       document.getElementById('step-results').classList.add('hidden');
       document.getElementById('step-quiz').classList.remove('hidden');
 
@@ -672,11 +729,9 @@
       if (selectedLevel === 'mix') lvlName = 'Mix Aléatoire (15 Q.)';
 
       document.getElementById('quiz-info').innerText = `${appName} — ${lvlName} (${playerName})`;
-
       loadQuestion();
     }
 
-    // CHARGEMENT DE LA QUESTION
     function loadQuestion() {
       answered = false;
       const qData = currentQuestions[currentIndex];
@@ -684,7 +739,6 @@
       document.getElementById('quiz-counter').innerText = `Question ${currentIndex + 1} / ${currentQuestions.length}`;
       document.getElementById('live-score-text').innerText = `Score : ${score}`;
       document.getElementById('progress-bar').style.width = `${((currentIndex) / currentQuestions.length) * 100}%`;
-      
       document.getElementById('question-text').innerText = qData.q;
       
       const container = document.getElementById('options-container');
@@ -705,7 +759,6 @@
       nextBtn.classList.remove('bg-pink-500', 'text-white', 'hover:bg-pink-600');
     }
 
-    // VERIFICATION DE LA REPONSE
     function checkAnswer(chosenIdx) {
       if(answered) return;
       answered = true;
@@ -742,7 +795,6 @@
       nextBtn.classList.add('bg-pink-500', 'text-white', 'hover:bg-pink-600');
     }
 
-    // QUESTION SUIVANTE OU FIN
     function nextQuestion() {
       currentIndex++;
       if(currentIndex < currentQuestions.length) {
@@ -752,7 +804,6 @@
       }
     }
 
-    // AFFICHAGE DES RESULTATS & MISE A JOUR DU CLASSEMENT
     function showResults() {
       document.getElementById('step-quiz').classList.add('hidden');
       document.getElementById('step-results').classList.remove('hidden');
@@ -762,12 +813,13 @@
 
       document.getElementById('player-score-summary').innerText = `Bravo ${playerName}, vous avez obtenu ${score} / ${total} (${percentage}%)`;
 
-      // Sauvegarde dans le classement
-      const updatedLeaderboard = saveScoreToLeaderboard(selectedApp, selectedLevel, playerName, score, total, percentage);
+      saveScoreToLeaderboard(selectedApp, selectedLevel, playerName, score, total, percentage);
+      renderHomeLeaderboard(); // Met à jour le classement permanent en arrière-plan
 
-      // Affichage du tableau du 1er au dernier
+      // Affichage du tableau de fin
+      const leaderboard = getLeaderboard(selectedApp, selectedLevel);
       const tbody = document.getElementById('leaderboard-tbody');
-      tbody.innerHTML = updatedLeaderboard.map((entry, idx) => {
+      tbody.innerHTML = leaderboard.map((entry, idx) => {
         const isCurrentPlayer = entry.name.toLowerCase() === playerName.toLowerCase() && entry.score === score;
         const rowBg = isCurrentPlayer ? 'bg-pink-500/15 font-semibold text-white' : '';
         
@@ -786,7 +838,6 @@
         `;
       }).join('');
 
-      // Récapitulatif détaillé
       const recapContainer = document.getElementById('recap-list');
       recapContainer.innerHTML = historyResults.map((item, idx) => `
         <div class="p-3 bg-slate-900/80 border ${item.correct ? 'border-emerald-500/30' : 'border-rose-500/30'} rounded-xl space-y-1">
@@ -803,7 +854,6 @@
       `).join('');
     }
 
-    // REINITIALISATION
     function resetQuiz() {
       selectedApp = null;
       selectedLevel = null;
@@ -817,8 +867,7 @@
         if (btn) btn.classList.remove('level-btn-active', 'mix-btn-active');
       });
 
-      const levelSec = document.getElementById('level-selection');
-      levelSec.classList.add('opacity-50', 'pointer-events-none');
+      document.getElementById('level-selection').classList.add('opacity-50', 'pointer-events-none');
       
       const startBtn = document.getElementById('start-btn');
       startBtn.classList.add('opacity-50', 'cursor-not-allowed');
@@ -826,8 +875,16 @@
 
       document.getElementById('step-results').classList.add('hidden');
       document.getElementById('step-quiz').classList.add('hidden');
+      document.querySelector('main > section:nth-of-type(2)').classList.remove('hidden'); // Réaffiche le classement d'accueil
       document.getElementById('step-setup').classList.remove('hidden');
+      
+      renderHomeLeaderboard();
     }
+
+    // Charger le classement à l'ouverture de la page
+    window.onload = function() {
+      renderHomeLeaderboard();
+    };
   </script>
 </body>
 </html>
