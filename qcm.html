@@ -121,16 +121,16 @@
   <!-- CONTENEUR PRINCIPAL -->
   <main class="max-w-4xl w-full my-auto space-y-8">
 
-    <!-- ETAPE 1 : CONFIGURATION (PSEUDO, LOGICIEL, NIVEAU) -->
+    <!-- ETAPE 1 : CONFIGURATION (PSEUDO FACULTATIF, LOGICIEL, NIVEAU) -->
     <section id="step-setup" class="krea-card p-6 md:p-8 space-y-8">
       
-      <!-- Saisie du Prénom / Pseudo -->
+      <!-- Saisie du Prénom / Pseudo (Facultatif) -->
       <div>
         <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
           <span class="w-6 h-6 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center text-xs">1</span>
-          Entrez votre prénom ou pseudo :
+          Prénom ou pseudo <span class="text-xs text-slate-400 font-normal">(facultatif, pour le classement)</span> :
         </h2>
-        <input type="text" id="username-input" placeholder="ex: Alex Designer" oninput="checkReady()" maxlength="25" class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-pink-500 text-sm font-semibold transition-all">
+        <input type="text" id="username-input" placeholder="Laisser vide pour jouer anonymement" maxlength="25" class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-pink-500 text-sm font-semibold transition-all">
       </div>
 
       <!-- Choix du Logiciel -->
@@ -219,7 +219,6 @@
           <p class="text-xs text-slate-400">Consultez les meilleurs scores enregistrés par catégorie.</p>
         </div>
 
-        <!-- Sélecteurs pour filtrer le classement affiché à l'accueil -->
         <div class="flex items-center gap-2 w-full sm:w-auto">
           <select id="home-filter-app" onchange="renderHomeLeaderboard()" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-pink-500">
             <option value="ps">Photoshop</option>
@@ -254,7 +253,6 @@
     <!-- ETAPE 2 : INTERFACE DE JEU / QUIZ -->
     <section id="step-quiz" class="krea-card p-6 md:p-8 hidden space-y-6">
       
-      <!-- Barre de Progression & Score En Direct -->
       <div class="flex items-center justify-between text-xs font-semibold text-slate-400">
         <span id="quiz-info">Photoshop — Niveau Débutant</span>
         <div class="flex items-center gap-4">
@@ -266,17 +264,14 @@
         <div id="progress-bar" class="h-full bg-gradient-to-r from-pink-500 to-cyan-500 w-0 transition-all duration-300"></div>
       </div>
 
-      <!-- Énoncé -->
       <div class="space-y-2">
         <h2 id="question-text" class="text-lg md:text-xl font-bold text-white leading-relaxed">
           Énoncé de la question...
         </h2>
       </div>
 
-      <!-- Choix des Réponses -->
       <div id="options-container" class="space-y-3"></div>
 
-      <!-- Boîte d'explication pédagogique -->
       <div id="explanation-box" class="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 hidden space-y-2">
         <span class="text-xs font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-1">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -285,7 +280,6 @@
         <p id="explanation-text" class="text-xs md:text-sm text-slate-300 leading-relaxed"></p>
       </div>
 
-      <!-- Bouton Suivant -->
       <div class="flex justify-end pt-4">
         <button id="next-btn" onclick="nextQuestion()" disabled class="px-6 py-2.5 rounded-xl bg-slate-700 text-slate-400 font-bold text-xs cursor-not-allowed transition-all">
           Question suivante &rarr;
@@ -296,7 +290,6 @@
     <!-- ETAPE 3 : RÉSULTATS & CLASSEMENT -->
     <section id="step-results" class="krea-card p-6 md:p-8 hidden text-center space-y-6">
       
-      <!-- Icône Trophée -->
       <div class="inline-flex p-4 rounded-full bg-purple-500/20 text-purple-400 border border-purple-500/30">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -305,12 +298,14 @@
 
       <div class="space-y-2">
         <h2 id="result-title" class="text-2xl font-black text-white">Session terminée !</h2>
-        <p id="player-score-summary" class="text-slate-300 text-sm font-semibold">Bravo Alex, vous avez obtenu 0 / 30</p>
+        <p id="player-score-summary" class="text-slate-300 text-sm font-semibold">Vous avez obtenu 0 / 30</p>
       </div>
 
-      <!-- TABLEAU DE CLASSEMENT DE LA SESSION -->
-      <div class="space-y-3 pt-2">
-        <h3 class="text-sm font-bold text-slate-200 text-left">🏆 Classement de la catégorie :</h3>
+      <!-- TABLEAU DE CLASSEMENT (Affiché uniquement si un pseudo a été saisi) -->
+      <div id="leaderboard-container-wrapper" class="space-y-3 pt-2">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-slate-200 text-left">🏆 Classement de la catégorie :</h3>
+        </div>
         <div class="bg-slate-900/90 rounded-xl border border-slate-800 overflow-hidden max-h-56 overflow-y-auto">
           <table class="w-full text-left border-collapse text-xs">
             <thead>
@@ -327,6 +322,9 @@
           </table>
         </div>
       </div>
+      <div id="anonymous-notice" class="hidden text-xs text-slate-400 italic bg-slate-900/50 p-3 rounded-xl border border-slate-800">
+        Mode anonyme : votre score n'a pas été ajouté au classement public.
+      </div>
 
       <!-- Détail complet des réponses -->
       <div class="text-left space-y-3 pt-2">
@@ -336,7 +334,7 @@
 
       <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
         <button onclick="resetQuiz()" class="px-6 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white font-bold text-xs hover:border-pink-500/50 transition-all">
-          Changer de pseudo ou de session
+          Changer de session
         </button>
         <button onclick="startQuiz()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xs hover:opacity-90 transition-all">
           Rejouer ➔
@@ -405,7 +403,7 @@
           { q: "Quel mode de fusion inverse les couleurs et est souvent utilisé pour l'alignement précis de calques ou de photos ?", options: ["Densité couleur -", "Différence (Difference)", "Luminance", "Produit"], answer: 1, exp: "Le mode Différence affiche le négatif des écarts ; deux calques parfaitement superposés deviennent noirs." },
           { q: "À quoi sert le panneau 'Bibliothèques CC' (Creative Cloud Libraries) ?", options: ["À stocker des palettes de couleurs, des logos et des brosses synchronisés dans le cloud", "À archiver les messages du support", "À gérer l'historique des modifications", "À exporter les vidéos"], answer: 0, exp: "Les bibliothèques CC centralisent vos ressources graphiques pour les réutiliser d'un logiciel Adobe à l'autre." },
           { q: "Quelle est l'utilité d'un calque de réglage 'Courbe de transfert de dégradé' ?", options: ["À créer des effets de bicoloration ou de virage tonique artistique basés sur la luminance", "À tracer des dégradés géométriques", "À coloriser uniquement le fond transparent", "À exporter en PNG-24"], answer: 0, exp: "Le transfert de dégradé mappe les zones sombres et claires de l'image vers les couleurs choisies du dégradé." },
-          { q: "Comment associer un masque de fusion à un groupe de calques (Dossier) ?", options: ["Ce n'est pas possible", "En sélectionnant le groupe et en cliquant sur l'icône de masque de fusion", "En dupliquant le groupe", "En appliquant un filtre dynamique"], answer: 1, exp: "Les groupes de calques acceptent les masques de fusion pour masquer l'ensemble leur contenu d'un seul coup." },
+          { q: "Comment associer un masque de fusion à un groupe de calques (Dossier) ?", options: ["Ce n'est pas possible", "En sélectionnant le groupe et en cliquant sur l'icône de masque de fusion", "En dupliquant le groupe", "En appliquant un filtre dynamique"], answer: 1, exp: "Les groupes de calques acceptent les masques de fusion pour masquer l'ensemble de leur contenu d'un seul coup." },
           { q: "Quel outil de sélection utilise l'intelligence artificielle d'Adobe pour détecter automatiquement le sujet principal de l'image ?", options: ["La baguette magique", "La commande 'Sélectionner le sujet' (Select Subject)", "Le lasso magnétique", "Le pinceau d'historique"], answer: 1, exp: "L'option 'Sélectionner le sujet' analyse l'image par IA pour détourer instantanément la personne ou l'objet principal." },
           { q: "Quel est l'avantage d'utiliser un 'Objet Dynamique lié' (Linked Smart Object) par rapport à un objet incorporé ?", options: ["Le fichier lié se met à jour automatiquement si le fichier source externe est modifié", "Il pèse plus lourd sur le disque", "Il bloque la modification des couleurs", "Il supprime les calques"], answer: 0, exp: "Le lien externe permet de modifier une ressource partagée (ex: un logo) qui se met à jour dans tous les documents." },
           { q: "Quelle est la fonction du mode de fusion 'Incrustation' (Overlay) ?", options: ["Il assombrit les tons sombres et éclaircit les tons clairs en conservant les demi-teintes", "Il supprime les couleurs", "Il inverse le signal", "Il applique un flou"], answer: 0, exp: "L'incrustation combine les modes Produit et Superposition selon la luminosité du calque supérieur." },
@@ -517,7 +515,7 @@
           { q: "Quelle est la particularité des fichiers 'Smart Previews' (Aperçus dynamiques) dans Lightroom ?", options: ["Ils permettent de retoucher et développer ses photos même lorsque le disque dur externe contenant les RAW originaux est déconnecté", "Ils suppriment les originaux", "Ils pèsent plus lourd que les RAW", "Ils ne fonctionnent qu'en Wi-Fi"], answer: 0, exp: "Les aperçus dynamiques autorisent le nomadisme et la retouche hors connexion." },
           { q: "Quel est l'effet de l'outil 'Suppression des défauts' en mode 'Correction' par rapport au mode 'Copie' ?", options: ["Correction fusionne la texture avec l'environnement, Copie du pique exactement les pixels de la zone source sans fusion", "C'est la même chose", "Copie supprime l'image", "Correction change la couleur"], answer: 0, exp: "Le mode Correction adapte la texture au fond, le mode Copie fait un copier-coller brut." },
           { q: "Comment trier rapidement une série de photos de vacances prises à la même minute par ordre chronologique inversé ?", options: ["Dans le menu 'Vue > Trier par > Heure de capture'", "En secouant la souris", "En renommant les fichiers un par un", "En changeant d'appareil"], answer: 0, exp: "Le tri par heure de capture remet l'ordre chronologique exact des prises de vue." },
-          { q: "Quel est le rôle du panneau 'Mixeur de couleurs' (Color Mixer) dans le développement ?", options: ["D'ajuster indépendamment la Teinte, la Saturation et la Luminance (TSL) de 8 canaux de couleurs distincts", "De mélanger la peinture", "De supprimer le rouge", "De calibrer l'imprimante"], answer: 0, exp: "Le mixeur TSL est l'outil roi pour cibler une couleur spécifique (ex: rendre le ciel plus bleu)." },
+          { q: "Quel est l'rôle du panneau 'Mixeur de couleurs' (Color Mixer) dans le développement ?", options: ["D'ajuster indépendamment la Teinte, la Saturation et la Luminance (TSL) de 8 canaux de couleurs distincts", "De mélanger la peinture", "De supprimer le rouge", "De calibrer l'imprimante"], answer: 0, exp: "Le mixeur tsl est l'outil roi pour cibler une couleur spécifique (ex: rendre le ciel plus bleu)." },
           { q: "Comment restaurer des fichiers égarés ou dont le dossier a été déplacé sur le disque dur (dossiers avec un point d'interrogation) ?", options: ["Faire un clic droit sur le dossier dans Lightroom et sélectionner 'Rechercher le dossier manquant'", "Réimporter tout le catalogue à zéro", "Supprimer les photos", "Acheter un nouveau disque"], answer: 0, exp: "La reconnexion des dossiers réassocie les chemins d'accès sans perdre les retouches." },
           { q: "À quoi sert la fonction 'HDR Panorama' combinée dans Lightroom ?", options: ["D'assembler à la fois plusieurs expositions et plusieurs angles spatiaux en une seule image géANTE ultra-riche", "De faire une vidéo 4K", "De convertir en noir et blanc", "D'imprimer en 3D"], answer: 0, exp: "Le HDR Panorama fusionne le meilleur des deux mondes (plage dynamique et grand angle)." },
           { q: "Quel est l'intérêt d'utiliser le module 'Diaporama' (Slideshow) dans Lightroom ?", options: ["De générer des présentations visuelles dynamiques avec musique et transitions à exporter en vidéo MP4", "De projeter des films au cinéma", "De faire des graphiques Excel", "De trier les e-mails"], answer: 0, exp: "Le module Diaporama met en valeur vos séries de photos en mouvement." }
@@ -535,7 +533,7 @@
           { q: "Comment exploiter le panneau 'Gradation des couleurs' (Color Grading) pour créer un accord colorimétrique de type 'Teal and Orange' (bleu et orangé) très prisé au cinéma ?", options: ["En affectant des teintes bleutées aux ombres (Shadows) et des teintes orangées/dorées aux hautes lumières (Highlights) avec un réglage de luminance équilibré", "En mettant tout en vert", "En augmentant la netteté", "En supprimant le contraste"], answer: 0, exp: "Le teal and orange oppose artistiquement les tons chauds sur les visages et froids dans les ombres." },
           { q: "Quelle est la différence entre un fichier catalogue Lightroom (.lrcat) et les fichiers de sauvegarde compressés (.zip) générés régulièrement ?", options: ["Le .lrcat est la base de données active en cours d'utilisation, le .zip est une archive de sécurité compressée de cette même base", "C'est le même fichier", "Le zip contient les photos RAW", "Le lrcat ne contient pas les réglages"], answer: 0, exp: "La sauvegarde zippée protège la base SQLite contre toute corruption accidentelle." },
           { q: "Comment configurer l'espace colorimétrique d'exportation dans Lightroom pour un client exigeant une impression offset sur papier journal (Papier non couché) ?", options: ["Exporter en TIFF ou JPEG avec le profil ICC spécifique de l'imprimeur (ex: ISO Newspaper 26v4) au lieu du sRGB", "Exporter en sRGB strict", "Utiliser le profil ProPhoto RVB", "Désactiver la couleur"], answer: 0, exp: "Les papiers non couchés nécessitent des profils d'exportation adaptés au gain d'point d'encre." },
-          { q: "Quel est l'rôle technique des métadonnées XMP dans Lightroom ?", options: ["De stocker les instructions de développement et les mots-clés sous forme de fichier texte annexe ou directement incrustées dans les en-têtes du fichier", "De compresser l'image en vidéo", "De protéger les mots de passe", "De calibrer l'imprimante"], answer: 0, exp: "Le fichier XMP normalise l'échange des métadonnées et réglages entre logiciels compatibles." },
+          { q: "Quel est le rôle technique des métadonnées XMP dans Lightroom ?", options: ["De stocker les instructions de développement et les mots-clés sous forme de fichier texte annexe ou directement incrustées dans les en-têtes du fichier", "De compresser l'image en vidéo", "De protéger les mots de passe", "De calibrer l'imprimante"], answer: 0, exp: "Le fichier XMP normalise l'échange des métadonnées et réglages entre logiciels compatibles." },
           { q: "Comment diagnostiquer une saturation anormale des rouges ou des teintes de peau lors du développement d'un RAW provenant d'un boîtier spécifique ?", options: ["En ajustant la matrice d'étalonnage des primaires rouges dans le panneau Étalonnage ou en modifiant le profil d'appareil photo", "En baissant l'exposition", "En appliquant un flou", "En changeant d'écran"], answer: 0, exp: "L'étalonnage corrige les dérives colorimétriques natives propres à certains capteurs." },
           { q: "Quelle est l'utilité des 'Collections interactives' ou du partage de collection via Lightroom Web pour la validation de projets avec un client ?", options: ["De permettre au client de noter (étoiles), commenter et valider les photos à distance via un lien web synchronisé en temps réel avec le catalogue", "De vendre les photos en ligne", "De faire un QCM", "De stocker des virus"], answer: 0, exp: "Lightroom Web fluidifie la collaboration et les retours clients sans export manuel." },
           { q: "Comment optimiser la vitesse de génération des aperçus sur un catalogue contenant plus de 100 000 photos ?", options: ["En configurant la suppression automatique des aperçus 1:1 après un délai (ex: 30 jours) et en privilégiant des aperçus Standard adaptés à la taille de l'écran", "En gardant tous les aperçus 1:1 à vie", "En supprimant les RAW", "En éteignant l'ordinateur"], answer: 0, exp: "Purger les gros aperçus 1:1 non utilisés libère un espace disque considérable." },
@@ -552,12 +550,11 @@
           { q: "Quel est l'apport des profils de rendu 'Adobe Couleur' par rapport au profil 'Adobe Neutre' (Adobe Neutral) ?", options: ["Adobe Couleur offre un rendu punchy avec des contrastes et des saturations optimisés pour le grand public, tandis qu'Adobe Neutral aplatit la courbe pour maximiser la latitude de retouche", "C'est l'inverse", "Adobe Neutral supprime les couleurs", "Adobe Couleur est en noir et blanc"], answer: 0, exp: "Adobe Neutre sert de base plate pour un travail de colorimétrie entièrement sur-mesure." },
           { q: "Comment identifier et purger les doublons d'importation dans un catalogue Lightroom surchargé ?", options: ["En cochant l'option 'Ne pas importer les doubles présumés' lors de l'import ou via des scripts tiers d'analyse de catalogue", "En jetant l'ordinateur", "En supprimant tout le dossier", "En changeant de version"], answer: 0, exp: "L'option anti-doublon évite d'encombrer le catalogue avec des fichiers déjà présents." },
           { q: "Quelle est la finalité du panneau 'Division des tons' (Split Toning / ancêtre du Color Grading) dans les anciennes versions de Lightroom ?", options: ["De colorer séparément les hautes lumières et les ombres avec deux teintes distinctes", "De diviser l'écran en deux", "De couper la photo en morceaux", "De changer la résolution"], answer: 0, exp: "La division des tons est la base historique du virage tonique créatif." },
-          { q: "Comment assurer la pérennité à long terme d'un catalogue Lightroom et de ses RAW en cas de changement complet de machine ?", options: ["En effectuant une sauvegarde complète du dossier contenant le catalogue .lrcat, les dossiers de préréglages et l'arborescence intégrale des images RAW d'origine", "En ne sauvegardant que le bureau", "En achetant un nouveau logiciel", "En supprimant le cache"], answer: 0, exp: "La portabilité du catalogue repose sur la conservation conjointe de la base .lrcat et des fichiers sources." }
+          { q: "Comment assurer la pérennité à long terme d'un catalogue Lightroom et de ses RAW en cas de changement complet de machine ?", options: ["En dèsignant une sauvegarde complète du dossier contenant le catalogue .lrcat, les dossiers de préréglages et l'arborescence intégrale des images RAW d'origine", "En ne sauvegardant que le bureau", "En achetant un nouveau logiciel", "En supprimant le cache"], answer: 0, exp: "La portabilité du catalogue repose sur la conservation conjointe de la base .lrcat et des fichiers sources." }
         ]
       }
     };
 
-    // ETAT DU QUIZ
     let playerName = "";
     let selectedApp = null;
     let selectedLevel = null;
@@ -567,7 +564,6 @@
     let answered = false;
     let historyResults = [];
 
-    // GESTION DU CLASSEMENT GENERAL (LEADERBOARD) VIA LOCALSTORAGE
     function getLeaderboardKey(app, lvl) {
       return `qcm_leaderboard_${app}_${lvl}`;
     }
@@ -578,6 +574,7 @@
     }
 
     function saveScoreToLeaderboard(app, lvl, name, scoreVal, totalVal, percentVal) {
+      if (!name) return; // Si pas de pseudo, on n'enregistre rien dans le classement
       const key = getLeaderboardKey(app, lvl);
       let leaderboard = getLeaderboard(app, lvl);
 
@@ -610,7 +607,6 @@
       }
     }
 
-    // RENDU DU CLASSEMENT SUR LA PAGE D'ACCUEIL
     function renderHomeLeaderboard() {
       const app = document.getElementById('home-filter-app').value;
       const lvl = document.getElementById('home-filter-lvl').value;
@@ -639,7 +635,6 @@
       }).join('');
     }
 
-    // SELECTION LOGICIEL
     function selectApp(app) {
       selectedApp = app;
       const btnPs = document.getElementById('btn-ps');
@@ -655,7 +650,6 @@
       checkReady();
     }
 
-    // SELECTION NIVEAU
     function selectLevel(lvl) {
       selectedLevel = lvl;
       const lvlBtns = ['easy', 'medium', 'hard', 'mix'];
@@ -674,11 +668,9 @@
     }
 
     function checkReady() {
-      const nameInput = document.getElementById('username-input').value.trim();
-      playerName = nameInput;
-
+      // Le pseudo n'est plus obligatoire pour activer le bouton de démarrage
       const startBtn = document.getElementById('start-btn');
-      if(playerName && selectedApp && selectedLevel) {
+      if(selectedApp && selectedLevel) {
         startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         startBtn.disabled = false;
       } else {
@@ -687,7 +679,6 @@
       }
     }
 
-    // GENERATION DU MODE MIX
     function generateMixData() {
       const appDB = questionsDB[selectedApp];
       const allQuestions = [...appDB.easy, ...appDB.medium, ...appDB.hard];
@@ -698,14 +689,8 @@
       return allQuestions.slice(0, 15);
     }
 
-    // LANCEMENT DU QUIZ
     function startQuiz() {
-      const nameInput = document.getElementById('username-input').value.trim();
-      if (!nameInput) {
-        alert("Veuillez entrer votre prénom ou pseudo avant de commencer.");
-        return;
-      }
-      playerName = nameInput;
+      playerName = document.getElementById('username-input').value.trim();
 
       if (selectedLevel === 'mix') {
         currentQuestions = generateMixData();
@@ -718,7 +703,7 @@
       historyResults = [];
 
       document.getElementById('step-setup').classList.add('hidden');
-      document.querySelector('main > section:nth-of-type(2)').classList.add('hidden'); // Cache le bloc classement d'accueil pendant le quiz
+      document.querySelector('main > section:nth-of-type(2)').classList.add('hidden');
       document.getElementById('step-results').classList.add('hidden');
       document.getElementById('step-quiz').classList.remove('hidden');
 
@@ -728,7 +713,8 @@
       if (selectedLevel === 'hard') lvlName = 'Expert';
       if (selectedLevel === 'mix') lvlName = 'Mix Aléatoire (15 Q.)';
 
-      document.getElementById('quiz-info').innerText = `${appName} — ${lvlName} (${playerName})`;
+      const displayName = playerName ? `(${playerName})` : '(Anonyme)';
+      document.getElementById('quiz-info').innerText = `${appName} — ${lvlName} ${displayName}`;
       loadQuestion();
     }
 
@@ -811,32 +797,39 @@
       const total = currentQuestions.length;
       const percentage = Math.round((score / total) * 100);
 
-      document.getElementById('player-score-summary').innerText = `Bravo ${playerName}, vous avez obtenu ${score} / ${total} (${percentage}%)`;
-
-      saveScoreToLeaderboard(selectedApp, selectedLevel, playerName, score, total, percentage);
-      renderHomeLeaderboard(); // Met à jour le classement permanent en arrière-plan
-
-      // Affichage du tableau de fin
-      const leaderboard = getLeaderboard(selectedApp, selectedLevel);
-      const tbody = document.getElementById('leaderboard-tbody');
-      tbody.innerHTML = leaderboard.map((entry, idx) => {
-        const isCurrentPlayer = entry.name.toLowerCase() === playerName.toLowerCase() && entry.score === score;
-        const rowBg = isCurrentPlayer ? 'bg-pink-500/15 font-semibold text-white' : '';
+      if (playerName) {
+        document.getElementById('player-score-summary').innerText = `Bravo ${playerName}, vous avez obtenu ${score} / ${total} (${percentage}%)`;
+        document.getElementById('leaderboard-container-wrapper').classList.remove('hidden');
+        document.getElementById('anonymous-notice').classList.add('hidden');
         
-        let medal = `#${idx + 1}`;
-        if (idx === 0) medal = '🥇 1er';
-        else if (idx === 1) medal = '🥈 2e';
-        else if (idx === 2) medal = '🥉 3e';
+        saveScoreToLeaderboard(selectedApp, selectedLevel, playerName, score, total, percentage);
+        renderHomeLeaderboard();
 
-        return `
-          <tr class="${rowBg} hover:bg-slate-800/50 transition-colors">
-            <td class="py-2.5 px-3 text-center font-bold text-slate-400">${medal}</td>
-            <td class="py-2.5 px-3 truncate max-w-[140px]">${entry.name} ${isCurrentPlayer ? '(Vous)' : ''}</td>
-            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">${entry.score} / ${entry.total}</td>
-            <td class="py-2.5 px-3 text-right text-sky-400">${entry.percent}%</td>
-          </tr>
-        `;
-      }).join('');
+        const leaderboard = getLeaderboard(selectedApp, selectedLevel);
+        const tbody = document.getElementById('leaderboard-tbody');
+        tbody.innerHTML = leaderboard.map((entry, idx) => {
+          const isCurrentPlayer = entry.name.toLowerCase() === playerName.toLowerCase() && entry.score === score;
+          const rowBg = isCurrentPlayer ? 'bg-pink-500/15 font-semibold text-white' : '';
+          
+          let medal = `#${idx + 1}`;
+          if (idx === 0) medal = '🥇 1er';
+          else if (idx === 1) medal = '🥈 2e';
+          else if (idx === 2) medal = '🥉 3e';
+
+          return `
+            <tr class="${rowBg} hover:bg-slate-800/50 transition-colors">
+              <td class="py-2.5 px-3 text-center font-bold text-slate-400">${medal}</td>
+              <td class="py-2.5 px-3 truncate max-w-[140px]">${entry.name} ${isCurrentPlayer ? '(Vous)' : ''}</td>
+              <td class="py-2.5 px-3 text-right font-bold text-emerald-400">${entry.score} / ${entry.total}</td>
+              <td class="py-2.5 px-3 text-right text-sky-400">${entry.percent}%</td>
+            </tr>
+          `;
+        }).join('');
+      } else {
+        document.getElementById('player-score-summary').innerText = `Vous avez obtenu ${score} / ${total} (${percentage}%)`;
+        document.getElementById('leaderboard-container-wrapper').classList.add('hidden');
+        document.getElementById('anonymous-notice').classList.remove('hidden');
+      }
 
       const recapContainer = document.getElementById('recap-list');
       recapContainer.innerHTML = historyResults.map((item, idx) => `
@@ -857,6 +850,8 @@
     function resetQuiz() {
       selectedApp = null;
       selectedLevel = null;
+      playerName = "";
+      document.getElementById('username-input').value = "";
       
       document.getElementById('btn-ps').classList.remove('select-btn-active');
       document.getElementById('btn-lr').classList.remove('select-btn-active');
@@ -875,13 +870,12 @@
 
       document.getElementById('step-results').classList.add('hidden');
       document.getElementById('step-quiz').classList.add('hidden');
-      document.querySelector('main > section:nth-of-type(2)').classList.remove('hidden'); // Réaffiche le classement d'accueil
+      document.querySelector('main > section:nth-of-type(2)').classList.remove('hidden');
       document.getElementById('step-setup').classList.remove('hidden');
       
       renderHomeLeaderboard();
     }
 
-    // Charger le classement à l'ouverture de la page
     window.onload = function() {
       renderHomeLeaderboard();
     };
