@@ -114,20 +114,29 @@
     </h1>
     
     <p class="text-xs md:text-sm text-slate-400 font-medium max-w-md mx-auto">
-      Testez et consolidez vos connaissances techniques à travers nos niveaux et le mode aléatoire.
+      Testez vos connaissances et suivez votre progression dans le classement.
     </p>
   </header>
 
   <!-- CONTENEUR PRINCIPAL -->
   <main class="max-w-4xl w-full my-auto">
 
-    <!-- ETAPE 1 : CHOIX DU LOGICIEL ET NIVEAU -->
+    <!-- ETAPE 1 : CONFIGURATION (PSEUDO, LOGICIEL, NIVEAU) -->
     <section id="step-setup" class="krea-card p-6 md:p-8 space-y-8">
       
+      <!-- Saisie du Prénom / Pseudo -->
+      <div>
+        <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+          <span class="w-6 h-6 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center text-xs">1</span>
+          Entrez votre prénom ou pseudo :
+        </h2>
+        <input type="text" id="username-input" placeholder="ex: Alex Designer" oninput="checkReady()" maxlength="25" class="w-full px-4 py-3 rounded-xl bg-slate-900/80 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-pink-500 text-sm font-semibold transition-all">
+      </div>
+
       <!-- Choix du Logiciel -->
       <div>
         <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-          <span class="w-6 h-6 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center text-xs">1</span>
+          <span class="w-6 h-6 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs">2</span>
           Choisissez votre logiciel :
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -152,7 +161,7 @@
       <!-- Choix du Niveau & Mode Mix -->
       <div id="level-selection" class="opacity-50 pointer-events-none transition-all duration-300">
         <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-          <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs">2</span>
+          <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs">3</span>
           Choisissez le niveau de difficulté :
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -160,21 +169,18 @@
             <span class="text-emerald-400 text-xs font-bold uppercase tracking-wider">Niveau 1</span>
             <span class="font-bold text-white">Débutant</span>
             <span class="text-[11px] text-slate-400 text-center">Raccourcis &amp; outils (30 Q)</span>
-            <span id="best-easy" class="text-[10px] text-slate-400 font-medium mt-1">Record : -</span>
           </button>
 
           <button id="lvl-btn-medium" onclick="selectLevel('medium')" class="select-btn">
             <span class="text-amber-400 text-xs font-bold uppercase tracking-wider">Niveau 2</span>
             <span class="font-bold text-white">Intermédiaire</span>
             <span class="text-[11px] text-slate-400 text-center">Masques &amp; développement (30 Q)</span>
-            <span id="best-medium" class="text-[10px] text-slate-400 font-medium mt-1">Record : -</span>
           </button>
 
           <button id="lvl-btn-hard" onclick="selectLevel('hard')" class="select-btn">
             <span class="text-pink-400 text-xs font-bold uppercase tracking-wider">Niveau 3</span>
             <span class="font-bold text-white">Expert</span>
             <span class="text-[11px] text-slate-400 text-center">Fusion &amp; workflow pro (30 Q)</span>
-            <span id="best-hard" class="text-[10px] text-slate-400 font-medium mt-1">Record : -</span>
           </button>
 
           <!-- Mode Aléatoire / Mix -->
@@ -191,7 +197,6 @@
             </div>
             <span class="font-bold text-white">Aléatoire</span>
             <span class="text-[11px] text-slate-400 text-center">Sélection de 15 Q. variées</span>
-            <span class="text-[10px] text-pink-300/70 font-medium mt-1">Session dynamique</span>
           </button>
         </div>
       </div>
@@ -227,9 +232,7 @@
       </div>
 
       <!-- Choix des Réponses -->
-      <div id="options-container" class="space-y-3">
-        <!-- Les options sont injectées dynamiquement -->
-      </div>
+      <div id="options-container" class="space-y-3"></div>
 
       <!-- Boîte d'explication pédagogique -->
       <div id="explanation-box" class="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80 hidden space-y-2">
@@ -248,7 +251,7 @@
       </div>
     </section>
 
-    <!-- ETAPE 3 : RÉSULTATS -->
+    <!-- ETAPE 3 : RÉSULTATS & CLASSEMENT -->
     <section id="step-results" class="krea-card p-6 md:p-8 hidden text-center space-y-6">
       
       <!-- Icône Trophée -->
@@ -258,47 +261,47 @@
         </svg>
       </div>
 
-      <!-- Badge Record Battu -->
-      <div id="new-record-badge" class="hidden my-2">
-        <span class="bg-gradient-to-r from-pink-500 to-purple-500 text-white font-black text-xs px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-lg animate-bounce inline-block">
-          🎉 Nouveau Record Personnel !
-        </span>
-      </div>
-
       <div class="space-y-2">
         <h2 id="result-title" class="text-2xl font-black text-white">Session terminée !</h2>
-        <p class="text-slate-400 text-xs md:text-sm">Voici le récapitulatif de vos performances :</p>
+        <p id="player-score-summary" class="text-slate-300 text-sm font-semibold">Bravo Alex, vous avez obtenu 0 / 30</p>
       </div>
 
-      <!-- Cartes Score & Taux -->
-      <div class="bg-slate-900/80 rounded-xl p-5 border border-slate-800 flex justify-around items-center max-w-md mx-auto">
-        <div>
-          <p class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">Score Final</p>
-          <p id="final-score" class="text-2xl md:text-3xl font-black text-emerald-400">0 / 30</p>
+      <!-- TABLEAU DE CLASSEMENT (LEADERBOARD) -->
+      <div class="space-y-3 pt-2">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-slate-200 text-left">🏆 Classement des participants :</h3>
+          <span id="leaderboard-subtitle" class="text-[11px] text-purple-400 font-semibold">Top scores</span>
         </div>
-        <div class="h-10 w-px bg-slate-800"></div>
-        <div>
-          <p class="text-xs text-slate-400 uppercase font-bold tracking-wider mb-1">Taux de réussite</p>
-          <p id="final-percent" class="text-2xl md:text-3xl font-black text-sky-400">0%</p>
+        
+        <div class="bg-slate-900/90 rounded-xl border border-slate-800 overflow-hidden max-h-56 overflow-y-auto">
+          <table class="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr class="bg-slate-800/80 text-slate-400 border-b border-slate-700">
+                <th class="py-2.5 px-3 font-bold w-12 text-center">#</th>
+                <th class="py-2.5 px-3 font-bold">Pseudo</th>
+                <th class="py-2.5 px-3 font-bold text-right">Score</th>
+                <th class="py-2.5 px-3 font-bold text-right">Réussite</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-tbody" class="divide-y divide-slate-800 text-slate-300">
+              <!-- Injecté par JS -->
+            </tbody>
+          </table>
         </div>
-      </div>
-
-      <div id="score-comment" class="p-4 rounded-xl bg-slate-800/60 border border-slate-700 text-xs md:text-sm text-slate-300 max-w-lg mx-auto">
-        Commentaire de fin...
       </div>
 
       <!-- Détail complet des réponses -->
       <div class="text-left space-y-3 pt-2">
         <h3 class="text-sm font-bold text-slate-200">Détail des réponses :</h3>
-        <div id="recap-list" class="max-h-64 overflow-y-auto space-y-2 pr-2"></div>
+        <div id="recap-list" class="max-h-48 overflow-y-auto space-y-2 pr-2"></div>
       </div>
 
       <div class="pt-4 flex flex-col sm:flex-row justify-center gap-4">
         <button onclick="resetQuiz()" class="px-6 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white font-bold text-xs hover:border-pink-500/50 transition-all">
-          Changer de niveau ou de logiciel
+          Changer de pseudo ou de session
         </button>
-        <button id="btn-next-session" onclick="startQuiz()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xs hover:opacity-90 transition-all">
-          Recommencer une session ➔
+        <button onclick="startQuiz()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold text-xs hover:opacity-90 transition-all">
+          Rejouer ➔
         </button>
       </div>
     </section>
@@ -309,13 +312,13 @@
   <footer class="my-8 text-center text-xs text-slate-500 space-y-3">
     <p>Graphis Studio Hub — Dimitri Damblon</p>
     <div>
-      <button onclick="clearBestScores()" class="text-[10px] text-slate-500 hover:text-rose-400 underline transition-colors">
-        Réinitialiser mes meilleurs scores
+      <button onclick="clearLeaderboard()" class="text-[10px] text-slate-500 hover:text-rose-400 underline transition-colors">
+        Réinitialiser le classement général
       </button>
     </div>
   </footer>
 
-  <!-- BASE DE DONNÉES ET SCRIPT -->
+  <!-- SCRIPT -->
   <script>
     const questionsDB = {
       ps: {
@@ -375,7 +378,7 @@
           { q: "Quel panneau permet de créer et d'enregistrer des séquences d'actions répétitives automatisées ?", options: ["Le panneau Actions (Actions Panel)", "Le panneau Historique", "Le panneau Styles", "Le panneau Bibliothèque"], answer: 0, exp: "Le panneau Actions enregistre les clics et commandes pour les rejouer en un clic sur des centaines de fichiers." },
           { q: "Qu'est-ce que l'espace colorimétrique CMJN (CMYK) ?", options: ["Un espace dédié aux écrans LED", "Un espace soustractif à 4 encres (Cyan, Magenta, Jaune, Noir) pour l'impression papier", "Un mode vidéo 4K", "Un format d'export web"], answer: 1, exp: "Le CMJN simule le mélange des encres d'imprimerie offset." },
           { q: "Quel est l'impact d'un calque de réglage 'Correction sélective' ?", options: ["Il permet d'ajuster précisément les pourcentages de chaque couleur primaire et secondaire de manière indépendante", "Il supprime la couleur", "Il augmente la résolution", "Il floute le pourtour"], answer: 0, exp: "La correction sélective est très utilisée en colorimétrie pro pour affiner une teinte spécifique sans toucher aux autres." },
-          { q: "Comment dupliquer rapidement un calque ou un tracé en le glissant sur l'espace de travail tout en maintaining une touche ?", options: ["Maintenir la touche Alt / Option pendant le glissement", "Maintenir Shift", "Maintenir Ctrl", "Maintenir Espace"], answer: 0, exp: "Alt + glisser-déposer duplique instantanément l'élément sélectionné." },
+          { q: "Comment dupliquer rapidement un calque ou un tracé en le glissant sur l'espace de travail tout en maintenant une touche ?", options: ["Maintenir la touche Alt / Option pendant le glissement", "Maintenir Shift", "Maintenir Ctrl", "Maintenir Espace"], answer: 0, exp: "Alt + glisser-déposer duplique instantanément l'élément sélectionné." },
           { q: "Quelle est l'utilité du mode de fusion 'Écran' (Screen) ?", options: ["Il éclaircit l'image en multipliant l'inverse des couleurs (le noir devient transparent)", "Il assombrit l'image", "Il isole les contours", "Il crée un négatif"], answer: 0, exp: "Le mode Écran est l'exact opposé du mode Produit ; il élimine les noirs et illumine les calques." },
           { q: "Qu'appelle-t-on un 'masque d'écrêtage multiple' ?", options: ["L'application de plusieurs calques de réglage écrits en cascade sur un même calque de base", "Un masque corrompu", "Un groupe verrouillé", "Une fusion de calques RVB"], answer: 0, exp: "Plusieurs calques successifs peuvent être écrêtés sur un calque de base unique." },
           { q: "Quel outil permet de peindre avec des motifs ou de dupliquer des textures de manière répétitive le long d'un tracé ?", options: ["L'outil Tampon de duplication", "L'outil Pinceau motif (Pattern Stamp Tool)", "Le pot de peinture", "Le pinceau mélangeur"], answer: 1, exp: "Le pinceau motif applique une texture répétitive en tant que brosse." },
@@ -396,10 +399,10 @@
           { q: "Quel est l'intérêt de la fonction 'Remplacement de couleur avancé' via les calques de correction sélective par rapport au simple remplacement de teinte ?", options: ["Un contrôle mathématique des pourcentages d'encres CMJN indépendants pour chaque couleur neutre ou primaire", "Une suppression automatique du fond", "Un gain de mémoire vive", "Une vectorisation des contours"], answer: 0, exp: "La correction sélective modifie finement les pourcentages d'encre sans générer d'aberrations chromatiques." },
           { q: "Comment fonctionne l'algorithme de 'Réduction de bruit' intelligent basé sur l'apprentissage profond dans Photoshop ?", options: ["Il analyse la structure du détail et du grain pour lisser le bruit de luminance tout en restaurant les micro-contrastes", "Il supprime les calques", "Il baisse la résolution", "Il floute uniformément"], answer: 0, exp: "L'IA analyse le bruit numérique pour le dissocier des textures réelles de l'image." },
           { q: "Quelle est la méthode idéale pour incruster un élément 3D ou un packaging dans une perspective complexe avec éclairage réaliste ?", options: ["Utiliser un Objet Dynamique déformé en perspective avec des calques de lumière en mode Incrustation / Lumière tamisée et masques de fusion", "Coller l'image à plat", "Utiliser le pot de peinture", "Appliquer un contour simple"], answer: 0, exp: "L'intégration professionnelle combine transformation intelligente, calques d'ombre portée et modes de fusion." },
-          { q: "Quel est le rôle de la gestion des profils colorimétriques 'Conversion en profil' (Convert to Profile) par rapport à 'Attribuer un profil' (Assign Profile) ?", options: ["Convertir modifie les valeurs RVB pour conserver l'apparence des couleurs dans un nouvel espace, tandis qu'attribuer force un profil sans modifier les valeurs", "C'est strictly la même chose", "Attribuer convertit en CMJN", "Convertir supprime les couleurs"], answer: 0, exp: "Attribuer change l'interprétation des couleurs (risque de dérive), Convertir recalcule les valeurs pour garder la même fidélité visuelle." },
+          { q: "Quel est le rôle de la gestion des profils colorimétriques 'Conversion en profil' (Convert to Profile) par rapport à 'Attribuer un profil' (Assign Profile) ?", options: ["Convertir modifie les valeurs RVB pour conserver l'apparence des couleurs dans un nouvel espace, tandis qu'attribuer force un profil sans modifier les valeurs", "C'est strictement la même chose", "Attribuer convertit en CMJN", "Convertir supprime les couleurs"], answer: 0, exp: "Attribuer change l'interprétation des couleurs (risque de dérive), Convertir recalcule les valeurs pour garder la même fidélité visuelle." },
           { q: "Comment automatiser le traitement par lot (Batch) de centaines d'images en intégrant un renommage dynamique et un redimensionnement conditionnel ?", options: ["Via le module Automatisation > Traitement par lot combiné avec une action personnalisée ou un script UXP", "En ouvrant chaque image manuellement", "En utilisant le format GIF", "En copiant collant les calques"], answer: 0, exp: "Le traitement par lot automatise les actions sur des dossiers entiers de fichiers." },
           { q: "Qu'est-ce qu'un fichier de script 'Droplet' généré par Photoshop ?", options: ["Une icône exécutable sur le bureau sur laquelle glisser-déposer des images pour leur appliquer une action automatique", "Un virus informatique", "Un format de brosse", "Un plugin de flou"], answer: 0, exp: "Un Droplet transforme une action Photoshop en raccourci de bureau par simple glisser-déposer." },
-          { q: "Comment créer un masque de fusion basé sur la luminance pure de l'image (les zones claires contrôlent la transparence) ?", options: ["En effectuant un Ctrl + Clic sur la vignette du canal RVB (ou commande de plage de couleurs / calque de réglage basé sur la luminosité)", "En gommant à la hand", "En inversant le calque", "En appliquant un filtre artistique"], answer: 0, exp: "Les masques de luminance (luminosity masks) isolent les hautes ou basses lumières de manière mathématique." },
+          { q: "Comment créer un masque de fusion basé sur la luminance pure de l'image (les zones claires contrôlent la transparence) ?", options: ["En effectuant un Ctrl + Clic sur la vignette du canal RVB (ou commande de plage de couleurs / calque de réglage basé sur la luminosité)", "En gommant à la main", "En inversant le calque", "En appliquant un filtre artistique"], answer: 0, exp: "Les masques de luminance (luminosity masks) isolent les hautes ou basses lumières de manière mathématique." },
           { q: "Quel est l'impact de l'option 'Dithering' lors de l'exportation d'une image en format PNG-8 ou GIF indexé ?", options: ["Il ajoute un micro-bruit aléatoire pour adoucir les transitions de bandes de couleur et simuler les teintes manquantes", "Il supprime les métadonnées", "Il augmente la résolution", "Il compresse le fichier en ZIP"], answer: 0, exp: "Le dithering évite les aplats de couleur trop tranchés (effet de banding) sur les petits formats indexés." },
           { q: "Comment exploiter la fonction 'Fusion panoramique' (Photomerge) pour assembler des images complexes sans raccord visible ?", options: ["En combinant des prises de vues en projection sphérique ou perspective avec fusion automatique des tons et des masques par IA", "En superposant les images à 50% d'opacité", "En utilisant la gomme", "En aplatissant les calques"], answer: 0, exp: "Photomerge aligne et fusionne les photos de paysages en harmonisant les expositions." },
           { q: "Quelle est la structure interne d'un fichier Photoshop (PSD) au-delà de 2 Go ?", options: ["Le format PSB (Large Document Format) qui gère les dimensions et poids démesurés", "Le format JPEG XL", "Le format RAW", "Le format PDF multipage"], answer: 0, exp: "Le format PSB est indispensable pour les très grands affiches et les fichiers lourds dépassant 2 Go." },
@@ -466,7 +469,7 @@
           { q: "Dans quel cas utilise-t-on la fonction 'Fusion de panoramas' (Panorama Merge) de Lightroom ?", options: ["Pour assembler plusieurs photos juxtaposées horizontalement ou verticalement en une seule image très grand angle", "Pour faire un zoom 100%", "Pour ajouter du flou", "Pour trier les déchets"], answer: 0, exp: "Le panorama assemble les clichés successifs d'un paysage vaste." },
           { q: "Comment fonctionne la correction des 'Yeux rouges' (Red Eye Correction) dans Lightroom ?", options: ["L'outil détecte la pupille et neutralise le reflet rouge flash en ajustant la luminance et la teinte", "Il efface l'œil", "Il floute le visage", "Il change la couleur des yeux en bleu"], answer: 0, exp: "L'outil cible spécifiquement la lueur rouge du flash dans la pupille." },
           { q: "À quoi sert le curseur 'Correction du voile' (Dehaze) ?", options: ["À éliminer ou à accentuer la brume atmosphérique en agissant sur le contraste et la diffusion de la lumière", "À ajouter du flou artistique", "À lisser la peau", "À modifier la balance des blancs"], answer: 0, exp: "Le dehaze redonne de la densité aux paysages brumeux ou lointains." },
-          { q: "Quel est le rôle du panneau 'Étalonnage' (Color Calibration) dans le module Développement ?", options: ["De piloter les teintes primaires RVB du capteur pour donner une signature colorimétrique globale unique au fichier", "D'ajuster le volume du son", "De calibrer l'écran physique", "De régler la netteté"], answer: 0, exp: "L'étalonnage agit sur les racines colorimétriques de l'image (très utilisé pour les looks cinématographiques)." },
+          { q: "Quel est le rôle du panneau 'Mixeur de couleurs' (Color Mixer) dans le développement ?", options: ["D'ajuster indépendamment la Teinte, la Saturation et la Luminance (TSL) de 8 canaux de couleurs distincts", "De mélanger la peinture", "De supprimer le rouge", "De calibrer l'imprimante"], answer: 0, exp: "Le mixeur TSL est l'outil roi pour cibler une couleur spécifique (ex: rendre le ciel plus bleu)." },
           { q: "Comment identifier rapidement toutes les photos floues ou mal notées dans un large dossier ?", options: ["En utilisant la barre de filtre de bibliothèque (Library Filter) par mots-clés, notes ou attributs", "En regardant chaque photo une par une pendant des heures", "En réimportant tout le disque", "En fermant Lightroom"], answer: 0, exp: "Le filtre de bibliothèque trie instantanément les critères recherchés." },
           { q: "Quelle est l'utilité des 'Collections dynamiques' (Smart Collections) ?", options: ["Des dossiers de tri intelligents qui regroupent automatiquement les photos selon des règles prédéfinies (ex: toutes les photos notées 4 étoiles)", "Des albums payants", "Des sauvegardes automatiques", "Des scripts Photoshop"], answer: 0, exp: "Les collections dynamiques se mettent à jour seules dès qu'une photo correspond aux critères." },
           { q: "Comment masquer les zones écrêtées (cramées ou bouchées) lors des réglages de base dans Lightroom ?", options: ["En cliquant sur les petits triangles situés aux coins supérieurs de l'histogramme (ou en maintenant la touche Alt/Option)", "En éteignant l'écran", "En appuyant sur Échap", "En changeant de module"], answer: 0, exp: "Les triangles d'écrêtage révèlent en fausses couleurs les pertes de détails extrêmes." },
@@ -517,6 +520,7 @@
     };
 
     // ETAT DU QUIZ
+    let playerName = "";
     let selectedApp = null;
     let selectedLevel = null;
     let currentQuestions = [];
@@ -525,57 +529,49 @@
     let answered = false;
     let historyResults = [];
 
-    // GESTION DU LOCALSTORAGE (SCORES)
-    function getBestScoreKey(app, lvl) {
-      return `qcm_best_${app}_${lvl}`;
+    // GESTION DU CLASSEMENT GENERAL (LEADERBOARD) VIA LOCALSTORAGE
+    function getLeaderboardKey(app, lvl) {
+      return `qcm_leaderboard_${app}_${lvl}`;
     }
 
-    function getBestScore(app, lvl) {
-      if (lvl === 'mix') return null;
-      const data = localStorage.getItem(getBestScoreKey(app, lvl));
-      return data ? JSON.parse(data) : null;
+    function getLeaderboard(app, lvl) {
+      const data = localStorage.getItem(getLeaderboardKey(app, lvl));
+      return data ? JSON.parse(data) : [];
     }
 
-    function saveBestScore(app, lvl, scoreVal, totalVal, percentVal) {
-      if (lvl === 'mix') return false; // Pas de sauvegarde de score permanent pour le mode mix
-      const current = getBestScore(app, lvl);
-      if (!current || scoreVal > current.score) {
-        localStorage.setItem(getBestScoreKey(app, lvl), JSON.stringify({
-          score: scoreVal,
-          total: totalVal,
-          percent: percentVal
-        }));
-        return true;
-      }
-      return false;
-    }
+    function saveScoreToLeaderboard(app, lvl, name, scoreVal, totalVal, percentVal) {
+      const key = getLeaderboardKey(app, lvl);
+      let leaderboard = getLeaderboard(app, lvl);
 
-    function updateBestScoresUI() {
-      if (!selectedApp) return;
-      const levels = ['easy', 'medium', 'hard'];
-      levels.forEach(lvl => {
-        const best = getBestScore(selectedApp, lvl);
-        const el = document.getElementById(`best-${lvl}`);
-        if (el) {
-          if (best) {
-            el.innerText = `Record : ${best.score}/${best.total}`;
-          } else {
-            el.innerText = `Record : -`;
-          }
-        }
+      // Ajouter la nouvelle entrée
+      leaderboard.push({
+        name: name,
+        score: scoreVal,
+        total: totalVal,
+        percent: percentVal,
+        date: new Date().toLocaleDateString()
       });
+
+      // Trier du plus grand score au plus petit (puis par pourcentage)
+      leaderboard.sort((a, b) => b.score - a.score || b.percent - a.percent);
+
+      // Conserver les 15 meilleurs scores
+      leaderboard = leaderboard.slice(0, 15);
+
+      localStorage.setItem(key, JSON.stringify(leaderboard));
+      return leaderboard;
     }
 
-    function clearBestScores() {
-      if (confirm("Voulez-vous vraiment réinitialiser vos meilleurs scores enregistrés ?")) {
+    function clearLeaderboard() {
+      if (confirm("Voulez-vous vraiment effacer tout le classement général enregistré ?")) {
         const apps = ['ps', 'lr'];
-        const levels = ['easy', 'medium', 'hard'];
+        const levels = ['easy', 'medium', 'hard', 'mix'];
         apps.forEach(app => {
           levels.forEach(lvl => {
-            localStorage.removeItem(getBestScoreKey(app, lvl));
+            localStorage.removeItem(getLeaderboardKey(app, lvl));
           });
         });
-        updateBestScoresUI();
+        alert("Le classement a été réinitialisé.");
       }
     }
 
@@ -598,7 +594,6 @@
       const levelSec = document.getElementById('level-selection');
       levelSec.classList.remove('opacity-50', 'pointer-events-none');
       
-      updateBestScoresUI();
       checkReady();
     }
 
@@ -609,37 +604,37 @@
       const lvlBtns = ['easy', 'medium', 'hard', 'mix'];
       lvlBtns.forEach(l => {
         const btn = document.getElementById(`lvl-btn-${l}`);
-        if (btn) {
-          btn.classList.remove('level-btn-active', 'mix-btn-active');
-        }
+        if (btn) btn.classList.remove('level-btn-active', 'mix-btn-active');
       });
 
       const activeBtn = document.getElementById(`lvl-btn-${lvl}`);
       if (activeBtn) {
-        if (lvl === 'mix') {
-          activeBtn.classList.add('mix-btn-active');
-        } else {
-          activeBtn.classList.add('level-btn-active');
-        }
+        if (lvl === 'mix') activeBtn.classList.add('mix-btn-active');
+        else activeBtn.classList.add('level-btn-active');
       }
 
       checkReady();
     }
 
     function checkReady() {
-      if(selectedApp && selectedLevel) {
+      const nameInput = document.getElementById('username-input').value.trim();
+      playerName = nameInput;
+
+      if(playerName && selectedApp && selectedLevel) {
         const startBtn = document.getElementById('start-btn');
         startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         startBtn.disabled = false;
+      } else {
+        const startBtn = document.getElementById('start-btn');
+        startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        startBtn.disabled = true;
       }
     }
 
-    // GENERATION DU MODE MIX (15 QUESTIONS ALEATOIRES)
+    // GENERATION DU MODE MIX
     function generateMixData() {
       const appDB = questionsDB[selectedApp];
       const allQuestions = [...appDB.easy, ...appDB.medium, ...appDB.hard];
-      
-      // Mélange de Fisher-Yates
       for (let i = allQuestions.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [allQuestions[i], allQuestions[j]] = [allQuestions[j], allQuestions[i]];
@@ -649,6 +644,13 @@
 
     // LANCEMENT DU QUIZ
     function startQuiz() {
+      const nameInput = document.getElementById('username-input').value.trim();
+      if (!nameInput) {
+        alert("Veuillez entrer votre prénom ou pseudo avant de commencer.");
+        return;
+      }
+      playerName = nameInput;
+
       if (selectedLevel === 'mix') {
         currentQuestions = generateMixData();
       } else {
@@ -669,7 +671,7 @@
       if (selectedLevel === 'hard') lvlName = 'Expert';
       if (selectedLevel === 'mix') lvlName = 'Mix Aléatoire (15 Q.)';
 
-      document.getElementById('quiz-info').innerText = `${appName} — ${lvlName}`;
+      document.getElementById('quiz-info').innerText = `${appName} — ${lvlName} (${playerName})`;
 
       loadQuestion();
     }
@@ -720,7 +722,6 @@
         buttons[qData.answer].classList.add('correct');
       }
 
-      // Enregistrement dans l'historique
       historyResults.push({
         question: qData.q,
         chosen: qData.options[chosenIdx],
@@ -730,14 +731,11 @@
       });
 
       buttons.forEach(btn => btn.disabled = true);
-
       document.getElementById('live-score-text').innerText = `Score : ${score}`;
 
-      // Afficher explication
       document.getElementById('explanation-text').innerText = qData.exp;
       document.getElementById('explanation-box').classList.remove('hidden');
 
-      // Activer bouton suivant
       const nextBtn = document.getElementById('next-btn');
       nextBtn.disabled = false;
       nextBtn.classList.remove('cursor-not-allowed', 'bg-slate-700', 'text-slate-400');
@@ -754,7 +752,7 @@
       }
     }
 
-    // AFFICHAGE DES RESULTATS & GESTION RECORD
+    // AFFICHAGE DES RESULTATS & MISE A JOUR DU CLASSEMENT
     function showResults() {
       document.getElementById('step-quiz').classList.add('hidden');
       document.getElementById('step-results').classList.remove('hidden');
@@ -762,39 +760,33 @@
       const total = currentQuestions.length;
       const percentage = Math.round((score / total) * 100);
 
-      document.getElementById('final-score').innerText = `${score} / ${total}`;
-      document.getElementById('final-percent').innerText = `${percentage}%`;
+      document.getElementById('player-score-summary').innerText = `Bravo ${playerName}, vous avez obtenu ${score} / ${total} (${percentage}%)`;
 
-      const resultTitle = document.getElementById('result-title');
-      if (selectedLevel === 'mix') {
-        resultTitle.innerText = "Session Mix terminée !";
-      } else {
-        resultTitle.innerText = "Niveau terminé !";
-      }
+      // Sauvegarde dans le classement
+      const updatedLeaderboard = saveScoreToLeaderboard(selectedApp, selectedLevel, playerName, score, total, percentage);
 
-      // Traitement du record personnel
-      const isNewRecord = saveBestScore(selectedApp, selectedLevel, score, total, percentage);
-      const recordBadge = document.getElementById('new-record-badge');
-      if (isNewRecord) {
-        recordBadge.classList.remove('hidden');
-      } else {
-        recordBadge.classList.add('hidden');
-      }
+      // Affichage du tableau du 1er au dernier
+      const tbody = document.getElementById('leaderboard-tbody');
+      tbody.innerHTML = updatedLeaderboard.map((entry, idx) => {
+        const isCurrentPlayer = entry.name.toLowerCase() === playerName.toLowerCase() && entry.score === score;
+        const rowBg = isCurrentPlayer ? 'bg-pink-500/15 font-semibold text-white' : '';
+        
+        let medal = `#${idx + 1}`;
+        if (idx === 0) medal = '🥇 1er';
+        else if (idx === 1) medal = '🥈 2e';
+        else if (idx === 2) medal = '🥉 3e';
 
-      updateBestScoresUI();
+        return `
+          <tr class="${rowBg} hover:bg-slate-800/50 transition-colors">
+            <td class="py-2.5 px-3 text-center font-bold text-slate-400">${medal}</td>
+            <td class="py-2.5 px-3 truncate max-w-[140px]">${entry.name} ${isCurrentPlayer ? '(Vous)' : ''}</td>
+            <td class="py-2.5 px-3 text-right font-bold text-emerald-400">${entry.score} / ${entry.total}</td>
+            <td class="py-2.5 px-3 text-right text-sky-400">${entry.percent}%</td>
+          </tr>
+        `;
+      }).join('');
 
-      let comment = "";
-      if(percentage >= 85) {
-        comment = "Excellent travail ! Vos connaissances techniques sont très solides sur cette session.";
-      } else if(percentage >= 60) {
-        comment = "Bon résultat ! Les concepts clés sont assimilés. Consultez le récapitulatif ci-dessous pour perfectionner vos points faibles.";
-      } else {
-        comment = "Niveau à consolider. N'hésitez pas à relire les explications ci-dessous et à relancer une session d'entraînement.";
-      }
-
-      document.getElementById('score-comment').innerText = comment;
-
-      // Génération du récapitulatif détaillé
+      // Récapitulatif détaillé
       const recapContainer = document.getElementById('recap-list');
       recapContainer.innerHTML = historyResults.map((item, idx) => `
         <div class="p-3 bg-slate-900/80 border ${item.correct ? 'border-emerald-500/30' : 'border-rose-500/30'} rounded-xl space-y-1">
@@ -811,7 +803,7 @@
       `).join('');
     }
 
-    // REINITIALISATION COMPLÈTE
+    // REINITIALISATION
     function resetQuiz() {
       selectedApp = null;
       selectedLevel = null;
