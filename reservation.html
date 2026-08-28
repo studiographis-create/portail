@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Réservation Cours à Domicile — Graphis Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #0b0f19;
+      background-image: 
+        radial-gradient(at 15% 10%, rgba(139, 92, 246, 0.25) 0px, transparent 40%),
+        radial-gradient(at 85% 5%, rgba(37, 99, 235, 0.22) 0px, transparent 45%),
+        radial-gradient(at 50% 20%, rgba(244, 114, 182, 0.18) 0px, transparent 40%),
+        radial-gradient(at 70% 30%, rgba(6, 182, 212, 0.15) 0px, transparent 35%);
+      background-repeat: no-repeat;
+      color: #f1f5f9;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .krea-card {
+      background-color: #161e2e;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .input-field {
+      width: 100%;
+      background-color: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      color: #f8fafc;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: #ec4899;
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.3);
+      background-color: rgba(15, 23, 42, 0.95);
+    }
+
+    .select-card {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .select-card:hover {
+      border-color: rgba(244, 114, 182, 0.5);
+      background: rgba(30, 41, 59, 0.8);
+    }
+    input[type="radio"]:checked + .select-card,
+    input[type="checkbox"]:checked + .select-card {
+      border-color: #ec4899;
+      background: rgba(236, 72, 153, 0.15);
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.25);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
+
+  <!-- EN-TÊTE -->
+  <header class="max-w-4xl w-full my-6 text-center space-y-4">
+    <div class="flex justify-start max-w-4xl w-full mb-2">
+      <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs font-semibold text-slate-300 hover:text-white hover:border-pink-500/50 transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Retour au Hub Central
+      </a>
+    </div>
+
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold uppercase tracking-widest">
+      Formation Personnalisée
+    </div>
+    
+    <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
+      Réserver un <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">Cours à Domicile</span>
+    </h1>
+    
+    <p class="text-xs md:text-sm text-slate-400 font-medium max-w-md mx-auto">
+      Planifiez votre séance d'accompagnement sur-mesure selon vos disponibilités.
+    </p>
+  </header>
+
+  <!-- FORMULAIRE PRINCIPAL -->
+  <main class="max-w-3xl w-full my-auto">
+    <!-- Remplace "VOTRE_ID_FORMSPREE" par ton identifiant Formspree si tu souhaites recevoir les emails directement -->
+    <form action="https://formspree.io/f/VOTRE_ID_FORMSPREE" method="POST" class="krea-card p-6 md:p-8 space-y-6">
+      
+      <!-- 1. IDENTITÉ ET CONTACT -->
+      <div class="space-y-4">
+        <h2 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-700/60 pb-2">
+          <span class="w-6 h-6 rounded-lg bg-pink-500/20 text-pink-400 flex items-center justify-center text-xs">1</span>
+          Informations de contact
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="nom" class="block text-xs font-semibold text-slate-300 mb-1.5">Nom *</label>
+            <input type="text" id="nom" name="nom" required placeholder="Votre nom" class="input-field">
+          </div>
+          <div>
+            <label for="prenom" class="block text-xs font-semibold text-slate-300 mb-1.5">Prénom *</label>
+            <input type="text" id="prenom" name="prenom" required placeholder="Votre prénom" class="input-field">
+          </div>
+        </div>
+        <div>
+          <label for="email" class="block text-xs font-semibold text-slate-300 mb-1.5">Adresse e-mail *</label>
+          <input type="email" id="email" name="email" required placeholder="exemple@mail.com" class="input-field">
+        </div>
+      </div>
+
+      <!-- 2. TYPE DE COURS -->
+      <div class="space-y-4 pt-2">
+        <h2 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-700/60 pb-2">
+          <span class="w-6 h-6 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center text-xs">2</span>
+          Sujet de la formation
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          
+          <label class="relative">
+            <input type="radio" name="type_cours" value="Photoshop" class="sr-only" required onclick="toggleAutreInput(false)">
+            <div class="select-card">
+              <span class="font-bold text-blue-400 text-sm">Ps</span>
+              <span class="text-white font-medium">Photoshop</span>
+            </div>
+          </label>
+
+          <label class="relative">
+            <input type="radio" name="type_cours" value="Lightroom" class="sr-only" onclick="toggleAutreInput(false)">
+            <div class="select-card">
+              <span class="font-bold text-cyan-400 text-sm">Lr</span>
+              <span class="text-white font-medium">Lightroom</span>
+            </div>
+          </label>
+
+          <label class="relative">
+            <input type="radio" name="type_cours" value="Photoshop & Lightroom" class="sr-only" onclick="toggleAutreInput(false)">
+            <div class="select-card">
+              <span class="font-bold text-purple-400 text-sm">Ps + Lr</span>
+              <span class="text-white font-medium">Photoshop & Lightroom</span>
+            </div>
+          </label>
+
+          <label class="relative">
+            <input type="radio" name="type_cours" value="Autre" id="radio-autre" class="sr-only" onclick="toggleAutreInput(true)">
+            <div class="select-card">
+              <span class="font-bold text-pink-400 text-sm">+</span>
+              <span class="text-white font-medium">Autre (IA, Illustrator, etc.)</span>
+            </div>
+          </label>
+
+        </div>
+
+        <!-- Champ texte pour "Autre" -->
+        <div id="champ-autre-container" class="hidden transition-all duration-300">
+          <label for="cours_autre_details" class="block text-xs font-semibold text-pink-400 mb-1.5">Précisez votre besoin (IA, nouveaux outils, etc.) :</label>
+          <input type="text" id="cours_autre_details" name="cours_autre_details" placeholder="ex: Génération IA, Midjourney, Débuter sur Illustrator..." class="input-field border-pink-500/50">
+        </div>
+      </div>
+
+      <!-- 3. PLANIFICATION & DISPONIBILITÉS -->
+      <div class="space-y-4 pt-2">
+        <h2 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-700/60 pb-2">
+          <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs">3</span>
+          Disponibilités &amp; Préférences
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Jour de préférence -->
+          <div>
+            <label for="jour_preference" class="block text-xs font-semibold text-slate-300 mb-1.5">Jour de préférence *</label>
+            <select id="jour_preference" name="jour_preference" required class="input-field">
+              <option value="" disabled selected>Choisissez un jour</option>
+              <option value="Lundi">Lundi</option>
+              <option value="Mardi">Mardi</option>
+              <option value="Mercredi">Mercredi</option>
+              <option value="Jeudi">Jeudi</option>
+              <option value="Vendredi">Vendredi</option>
+            </select>
+          </div>
+
+          <!-- Moment de la journée -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-300 mb-1.5">Moment de la journée *</label>
+            <div class="grid grid-cols-2 gap-2 text-xs">
+              <label class="relative">
+                <input type="radio" name="moment_journee" value="Matin" class="sr-only" required>
+                <div class="select-card justify-center">
+                  <span class="text-amber-400 font-bold">☀️</span>
+                  <span class="text-white font-medium">Matin</span>
+                </div>
+              </label>
+              <label class="relative">
+                <input type="radio" name="moment_journee" value="Après-midi" class="sr-only">
+                <div class="select-card justify-center">
+                  <span class="text-indigo-400 font-bold">🌙</span>
+                  <span class="text-white font-medium">Après-midi</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Niveau d'urgence -->
+        <div>
+          <label for="urgence" class="block text-xs font-semibold text-slate-300 mb-1.5">Niveau d'urgence de la formation *</label>
+          <select id="urgence" name="urgence" required class="input-field">
+            <option value="" disabled selected>Sélectionnez un délai</option>
+            <option value="Urgent (Dès que possible / sous 48h)">⚡ Urgent (Dès que possible / sous 48h)</option>
+            <option value="Normal (D'ici 1 à 2 semaines)">📅 Normal (D'ici 1 à 2 semaines)</option>
+            <option value="Flexible (Selon les disponibilités)">☕ Flexible (Pas de date fixe)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 4. COMMENTAIRES -->
+      <div class="space-y-4 pt-2">
+        <h2 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-700/60 pb-2">
+          <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs">4</span>
+          Commentaires / Précisions
+        </h2>
+        <div>
+          <textarea id="commentaire" name="commentaire" rows="4" placeholder="Indiquez vos objectifs, questions spécifiques ou adresse si nécessaire..." class="input-field"></textarea>
+        </div>
+      </div>
+
+      <!-- BOUTON D'ENVOI -->
+      <div class="pt-4 text-center">
+        <button type="submit" class="w-full sm:w-auto px-10 py-4 rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 text-white font-black text-sm shadow-lg hover:opacity-90 hover:scale-[1.01] transition-all">
+          Envoyer ma demande de rendez-vous ➔
+        </button>
+      </div>
+
+    </form>
+  </main>
+
+  <!-- PIED DE PAGE -->
+  <footer class="my-8 text-center text-xs text-slate-500">
+    <p>Graphis Studio Hub — Dimitri Damblon</p>
+  </footer>
+
+  <script>
+    function toggleAutreInput(show) {
+      const container = document.getElementById('champ-autre-container');
+      const input = document.getElementById('cours_autre_details');
+      if (show) {
+        container.classList.remove('hidden');
+        input.focus();
+      } else {
+        container.classList.add('hidden');
+        input.value = '';
+      }
+    }
+  </script>
+</body>
+</html>
