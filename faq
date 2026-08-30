@@ -1,189 +1,648 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krea — FAQ Cours & Organisation</title>
-    <style>
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: #161e2e;
-            --border-color: rgba(255, 255, 255, 0.12);
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --accent-purple: #8B5CF6;
-            --accent-pink: #F472B6;
-        }
-        html { scroll-behavior: smooth; }
-        body {
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(at 15% 10%, rgba(139, 92, 246, 0.22) 0px, transparent 40%),
-                radial-gradient(at 85% 5%, rgba(37, 99, 235, 0.20) 0px, transparent 45%),
-                radial-gradient(at 50% 18%, rgba(244, 114, 182, 0.15) 0px, transparent 40%),
-                radial-gradient(at 70% 25%, rgba(6, 182, 212, 0.12) 0px, transparent 35%);
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-        .container { max-width: 900px; margin: 0 auto; padding-bottom: 50px; }
-        .header { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; }
-        .search-bar { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border-color); background: #f8fafc; color: #0f172a; font-weight: 600; font-size: 1rem; margin-bottom: 20px; outline: none; box-sizing: border-box; }
-        .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; }
-        .filter-btn { background: rgba(30, 41, 59, 0.85); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; }
-        .filter-btn.active, .filter-btn:hover { border-color: var(--accent-pink); color: var(--accent-pink); background: rgba(30, 41, 59, 0.95); }
-        .faq-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; margin-bottom: 15px; padding: 16px; transition: transform 0.2s, border-color 0.2s; }
-        .faq-card:hover { border-color: var(--accent-purple); transform: translateY(-2px); }
-        .cat-badge { font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; color: #0f172a; display: inline-block; margin-bottom: 8px; }
-        details { cursor: pointer; }
-        summary { font-weight: 700; font-size: 1.05rem; color: #fff; outline: none; }
-        summary:hover { color: var(--accent-pink); }
-        .faq-content { margin-top: 12px; color: #cbd5e1; line-height: 1.6; font-size: 0.95rem; }
-        .faq-content a { color: var(--accent-pink); text-decoration: none; }
-        .faq-content a:hover { text-decoration: underline; }
-        .footer { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); font-size: 0.85rem; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ & Support — Graphis Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #0b0f19;
+      background-image: 
+        radial-gradient(at 15% 10%, rgba(139, 92, 246, 0.25) 0px, transparent 40%),
+        radial-gradient(at 85% 5%, rgba(37, 99, 235, 0.22) 0px, transparent 45%),
+        radial-gradient(at 50% 20%, rgba(244, 114, 182, 0.18) 0px, transparent 40%),
+        radial-gradient(at 70% 30%, rgba(6, 182, 212, 0.15) 0px, transparent 35%);
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #f1f5f9;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .krea-card {
+      background-color: #161e2e;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .faq-item {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 1rem 1.25rem;
+      transition: all 0.25s ease;
+    }
+    .faq-item:hover {
+      border-color: rgba(244, 114, 182, 0.5);
+      background: rgba(30, 41, 59, 0.95);
+    }
+    .faq-item[open] {
+      border-color: #8B5CF6;
+      background: rgba(30, 41, 59, 0.95);
+      box-shadow: 0 8px 20px -4px rgba(139, 92, 246, 0.25);
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+      color: #ffffff;
+      outline: none;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary:hover { color: #F472B6; }
+
+    .summary-chevron {
+      transition: transform 0.25s ease;
+    }
+    details[open] .summary-chevron {
+      transform: rotate(180deg);
+      color: #F472B6;
+    }
+
+    .faq-answer {
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .faq-answer a {
+      color: #F472B6;
+      text-decoration: underline;
+    }
+    .faq-answer a:hover {
+      color: #8B5CF6;
+    }
+  </style>
 </head>
-<body>
-    <div class="container">
-        <!-- En-tête / Logo Krea -->
-        <div class="header">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 110" width="380" style="max-width: 100%; height: auto;">
-              <defs>
-                <linearGradient id="kreaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#8B5CF6" /><stop offset="100%" stop-color="#2563EB" />
-                </linearGradient>
-                <linearGradient id="layerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.5"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.2"/>
-                </linearGradient>
-              </defs>
-              <rect x="22" y="18" width="76" height="76" rx="18" fill="url(#layerGrad)" transform="rotate(-6 60 56)" />
-              <rect x="15" y="12" width="76" height="76" rx="18" fill="url(#kreaGrad)" />
-              <g font-family="sans-serif" font-weight="900" fill="#FFFFFF">
-                <text x="33" y="65" font-size="35" transform="rotate(-10 33 65)" text-anchor="middle">k</text>
-                <text x="61" y="60" font-size="26" text-anchor="middle">rea</text>
-              </g>
-              <path d="M 88 4 Q 88 14 98 14 Q 88 14 88 24 Q 88 14 78 14 Q 88 14 88 4 Z" fill="#F472B6" />
-              <text x="110" y="46" font-family="sans-serif" font-weight="800" font-size="25" fill="#FFFFFF">FAQ &amp; Support</text>
-              <text x="110" y="70" font-family="sans-serif" font-weight="500" font-size="14.5" fill="#94A3B8">Toutes les réponses à vos questions.</text>
-            </svg>
-        </div>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
 
-        <!-- Recherche interactive -->
-        <input type="text" id="searchInput" class="search-bar" placeholder="⌕ Rechercher une question ou un mot-clé (ex: dossier, zoom, parking)..." onkeyup="filterFAQ()">
-
-        <!-- Filtres par catégories -->
-        <div class="filters" id="categoryFilters">
-            <button class="filter-btn active" onclick="filterCategory('TOUT', this)">Tous</button>
-            <button class="filter-btn" onclick="filterCategory('GÉNÉRAL', this)">Général</button>
-            <button class="filter-btn" onclick="filterCategory('LES DOSSIERS', this)">Les Dossiers</button>
-            <button class="filter-btn" onclick="filterCategory('LES VIDÉOS DU COURS', this)">Vidéos du cours</button>
-            <button class="filter-btn" onclick="filterCategory('LES FICHIERS', this)">Les Fichiers</button>
-            <button class="filter-btn" onclick="filterCategory('LE GROUPE FACEBOOK', this)">Groupe Facebook</button>
-            <button class="filter-btn" onclick="filterCategory('ÉCHANGES ET COMMUNICATION', this)">Communication</button>
-            <button class="filter-btn" onclick="filterCategory('LE COURS EN LIGNE', this)">Cours en ligne</button>
-            <button class="filter-btn" onclick="filterCategory('ÉCOLE', this)">École</button>
-        </div>
-
-        <!-- Conteneur de la FAQ -->
-        <div id="faqList"></div>
-
-        <div class="footer">
-            <p>Krea — FAQ par Graphis Studio</p>
-        </div>
+  <!-- En-tête -->
+  <header class="max-w-5xl w-full my-6 text-center space-y-4">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold uppercase tracking-widest">
+      Support &amp; Aide
     </div>
+    
+    <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
+      Graphis <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">FAQ</span>
+    </h1>
+    
+    <p class="text-xs md:text-sm text-slate-400 font-medium max-w-xl mx-auto px-2">
+      Foire aux questions &amp; reponses d'organisation pour les cours de Photoshop et Lightroom.
+    </p>
 
-    <script>
-        // Base de données structurée issue du document PDF de la FAQ
-        const faqData = [
-            { cat: "GÉNÉRAL", q: "C'est quoi une FAQ ?", a: "FAQ signifie Foire Aux Questions (Frequently Asked Questions). Il s'agit d'une liste de questions récurrentes sur un sujet donné accompagnées de leurs réponses." },
-            { cat: "GÉNÉRAL", q: "Qui est concerné par la FAQ ?", a: "Les élèves de Photoshop et Lightroom 1 et 2 de Philippeville et Thuin ainsi que Photoshop artistique[cite: 1]." },
-            { cat: "GÉNÉRAL", q: "Où trouver la FAQ ?", a: "Elle est disponible dans votre dossier « classe » (ex: Photoshop et Lightroom Philippeville)[cite: 1]." },
-            { cat: "GÉNÉRAL", q: "Comment trouver l'information dans le PDF ?", a: "Faites CTRL/Cmd + F ou Édition > Rechercher dans Adobe Acrobat Reader[cite: 1]." },
-            { cat: "GÉNÉRAL", q: "Vous avez une question qui n'est pas dans la FAQ ?", a: "Envoyez-moi un mail à <a href='mailto:graphisstudio@me.com'>graphisstudio@me.com</a> et je me ferai un plaisir de l'ajouter[cite: 1]." },
-            
-            { cat: "LES DOSSIERS", q: "J'ai accès à combien de dossier(s) partagé(s) ?", a: "Vous avez un dossier par classe et un second dossier pour le support Photoshop[cite: 1]." },
-            { cat: "LES DOSSIERS", q: "Comment se nomme le dossier de ma classe ?", a: "Photoshop et Lightroom Thuin, Photoshop et Lightroom (Philippeville), Photoshop et Lightroom 2, Photoshop artistique Philippeville[cite: 1]." },
-            { cat: "LES DOSSIERS", q: "Comment accéder aux dossiers ?", a: "Via le lien reçu par mail ou sur le portail : <a href='https://studiographis-create.github.io/portail/index.html' target='_blank'>Portail des cours</a>[cite: 1]." },
-            { cat: "LES DOSSIERS", q: "Je ne vois pas le contenu d'un dossier", a: "Rafraîchissez la page, redémarrez le navigateur, testez avec Google Chrome, ou téléchargez l'application Google Drive[cite: 1]." },
+    <!-- Bouton Retour au Hub & Recherche -->
+    <div class="pt-4 max-w-xl mx-auto space-y-3">
+      <div class="relative">
+        <input type="text" id="searchInput" onkeyup="filterFAQ()" placeholder="⌕ Rechercher une question (ex: zoom, dossier, parking, drive...)" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-400 text-sm font-medium focus:outline-none focus:border-purple-500 transition-colors shadow-lg">
+      </div>
 
-            { cat: "LES VIDÉOS DU COURS", q: "Où sont les vidéos de mon cours ?", a: "Dans votre dossier par classe > dossier « vidéos du cours »[cite: 1]." },
-            { cat: "LES VIDÉOS DU COURS", q: "À partir de quand la vidéo est-elle disponible ?", a: "Au mieux le lendemain du cours, au pire dans la semaine. Un signalement est fait sur le groupe Facebook[cite: 1]." },
-            { cat: "LES VIDÉOS DU COURS", q: "Puis-je télécharger une vidéo du cours ?", a: "Oui, en cliquant sur la flèche en haut à gauche de la vidéo ou en utilisant « Tout télécharger »[cite: 1]." },
+      <div class="flex justify-center">
+        <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs font-semibold text-slate-300 hover:text-pink-400 hover:border-pink-500/50 transition-all shadow-md">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Retour au Hub Central
+        </a>
+      </div>
+    </div>
+  </header>
 
-            { cat: "LES FICHIERS", q: "Comment télécharger un fichier (PDF, HTML, Jpg, Raw,...) ?", a: "Passez le curseur sur celui-ci et une flèche de téléchargement apparaîtra[cite: 1]." },
-            { cat: "LES FICHIERS", q: "Quand je télécharge des fichiers, ils ont l'extension .RAR", a: "C'est normal, Google Drive compresse les fichiers avant de les télécharger. Vous devez les décompresser (ex: avec WinRAR ou WinZip)[cite: 1]." },
-            { cat: "LES FICHIERS", q: "De quels fichiers ai-je besoin en classe ?", a: "Uniquement tous les fichiers du dossier « photos pour le cours » (de préférence sur clé USB ou PC portable)[cite: 1]." },
+  <!-- Conteneur des Sections de la FAQ -->
+  <main class="max-w-5xl w-full space-y-8 my-auto" id="faqContainer">
 
-            { cat: "LE GROUPE FACEBOOK", q: "Comment accéder au groupe Facebook ?", a: "Cliquez ici : <a href='https://www.facebook.com/groups/photoshop.lightroom.Evere.Philippeville' target='_blank'>Groupe Facebook</a>[cite: 1]." },
-            { cat: "LE GROUPE FACEBOOK", q: "Puis-je publier mes travaux ou poser des questions ?", a: "Oui ! C'est même le moyen idéal pour poser des questions sur le cours et partager vos travaux[cite: 1]." },
+    <!-- SECTION 1 : GÉNÉRAL -->
+    <section class="krea-card p-6 md:p-8 faq-section">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Général</h2>
+          <p class="text-xs text-slate-400">Présentation &amp; fonctionnement de la FAQ</p>
+        </div>
+      </div>
 
-            { cat: "ÉCHANGES ET COMMUNICATION", q: "Quelle est ton adresse mail ?", a: "graphisstudio@me.com (ou studiographis@yahoo.fr en cas de problème)[cite: 1]." },
-            { cat: "ÉCHANGES ET COMMUNICATION", q: "J'ai une question en dehors du cours, par quel moyen la poser ?", a: "1. Le groupe Facebook si cela concerne tout le monde. 2. Mail. 3. Messenger (Damblon Dimitri). 4. WhatsApp[cite: 1]." },
+      <div class="space-y-3">
+        <details class="faq-item">
+          <summary>
+            <span>C'est quoi une FAQ ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            FAQ signifie <strong>Foire Aux Questions</strong> (de l'acronyme anglais <em>Frequently Asked Questions</em>). Il s'agit d'une liste de questions récurrentes sur un sujet donné accompagnées de leurs réponses pour éviter que soient toujours posées les mêmes questions[cite: 1].
+          </div>
+        </details>
 
-            { cat: "LE COURS EN LIGNE", q: "Comment accéder au cours en ligne ?", a: "Le lien est disponible sur la page du portail : <a href='https://studiographis-create.github.io/portail/index.html' target='_blank'>Portail</a>[cite: 1]." },
-            { cat: "LE COURS EN LIGNE", q: "Dois-je activer ma vidéo ou mon micro ?", a: "Non, la vidéo n'est pas obligatoire. Il est même mieux de couper le micro et de le rallumer en cas de question[cite: 1]." },
+        <details class="faq-item">
+          <summary>
+            <span>Qui est concerné par la FAQ ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Les élèves de <strong>Photoshop et Lightroom 1 et 2</strong> de Philippeville et Thuin ainsi que le cours de <strong>Photoshop artistique</strong>[cite: 1].
+          </div>
+        </details>
 
-            { cat: "ÉCOLE", q: "Quel est le mot de passe du wifi à l'école ?", a: "Il n'y a actuellement pas de wifi à l'école[cite: 1]." },
-            { cat: "ÉCOLE", q: "Où puis-je me garer à l'école (Philippeville) ?", a: "Sur le parking de l'école ou Rue de la Roche (4 roues sur la route, pas sur le trottoir). Ne pas se garer sur les emplacements de la menuiserie[cite: 1]." }
-        ];
+        <details class="faq-item">
+          <summary>
+            <span>Où trouver la FAQ originale ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Elle est disponible au format PDF dans votre dossier « classe » (ex: <em>Photoshop et Lightroom Philippeville</em>)[cite: 1].
+          </div>
+        </details>
 
-        const catColors = {
-            "GÉNÉRAL": "#38BDF8",
-            "LES DOSSIERS": "#8B5CF6",
-            "LES VIDÉOS DU COURS": "#E11D48",
-            "LES FICHIERS": "#F59E0B",
-            "LE GROUPE FACEBOOK": "#2563EB",
-            "ÉCHANGES ET COMMUNICATION": "#10B981",
-            "LE COURS EN LIGNE": "#EC4899",
-            "ÉCOLE": "#A855F7"
-        };
+        <details class="faq-item">
+          <summary>
+            <span>Pourquoi une FAQ ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Ce document répond aux questions les plus fréquemment posées qui ne sont pas en rapport direct avec la matière du cours (du genre <em>« comment télécharger une vidéo du cours ? »</em>)[cite: 1].
+          </div>
+        </details>
 
-        let currentCategory = 'TOUT';
+        <details class="faq-item">
+          <summary>
+            <span>J'ai une question concernant l'utilisation de Photoshop.</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Vous ne trouverez pas la réponse aux questions d'utilisation technique des logiciels dans cette FAQ d'organisation[cite: 1].
+          </div>
+        </details>
 
-        function renderFAQ(items) {
-            const listContainer = document.getElementById('faqList');
-            if (items.length === 0) {
-                listContainer.innerHTML = '<p style="text-align: center; color: #94a3b8;">Aucune question ne correspond à votre recherche.</p>';
-                return;
-            }
-            
-            listContainer.innerHTML = items.map(item => {
-                const color = catColors[item.cat] || '#64748B';
-                return `
-                    <div class="faq-card">
-                        <span class="cat-badge" style="background-color: ${color};">${item.cat}</span>
-                        <details>
-                            <summary>${item.q}</summary>
-                            <div class="faq-content">${item.a}</div>
-                        </details>
-                    </div>
-                `;
-            }).join('');
+        <details class="faq-item">
+          <summary>
+            <span>Comment trouver une information dans le fichier PDF ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Une fois le fichier PDF ouvert dans Adobe Acrobat Reader, faites <code>CTRL + F</code> (Windows) ou <code>Cmd + F</code> (Mac) ou allez dans <em>Édition > Rechercher</em>[cite: 1].<br>
+            Lien de téléchargement Adobe Reader : <a href="https://get.adobe.com/fr/reader/" target="_blank">get.adobe.com/fr/reader</a>[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Vous avez une question qui n'est pas dans la FAQ ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Envoyez un mail à <a href="mailto:graphisstudio@me.com">graphisstudio@me.com</a> et je me ferai un plaisir de l'ajouter et d'y répondre[cite: 1].
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- SECTION 2 : LES DOSSIERS -->
+    <section class="krea-card p-6 md:p-8 faq-section">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Les Dossiers</h2>
+          <p class="text-xs text-slate-400">Accès Google Drive &amp; structure</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <details class="faq-item">
+          <summary>
+            <span>J'ai accès à combien de dossier(s) partagé(s) ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Vous avez <strong>2 dossiers</strong> au total : un dossier par classe et un second dossier pour le support Photoshop[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Comment se nomment les dossiers ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            • <strong>Dossier classe :</strong> <em>Photoshop et Lightroom Thuin</em>, <em>Photoshop et Lightroom</em> (Philippeville), <em>Photoshop et Lightroom 2</em>, ou <em>Photoshop artistique Philippeville</em>[cite: 1].<br>
+            • <strong>Dossier support :</strong> <em>Photoshop support</em>[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Qui a accès aux dossiers ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Le dossier « classe » est accessible uniquement aux élèves de votre groupe[cite: 1]. Le dossier « Photoshop support » est partagé avec tous les élèves[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Comment accéder aux dossiers et accepter l'invitation ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Via le lien reçu par mail depuis <code>studiographis@yahoo.fr</code> (cliquez sur le bouton <strong>« Open »</strong>)[cite: 1], ou via les boutons d'accès direct sur le <a href="index.html">Hub Central</a>[cite: 1, 2]. Les anciens élèves conservent leurs accès[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Je n'ai pas reçu l'invitation pour accéder au dossier.</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Vérifiez dans vos spams[cite: 1]. Si votre adresse pose problème, créez une adresse Gmail gratuite uniquement pour l'accès à Google Drive[cite: 1] (<a href="https://support.google.com/mail/answer/56256?hl=fr" target="_blank">Créer un compte Gmail</a>)[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Je ne vois pas le contenu d'un dossier.</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            1. Rafraîchissez la page (`F5`)[cite: 1].<br>
+            2. Redémarrez le navigateur ou testez avec <strong>Google Chrome</strong>[cite: 1].<br>
+            3. Désactivez temporairement le pare-feu/antivirus ou testez en 4G sur smartphone[cite: 1].<br>
+            4. Installez <a href="https://www.google.com/intl/fr/drive/download/" target="_blank">Google Drive pour PC/Mac</a>[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>J'ai accès combien de temps aux dossiers ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            De la rentrée en septembre jusqu'à septembre de l'année suivante[cite: 1]. Vous pouvez tout télécharger[cite: 1].
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- SECTION 3 : LES VIDÉOS DU COURS -->
+    <section class="krea-card p-6 md:p-8 faq-section">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Les Vidéos du Cours</h2>
+          <p class="text-xs text-slate-400">Consultation, délais &amp; téléchargements</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <details class="faq-item">
+          <summary>
+            <span>Où sont les vidéos de mon cours ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Dans votre dossier par classe > dossier <strong>« vidéos du cours »</strong>[cite: 1]. Seul votre groupe y a accès[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>À partir de quand et combien de temps la vidéo est-elle disponible ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Elle est disponible au mieux le lendemain, au pire dans la semaine (annoncée sur Facebook)[cite: 1]. Elles restent en ligne pendant <strong>1 an</strong> avant d'être supprimées à la rentrée suivante[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Puis-je garder les vidéos une fois téléchargées ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Oui, vous pouvez les garder indéfiniment sur votre ordinateur[cite: 1]. Il est en revanche interdit de les partager avec des personnes en dehors du cours[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Je n'arrive pas à lire la vidéo en ligne.</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Il faut parfois quelques heures pour le traitement streaming sur Google Drive[cite: 1]. Si cela persiste, changez de navigateur ou <strong>téléchargez la vidéo</strong>[cite: 1].<br>
+            Lecteur vidéo recommandé : <a href="https://www.videolan.org/vlc/index.fr.html" target="_blank">VLC Media Player</a>[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Comment télécharger les vidéos ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Cliquez sur la flèche en haut à gauche de la vidéo[cite: 1], ou sur « Tout télécharger » en haut à droite de l'écran[cite: 1]. Format MP4, définition 720p, taille entre 300 Mo et 800 Mo[cite: 1].
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- SECTION 4 : LES FICHIERS -->
+    <section class="krea-card p-6 md:p-8 faq-section">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Les Fichiers</h2>
+          <p class="text-xs text-slate-400">Téléchargements, compression &amp; transferts</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <details class="faq-item">
+          <summary>
+            <span>Comment télécharger un fichier ou un dossier ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Passez le curseur sur le fichier pour faire apparaître la flèche de téléchargement[cite: 1]. Pour tout un dossier, utilisez le bouton « Tout télécharger »[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Mes fichiers téléchargés ont l'extension .RAR</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Google Drive compresse automatiquement les dossiers avant le téléchargement[cite: 1]. Décompressez-les avec un logiciel comme <a href="https://www.win-rar.com/" target="_blank">WinRAR</a> ou WinZip (clic droit > <em>Extraire...</em>) avant de les ouvrir dans Photoshop[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Puis-je par erreur supprimer un fichier ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Non, ce n'est pas possible. Vous avez uniquement des droits de lecture et de téléchargement, pas d'écriture[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>De quels fichiers ai-je besoin en classe ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Prenez à chaque cours tout le contenu du dossier <strong>« photos pour le cours »</strong> de préférence sur une clé USB ou votre PC portable[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Comment m'envoyer des fichiers volumineux ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Soit par e-mail (<a href="mailto:graphisstudio@me.com">graphisstudio@me.com</a>)[cite: 1], soit via le lien WeTransfer : <a href="https://graphisstudio.wetransfer.com" target="_blank">graphisstudio.wetransfer.com</a>[cite: 1].
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- SECTION 5 : LE GROUPE FACEBOOK -->
+    <section class="krea-card p-6 md:p-8 faq-section">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Le Groupe Facebook</h2>
+          <p class="text-xs text-slate-400">Communauté &amp; publications</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <details class="faq-item">
+          <summary>
+            <span>Comment accéder au groupe Facebook ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Accès direct : <a href="https://www.facebook.com/groups/photoshop.lightroom.Evere.Philippeville" target="_blank">Groupe Facebook Photoshop &amp; Lightroom</a>[cite: 1]. Seuls les élèves (anciens et nouveaux) y ont accès[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Que peut-on publier sur le groupe ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Tout le monde peut publier des articles photo/matériel, poser des questions sur le cours, ou partager ses propres travaux créatifs[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Est-il obligatoire d'être membre ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Ce n'est pas obligatoire[cite: 1], mais recommandé pour ne pas rater les annonces d'absences, la disponibilité des nouvelles vidéos ou l'ajout de fichiers[cite: 1].
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- SECTION 6 : ÉCHANGES ET COMMUNICATION -->
+    <section class="krea-card p-6 md:p-8 faq-section">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Échanges &amp; Communication</h2>
+          <p class="text-xs text-slate-400">Contacts, Messenger &amp; absences</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <details class="faq-item">
+          <summary>
+            <span>Par quel moyen poser une question en dehors du cours ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            1. <strong>Le groupe Facebook :</strong> Si la question peut concerner tout le monde[cite: 1].<br>
+            2. <strong>Messenger :</strong> <em>Damblon Dimitri</em> (pour un échange plus rapide)[cite: 1].<br>
+            3. <strong>Mail :</strong> <a href="mailto:graphisstudio@me.com">graphisstudio@me.com</a>[cite: 1].<br>
+            4. <strong>WhatsApp</strong>[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Dois-je prévenir de mon absence ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Vous pouvez prévenir par politesse, mais ce n'est pas une obligation[cite: 1]. Les certificats doivent être remis directement au secrétariat de l'école[cite: 1].
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- SECTION 7 : LE COURS EN LIGNE -->
+    <section class="krea-card p-6 md:p-8 faq-section">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Le Cours en Ligne</h2>
+          <p class="text-xs text-slate-400">Accès Zoom &amp; consignes</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <details class="faq-item">
+          <summary>
+            <span>Comment accéder au cours en ligne ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            Chaque classe possède son propre lien Zoom[cite: 1]. Il est accessible sur la page d'accueil du <a href="index.html">Hub Central</a>[cite: 1, 2].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Consignes caméra, micro et partage d'écran</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            • <strong>Caméra :</strong> Activation non obligatoire[cite: 1].<br>
+            • <strong>Micro :</strong> Il est préférable de couper votre micro et de le rallumer uniquement en cas de question[cite: 1].<br>
+            • <strong>Partage d'écran :</strong> <a href="https://support.zoom.us/hc/fr/articles/201362153-Partager-votre-%C3%A9cran" target="_blank">Guide officiel Zoom</a>[cite: 1].
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- SECTION 8 : ÉCOLE -->
+    <section class="krea-card p-6 md:p-8 faq-section">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">École</h2>
+          <p class="text-xs text-slate-400">Accès, horaires, Wi-Fi &amp; parking</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <details class="faq-item">
+          <summary>
+            <span>Quel est le titre délivré en fin de formation ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            La réussite d'une unité de formation donne droit à une <strong>attestation de réussite</strong> (Enseignement secondaire supérieur de transition)[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>Mots de passe iMacs &amp; Wi-Fi</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            • <strong>iMacs :</strong> Pas de mot de passe[cite: 1].<br>
+            • <strong>Wi-Fi :</strong> Il n'y a actuellement pas de réseau Wi-Fi à l'école[cite: 1].
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>
+            <span>À quelle heure arrive-t-on et où se garer (Philippeville) ?</span>
+            <svg class="w-4 h-4 summary-chevron text-slate-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <div class="faq-answer">
+            L'école et les classes sont accessibles à partir de <strong>16h45</strong>[cite: 1].<br>
+            Vous pouvez vous garer sur le parking de l'école ou Rue de la Roche (4 roues sur la route, pas sur le trottoir)[cite: 1]. Ne vous garez pas sur les emplacements réservés à la section menuiserie[cite: 1].
+          </div>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Pied de page -->
+  <footer class="my-8 text-center text-xs text-slate-500">
+    <p>Graphis Studio Hub — FAQ par Dimitri Damblon</p>
+  </footer>
+
+  <!-- Script de recherche dynamique -->
+  <script>
+    function filterFAQ() {
+      const input = document.getElementById('searchInput').value.toLowerCase();
+      const items = document.querySelectorAll('.faq-item');
+      const sections = document.querySelectorAll('.faq-section');
+
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        if (text.includes(input)) {
+          item.style.display = '';
+          if (input.trim() !== '') {
+            item.setAttribute('open', 'true');
+          }
+        } else {
+          item.style.display = 'none';
         }
+      });
 
-        function filterFAQ() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = faqData.filter(item => {
-                const matchesCat = (currentCategory === 'TOUT' || item.cat === currentCategory);
-                const matchesSearch = item.q.toLowerCase().includes(searchTerm) || item.a.toLowerCase().includes(searchTerm);
-                return matchesCat && matchesSearch;
-            });
-            renderFAQ(filtered);
-        }
+      sections.forEach(section => {
+        const visibleItems = section.querySelectorAll('.faq-item[style=""]');
+        const hasVisible = Array.from(section.querySelectorAll('.faq-item')).some(i => i.style.display !== 'none');
+        section.style.display = hasVisible ? '' : 'none';
+      });
+    }
+  </script>
 
-        function filterCategory(category, btn) {
-            currentCategory = category;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            filterFAQ();
-        }
-
-        // Affichage initial au chargement de la page
-        renderFAQ(faqData);
-    </script>
 </body>
 </html>
