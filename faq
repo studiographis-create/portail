@@ -1,485 +1,189 @@
-import streamlit as st
-import re
-import base64
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Krea — FAQ Cours & Organisation</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #161e2e;
+            --border-color: rgba(255, 255, 255, 0.12);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --accent-purple: #8B5CF6;
+            --accent-pink: #F472B6;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(at 15% 10%, rgba(139, 92, 246, 0.22) 0px, transparent 40%),
+                radial-gradient(at 85% 5%, rgba(37, 99, 235, 0.20) 0px, transparent 45%),
+                radial-gradient(at 50% 18%, rgba(244, 114, 182, 0.15) 0px, transparent 40%),
+                radial-gradient(at 70% 25%, rgba(6, 182, 212, 0.12) 0px, transparent 35%);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; padding-bottom: 50px; }
+        .header { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; }
+        .search-bar { width: 100%; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border-color); background: #f8fafc; color: #0f172a; font-weight: 600; font-size: 1rem; margin-bottom: 20px; outline: none; box-sizing: border-box; }
+        .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; }
+        .filter-btn { background: rgba(30, 41, 59, 0.85); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.2s; }
+        .filter-btn.active, .filter-btn:hover { border-color: var(--accent-pink); color: var(--accent-pink); background: rgba(30, 41, 59, 0.95); }
+        .faq-card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 14px; margin-bottom: 15px; padding: 16px; transition: transform 0.2s, border-color 0.2s; }
+        .faq-card:hover { border-color: var(--accent-purple); transform: translateY(-2px); }
+        .cat-badge { font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; color: #0f172a; display: inline-block; margin-bottom: 8px; }
+        details { cursor: pointer; }
+        summary { font-weight: 700; font-size: 1.05rem; color: #fff; outline: none; }
+        summary:hover { color: var(--accent-pink); }
+        .faq-content { margin-top: 12px; color: #cbd5e1; line-height: 1.6; font-size: 0.95rem; }
+        .faq-content a { color: var(--accent-pink); text-decoration: none; }
+        .faq-content a:hover { text-decoration: underline; }
+        .footer { text-align: center; margin-top: 50px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- En-tête / Logo Krea -->
+        <div class="header">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 110" width="380" style="max-width: 100%; height: auto;">
+              <defs>
+                <linearGradient id="kreaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#8B5CF6" /><stop offset="100%" stop-color="#2563EB" />
+                </linearGradient>
+                <linearGradient id="layerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.5"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.2"/>
+                </linearGradient>
+              </defs>
+              <rect x="22" y="18" width="76" height="76" rx="18" fill="url(#layerGrad)" transform="rotate(-6 60 56)" />
+              <rect x="15" y="12" width="76" height="76" rx="18" fill="url(#kreaGrad)" />
+              <g font-family="sans-serif" font-weight="900" fill="#FFFFFF">
+                <text x="33" y="65" font-size="35" transform="rotate(-10 33 65)" text-anchor="middle">k</text>
+                <text x="61" y="60" font-size="26" text-anchor="middle">rea</text>
+              </g>
+              <path d="M 88 4 Q 88 14 98 14 Q 88 14 88 24 Q 88 14 78 14 Q 88 14 88 4 Z" fill="#F472B6" />
+              <text x="110" y="46" font-family="sans-serif" font-weight="800" font-size="25" fill="#FFFFFF">FAQ &amp; Support</text>
+              <text x="110" y="70" font-family="sans-serif" font-weight="500" font-size="14.5" fill="#94A3B8">Toutes les réponses à vos questions.</text>
+            </svg>
+        </div>
 
-# Configuration de la page Streamlit
-st.set_page_config(
-    page_title="Krea — FAQ Cours & Organisation",
-    page_icon="❓",
-    layout="wide"
-)
+        <!-- Recherche interactive -->
+        <input type="text" id="searchInput" class="search-bar" placeholder="⌕ Rechercher une question ou un mot-clé (ex: dossier, zoom, parking)..." onkeyup="filterFAQ()">
 
-# SVG du logo Krea
-KREA_SVG_ICON = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8B5CF6"/>
-      <stop offset="100%" stop-color="#2563EB"/>
-    </linearGradient>
-    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/>
-      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/>
-    </linearGradient>
-  </defs>
-  <rect x="0" y="0" width="100" height="100" rx="22" fill="#0b0f19"/>
-  <rect x="18" y="18" width="62" height="62" rx="14" fill="url(#g2)" transform="rotate(-6 49 49)"/>
-  <rect x="12" y="12" width="62" height="62" rx="14" fill="url(#g1)"/>
-  <text x="43" y="56" font-family="sans-serif" font-weight="900" font-size="44" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 43 56)">k</text>
-  <path d="M 72 6 Q 72 14 80 14 Q 72 14 72 22 Q 72 14 64 14 Q 72 14 72 6 Z" fill="#F472B6"/>
-</svg>"""
+        <!-- Filtres par catégories -->
+        <div class="filters" id="categoryFilters">
+            <button class="filter-btn active" onclick="filterCategory('TOUT', this)">Tous</button>
+            <button class="filter-btn" onclick="filterCategory('GÉNÉRAL', this)">Général</button>
+            <button class="filter-btn" onclick="filterCategory('LES DOSSIERS', this)">Les Dossiers</button>
+            <button class="filter-btn" onclick="filterCategory('LES VIDÉOS DU COURS', this)">Vidéos du cours</button>
+            <button class="filter-btn" onclick="filterCategory('LES FICHIERS', this)">Les Fichiers</button>
+            <button class="filter-btn" onclick="filterCategory('LE GROUPE FACEBOOK', this)">Groupe Facebook</button>
+            <button class="filter-btn" onclick="filterCategory('ÉCHANGES ET COMMUNICATION', this)">Communication</button>
+            <button class="filter-btn" onclick="filterCategory('LE COURS EN LIGNE', this)">Cours en ligne</button>
+            <button class="filter-btn" onclick="filterCategory('ÉCOLE', this)">École</button>
+        </div>
 
-krea_b64_svg = base64.b64encode(KREA_SVG_ICON.encode('utf-8')).decode('utf-8')
-svg_data_uri = f"data:image/svg+xml;base64,{krea_b64_svg}"
+        <!-- Conteneur de la FAQ -->
+        <div id="faqList"></div>
 
-# Style CSS Krea
-custom_css = """<style>
-    html {
-        scroll-behavior: smooth;
-    }
-    header {visibility: hidden;}
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    div[data-testid="stDecoration"] {display: none;}
-
-    .main .block-container, div[data-testid="stMainBlockContainer"] {
-        padding-top: 1rem !important;
-        padding-bottom: 2rem !important;
-    }
-
-    .stApp {
-        background-color: #0b0f19;
-        background-image: 
-            radial-gradient(at 15% 10%, rgba(139, 92, 246, 0.22) 0px, transparent 40%),
-            radial-gradient(at 85% 5%, rgba(37, 99, 235, 0.20) 0px, transparent 45%),
-            radial-gradient(at 50% 18%, rgba(244, 114, 182, 0.15) 0px, transparent 40%),
-            radial-gradient(at 70% 25%, rgba(6, 182, 212, 0.12) 0px, transparent 35%);
-        background-repeat: no-repeat;
-        color: #f1f5f9;
-    }
-
-    div[data-testid="stWidgetLabel"] p, label p, label {
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        font-size: 0.95rem !important;
-    }
-
-    /* Radio buttons catégorie */
-    div[data-testid="stRadio"] {
-        background-color: rgba(30, 41, 59, 0.75) !important;
-        backdrop-filter: blur(12px) !important;
-        padding: 14px 20px !important;
-        border-radius: 14px !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
-    }
-    div[data-testid="stRadio"] label { color: #ffffff !important; font-weight: 700 !important; }
-
-    /* Accordéons / Expanders */
-    div[data-testid="stExpander"] {
-        background-color: #161e2e !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
-        border-radius: 14px !important;
-        margin-bottom: 12px !important;
-        overflow: hidden !important;
-        transition: transform 0.2s ease, border-color 0.2s ease !important;
-    }
-    div[data-testid="stExpander"]:hover {
-        border-color: #8B5CF6 !important;
-        transform: translateY(-2px);
-    }
-    div[data-testid="stExpander"] details {
-        background-color: #161e2e !important;
-        border-radius: 14px !important;
-    }
-    div[data-testid="stExpander"] summary {
-        background-color: #161e2e !important;
-        color: #ffffff !important;
-        font-weight: 700 !important;
-        border-radius: 14px !important;
-        padding: 12px 16px !important;
-    }
-    div[data-testid="stExpander"] summary:hover {
-        background-color: #1e293b !important;
-        color: #F472B6 !important;
-    }
-    div[data-testid="stExpander"] summary p, 
-    div[data-testid="stExpander"] summary span, 
-    div[data-testid="stExpander"] summary svg {
-        color: #ffffff !important;
-        fill: #ffffff !important;
-    }
-    div[data-testid="stExpander"] div[role="region"] {
-        background-color: #161e2e !important;
-        color: #cbd5e1 !important;
-        line-height: 1.6 !important;
-        border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
-        padding: 16px !important;
-    }
-
-    div[data-testid="stTextInput"] input {
-        background-color: #f8fafc !important;
-        color: #0f172a !important;
-        border-radius: 10px !important;
-        font-weight: 600 !important;
-    }
-
-    .cat-badge { 
-        font-size: 0.72rem; 
-        font-weight: 800; 
-        padding: 4px 10px; 
-        border-radius: 12px; 
-        text-transform: uppercase; 
-        color: #0f172a; 
-        display: inline-block; 
-        margin-bottom: 8px; 
-    }
-
-    .faq-highlight {
-        color: #F472B6;
-        font-weight: 600;
-    }
-</style>"""
-
-st.markdown(custom_css, unsafe_allow_html=True)
-
-# Couleurs par catégorie Krea
-CATEGORY_COLORS = {
-    "GÉNÉRAL": "#38BDF8",
-    "LES DOSSIERS": "#8B5CF6",
-    "LES VIDÉOS DU COURS": "#E11D48",
-    "LES FICHIERS": "#F59E0B",
-    "LE GROUPE FACEBOOK": "#2563EB",
-    "ÉCHANGES ET COMMUNICATION": "#10B981",
-    "LE COURS EN LIGNE": "#EC4899",
-    "ÉCOLE": "#A855F7"
-}
-
-# Base de données complète de la FAQ issue du PDF
-FAQ_DATA = [
-    # GÉNÉRAL
-    {
-        "category": "GÉNÉRAL",
-        "question": "C'est quoi une FAQ ?",
-        "answer": "FAQ signifie **Foire Aux Questions** (de l'anglais *Frequently Asked Questions*). Il s'agit d'une liste de questions récurrentes sur un sujet donné accompagnées de leurs réponses pour éviter que soient toujours posées les mêmes questions."
-    },
-    {
-        "category": "GÉNÉRAL",
-        "question": "Qui est concerné par la FAQ ?",
-        "answer": "Les élèves de **Photoshop et Lightroom 1 et 2** de Philippeville et Thuin, ainsi que le cours de **Photoshop artistique**."
-    },
-    {
-        "category": "GÉNÉRAL",
-        "question": "Où trouver la FAQ ?",
-        "answer": "Elle est disponible dans votre dossier « classe » (ex: *Photoshop et Lightroom Philippeville*)."
-    },
-    {
-        "category": "GÉNÉRAL",
-        "question": "Pourquoi une FAQ ?",
-        "answer": "Ce document répond aux questions les plus fréquemment posées qui ne sont pas en rapport direct avec la matière du cours (du genre *« comment télécharger une vidéo du cours ? »*)."
-    },
-    {
-        "category": "GÉNÉRAL",
-        "question": "J'ai une question concernant l'utilisation de Photoshop.",
-        "answer": "Vous ne trouverez pas la réponse aux questions techniques sur l'utilisation du logiciel dans cette FAQ."
-    },
-    {
-        "category": "GÉNÉRAL",
-        "question": "Comment est classée la FAQ ?",
-        "answer": "La FAQ est classée par catégories comme « Les dossiers », « Les fichiers », « Les vidéos », etc."
-    },
-    {
-        "category": "GÉNÉRAL",
-        "question": "Comment trouver l'information dans le document PDF ?",
-        "answer": "Dans Adobe Acrobat Reader, faites `CTRL + F` (PC) ou `Cmd + F` (Mac), ou allez dans `Édition > Rechercher` pour ouvrir la barre de recherche."
-    },
-    {
-        "category": "GÉNÉRAL",
-        "question": "Je n'ai pas Adobe Acrobat Reader.",
-        "answer": "Lien de téléchargement officiel : [https://get.adobe.com/fr/reader/](https://get.adobe.com/fr/reader/?promoid=TTGWL47M)"
-    },
-    {
-        "category": "GÉNÉRAL",
-        "question": "Vous avez une question qui n'est pas dans la FAQ ?",
-        "answer": "Envoyez un mail à **graphisstudio@me.com** et je me ferai un plaisir de l'ajouter à celle-ci et d'y répondre."
-    },
-
-    # LES DOSSIERS
-    {
-        "category": "LES DOSSIERS",
-        "question": "J'ai accès à combien de dossier(s) partagé(s) ?",
-        "answer": "Vous avez accès à **2 dossiers** au total :\n- 1 dossier pour votre classe\n- 1 second dossier pour le support Photoshop général\n*(Valable pour PS/LR 1, PS/LR 2 et PS Artistique)*."
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "Comment se nomme le dossier de ma classe ?",
-        "answer": "- **PS & LR 1 Thuin :** dossier `Photoshop et Lightroom Thuin`\n- **PS & LR 1 Philippeville :** dossier `Photoshop et Lightroom`\n- **PS & LR 2 Philippeville :** dossier `Photoshop et Lightroom 2`\n- **PS Artistique Philippeville :** dossier `Photoshop artistique Philippeville`"
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "Comment se nomme le dossier contenant le support Photoshop ?",
-        "answer": "Il s'intitule **`Photoshop support`**."
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "Qui a accès à quel dossier ?",
-        "answer": "- **Dossier « classe » :** Uniquement les élèves de votre classe.\n- **Dossier « Photoshop support » :** Tous les élèves."
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "Comment accéder aux dossiers par classe ?",
-        "answer": "Via le lien reçu par mail en début d'année, dans le fichier d'infos (pièce jointe mail), ou directement via le portail : [https://studiographis-create.github.io/portail/index.html](https://studiographis-create.github.io/portail/index.html)"
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "Comment accepter l'invitation Google Drive ?",
-        "answer": "Une invitation vous a été envoyée depuis `studiographis@yahoo.fr`. Cliquez simplement sur le bouton **« Open »** dans le mail. *(Les anciens élèves conservent leurs accès)*."
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "Je n'ai pas reçu l'invitation pour accéder au dossier.",
-        "answer": "1. Vérifiez votre dossier **Spams / Courriers indésirables**.\n2. Si vous ne l'avez pas reçue, prévenez l'enseignant.\n3. Si votre adresse pose problème, créez une adresse Gmail gratuite dédiée au cours : [Aide création Gmail](https://support.google.com/mail/answer/56256?hl=fr)."
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "Je dois chaque fois passer par le mail pour accéder au dossier support ?",
-        "answer": "Non, il suffit de créer un **signet / favori** dans votre navigateur internet ou un raccourci sur votre bureau."
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "Quel est le contenu du dossier « classe » ?",
-        "answer": "Il contient : les photos pour le cours, les vidéos du cours, le fichier infos, le support PS et LR, et le support sur l'image."
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "Quel est le contenu du dossier « Photoshop support » ?",
-        "answer": "1. **Dossier « Support de cours » :** L'ensemble du support de cours Photoshop dont artistique.\n2. **Dossier « Ressources » :** Overlays, brushes, dégradés, filtres...\n3. **Dossier « Vidéos » :** Formations vidéo en français sur Photoshop classées par année, et vidéos sur la photo."
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "Je ne vois pas le contenu d'un dossier (résolution de problèmes).",
-        "answer": "Essayez les étapes suivantes dans l'ordre :\n- Rafraîchir la page (`F5` ou `Cmd+R`)\n- Quitter et redémarrer le navigateur / ordinateur\n- Tester un autre navigateur (de préférence **Google Chrome**)\n- Tester sur smartphone/tablette (en Wi-Fi et 4G)\n- Télécharger [Google Drive pour PC/Mac](https://www.google.com/intl/fr/drive/download/)"
-    },
-    {
-        "category": "LES DOSSIERS",
-        "question": "J'ai accès combien de temps à ce(s) dossier(s) ?",
-        "answer": "De la rentrée en septembre jusqu'à septembre de l'année suivante (pendant 1 an complet)."
-    },
-
-    # LES VIDÉOS DU COURS
-    {
-        "category": "LES VIDÉOS DU COURS",
-        "question": "Où sont les vidéos de mon cours ?",
-        "answer": "Dans votre dossier par classe > dossier **`vidéos du cours`**."
-    },
-    {
-        "category": "LES VIDÉOS DU COURS",
-        "question": "Tout le monde a accès à ces vidéos ?",
-        "answer": "Non, chaque groupe a accès uniquement à ses propres vidéos (pas d'accès aux vidéos des autres groupes)."
-    },
-    {
-        "category": "LES VIDÉOS DU COURS",
-        "question": "À partir de quand la vidéo du cours est-elle disponible ?",
-        "answer": "Au mieux le lendemain du cours, au pire dans la semaine. La mise en ligne est toujours annoncée sur le groupe Facebook."
-    },
-    {
-        "category": "LES VIDÉOS DU COURS",
-        "question": "Puis-je partager ou garder les vidéos ?",
-        "answer": "- **Partage :** Interdit de diffuser ou partager avec des personnes extérieures au cours.\n- **Conservation :** Une fois téléchargées sur votre ordinateur, vous pouvez les garder **indéfiniment**."
-    },
-    {
-        "category": "LES VIDÉOS DU COURS",
-        "question": "Je n'arrive pas à lire la vidéo en ligne.",
-        "answer": "Il faut parfois quelques heures avant que Google Drive traite la vidéo pour la lecture streaming. Si cela persiste, changez de navigateur ou **téléchargez la vidéo** sur votre ordinateur."
-    },
-    {
-        "category": "LES VIDÉOS DU COURS",
-        "question": "Astuces de lecture et téléchargement des vidéos",
-        "answer": "- **Plein écran en ligne :** Appuyez sur la touche `F`.\n- **Télécharger une vidéo :** Cliquez sur la flèche de téléchargement en haut à gauche de la vidéo.\n- **Tout télécharger :** Cliquez sur le bouton « Tout télécharger » en haut à droite.\n- **Lecteur recommandé :** [VLC Media Player](https://www.videolan.org/vlc/index.fr.html) ou QuickTime (Mac)."
-    },
-    {
-        "category": "LES VIDÉOS DU COURS",
-        "question": "Caractéristiques techniques des vidéos",
-        "answer": "- **Nom :** La date du cours.\n- **Format :** MP4 (Définition 720p Zoom).\n- **Poids :** Entre 300 Mo et 800 Mo."
-    },
-
-    # LES FICHIERS
-    {
-        "category": "LES FICHIERS",
-        "question": "Comment télécharger des fichiers ou dossiers ?",
-        "answer": "- **Un fichier/dossier :** Survolez le fichier avec le curseur pour faire apparaître la flèche de téléchargement.\n- **Tout le dossier :** Cliquez sur « Tout télécharger » en haut à droite de l'écran."
-    },
-    {
-        "category": "LES FICHIERS",
-        "question": "Les fichiers téléchargés ont l'extension .RAR ou .ZIP",
-        "answer": "C'est normal, Google Drive compresse les dossiers avant le téléchargement. Pour les utiliser dans Photoshop, vous devez d'abord les décompresser (clic droit > *Extraire...* avec un outil comme WinRAR ou WinZip)."
-    },
-    {
-        "category": "LES FICHIERS",
-        "question": "Puis-je par erreur supprimer ou ajouter des fichiers ?",
-        "answer": "Non, vous disposez uniquement d'un **droit de lecture et téléchargement** (pas de suppression ni d'écriture possible)."
-    },
-    {
-        "category": "LES FICHIERS",
-        "question": "De quels fichiers ai-je besoin en classe ?",
-        "answer": "Prenez à chaque cours tout le contenu du dossier **`photos pour le cours`**, de préférence sur une **clé USB** ou votre ordinateur portable."
-    },
-    {
-        "category": "LES FICHIERS",
-        "question": "Comment m'envoyer des fichiers lourd ?",
-        "answer": "Par mail (`graphisstudio@me.com`) ou via WeTransfer : [https://graphisstudio.wetransfer.com](https://graphisstudio.wetransfer.com)"
-    },
-
-    # LE GROUPE FACEBOOK
-    {
-        "category": "LE GROUPE FACEBOOK",
-        "question": "Comment accéder au groupe Facebook ?",
-        "answer": "Lien direct : [Groupe Facebook Photoshop & Lightroom](https://www.facebook.com/groups/photoshop.lightroom.Evere.Philippeville)"
-    },
-    {
-        "category": "LE GROUPE FACEBOOK",
-        "question": "Qui a accès et qui peut publier ?",
-        "answer": "Seuls les élèves (anciens et nouveaux) ont accès. **Tout le monde peut publier** : articles photo/matériel, questions sur le cours, ou vos propres travaux d'élèves !"
-    },
-    {
-        "category": "LE GROUPE FACEBOOK",
-        "question": "Est-il obligatoire d'être membre ?",
-        "answer": "Non ce n'est pas obligatoire, mais vous risquez de rater des informations réactives (nouveaux fichiers, disponibilité des vidéos, annonces d'absences...)."
-    },
-
-    # ÉCHANGES ET COMMUNICATION
-    {
-        "category": "ÉCHANGES ET COMMUNICATION",
-        "question": "Quelles sont les adresses e-mail de contact ?",
-        "answer": "- Contact général / Problèmes : **graphisstudio@me.com**\n- Contact secondaire : **studiographis@yahoo.fr**\n- Un bouton e-mail est aussi sur le [Portail des cours](https://studiographis-create.github.io/portail/index.html)."
-    },
-    {
-        "category": "ÉCHANGES ET COMMUNICATION",
-        "question": "Quel est le moyen idéal pour poser une question ?",
-        "answer": "1. **Le groupe Facebook :** Si la question peut intéresser tout le monde.\n2. **Messenger / WhatsApp :** Pour un échange direct et rapide (*Damblon Dimitri*).\n3. **Mail :** `graphisstudio@me.com`."
-    },
-    {
-        "category": "ÉCHANGES ET COMMUNICATION",
-        "question": "Dois-je prévenir en cas d'absence ?",
-        "answer": "Prévenir est apprécié mais non obligatoire. Les certificats médicaux doivent être remis directement au secrétariat de l'école."
-    },
-
-    # LE COURS EN LIGNE
-    {
-        "category": "LE COURS EN LIGNE",
-        "question": "Puis-je suivre tout le cours à distance ?",
-        "answer": "Non, sauf raison de santé approuvée par l'école, ou occasionnellement en cas de besoin (Philippeville et Thuin)."
-    },
-    {
-        "category": "LE COURS EN LIGNE",
-        "question": "Comment accéder au cours Zoom ?",
-        "answer": "Le lien est disponible sur le portail : [https://studiographis-create.github.io/portail/index.html](https://studiographis-create.github.io/portail/index.html). Chaque classe a son lien propre, valable pour l'année scolaire."
-    },
-    {
-        "category": "LE COURS EN LIGNE",
-        "question": "Consignes durant le cours en ligne",
-        "answer": "- **Caméra :** Activation non obligatoire.\n- **Micro :** Il est recommandé de couper votre micro et de le rallumer uniquement en cas de question.\n- **Partage d'écran :** [Tutoriel officiel Zoom sur le partage d'écran](https://support.zoom.us/hc/fr/articles/201362153-Partager-votre-%C3%A9cran)."
-    },
-
-    # ÉCOLE
-    {
-        "category": "ÉCOLE",
-        "question": "Quel est le titre délivré et le niveau d'enseignement ?",
-        "answer": "- **Titre :** Attestation de réussite par unité de formation.\n- **Niveau :** Enseignement secondaire supérieur de transition."
-    },
-    {
-        "category": "ÉCOLE",
-        "question": "Mots de passe iMacs et Wi-Fi à l'école",
-        "answer": "- **iMacs :** Aucun mot de passe requit.\n- **Wi-Fi :** Il n'y a actuellement pas de Wi-Fi disponible à l'école."
-    },
-    {
-        "category": "ÉCOLE",
-        "question": "Horaires et accès aux locaux",
-        "answer": "L'école et les classes sont accessibles pour les cours du soir à partir de **16h45**."
-    },
-    {
-        "category": "ÉCOLE",
-        "question": "Où se garer à l'école (Philippeville) ?",
-        "answer": "- Vous pouvez vous garer sur le **parking de l'école** ou **Rue de la Roche** (4 roues sur la route, pas sur le trottoir).\n- ⚠️ **Attention :** Ne pas vous garer sur les emplacements réservés à la section menuiserie."
-    }
-]
-
-# En-tête / Logo Krea
-st.markdown(f"""
-<div style="margin-top: 0px; margin-bottom: 20px;">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 110" width="420" style="max-width: 100%; height: auto;">
-      <defs>
-        <linearGradient id="kreaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#8B5CF6" /><stop offset="100%" stop-color="#2563EB" />
-        </linearGradient>
-        <linearGradient id="layerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.5"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.2"/>
-        </linearGradient>
-      </defs>
-      <rect x="22" y="18" width="76" height="76" rx="18" fill="url(#layerGrad)" transform="rotate(-6 60 56)" />
-      <rect x="15" y="12" width="76" height="76" rx="18" fill="url(#kreaGrad)" />
-      <g font-family="sans-serif" font-weight="900" fill="#FFFFFF">
-        <text x="33" y="65" font-size="35" transform="rotate(-10 33 65)" text-anchor="middle">k</text>
-        <text x="61" y="60" font-size="26" text-anchor="middle">rea</text>
-      </g>
-      <path d="M 88 4 Q 88 14 98 14 Q 88 14 88 24 Q 88 14 78 14 Q 88 14 88 4 Z" fill="#F472B6" />
-      <text x="110" y="46" font-family="sans-serif" font-weight="800" font-size="25" fill="#FFFFFF">FAQ &amp; Support</text>
-      <text x="110" y="70" font-family="sans-serif" font-weight="500" font-size="14.5" fill="#94A3B8">Toutes les réponses à vos questions d'organisation.</text>
-    </svg>
-</div>
-""", unsafe_allow_html=True)
-
-# Barre de recherche et filtres
-categories_list = ["Toutes les catégories", "GÉNÉRAL", "LES DOSSIERS", "LES VIDÉOS DU COURS", "LES FICHIERS", "LE GROUPE FACEBOOK", "ÉCHANGES ET COMMUNICATION", "LE COURS EN LIGNE", "ÉCOLE"]
-
-selected_cat = st.radio("Filtrer par thème :", categories_list, horizontal=True)
-search_term = st.text_input("⌕ Rechercher une question ou un mot-clé :", placeholder="ex: enregistrement, gmail, parking, zoom...")
-
-st.divider()
-
-# Filtrage des éléments
-filtered_faq = []
-for item in FAQ_DATA:
-    cat_match = (selected_cat == "Toutes les catégories") or (item["category"] == selected_cat)
-    search_text = f"{item['question']} {item['answer']}".lower()
-    search_match = not search_term.strip() or (search_term.lower().strip() in search_text)
-    
-    if cat_match and search_match:
-        filtered_faq.append(item)
-
-# Affichage des résultats
-if filtered_faq:
-    st.caption(f"**{len(filtered_faq)}** question(s) trouvée(s)")
-    for idx, item in enumerate(filtered_faq):
-        cat_color = CATEGORY_COLORS.get(item["category"], "#64748B")
-        
-        with st.container():
-            st.markdown(f'<span class="cat-badge" style="background-color:{cat_color};">{item["category"]}</span>', unsafe_allow_html=True)
-            with st.expander(f"**{item['question']}**"):
-                st.markdown(item["answer"])
-else:
-    st.info("Aucune question ne correspond à votre recherche.")
-
-# Pied de page
-st.markdown("""
-<div style="text-align: center; margin-top: 60px; padding: 30px 0 10px 0; border-top: 1px solid rgba(255, 255, 255, 0.08);">
-    <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 8px;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="55" height="55" style="filter: drop-shadow(0px 4px 12px rgba(139, 92, 246, 0.3));">
-          <defs>
-            <linearGradient id="kreaGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#8B5CF6"/>
-              <stop offset="100%" stop-color="#2563EB"/>
-            </linearGradient>
-            <linearGradient id="layerGradFooter" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/>
-              <stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/>
-            </linearGradient>
-          </defs>
-          <rect x="18" y="18" width="62" height="62" rx="14" fill="url(#layerGradFooter)" transform="rotate(-6 49 49)"/>
-          <rect x="12" y="12" width="62" height="62" rx="14" fill="url(#kreaGradFooter)"/>
-          <text x="43" y="56" font-family="sans-serif" font-weight="900" font-size="44" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 43 56)">k</text>
-          <path d="M 72 6 Q 72 14 80 14 Q 72 14 72 22 Q 72 14 64 14 Q 72 14 72 6 Z" fill="#F472B6"/>
-        </svg>
+        <div class="footer">
+            <p>Krea — FAQ par Graphis Studio</p>
+        </div>
     </div>
-    <p style="color: #94A3B8; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px; margin: 0;">Krea — FAQ by Graphis Studio</p>
-</div>
-""", unsafe_allow_html=True)
+
+    <script>
+        // Base de données structurée issue du document PDF de la FAQ
+        const faqData = [
+            { cat: "GÉNÉRAL", q: "C'est quoi une FAQ ?", a: "FAQ signifie Foire Aux Questions (Frequently Asked Questions). Il s'agit d'une liste de questions récurrentes sur un sujet donné accompagnées de leurs réponses." },
+            { cat: "GÉNÉRAL", q: "Qui est concerné par la FAQ ?", a: "Les élèves de Photoshop et Lightroom 1 et 2 de Philippeville et Thuin ainsi que Photoshop artistique[cite: 1]." },
+            { cat: "GÉNÉRAL", q: "Où trouver la FAQ ?", a: "Elle est disponible dans votre dossier « classe » (ex: Photoshop et Lightroom Philippeville)[cite: 1]." },
+            { cat: "GÉNÉRAL", q: "Comment trouver l'information dans le PDF ?", a: "Faites CTRL/Cmd + F ou Édition > Rechercher dans Adobe Acrobat Reader[cite: 1]." },
+            { cat: "GÉNÉRAL", q: "Vous avez une question qui n'est pas dans la FAQ ?", a: "Envoyez-moi un mail à <a href='mailto:graphisstudio@me.com'>graphisstudio@me.com</a> et je me ferai un plaisir de l'ajouter[cite: 1]." },
+            
+            { cat: "LES DOSSIERS", q: "J'ai accès à combien de dossier(s) partagé(s) ?", a: "Vous avez un dossier par classe et un second dossier pour le support Photoshop[cite: 1]." },
+            { cat: "LES DOSSIERS", q: "Comment se nomme le dossier de ma classe ?", a: "Photoshop et Lightroom Thuin, Photoshop et Lightroom (Philippeville), Photoshop et Lightroom 2, Photoshop artistique Philippeville[cite: 1]." },
+            { cat: "LES DOSSIERS", q: "Comment accéder aux dossiers ?", a: "Via le lien reçu par mail ou sur le portail : <a href='https://studiographis-create.github.io/portail/index.html' target='_blank'>Portail des cours</a>[cite: 1]." },
+            { cat: "LES DOSSIERS", q: "Je ne vois pas le contenu d'un dossier", a: "Rafraîchissez la page, redémarrez le navigateur, testez avec Google Chrome, ou téléchargez l'application Google Drive[cite: 1]." },
+
+            { cat: "LES VIDÉOS DU COURS", q: "Où sont les vidéos de mon cours ?", a: "Dans votre dossier par classe > dossier « vidéos du cours »[cite: 1]." },
+            { cat: "LES VIDÉOS DU COURS", q: "À partir de quand la vidéo est-elle disponible ?", a: "Au mieux le lendemain du cours, au pire dans la semaine. Un signalement est fait sur le groupe Facebook[cite: 1]." },
+            { cat: "LES VIDÉOS DU COURS", q: "Puis-je télécharger une vidéo du cours ?", a: "Oui, en cliquant sur la flèche en haut à gauche de la vidéo ou en utilisant « Tout télécharger »[cite: 1]." },
+
+            { cat: "LES FICHIERS", q: "Comment télécharger un fichier (PDF, HTML, Jpg, Raw,...) ?", a: "Passez le curseur sur celui-ci et une flèche de téléchargement apparaîtra[cite: 1]." },
+            { cat: "LES FICHIERS", q: "Quand je télécharge des fichiers, ils ont l'extension .RAR", a: "C'est normal, Google Drive compresse les fichiers avant de les télécharger. Vous devez les décompresser (ex: avec WinRAR ou WinZip)[cite: 1]." },
+            { cat: "LES FICHIERS", q: "De quels fichiers ai-je besoin en classe ?", a: "Uniquement tous les fichiers du dossier « photos pour le cours » (de préférence sur clé USB ou PC portable)[cite: 1]." },
+
+            { cat: "LE GROUPE FACEBOOK", q: "Comment accéder au groupe Facebook ?", a: "Cliquez ici : <a href='https://www.facebook.com/groups/photoshop.lightroom.Evere.Philippeville' target='_blank'>Groupe Facebook</a>[cite: 1]." },
+            { cat: "LE GROUPE FACEBOOK", q: "Puis-je publier mes travaux ou poser des questions ?", a: "Oui ! C'est même le moyen idéal pour poser des questions sur le cours et partager vos travaux[cite: 1]." },
+
+            { cat: "ÉCHANGES ET COMMUNICATION", q: "Quelle est ton adresse mail ?", a: "graphisstudio@me.com (ou studiographis@yahoo.fr en cas de problème)[cite: 1]." },
+            { cat: "ÉCHANGES ET COMMUNICATION", q: "J'ai une question en dehors du cours, par quel moyen la poser ?", a: "1. Le groupe Facebook si cela concerne tout le monde. 2. Mail. 3. Messenger (Damblon Dimitri). 4. WhatsApp[cite: 1]." },
+
+            { cat: "LE COURS EN LIGNE", q: "Comment accéder au cours en ligne ?", a: "Le lien est disponible sur la page du portail : <a href='https://studiographis-create.github.io/portail/index.html' target='_blank'>Portail</a>[cite: 1]." },
+            { cat: "LE COURS EN LIGNE", q: "Dois-je activer ma vidéo ou mon micro ?", a: "Non, la vidéo n'est pas obligatoire. Il est même mieux de couper le micro et de le rallumer en cas de question[cite: 1]." },
+
+            { cat: "ÉCOLE", q: "Quel est le mot de passe du wifi à l'école ?", a: "Il n'y a actuellement pas de wifi à l'école[cite: 1]." },
+            { cat: "ÉCOLE", q: "Où puis-je me garer à l'école (Philippeville) ?", a: "Sur le parking de l'école ou Rue de la Roche (4 roues sur la route, pas sur le trottoir). Ne pas se garer sur les emplacements de la menuiserie[cite: 1]." }
+        ];
+
+        const catColors = {
+            "GÉNÉRAL": "#38BDF8",
+            "LES DOSSIERS": "#8B5CF6",
+            "LES VIDÉOS DU COURS": "#E11D48",
+            "LES FICHIERS": "#F59E0B",
+            "LE GROUPE FACEBOOK": "#2563EB",
+            "ÉCHANGES ET COMMUNICATION": "#10B981",
+            "LE COURS EN LIGNE": "#EC4899",
+            "ÉCOLE": "#A855F7"
+        };
+
+        let currentCategory = 'TOUT';
+
+        function renderFAQ(items) {
+            const listContainer = document.getElementById('faqList');
+            if (items.length === 0) {
+                listContainer.innerHTML = '<p style="text-align: center; color: #94a3b8;">Aucune question ne correspond à votre recherche.</p>';
+                return;
+            }
+            
+            listContainer.innerHTML = items.map(item => {
+                const color = catColors[item.cat] || '#64748B';
+                return `
+                    <div class="faq-card">
+                        <span class="cat-badge" style="background-color: ${color};">${item.cat}</span>
+                        <details>
+                            <summary>${item.q}</summary>
+                            <div class="faq-content">${item.a}</div>
+                        </details>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterFAQ() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = faqData.filter(item => {
+                const matchesCat = (currentCategory === 'TOUT' || item.cat === currentCategory);
+                const matchesSearch = item.q.toLowerCase().includes(searchTerm) || item.a.toLowerCase().includes(searchTerm);
+                return matchesCat && matchesSearch;
+            });
+            renderFAQ(filtered);
+        }
+
+        function filterCategory(category, btn) {
+            currentCategory = category;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filterFAQ();
+        }
+
+        // Affichage initial au chargement de la page
+        renderFAQ(faqData);
+    </script>
+</body>
+</html>
