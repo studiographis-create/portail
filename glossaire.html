@@ -78,7 +78,7 @@
     </h1>
     
     <p class="text-xs md:text-sm text-slate-400 font-medium max-w-xl mx-auto px-2">
-      Sélectionnez une catégorie ou recherchez un mot-clé pour filtrer les termes.
+      80 termes essentiels regroupés par catégories pour vous accompagner dans vos cours et projets.
     </p>
 
     <!-- Contrôles : Recherche + Filtres par Catégorie -->
@@ -86,25 +86,25 @@
       
       <!-- Barre de recherche -->
       <div class="relative">
-        <input type="text" id="searchInput" onkeyup="filterGlossary()" placeholder="⌕ Rechercher un terme (ex: Masque, RAW, Prompt, Histogramme...)" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-400 text-sm font-medium focus:outline-none focus:border-purple-500 transition-colors shadow-lg">
+        <input type="text" id="searchInput" onkeyup="filterGlossary()" placeholder="⌕ Rechercher un terme (ex: Masque, ISO, Prompt, Preset...)" class="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700/80 text-white placeholder-slate-400 text-sm font-medium focus:outline-none focus:border-purple-500 transition-colors shadow-lg">
       </div>
 
       <!-- Onglets de filtres par catégorie -->
       <div class="flex flex-wrap items-center justify-center gap-2">
         <button onclick="setCategory('all')" data-cat="all" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition-all border bg-pink-500/20 border-pink-500/50 text-pink-300 shadow-sm">
-          Tous
+          Tous (80)
         </button>
         <button onclick="setCategory('photoshop')" data-cat="photoshop" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition-all border bg-slate-800/60 border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-500">
-          Photoshop
+          Photoshop (20)
         </button>
         <button onclick="setCategory('lightroom')" data-cat="lightroom" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition-all border bg-slate-800/60 border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-500">
-          Lightroom
+          Lightroom (20)
         </button>
         <button onclick="setCategory('photo')" data-cat="photo" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition-all border bg-slate-800/60 border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-500">
-          Photo
+          Photo (20)
         </button>
         <button onclick="setCategory('ai')" data-cat="ai" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold transition-all border bg-slate-800/60 border-slate-700/60 text-slate-400 hover:text-white hover:border-slate-500">
-          AI
+          AI (20)
         </button>
       </div>
 
@@ -126,7 +126,7 @@
     <section class="krea-card p-6 md:p-8 space-y-4">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="termsGrid">
 
-        <!-- CATÉGORIE: PHOTOSHOP -->
+        <!-- ================= PHOTOSHOP (20 TERMES) ================= -->
         <div class="glossary-item" data-category="photoshop">
           <div class="flex items-center justify-between mb-2">
             <h3 class="font-extrabold text-white text-base">Calque de Réglage</h3>
@@ -167,7 +167,167 @@
           </p>
         </div>
 
-        <!-- CATÉGORIE: LIGHTROOM -->
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Masque d'Écrêtage</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Technique restreignant la visibilité d'un calque aux limites de la forme ou des pixels visibles du calque immédiatement en dessous.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Tampon de Duplication</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Outil permettant de prélever une zone d'échantillon pour la peindre sur une autre partie de l'image afin de masquer les imperfections.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Outil Plume &amp; Tracés</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Outil vectoriel permettant de créer des courbes de Bézier d'une précision chirurgicale pour les détourages complexes.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Filtre Camera Raw</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Moteur de développement Lightroom utilisable directement sous forme de filtre dynamique dans l'interface de Photoshop.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Dodge &amp; Burn (Densité - / +)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Méthode de retouche consistant à éclaircir (Dodge) ou assombrir (Burn) localement l'image pour sculpturer les volumes et les ombres.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Sélectionner et Masquer</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Espace de travail dédié au perfectionnement des contours de sélection complexes comme les cheveux, le pelage ou la transparence.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Scripts (Actions)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Série d'étapes enregistrées pouvant être rejouées automatiquement en un seul clic pour automatiser les tâches répétitives.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Style de Calque</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Effets automatisés appliqués directement à un calque (Ombre portée, Biseautage, Contour, Lueur externe) entièrement modifiables.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Profondeur de Bits (8 / 16 bits)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Nombre de nuances de couleurs enregistrées par canal. Le 16 bits offre des dégradés beaucoup plus lisses et évite le banding.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Espace de Travail</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Disposition personnalisable des panneaux, outils et menus adaptée à un usage spécifique (Photographie, Graphisme, Peinture).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">LUT (Look Up Table)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Table de correspondance des couleurs appliquée via le calque 'Correspondance de couleur' pour instaurer une ambiance cinématographique.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Outil Correcteur Localisé</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Outil automatique qui analyse et fusionne la texture ambiante pour nettoyer les poussières ou petites imperfections cutanées.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Plage de Couleurs</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Outil de sélection générant un masque basé sur un échantillonnage précis de teinte et de tolérance colorimétrique.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Déformation de la Marionnette</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Fonctionnalité permettant de placer des broches sur un sujet pour plier, déformer ou repositionner des éléments anatomiques ou d'objets.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Format PSD / PSB</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Formats de fichier natifs d'Adobe Photoshop conservant tous les calques, masques et réglages (PSB pour les fichiers &gt; 2 Go).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photoshop">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Flou Gaussien</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photoshop">Photoshop</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Filtre adoucissant l'image en calculant la moyenne mathématique de la valeur des pixels adjacents selon une courbe en cloche.
+          </p>
+        </div>
+
+        <!-- ================= LIGHTROOM (20 TERMES) ================= -->
         <div class="glossary-item" data-category="lightroom">
           <div class="flex items-center justify-between mb-2">
             <h3 class="font-extrabold text-white text-base">Balance des Blancs (WB)</h3>
@@ -198,7 +358,177 @@
           </p>
         </div>
 
-        <!-- CATÉGORIE: PHOTO -->
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Catalogue (.lrcat)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Base de données centrale qui enregistre tous les métadonnées, mots-clés et révisions apportées aux photos sans altérer les fichiers originaux.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Masquage IA</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Détection automatique et intelligente du sujet, de l'arrière-plan, du ciel ou des caractéristiques de personnes (peau, yeux, cheveux).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Égaliseur TSL / Couleur</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Panneau permettant de contrôler individuellement la Teinte, la Saturation et la Luminance de 8 plages de couleurs distinctes.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Clarté vs Correction du Voile</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            La clarté augmente le contraste des tons moyens. La correction du voile élimine la brume atmosphérique ou les réfractions lumineuses.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Aperçu Dynamique (Smart Preview)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Fichier léger compressé permettant de développer des photos même lorsque les disques durs externes contenant les RAW sont déconnectés.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Courbe de Tonalité</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Outil graphique avancé permettant d'ajuster la luminosité et le contraste global ou par canal RVB (Rouge, Vert, Bleu).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Réduction du Bruit</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Algorithme atténuant les artefacts de grain de luminance ainsi que le parasitage colorimétrique créé par les hauts ISO.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Collection Dynamique</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Dossier virtuel regroupant automatiquement les photos selon des critères choisis (ex: note &gt; 4 étoiles, ISO &gt; 1600, objectif 50mm).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Profil d'Appareil Photo</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Interprétation colorimétrique de base appliquée au fichier RAW (Adobe Couleur, Neutre, Portrait, Paysage ou profil constructeur).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Épreuves Écran (Soft Proofing)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Mode de simulation affichant le rendu exact d'une photo selon un profil ICC d'imprimante ou de papier spécifique.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Synchronisation des Réglages</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Action d'appliquer instantanément les modifications de développement d'une photo témoin à une sélection multiple d'images.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Texture</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Curseur accentuant ou adoucissant les détails de taille moyenne (pores de la peau, écorce, cheveux) sans altérer le bruit fin.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Évaluation &amp; Libellés</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Système de tri par étoiles (1 à 5), marqueurs (retenue/rejetée) et couleurs pour trier rapidement de grands volumes d'images.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Correction de l'Objectif</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Profils logiciels compensant automatiquement la distorsion géométrique et le vignetage propres à chaque modèle d'objectif.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Empilement de Photos (Stacks)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Regroupement visuel de séries de prises de vue similaires (rafales, braketing) pour désencombrer la grille du catalogue.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Module d'Exportation</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Menu de conversion finale permettant d'ajuster le format (JPEG, TIFF), le redimensionnement, le filigrane et la netteté de sortie.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="lightroom">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Filtre Gradué / Radial</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-lightroom">Lightroom</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Masques géométriques progressifs pour ajuster localement la lumière ou la couleur sur une zone délimitée ou circulaire.
+          </p>
+        </div>
+
+        <!-- ================= PHOTO (20 TERMES) ================= -->
         <div class="glossary-item" data-category="photo">
           <div class="flex items-center justify-between mb-2">
             <h3 class="font-extrabold text-white text-base">Format RAW</h3>
@@ -231,6 +561,86 @@
 
         <div class="glossary-item" data-category="photo">
           <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Ouverture (Diaphragme / f-stop)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Taille de l'ouverture des lamelles de l'objectif (ex: f/1.8, f/8) régissant la quantité de lumière admise et la profondeur de champ.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Vitesse d'Obturation</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Durée pendant laquelle le capteur est exposé à la lumière, permettant de figer le mouvement (1/4000s) ou créer un flou de bougé (pose longue).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Sensibilité ISO</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Niveau d'amplification du signal du capteur. Une valeur élevée permet de photographier dans le noir mais augmente le bruit numérique.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Profondeur de Champ (DoF)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Zone de netteté acceptable située devant et derrière le point d'impact de la mise au point.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Bokeh</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Qualité esthétique et aspect visuel des zones de flou d'arrière-plan générées par un objectif à grande ouverture.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Distance Focale (mm)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Propriété optique exprimée en millimètres déterminant l'angle de champ et le grossissement (Grand-angle 16mm, Téléobjectif 200mm).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Plein Format (Full Frame) vs APS-C</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Taille physique du capteur. Le Full Frame (24x36mm) offre une meilleure gestion du bruit et une profondeur de champ plus courte qu'un APS-C.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Triangle d'Exposition</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Relation d'équilibre fondamentale entre les trois paramètres d'exposition : Ouverture, Vitesse d'obturation et Sensibilité ISO.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
             <h3 class="font-extrabold text-white text-base">Aberration Chromatique</h3>
             <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
           </div>
@@ -239,7 +649,87 @@
           </p>
         </div>
 
-        <!-- CATÉGORIE: AI -->
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Mesure de Lumière</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Modes d'analyse de la scène par le posemètre interne (Matricielle/Évaluative, Pondérée centrale ou Spot).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Vignetage</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Assombrissement périphérique involontaire ou artistique observé aux quatre coins d'une image.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Espace Colorimétrique</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Étendue des couleurs affichables (Gamut) définie par des normes comme sRGB (web), Adobe RGB (impression) ou ProPhoto.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Autofocus (AF-S / AF-C)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Modes de mise au point automatique : AF-S (Ponctuel pour sujets fixes) et AF-C/Servo (Continu pour sujets en mouvement).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Bruit Numérique</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Parasitage sous forme de grain ou de pixels colorés apparaissant lors de prises de vue en haut ISO ou pose longue.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Diffraction</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Phénomène optique dégradant la netteté globale de l'image lorsque le diaphragme est trop fermé (ex: f/16, f/22).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Température de Couleur (Kelvin)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Échelle de mesure exprimée en Kelvin (K) quantifiant la chaleur de la lumière (2700K bougie, 5500K lumière du jour).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="photo">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Mode Rafale &amp; Mémoire Tampon</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-photo">Photo</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Capacité à prendre plusieurs images par seconde et vitesse à laquelle la mémoire vive (Buffer) transfère les fichiers vers la carte.
+          </p>
+        </div>
+
+        <!-- ================= AI (20 TERMES) ================= -->
         <div class="glossary-item" data-category="ai">
           <div class="flex items-center justify-between mb-2">
             <h3 class="font-extrabold text-white text-base">Generative Fill (Remplissage Génératif)</h3>
@@ -272,11 +762,171 @@
 
         <div class="glossary-item" data-category="ai">
           <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Outpainting (Extension Générative)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Génération d'éléments visuels au-delà du cadre d'origine d'une photo pour en étendre le format sans couture visible.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
             <h3 class="font-extrabold text-white text-base">Modèle de Diffusion</h3>
             <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
           </div>
           <p class="text-xs text-slate-300 leading-relaxed">
-            Architecture d'apprentissage profond (ex: Firefly, Midjourney, Stable Diffusion) générant des images haute définition à partir de bruit visuel guidé.
+            Architecture d'IA générative fonctionnant en éliminant progressivement du bruit visuel pour faire émerger une image cohérente.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Seed (Graine Aléatoire)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Valeur numérique initiale servant de point de départ pour la génération de bruit. Réutiliser un Seed permet de reproduire un résultat identique.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Negative Prompt</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Instructions spécifiant à l'algorithme ce qu'il doit impérativement éviter d'inclure dans la création (ex: flou, déformation, texte).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Upscaling IA / Super-Résolution</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Agrandissement logiciel qui réinvente les détails manquants d'une image basse définition pour la rendre nette en grand format.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Adobe Firefly</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Famille de modèles d'IA générative créée par Adobe, intégrée dans Photoshop et entraînée sur des banques d'images libres de droits.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Midjourney</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Outil indépendant de génération d'images par IA reconnu pour son rendu artistique, photoréaliste et sa gestion avancée de la lumière.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Stable Diffusion</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Modèle de génération d'images Open Source utilisable en local sur son propre ordinateur pour une personnalisation poussée.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">LoRA (Low-Rank Adaptation)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Fichier léger d'entraînement complémentaire apprenant à l'IA un style artistique, un visage ou un objet spécifique.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">ControlNet</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Module guidant l'IA en imposant la pose exacte d'un personnage, un dessin au trait ou une carte de profondeur.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Text-to-Image</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Processus fondamental de création visuelle générant une image complète à partir d'une simple ligne de texte.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Image-to-Image</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Technique consistant à fournir une image source en plus du prompt pour en modifier le style ou la structure.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Denoise IA (Débruitage IA)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Algorithmes de réseau de neurones reconstruisant la clarté d'images très bruitées sans flouter les détails fins.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Artefacts d'IA</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Incohérences visuelles générées par inadvertance par un algorithme (ex: mains à 6 doigts, écritures illisibles).
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Style Transfer (Transfert de Style)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Application de l'esthétique, des couleurs et des coups de pinceau d'une œuvre référence sur une photo d'origine.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">LLM (Large Language Model)</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Modèle linguistique (ex: ChatGPT, Gemini) souvent utilisé en amont pour enrichir et structurer des prompts complexes.
+          </p>
+        </div>
+
+        <div class="glossary-item" data-category="ai">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-extrabold text-white text-base">Rerender / Resampling</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full badge-ai">AI</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            Régénération répétée d'une zone avec des paramètres modifiés pour affiner les textures jusqu'à satisfaction.
           </p>
         </div>
 
