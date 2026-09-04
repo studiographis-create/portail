@@ -56,7 +56,7 @@
   <!-- En-tête -->
   <header class="max-w-5xl w-full my-6 text-center space-y-4">
     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold uppercase tracking-widest">
-      Boîte à Outils Terrain
+      Boîte à Outils Terrain &amp; Labo
     </div>
     
     <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
@@ -64,7 +64,7 @@
     </h1>
     
     <p class="text-xs md:text-sm text-slate-400 font-medium max-w-2xl mx-auto">
-      Calculateurs techniques, simulateurs d'exposition et guides visuels pour optimiser vos réglages sur le terrain.
+      Calculateurs techniques, simulateurs d'exposition, guides visuels et outils d'impression.
     </p>
 
     <!-- Bouton Retour au Hub -->
@@ -651,6 +651,200 @@
       </div>
     </section>
 
+
+    <!-- CATEGORIE 3 : CALCULATEURS & CONVERTISSEURS D'IMPRESSION -->
+    <section class="space-y-4 pt-4 border-t border-slate-800/80">
+      <div class="flex items-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        <span>Calculateurs &amp; Convertisseurs d'impression</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- 10. CALCULATEUR DE DÉFINITION & TAILLE D'IMPRESSION (DPI / PPI) -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Taille d'Impression (DPI)</h2>
+                <p class="text-xs text-slate-400">Définition photo vers formats papier max (cm)</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Largeur (pixels)</label>
+                <input type="number" id="print-px-w" class="tool-input" value="6000" step="100" min="100" oninput="calculatePrintSize()">
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Hauteur (pixels)</label>
+                <input type="number" id="print-px-h" class="tool-input" value="4000" step="100" min="100" oninput="calculatePrintSize()">
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Résolution (DPI / PPI)</label>
+                <select id="print-dpi" class="tool-select" onchange="calculatePrintSize()">
+                  <option value="300" selected>300 DPI (Art &amp; Galerie)</option>
+                  <option value="240">240 DPI (Exposition photo)</option>
+                  <option value="150">150 DPI (Affiche Grand Format)</option>
+                  <option value="72">72 DPI (Bâche XXL / Écran)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Résultat Dimension Tirage -->
+            <div class="stat-box mt-4 space-y-2 text-center">
+              <div>
+                <span class="text-xs text-slate-400 block mb-0.5">Taille d'impression max recommandée</span>
+                <span id="print-size-cm" class="text-xl font-black text-cyan-400">50.8 × 33.9 cm</span>
+                <span id="print-mp" class="text-[10px] text-slate-400 block mt-0.5">(24.0 Mégapixels)</span>
+              </div>
+              <div class="pt-2 border-t border-slate-800/80 flex justify-between items-center text-xs">
+                <span class="text-slate-400">Format papier le plus proche :</span>
+                <span id="print-format-rec" class="font-bold text-emerald-400">Format A3+ (30x45 cm)</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 11. CALCULATEUR DE DISTANCE DE VISIONNAGE -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Distance de Visionnage</h2>
+                <p class="text-xs text-slate-400">Recul minimal &amp; acuité visuelle du tirage</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Format d'impression</label>
+                <select id="viewing-format" class="tool-select" onchange="calculateViewingDistance()">
+                  <option value="10x15">10 × 15 cm (Photo album)</option>
+                  <option value="A4">A4 — 21 × 29.7 cm</option>
+                  <option value="A3" selected>A3 / A3+ — 30 × 42 cm</option>
+                  <option value="A2">A2 — 42 × 59.4 cm</option>
+                  <option value="A1">A1 — 59.4 × 84.1 cm</option>
+                  <option value="A0">A0 / Poster XXL — 84 × 118 cm</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Résolution d'impression</label>
+                <select id="viewing-dpi" class="tool-select" onchange="calculateViewingDistance()">
+                  <option value="300" selected>300 DPI (Qualité labo)</option>
+                  <option value="200">200 DPI (Bonne qualité)</option>
+                  <option value="150">150 DPI (Affiche murale)</option>
+                  <option value="100">100 DPI (Bâche extérieure)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Résultat Distance -->
+            <div class="stat-box mt-4 space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Distance de confort globale :</span>
+                <span id="viewing-dist-rec" class="font-bold text-purple-400">77 cm</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Distance limite pixels invisibles :</span>
+                <span id="viewing-dist-sharp" class="font-bold text-emerald-400">29 cm</span>
+              </div>
+              <p id="viewing-advice" class="text-[11px] text-slate-400 pt-1 border-t border-slate-800 leading-tight">
+                À 300 DPI, les pixels restent parfaitement invisibles à la distance d'observation naturelle.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 12. SIMULATEUR DE ROGNAGE & RATIOS PAPIER -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5 md:col-span-2">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 0L4 4m5.121 5.121L4 19" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Simulateur de Rognage &amp; Ratios Papier</h2>
+                <p class="text-xs text-slate-400">Perte de cadrage entre ratio du capteur et format d'impression</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Ratio natif de l'appareil (Capteur)</label>
+                <select id="crop-sensor-ratio" class="tool-select" onchange="calculateCropSimulator()">
+                  <option value="1.5" selected>3:2 (Plein Format / APS-C / Reflex &amp; Hybride)</option>
+                  <option value="1.333">4:3 (Micro 4/3 / Moyen Format / Smartphone)</option>
+                  <option value="1.778">16:9 (Format Paysage Vidéo)</option>
+                  <option value="1">1:1 (Format Carré)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Format papier visé</label>
+                <select id="crop-paper-ratio" class="tool-select" onchange="calculateCropSimulator()">
+                  <option value="1.5" selected>10 × 15 cm (Ratio 3:2 exact)</option>
+                  <option value="1.385">13 × 18 cm (Ratio ~5:7)</option>
+                  <option value="1.414">ISO A4 / A3 / A2 / A1 (Ratio 1:√2 ≈ 1:1.414)</option>
+                  <option value="1">Carré 1:1 (20×20, 30×30 cm)</option>
+                  <option value="1.778">Panoramique 16:9</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Simulation Visuelle de Rognage SVG -->
+            <div class="mt-4 p-4 bg-slate-900/80 rounded-xl border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4">
+              <div class="w-full md:w-1/2 flex justify-center items-center py-2">
+                <svg id="crop-svg" viewBox="0 0 240 160" class="w-60 h-40 overflow-visible">
+                  <!-- Contour Image Source (Capteur) -->
+                  <rect id="svg-sensor-rect" x="20" y="10" width="200" height="140" fill="rgba(139, 92, 246, 0.2)" stroke="#8b5cf6" stroke-width="2" rx="4" />
+                  <!-- Zones coupées (Rouge hachuré) -->
+                  <rect id="svg-crop-rect-1" x="20" y="10" width="0" height="0" fill="rgba(239, 68, 68, 0.35)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,3" />
+                  <rect id="svg-crop-rect-2" x="20" y="10" width="0" height="0" fill="rgba(239, 68, 68, 0.35)" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,3" />
+                  <!-- Zone Papier Conservée -->
+                  <rect id="svg-paper-rect" x="20" y="10" width="200" height="140" fill="none" stroke="#10b981" stroke-width="2" rx="2" />
+                </svg>
+              </div>
+
+              <div class="w-full md:w-1/2 space-y-2 text-xs">
+                <div class="stat-box">
+                  <span class="text-[10px] text-slate-400 block">Diagnostic de rognage</span>
+                  <span id="crop-status-title" class="font-bold text-emerald-400 text-sm">Cadrage Parfait (0% de perte)</span>
+                </div>
+                <div class="stat-box">
+                  <span class="text-[10px] text-slate-400 block">Détails de coupe</span>
+                  <p id="crop-status-desc" class="text-slate-300 text-[11px] leading-tight">
+                    Le ratio du papier correspond exactement au capteur. L'image sera imprimée dans son intégralité sans aucune bande rognée.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
   </main>
 
   <!-- Pied de page -->
@@ -996,6 +1190,163 @@
       }
     }
 
+
+    // --- 10. TAILLE D'IMPRESSION (DPI / PPI) ---
+    function calculatePrintSize() {
+      const pxW = parseFloat(document.getElementById('print-px-w').value) || 0;
+      const pxH = parseFloat(document.getElementById('print-px-h').value) || 0;
+      const dpi = parseFloat(document.getElementById('print-dpi').value) || 300;
+
+      if (pxW <= 0 || pxH <= 0) return;
+
+      const cmW = (pxW / dpi) * 2.54;
+      const cmH = (pxH / dpi) * 2.54;
+      const mp = (pxW * pxH) / 1000000;
+
+      document.getElementById('print-size-cm').textContent = `${cmW.toFixed(1)} × ${cmH.toFixed(1)} cm`;
+      document.getElementById('print-mp').textContent = `(${mp.toFixed(1)} Mégapixels)`;
+
+      const maxDim = Math.max(cmW, cmH);
+      let formatRec = "";
+      if (maxDim <= 18) formatRec = "Format 10×15 cm ou 13×18 cm";
+      else if (maxDim <= 30) formatRec = "Format A4 (21×29.7 cm)";
+      else if (maxDim <= 45) formatRec = "Format A3 / A3+ (30×45 cm)";
+      else if (maxDim <= 62) formatRec = "Format A2 (42×59.4 cm)";
+      else if (maxDim <= 88) formatRec = "Format A1 (59.4×84.1 cm)";
+      else formatRec = "Format A0 / Bâche XXL (> 84×118 cm)";
+
+      document.getElementById('print-format-rec').textContent = formatRec;
+    }
+
+
+    // --- 11. DISTANCE DE VISIONNAGE ---
+    function calculateViewingDistance() {
+      const format = document.getElementById('viewing-format').value;
+      const dpi = parseInt(document.getElementById('viewing-dpi').value);
+
+      let w = 30, h = 42; // Défaut A3
+      if (format === '10x15') { w = 10; h = 15; }
+      else if (format === 'A4') { w = 21; h = 29.7; }
+      else if (format === 'A3') { w = 30; h = 42; }
+      else if (format === 'A2') { w = 42; h = 59.4; }
+      else if (format === 'A1') { w = 59.4; h = 84.1; }
+      else if (format === 'A0') { w = 84; h = 118; }
+
+      const diagonal = Math.sqrt(w * w + h * h);
+      const recDistanceCm = Math.round(diagonal * 1.5);
+
+      // Seuil d'acuité visuelle : D (cm) = 8732 / DPI
+      const sharpDistanceCm = Math.round(8732 / dpi);
+
+      let distRecStr = recDistanceCm >= 100 ? `${(recDistanceCm / 100).toFixed(2)} m` : `${recDistanceCm} cm`;
+      let distSharpStr = sharpDistanceCm >= 100 ? `${(sharpDistanceCm / 100).toFixed(2)} m` : `${sharpDistanceCm} cm`;
+
+      let advice = "";
+      if (dpi >= 300) {
+        advice = "À 300 DPI, le tirage offre une finesse maximale (tirage d'art) : même les yeux très proches du papier ne perçoivent pas la trame.";
+      } else if (dpi >= 200) {
+        advice = "À 200 DPI, la netteté est excellente à distance de lecture naturelle. Idéal pour des expositions en galerie.";
+      } else if (dpi >= 150) {
+        advice = "À 150 DPI, le tirage reste très propre dès 60 cm de recul. C'est le standard des affiches et posters muraux.";
+      } else {
+        advice = "À 100 DPI, le tirage est conçu pour être observé à au moins 1.5 mètre de distance (bâches, enseignes, panneaux).";
+      }
+
+      document.getElementById('viewing-dist-rec').textContent = distRecStr;
+      document.getElementById('viewing-dist-sharp').textContent = distSharpStr;
+      document.getElementById('viewing-advice').textContent = advice;
+    }
+
+
+    // --- 12. SIMULATEUR DE ROGNAGE ---
+    function calculateCropSimulator() {
+      const rSensor = parseFloat(document.getElementById('crop-sensor-ratio').value);
+      const rPaper = parseFloat(document.getElementById('crop-paper-ratio').value);
+
+      const svgSensor = document.getElementById('svg-sensor-rect');
+      const svgPaper = document.getElementById('svg-paper-rect');
+      const svgCrop1 = document.getElementById('svg-crop-rect-1');
+      const svgCrop2 = document.getElementById('svg-crop-rect-2');
+
+      const title = document.getElementById('crop-status-title');
+      const desc = document.getElementById('crop-status-desc');
+
+      // Base SVG : 200 x 140
+      const baseW = 200;
+      const baseH = 140;
+      const startX = 20;
+      const startY = 10;
+
+      const diff = Math.abs(rSensor - rPaper);
+
+      if (diff < 0.02) {
+        // Ratios équivalents
+        svgPaper.setAttribute('x', startX);
+        svgPaper.setAttribute('y', startY);
+        svgPaper.setAttribute('width', baseW);
+        svgPaper.setAttribute('height', baseH);
+
+        svgCrop1.setAttribute('width', 0);
+        svgCrop2.setAttribute('width', 0);
+
+        title.textContent = "Cadrage Parfait (0% de perte)";
+        title.className = "font-bold text-emerald-400 text-sm";
+        desc.textContent = "Le ratio du papier correspond exactement au capteur de votre appareil. Aucune coupe n'est nécessaire.";
+      } else if (rSensor > rPaper) {
+        // Image trop large -> Rognage latéral (gauche/droite)
+        const paperW = baseH * rPaper;
+        const cropW = (baseW - paperW) / 2;
+        const lossPct = Math.round((cropW * 2 / baseW) * 100);
+
+        svgPaper.setAttribute('x', startX + cropW);
+        svgPaper.setAttribute('y', startY);
+        svgPaper.setAttribute('width', paperW);
+        svgPaper.setAttribute('height', baseH);
+
+        // Bande gauche
+        svgCrop1.setAttribute('x', startX);
+        svgCrop1.setAttribute('y', startY);
+        svgCrop1.setAttribute('width', cropW);
+        svgCrop1.setAttribute('height', baseH);
+
+        // Bande droite
+        svgCrop2.setAttribute('x', startX + cropW + paperW);
+        svgCrop2.setAttribute('y', startY);
+        svgCrop2.setAttribute('width', cropW);
+        svgCrop2.setAttribute('height', baseH);
+
+        title.textContent = `Rognage Latéral (${lossPct}% de perte)`;
+        title.className = "font-bold text-amber-400 text-sm";
+        desc.textContent = `L'image source est plus large que le papier. Environ ${lossPct}% de la largeur (bords gauche et droit) sera rogné au tirage.`;
+      } else {
+        // Image trop haute -> Rognage vertical (haut/bas)
+        const paperH = baseW / rPaper;
+        const cropH = (baseH - paperH) / 2;
+        const lossPct = Math.round((cropH * 2 / baseH) * 100);
+
+        svgPaper.setAttribute('x', startX);
+        svgPaper.setAttribute('y', startY + cropH);
+        svgPaper.setAttribute('width', baseW);
+        svgPaper.setAttribute('height', paperH);
+
+        // Bande haut
+        svgCrop1.setAttribute('x', startX);
+        svgCrop1.setAttribute('y', startY);
+        svgCrop1.setAttribute('width', baseW);
+        svgCrop1.setAttribute('height', cropH);
+
+        // Bande bas
+        svgCrop2.setAttribute('x', startX);
+        svgCrop2.setAttribute('y', startY + cropH + paperH);
+        svgCrop2.setAttribute('width', baseW);
+        svgCrop2.setAttribute('height', cropH);
+
+        title.textContent = `Rognage Vertical (${lossPct}% de perte)`;
+        title.className = "font-bold text-amber-400 text-sm";
+        desc.textContent = `L'image source est plus haute que le papier. Environ ${lossPct}% de la hauteur (haut et bas) sera coupé au tirage.`;
+      }
+    }
+
     // Initialisation globale
     document.addEventListener('DOMContentLoaded', () => {
       calculateTriangle();
@@ -1007,6 +1358,9 @@
       calculateFocalComp();
       calculateHistogram();
       calculateAFMode();
+      calculatePrintSize();
+      calculateViewingDistance();
+      calculateCropSimulator();
     });
   </script>
 
