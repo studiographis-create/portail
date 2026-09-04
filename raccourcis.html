@@ -1,1 +1,496 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Raccourcis Clavier — Graphis Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- jsPDF & jsPDF-AutoTable pour la génération automatique du PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #0b0f19;
+      background-image: 
+        radial-gradient(at 15% 10%, rgba(139, 92, 246, 0.25) 0px, transparent 40%),
+        radial-gradient(at 85% 5%, rgba(37, 99, 235, 0.22) 0px, transparent 45%),
+        radial-gradient(at 50% 20%, rgba(244, 114, 182, 0.18) 0px, transparent 40%),
+        radial-gradient(at 70% 30%, rgba(6, 182, 212, 0.15) 0px, transparent 35%);
+      background-repeat: no-repeat;
+      color: #f1f5f9;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .krea-card {
+      background-color: #161e2e;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(12px);
+    }
+
+    kbd {
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      box-shadow: 0 2px 0 rgba(255, 255, 255, 0.1);
+      color: #f472b6;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.15rem 0.4rem;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .tab-btn {
+      transition: all 0.25s ease;
+    }
+    .tab-btn.active-ps {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      border-color: #60a5fa;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+    }
+    .tab-btn.active-lr {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #ffffff;
+      border-color: #38bdf8;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
+
+  <!-- EN-TÊTE -->
+  <header class="max-w-5xl w-full my-6 text-center space-y-4">
+    <div class="flex items-center justify-between max-w-5xl mx-auto px-2">
+      <a href="hub.html" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs text-slate-300 hover:text-white hover:border-slate-500 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+        Retour au Hub
+      </a>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-bold uppercase tracking-widest">
+        Graphis Studio — Guide Pro
+      </div>
+    </div>
+    
+    <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
+      Raccourcis <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Clavier</span>
+    </h1>
+    
+    <p class="text-xs md:text-sm text-slate-400 font-medium max-w-2xl mx-auto px-2">
+      Répertoire complet et officiel des raccourcis Photoshop &amp; Lightroom Classic (PC &amp; Mac).
+    </p>
+
+    <!-- SELECTEUR D'APPLICATION ET ACTIONS -->
+    <div class="pt-4 flex flex-col md:flex-row items-center justify-center gap-4">
+      <!-- TABS -->
+      <div class="inline-flex p-1.5 rounded-2xl bg-slate-900/90 border border-slate-700/80 backdrop-blur-md">
+        <button id="btn-ps" onclick="switchApp('ps')" class="tab-btn active-ps px-6 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2">
+          <span class="px-1.5 py-0.5 rounded bg-blue-950 text-blue-400 font-black text-xs border border-blue-800">Ps</span>
+          Photoshop
+        </button>
+        <button id="btn-lr" onclick="switchApp('lr')" class="tab-btn text-slate-400 hover:text-white px-6 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2">
+          <span class="px-1.5 py-0.5 rounded bg-cyan-950 text-cyan-400 font-black text-xs border border-cyan-800">Lr</span>
+          Lightroom Classic
+        </button>
+      </div>
+
+      <!-- BOUTON DE TÉLÉCHARGEMENT PDF -->
+      <button onclick="generatePDF()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold text-sm shadow-lg shadow-pink-500/20 transition-all flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <span id="pdf-btn-label">Télécharger le PDF Photoshop</span>
+      </button>
+    </div>
+
+    <!-- BARRE DE RECHERCHE -->
+    <div class="max-w-md mx-auto pt-2">
+      <input type="text" id="search-input" onkeyup="filterShortcuts()" placeholder="Rechercher une action ou un raccourci..." class="w-full px-4 py-2.5 rounded-xl bg-slate-900/80 border border-slate-700 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors">
+    </div>
+  </header>
+
+  <!-- CONTENU PRINCIPAL -->
+  <main class="max-w-5xl w-full space-y-8 my-auto">
+
+    <!-- SECTIONS PHOTOSHOP -->
+    <div id="section-ps" class="space-y-6">
+      
+      <!-- Categorie 1: Outils principaux -->
+      <section class="krea-card p-6">
+        <h2 class="text-lg font-bold text-blue-400 mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+          Outils de la barre d'outils
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs md:text-sm">
+            <thead>
+              <tr class="border-b border-slate-700/60 text-slate-400">
+                <th class="pb-3">Action / Outil</th>
+                <th class="pb-3">Windows (PC)</th>
+                <th class="pb-3">macOS (Mac)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr><td class="py-2.5 font-medium">Déplacement</td><td><kbd>V</kbd></td><td><kbd>V</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Sélection rectangle / ellipse</td><td><kbd>M</kbd></td><td><kbd>M</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Lasso (Lasso polygonal, magnétique)</td><td><kbd>L</kbd></td><td><kbd>L</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Baguette magique / Sélection rapide</td><td><kbd>W</kbd></td><td><kbd>W</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Recadrage / Slicing</td><td><kbd>C</kbd></td><td><kbd>C</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Pipette / Échantillonnage</td><td><kbd>I</kbd></td><td><kbd>I</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Correcteur / Tampon de retouche</td><td><kbd>J</kbd></td><td><kbd>J</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Pinceau / Crayon / Remplacement de couleur</td><td><kbd>B</kbd></td><td><kbd>B</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Tampon de duplication</td><td><kbd>S</kbd></td><td><kbd>S</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Forme d'historique</td><td><kbd>Y</kbd></td><td><kbd>Y</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Gomme</td><td><kbd>E</kbd></td><td><kbd>E</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Pot de peinture / Dégradé</td><td><kbd>G</kbd></td><td><kbd>G</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Goutte d'eau / Netteté / Doigt</td><td><kbd>R</kbd></td><td><kbd>R</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Densité - / Densité + / Éponge</td><td><kbd>O</kbd></td><td><kbd>O</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Plume / Conversion de point</td><td><kbd>P</kbd></td><td><kbd>P</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Texte (horizontal / vertical)</td><td><kbd>T</kbd></td><td><kbd>T</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Sélection de tracé / Sélection directe</td><td><kbd>A</kbd></td><td><kbd>A</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Formes géométriques (Rectangle, Ellipse...)</td><td><kbd>U</kbd></td><td><kbd>U</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Main (Panoramique)</td><td><kbd>H</kbd> ou <kbd>Espace</kbd> (maintenir)</td><td><kbd>H</kbd> ou <kbd>Espace</kbd> (maintenir)</td></tr>
+              <tr><td class="py-2.5 font-medium">Zoom</td><td><kbd>Z</kbd></td><td><kbd>Z</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Permuter couleurs Premier/Arrière-plan</td><td><kbd>X</kbd></td><td><kbd>X</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Couleurs par défaut (Noir &amp; Blanc)</td><td><kbd>D</kbd></td><td><kbd>D</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Masque rapide (Activer / Désactiver)</td><td><kbd>Q</kbd></td><td><kbd>Q</kbd></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Categorie 2: Fichiers et Affichage -->
+      <section class="krea-card p-6">
+        <h2 class="text-lg font-bold text-purple-400 mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          Gestion des Fichiers &amp; Affichage
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs md:text-sm">
+            <thead>
+              <tr class="border-b border-slate-700/60 text-slate-400">
+                <th class="pb-3">Action</th>
+                <th class="pb-3">Windows (PC)</th>
+                <th class="pb-3">macOS (Mac)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr><td class="py-2.5 font-medium">Nouveau document</td><td><kbd>Ctrl</kbd> + <kbd>N</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>N</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Ouvrir un fichier</td><td><kbd>Ctrl</kbd> + <kbd>O</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>O</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Enregistrer</td><td><kbd>Ctrl</kbd> + <kbd>S</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>S</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Enregistrer sous...</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>S</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Exporter pour le Web</td><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>W</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Option ⌥</kbd> + <kbd>Shift ⇧</kbd> + <kbd>W</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Annuler / Rétablir</td><td><kbd>Ctrl</kbd> + <kbd>Z</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Z</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Annuler plusieurs étapes</td><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Z</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Option ⌥</kbd> + <kbd>Z</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Zoom avant / Zoom arrière</td><td><kbd>Ctrl</kbd> + <kbd>+</kbd> / <kbd>-</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>+</kbd> / <kbd>-</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Ajuster à l'écran</td><td><kbd>Ctrl</kbd> + <kbd>0</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>0</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Taille réelle (100%)</td><td><kbd>Ctrl</kbd> + <kbd>1</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>1</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Changer le mode d'affichage</td><td><kbd>F</kbd></td><td><kbd>F</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Masquer / Afficher les repères</td><td><kbd>Ctrl</kbd> + <kbd>H</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>H</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Masquer / Afficher les règles</td><td><kbd>Ctrl</kbd> + <kbd>R</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>R</kbd></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Categorie 3: Calques & Masques -->
+      <section class="krea-card p-6">
+        <h2 class="text-lg font-bold text-pink-400 mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+          Calques, Masques &amp; Compositions
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs md:text-sm">
+            <thead>
+              <tr class="border-b border-slate-700/60 text-slate-400">
+                <th class="pb-3">Action</th>
+                <th class="pb-3">Windows (PC)</th>
+                <th class="pb-3">macOS (Mac)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr><td class="py-2.5 font-medium">Nouveau calque</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>N</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>N</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Dupliquer le calque / sélection</td><td><kbd>Ctrl</kbd> + <kbd>J</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>J</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Couper vers un nouveau calque</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>J</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>J</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Créer un groupe de calques</td><td><kbd>Ctrl</kbd> + <kbd>G</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>G</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Dissocier les calques</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>G</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Fusionner les calques sélectionnés</td><td><kbd>Ctrl</kbd> + <kbd>E</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>E</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Fusionner tous les calques visibles sur un nouveau</td><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Option ⌥</kbd> + <kbd>Shift ⇧</kbd> + <kbd>E</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Créer un masque d'écrêtage</td><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>G</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Option ⌥</kbd> + <kbd>G</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Transformation manuelle</td><td><kbd>Ctrl</kbd> + <kbd>T</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>T</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Modifier l'opacité du calque (avec outil déplacement)</td><td>Nombres <kbd>1</kbd> à <kbd>0</kbd> (ex: 5 = 50%)</td><td>Nombres <kbd>1</kbd> à <kbd>0</kbd></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Categorie 4: Réglages et Sélections -->
+      <section class="krea-card p-6">
+        <h2 class="text-lg font-bold text-cyan-400 mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+          Réglages d'Image &amp; Sélections
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs md:text-sm">
+            <thead>
+              <tr class="border-b border-slate-700/60 text-slate-400">
+                <th class="pb-3">Action</th>
+                <th class="pb-3">Windows (PC)</th>
+                <th class="pb-3">macOS (Mac)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr><td class="py-2.5 font-medium">Tout sélectionner</td><td><kbd>Ctrl</kbd> + <kbd>A</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>A</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Désélectionner</td><td><kbd>Ctrl</kbd> + <kbd>D</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>D</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Rétablir la sélection</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>D</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>D</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Intervertir la sélection</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>I</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Niveaux...</td><td><kbd>Ctrl</kbd> + <kbd>L</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>L</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Courbes...</td><td><kbd>Ctrl</kbd> + <kbd>M</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>M</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Teinte / Saturation...</td><td><kbd>Ctrl</kbd> + <kbd>U</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>U</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Balance des couleurs...</td><td><kbd>Ctrl</kbd> + <kbd>B</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>B</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Inverser les couleurs</td><td><kbd>Ctrl</kbd> + <kbd>I</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>I</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Désaturer (Noir &amp; Blanc direct)</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>U</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>U</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Remplir avec la couleur de premier plan</td><td><kbd>Alt</kbd> + <kbd>Retour arrière</kbd></td><td><kbd>Option ⌥</kbd> + <kbd>Suppr</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Remplir avec la couleur d'arrière-plan</td><td><kbd>Ctrl</kbd> + <kbd>Retour arrière</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Suppr</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Ouvrir le filtre Camera Raw</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>A</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>A</kbd></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- SECTIONS LIGHTROOM CLASSIC -->
+    <div id="section-lr" class="space-y-6 hidden">
+      
+      <!-- Categorie 1: Modules & Navigation -->
+      <section class="krea-card p-6">
+        <h2 class="text-lg font-bold text-cyan-400 mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          Changement de Modules &amp; Mode d'affichage
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs md:text-sm">
+            <thead>
+              <tr class="border-b border-slate-700/60 text-slate-400">
+                <th class="pb-3">Action</th>
+                <th class="pb-3">Windows (PC)</th>
+                <th class="pb-3">macOS (Mac)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr><td class="py-2.5 font-medium">Aller au module Bibliothèque</td><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>1</kbd> ou <kbd>Espace</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Option ⌥</kbd> + <kbd>1</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Aller au module Développement</td><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>2</kbd> ou <kbd>D</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Option ⌥</kbd> + <kbd>2</kbd> ou <kbd>D</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Aller au module Carte</td><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>3</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Option ⌥</kbd> + <kbd>3</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Aller au module Livre / Impression / Web</td><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>4</kbd> / <kbd>5</kbd> / <kbd>6</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Option ⌥</kbd> + <kbd>4</kbd> / <kbd>5</kbd> / <kbd>6</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Mode Grille (Bibliothèque)</td><td><kbd>G</kbd></td><td><kbd>G</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Mode Loupe (Photo seule)</td><td><kbd>E</kbd></td><td><kbd>E</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Mode Comparaison (2 photos)</td><td><kbd>C</kbd></td><td><kbd>C</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Mode Ensemble (Sélection multiple)</td><td><kbd>N</kbd></td><td><kbd>N</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Basculer en Plein écran (Sans barres)</td><td><kbd>F</kbd></td><td><kbd>F</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Masquer/Afficher les panneaux latéraux</td><td><kbd>Tab</kbd></td><td><kbd>Tab</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Masquer/Afficher TOUS les panneaux</td><td><kbd>Shift</kbd> + <kbd>Tab</kbd></td><td><kbd>Shift ⇧</kbd> + <kbd>Tab</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Mode Lumière éteinte (Lights Out)</td><td><kbd>L</kbd></td><td><kbd>L</kbd></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Categorie 2: Tri et Notation -->
+      <section class="krea-card p-6">
+        <h2 class="text-lg font-bold text-yellow-400 mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          Notation, Marqueurs &amp; Tri des Photos
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs md:text-sm">
+            <thead>
+              <tr class="border-b border-slate-700/60 text-slate-400">
+                <th class="pb-3">Action</th>
+                <th class="pb-3">Windows (PC)</th>
+                <th class="pb-3">macOS (Mac)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr><td class="py-2.5 font-medium">Attribuer 1 à 5 étoiles</td><td><kbd>1</kbd> à <kbd>5</kbd></td><td><kbd>1</kbd> à <kbd>5</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Effacer la note (0 étoile)</td><td><kbd>0</kbd></td><td><kbd>0</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Libellé de couleur (Rouge, Jaune, Vert, Bleu)</td><td><kbd>6</kbd>, <kbd>7</kbd>, <kbd>8</kbd>, <kbd>9</kbd></td><td><kbd>6</kbd>, <kbd>7</kbd>, <kbd>8</kbd>, <kbd>9</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Marquer comme retenue (Flag)</td><td><kbd>P</kbd></td><td><kbd>P</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Marquer comme rejetée (Rejet)</td><td><kbd>X</kbd></td><td><kbd>X</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Supprimer le marqueur</td><td><kbd>U</kbd></td><td><kbd>U</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Avancer à la photo suivante après notation</td><td>Activer <kbd>Verr. Maj</kbd> (Caps Lock)</td><td>Activer <kbd>Verr. Maj ⇪</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Pivoter vers la gauche / droite</td><td><kbd>[</kbd> / <kbd>]</kbd></td><td><kbd>[</kbd> / <kbd>]</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Supprimer les photos rejetées du disque</td><td><kbd>Ctrl</kbd> + <kbd>Retour arrière</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Suppr</kbd></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Categorie 3: Outils de développement -->
+      <section class="krea-card p-6">
+        <h2 class="text-lg font-bold text-purple-400 mb-4 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          Retouche &amp; Développement Photo
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs md:text-sm">
+            <thead>
+              <tr class="border-b border-slate-700/60 text-slate-400">
+                <th class="pb-3">Action</th>
+                <th class="pb-3">Windows (PC)</th>
+                <th class="pb-3">macOS (Mac)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-800/60 text-slate-300">
+              <tr><td class="py-2.5 font-medium">Outil Recadrage</td><td><kbd>R</kbd></td><td><kbd>R</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Outil Supprimer les taches (Retouche)</td><td><kbd>Q</kbd></td><td><kbd>Q</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Outil Masquage (IA, pinceau, dégradé)</td><td><kbd>M</kbd> ou <kbd>K</kbd></td><td><kbd>M</kbd> ou <kbd>K</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Balance des blancs (Pipette)</td><td><kbd>W</kbd></td><td><kbd>W</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Convertir en Noir &amp; Blanc</td><td><kbd>V</kbd></td><td><kbd>V</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Afficher / Masquer l'Avant/Après (Écran séparé)</td><td><kbd>\</kbd> ou <kbd>Y</kbd></td><td><kbd>\</kbd> ou <kbd>Y</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Afficher l'écrêtage des hautes lumières / ombres</td><td><kbd>J</kbd> (ou maintenir <kbd>Alt</kbd>)</td><td><kbd>J</kbd> (ou maintenir <kbd>Option ⌥</kbd>)</td></tr>
+              <tr><td class="py-2.5 font-medium">Copier les paramètres de développement</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>C</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Coller les paramètres de développement</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>V</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Coller les paramètres de la photo précédente</td><td><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>V</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Option ⌥</kbd> + <kbd>V</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Créer une copie virtuelle</td><td><kbd>Ctrl</kbd> + <kbd>'</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>'</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Réinitialiser tous les réglages</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>R</kbd></td></tr>
+              <tr><td class="py-2.5 font-medium">Exporter les photos sélectionnées</td><td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>E</kbd></td><td><kbd>Cmd ⌘</kbd> + <kbd>Shift ⇧</kbd> + <kbd>E</kbd></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- PIED DE PAGE -->
+  <footer class="my-8 text-center text-xs text-slate-500">
+    <p>Graphis Studio Hub — Dimitri Damblon — Fiche de raccourcis professionnels</p>
+  </footer>
+
+  <!-- SCRIPT INTERACTIF & GÉNÉRATION PDF -->
+  <script>
+    let currentApp = 'ps';
+
+    function switchApp(app) {
+      currentApp = app;
+      const btnPs = document.getElementById('btn-ps');
+      const btnLr = document.getElementById('btn-lr');
+      const secPs = document.getElementById('section-ps');
+      const secLr = document.getElementById('section-lr');
+      const pdfLabel = document.getElementById('pdf-btn-label');
+
+      if (app === 'ps') {
+        btnPs.className = "tab-btn active-ps px-6 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2";
+        btnLr.className = "tab-btn text-slate-400 hover:text-white px-6 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2";
+        secPs.classList.remove('hidden');
+        secLr.classList.add('hidden');
+        pdfLabel.innerText = "Télécharger le PDF Photoshop";
+      } else {
+        btnLr.className = "tab-btn active-lr px-6 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2";
+        btnPs.className = "tab-btn text-slate-400 hover:text-white px-6 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2";
+        secLr.classList.remove('hidden');
+        secPs.classList.add('hidden');
+        pdfLabel.innerText = "Télécharger le PDF Lightroom";
+      }
+      filterShortcuts();
+    }
+
+    function filterShortcuts() {
+      const input = document.getElementById('search-input').value.toLowerCase();
+      const activeSection = document.getElementById(currentApp === 'ps' ? 'section-ps' : 'section-lr');
+      const rows = activeSection.querySelectorAll('tbody tr');
+
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        if (text.includes(input)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+
+    // Génération dynamique du PDF avec jsPDF
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      const appName = currentApp === 'ps' ? 'Adobe Photoshop' : 'Adobe Lightroom Classic';
+      const fileName = currentApp === 'ps' ? 'Raccourcis_Photoshop_GraphisStudio.pdf' : 'Raccourcis_Lightroom_GraphisStudio.pdf';
+
+      // En-tête du PDF
+      doc.setFillColor(15, 23, 42); // Bleu foncé
+      doc.rect(0, 0, 210, 35, 'F');
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(18);
+      doc.setFont("helvetica", "bold");
+      doc.text("Guide des Raccourcis Clavier", 14, 16);
+
+      doc.setFontSize(12);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(56, 189, 248); // Cyan Accent
+      doc.text(appName, 14, 25);
+
+      doc.setFontSize(9);
+      doc.setTextColor(203, 213, 225);
+      doc.text("Réalisé par Graphis Studio - graphistudio.be", 130, 25);
+
+      // Récupération des données du tableau
+      const activeSection = document.getElementById(currentApp === 'ps' ? 'section-ps' : 'section-lr');
+      const tables = activeSection.querySelectorAll('section');
+
+      let startY = 42;
+
+      tables.forEach(sec => {
+        const title = sec.querySelector('h2').innerText;
+        const rows = [];
+        sec.querySelectorAll('tbody tr').forEach(tr => {
+          const cols = [];
+          tr.querySelectorAll('td').forEach(td => {
+            cols.push(td.innerText.replace(/\n/g, ' '));
+          });
+          rows.push(cols);
+        });
+
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "bold");
+        doc.setTextColor(15, 23, 42);
+        doc.text(title, 14, startY);
+
+        doc.autoTable({
+          startY: startY + 3,
+          head: [['Action / Outil', 'Windows (PC)', 'macOS (Mac)']],
+          body: rows,
+          theme: 'striped',
+          headStyles: { fillStyle: 'F', fillColor: [30, 41, 59], textColor: [255, 255, 255], fontStyle: 'bold' },
+          alternateRowStyles: { fillColor: [241, 245, 249] },
+          styles: { fontSize: 8, cellPadding: 2 },
+          margin: { left: 14, right: 14 }
+        });
+
+        startY = doc.lastAutoTable.finalY + 8;
+      });
+
+      // Pied de page
+      const pageCount = doc.internal.getNumberOfPages();
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.setTextColor(148, 163, 184);
+        doc.text("Document réalisé par Graphis Studio — Dimitri Damblon — Tous droits réservés", 14, 287);
+        doc.text("Page " + i + " / " + pageCount, 185, 287);
+      }
+
+      doc.save(fileName);
+    }
+  </script>
+
+</body>
+</html>
