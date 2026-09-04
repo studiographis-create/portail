@@ -64,7 +64,7 @@
     </h1>
     
     <p class="text-xs md:text-sm text-slate-400 font-medium max-w-2xl mx-auto">
-      Calculateurs techniques, simulateurs d'exposition, guides visuels et outils d'impression.
+      Calculateurs techniques, simulateurs d'exposition, guides visuels et outils d'impression &amp; pré-presse.
     </p>
 
     <!-- Bouton Retour au Hub -->
@@ -845,6 +845,101 @@
       </div>
     </section>
 
+
+    <!-- CATEGORIE 4 : GESTION DE LA COULEUR & PRÉ-PRESSE (SOFT PROOFING) -->
+    <section class="space-y-4 pt-4 border-t border-slate-800/80">
+      <div class="flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-wider">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+        </svg>
+        <span>Gestion de la couleur &amp; Pré-presse (Soft Proofing)</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- 13. GUIDE D'ÉPREUVES SUR ÉCRAN (SOFT PROOFING) & PROFILS ICC -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-indigo-500/20 border border-indigo-500/30 text-indigo-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Soft Proofing &amp; Profils ICC</h2>
+                <p class="text-xs text-slate-400">Aide-mémoire interactif pour Lightroom &amp; Photoshop</p>
+              </div>
+            </div>
+
+            <div class="text-xs mb-3">
+              <label class="block text-slate-300 font-medium mb-1">Thématique à consulter</label>
+              <select id="softproof-topic" class="tool-select" onchange="calculateSoftProof()">
+                <option value="icc_install" selected>Installation &amp; Activation des profils ICC (.icc / .icm)</option>
+                <option value="gamut_warning">Alerte de Gamut (Couleurs hors-gamut d'impression)</option>
+                <option value="perceptual">Mode de Rendu : Perceptif (Perceptual)</option>
+                <option value="relative">Mode de Rendu : Relatif Chromatique (Relative Colorimetric)</option>
+              </select>
+            </div>
+
+            <div class="stat-box mt-3 space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Guide de procédure :</span>
+                <span id="softproof-title" class="font-bold text-indigo-400">Installation des profils ICC</span>
+              </div>
+              <div class="text-[11px] text-slate-300 pt-1.5 border-t border-slate-800 space-y-1.5 leading-relaxed" id="softproof-content">
+                <!-- Rempli en JS -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 14. AIDE-MÉMOIRE RVB VS CMJN & ESPACES COLORIMÉTRIQUES -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">RVB vs CMJN &amp; Espaces</h2>
+                <p class="text-xs text-slate-400">Guide d'exportation selon le support de diffusion</p>
+              </div>
+            </div>
+
+            <div class="text-xs mb-3">
+              <label class="block text-slate-300 font-medium mb-1">Destination finale de l'image</label>
+              <select id="color-destination" class="tool-select" onchange="calculateColorSpace()">
+                <option value="web" selected>Web &amp; Réseaux Sociaux (sRGB)</option>
+                <option value="online_lab">Labo photo en ligne grand public (TIFF / JPEG)</option>
+                <option value="fine_art">Tirage d'Art Fine Art / Imprimante Pigmentaire</option>
+                <option value="press">Imprimerie Offset / Livre / Magazine (CMJN)</option>
+              </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 mt-3 text-center">
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Espace Couleur Cible</span>
+                <span id="cs-space" class="text-xs font-bold text-pink-400">sRGB IEC61966-2.1</span>
+              </div>
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Profondeur de bit</span>
+                <span id="cs-depth" class="text-xs font-bold text-slate-200">8-bit / canal</span>
+              </div>
+              <div class="stat-box col-span-2">
+                <span class="text-[10px] text-slate-400 block">Recommandations d'exportation</span>
+                <span id="cs-recommendation" class="text-[11px] text-slate-300 font-medium block mt-0.5">Exporter en JPEG sRGB avec le profil couleur intégré pour éviter toute dérive d'affichage sur écrans non calibrés.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
   </main>
 
   <!-- Pied de page -->
@@ -1224,7 +1319,7 @@
       const format = document.getElementById('viewing-format').value;
       const dpi = parseInt(document.getElementById('viewing-dpi').value);
 
-      let w = 30, h = 42; // Défaut A3
+      let w = 30, h = 42;
       if (format === '10x15') { w = 10; h = 15; }
       else if (format === 'A4') { w = 21; h = 29.7; }
       else if (format === 'A3') { w = 30; h = 42; }
@@ -1235,7 +1330,6 @@
       const diagonal = Math.sqrt(w * w + h * h);
       const recDistanceCm = Math.round(diagonal * 1.5);
 
-      // Seuil d'acuité visuelle : D (cm) = 8732 / DPI
       const sharpDistanceCm = Math.round(8732 / dpi);
 
       let distRecStr = recDistanceCm >= 100 ? `${(recDistanceCm / 100).toFixed(2)} m` : `${recDistanceCm} cm`;
@@ -1271,7 +1365,6 @@
       const title = document.getElementById('crop-status-title');
       const desc = document.getElementById('crop-status-desc');
 
-      // Base SVG : 200 x 140
       const baseW = 200;
       const baseH = 140;
       const startX = 20;
@@ -1280,7 +1373,6 @@
       const diff = Math.abs(rSensor - rPaper);
 
       if (diff < 0.02) {
-        // Ratios équivalents
         svgPaper.setAttribute('x', startX);
         svgPaper.setAttribute('y', startY);
         svgPaper.setAttribute('width', baseW);
@@ -1293,7 +1385,6 @@
         title.className = "font-bold text-emerald-400 text-sm";
         desc.textContent = "Le ratio du papier correspond exactement au capteur de votre appareil. Aucune coupe n'est nécessaire.";
       } else if (rSensor > rPaper) {
-        // Image trop large -> Rognage latéral (gauche/droite)
         const paperW = baseH * rPaper;
         const cropW = (baseW - paperW) / 2;
         const lossPct = Math.round((cropW * 2 / baseW) * 100);
@@ -1303,13 +1394,11 @@
         svgPaper.setAttribute('width', paperW);
         svgPaper.setAttribute('height', baseH);
 
-        // Bande gauche
         svgCrop1.setAttribute('x', startX);
         svgCrop1.setAttribute('y', startY);
         svgCrop1.setAttribute('width', cropW);
         svgCrop1.setAttribute('height', baseH);
 
-        // Bande droite
         svgCrop2.setAttribute('x', startX + cropW + paperW);
         svgCrop2.setAttribute('y', startY);
         svgCrop2.setAttribute('width', cropW);
@@ -1319,7 +1408,6 @@
         title.className = "font-bold text-amber-400 text-sm";
         desc.textContent = `L'image source est plus large que le papier. Environ ${lossPct}% de la largeur (bords gauche et droit) sera rogné au tirage.`;
       } else {
-        // Image trop haute -> Rognage vertical (haut/bas)
         const paperH = baseW / rPaper;
         const cropH = (baseH - paperH) / 2;
         const lossPct = Math.round((cropH * 2 / baseH) * 100);
@@ -1329,13 +1417,11 @@
         svgPaper.setAttribute('width', baseW);
         svgPaper.setAttribute('height', paperH);
 
-        // Bande haut
         svgCrop1.setAttribute('x', startX);
         svgCrop1.setAttribute('y', startY);
         svgCrop1.setAttribute('width', baseW);
         svgCrop1.setAttribute('height', cropH);
 
-        // Bande bas
         svgCrop2.setAttribute('x', startX);
         svgCrop2.setAttribute('y', startY + cropH + paperH);
         svgCrop2.setAttribute('width', baseW);
@@ -1346,6 +1432,69 @@
         desc.textContent = `L'image source est plus haute que le papier. Environ ${lossPct}% de la hauteur (haut et bas) sera coupé au tirage.`;
       }
     }
+
+
+    // --- 13. SOFT PROOFING & PROFILS ICC ---
+    function calculateSoftProof() {
+      const topic = document.getElementById('softproof-topic').value;
+      const title = document.getElementById('softproof-title');
+      const content = document.getElementById('softproof-content');
+
+      if (topic === 'icc_install') {
+        title.textContent = 'Installation & Usage des Profils ICC';
+        content.innerHTML = `
+          <p class="text-slate-300"><strong>• Windows :</strong> Clic droit sur le fichier <code class="bg-slate-900 px-1 py-0.5 rounded text-pink-300 font-mono">.icc</code> ou <code class="bg-slate-900 px-1 py-0.5 rounded text-pink-300 font-mono">.icm</code> &gt; <em>Installer le profil</em>.</p>
+          <p class="text-slate-300"><strong>• macOS :</strong> Déposer dans <code class="bg-slate-900 px-1 py-0.5 rounded text-pink-300 font-mono">/Bibliothèque/ColorSync/Profiles</code>.</p>
+          <p class="text-slate-400 mt-1"><strong>Lightroom / Photoshop :</strong> Activez <em>Épreuves sur écran (Soft Proofing)</em> et choisissez le profil téléchargé correspondant exactement au couple imprimante + papier.</p>
+        `;
+      } else if (topic === 'gamut_warning') {
+        title.textContent = 'Alerte de Gamut (Couleurs hors-gamut)';
+        content.innerHTML = `
+          <p class="text-slate-300"><strong>• Avertisseur :</strong> Surbrille en rouge ou gris les teintes RVB trop saturées que le papier d'impression ne peut physiquement pas reproduire.</p>
+          <p class="text-slate-400 mt-1"><strong>• Correction :</strong> Dans le panneau TSL/Couleur, réduisez légèrement la saturation ou adaptez la luminance de la teinte saturée jusqu'à extinction de l'alerte.</p>
+        `;
+      } else if (topic === 'perceptual') {
+        title.textContent = 'Rendu Perceptif (Perceptual)';
+        content.innerHTML = `
+          <p class="text-slate-300"><strong>• Principe :</strong> Recompresse l'ensemble des couleurs de l'image de manière proportionnelle pour préserver l'harmonie et les dégradés subtils.</p>
+          <p class="text-slate-400 mt-1"><strong>• Recommandé pour :</strong> Les paysages et visuels riches en dégradés complexes où la continuité des teintes prime sur la saturation pure.</p>
+        `;
+      } else if (topic === 'relative') {
+        title.textContent = 'Rendu Relatif Chromatique (Relative Colorimetric)';
+        content.innerHTML = `
+          <p class="text-slate-300"><strong>• Principe :</strong> Conserve exactement intactes toutes les couleurs imprimables et décale uniquement les couleurs hors-gamut vers la nuance la plus proche.</p>
+          <p class="text-slate-400 mt-1"><strong>• Recommandé pour :</strong> Les portraits et tons chairs, afin de maintenir la fidélité exacte des teintes de peau déjà reproductibles.</p>
+        `;
+      }
+    }
+
+
+    // --- 14. RVB VS CMJN & ESPACES COLORIMÉTRIQUES ---
+    function calculateColorSpace() {
+      const dest = document.getElementById('color-destination').value;
+      const csSpace = document.getElementById('cs-space');
+      const csDepth = document.getElementById('cs-depth');
+      const csRec = document.getElementById('cs-recommendation');
+
+      if (dest === 'web') {
+        csSpace.textContent = 'sRGB IEC61966-2.1';
+        csDepth.textContent = '8-bit / canal';
+        csRec.textContent = 'Exporter en JPEG sRGB avec profil intégré. Incontournable pour garantir des couleurs fidèles sur navigateurs web et écrans mobiles.';
+      } else if (dest === 'online_lab') {
+        csSpace.textContent = 'sRGB (Standard web)';
+        csDepth.textContent = '8-bit (JPEG / TIFF)';
+        csRec.textContent = 'La majorité des minilabs et tireuses automatiques en ligne exigent du sRGB. Vérifiez les directives du labo avant d\'envoyer du Adobe RGB.';
+      } else if (dest === 'fine_art') {
+        csSpace.textContent = 'Adobe RGB (1998) / ProPhoto';
+        csDepth.textContent = '16-bit / canal (TIFF)';
+        csRec.textContent = 'Ideal pour tirages d\'art sur imprimantes jet d\'encre 10 à 12 encres pigmentaires. Conserve la richesse maximale des cyan, verts et violets.';
+      } else if (dest === 'press') {
+        csSpace.textContent = 'CMJN (ISO Coated v2 / FOGRA39)';
+        csDepth.textContent = '8-bit (TIFF / PDF HD)';
+        csRec.textContent = 'Impression offset & presse. Effectuez la conversion RVB vers CMJN en toute fin de retouche afin de contrôler la charge d\'encrage (TAC).';
+      }
+    }
+
 
     // Initialisation globale
     document.addEventListener('DOMContentLoaded', () => {
@@ -1361,6 +1510,8 @@
       calculatePrintSize();
       calculateViewingDistance();
       calculateCropSimulator();
+      calculateSoftProof();
+      calculateColorSpace();
     });
   </script>
 
