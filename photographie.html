@@ -64,7 +64,7 @@
     </h1>
     
     <p class="text-xs md:text-sm text-slate-400 font-medium max-w-2xl mx-auto">
-      Calculateurs techniques, simulateurs d'exposition et assistants de prise de vue pour optimiser vos réglages sur le terrain.
+      Calculateurs techniques, simulateurs d'exposition et guides visuels pour optimiser vos réglages sur le terrain.
     </p>
 
     <!-- Bouton Retour au Hub -->
@@ -79,387 +79,575 @@
   </header>
 
   <!-- Grille des Outils -->
-  <main class="max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-6 my-auto">
+  <main class="max-w-5xl w-full space-y-8 my-auto">
 
-    <!-- 1. SIMULATEUR DU TRIANGLE D'EXPOSITION -->
-    <section class="krea-card p-6 flex flex-col justify-between space-y-5">
-      <div>
-        <div class="flex items-center gap-3 mb-4">
-          <div class="p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          </div>
+    <!-- CATEGORIE 1 : CALCULATEURS & SIMULATEURS -->
+    <section class="space-y-4">
+      <div class="flex items-center gap-2 text-purple-400 text-xs font-bold uppercase tracking-wider">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+        <span>Calculateurs &amp; Simulateurs</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- 1. SIMULATEUR DU TRIANGLE D'EXPOSITION -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
           <div>
-            <h2 class="text-lg font-bold text-white">Triangle d'Exposition</h2>
-            <p class="text-xs text-slate-400">Ouverture, Vitesse &amp; ISO interactifs</p>
-          </div>
-        </div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Triangle d'Exposition</h2>
+                <p class="text-xs text-slate-400">Ouverture, Vitesse &amp; ISO interactifs</p>
+              </div>
+            </div>
 
-        <div class="grid grid-cols-3 gap-2 text-xs">
+            <div class="grid grid-cols-3 gap-2 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Ouverture</label>
+                <select id="tri-aperture" class="tool-select text-xs" onchange="calculateTriangle()">
+                  <option value="1.4">f/1.4</option>
+                  <option value="2">f/2</option>
+                  <option value="2.8">f/2.8</option>
+                  <option value="4">f/4</option>
+                  <option value="5.6">f/5.6</option>
+                  <option value="8" selected>f/8</option>
+                  <option value="11">f/11</option>
+                  <option value="16">f/16</option>
+                  <option value="22">f/22</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Vitesse</label>
+                <select id="tri-speed" class="tool-select text-xs" onchange="calculateTriangle()">
+                  <option value="0.00025">1/4000s</option>
+                  <option value="0.0005">1/2000s</option>
+                  <option value="0.001">1/1000s</option>
+                  <option value="0.002">1/500s</option>
+                  <option value="0.004">1/250s</option>
+                  <option value="0.008" selected>1/125s</option>
+                  <option value="0.0166">1/60s</option>
+                  <option value="0.0333">1/30s</option>
+                  <option value="0.0666">1/15s</option>
+                  <option value="0.125">1/8s</option>
+                  <option value="0.25">1/4s</option>
+                  <option value="0.5">1/2s</option>
+                  <option value="1">1 sec</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Sensibilité ISO</label>
+                <select id="tri-iso" class="tool-select text-xs" onchange="calculateTriangle()">
+                  <option value="100" selected>ISO 100</option>
+                  <option value="200">ISO 200</option>
+                  <option value="400">ISO 400</option>
+                  <option value="800">ISO 800</option>
+                  <option value="1600">ISO 1600</option>
+                  <option value="3200">ISO 3200</option>
+                  <option value="6400">ISO 6400</option>
+                  <option value="12800">ISO 12800</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Impacts visuels -->
+            <div class="grid grid-cols-2 gap-2 mt-4 text-center">
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Exposition globale</span>
+                <span id="tri-exp-res" class="text-xs font-bold text-emerald-400">Exposition Équilibrée (0 EV)</span>
+              </div>
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Bruit numérique</span>
+                <span id="tri-noise-res" class="text-xs font-bold text-slate-200">Inexistant (Net)</span>
+              </div>
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Profondeur de champ</span>
+                <span id="tri-dof-res" class="text-xs font-bold text-cyan-400">Grande (Paysage net)</span>
+              </div>
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Flou de bougé</span>
+                <span id="tri-blur-res" class="text-xs font-bold text-slate-200">Net à main levée</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 2. CALCULATEUR D'ASTROPHOTOGRAPHIE (RÈGLE DES 500 / 300) -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
           <div>
-            <label class="block text-slate-300 font-medium mb-1">Ouverture</label>
-            <select id="tri-aperture" class="tool-select text-xs" onchange="calculateTriangle()">
-              <option value="1.4">f/1.4</option>
-              <option value="2">f/2</option>
-              <option value="2.8">f/2.8</option>
-              <option value="4">f/4</option>
-              <option value="5.6">f/5.6</option>
-              <option value="8" selected>f/8</option>
-              <option value="11">f/11</option>
-              <option value="16">f/16</option>
-              <option value="22">f/22</option>
-            </select>
-          </div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-indigo-500/20 border border-indigo-500/30 text-indigo-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Astrophotographie</h2>
+                <p class="text-xs text-slate-400">Temps de pose max sans traînée d'étoiles</p>
+              </div>
+            </div>
 
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Règle de calcul</label>
+                <select id="astro-rule" class="tool-select" onchange="calculateAstro()">
+                  <option value="500">Règle des 500 (Classique)</option>
+                  <option value="300">Règle des 300 (Haute Résolution)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Capteur</label>
+                <select id="astro-sensor" class="tool-select" onchange="calculateAstro()">
+                  <option value="1.0">Plein Format (x1.0)</option>
+                  <option value="1.5">APS-C Nikon/Sony/Fuji (x1.5)</option>
+                  <option value="1.6">APS-C Canon (x1.6)</option>
+                  <option value="2.0">Micro 4/3 (x2.0)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Focale (mm)</label>
+                <input type="number" id="astro-focal" class="tool-input" value="14" min="8" max="400" oninput="calculateAstro()">
+              </div>
+            </div>
+
+            <!-- Résultat Astrophoto -->
+            <div class="stat-box mt-4 text-center">
+              <span class="text-xs text-slate-400 block mb-1">Temps d'exposition maximal (Étoiles nettes)</span>
+              <span id="astro-result" class="text-2xl font-black text-indigo-400">35.7 secondes</span>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 3. CALCULATEUR DE FILTRE ND (POSE LONGUE) -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
           <div>
-            <label class="block text-slate-300 font-medium mb-1">Vitesse</label>
-            <select id="tri-speed" class="tool-select text-xs" onchange="calculateTriangle()">
-              <option value="0.00025">1/4000s</option>
-              <option value="0.0005">1/2000s</option>
-              <option value="0.001">1/1000s</option>
-              <option value="0.002">1/500s</option>
-              <option value="0.004">1/250s</option>
-              <option value="0.008" selected>1/125s</option>
-              <option value="0.0166">1/60s</option>
-              <option value="0.0333">1/30s</option>
-              <option value="0.0666">1/15s</option>
-              <option value="0.125">1/8s</option>
-              <option value="0.25">1/4s</option>
-              <option value="0.5">1/2s</option>
-              <option value="1">1 sec</option>
-            </select>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Calculateur Filtre ND</h2>
+                <p class="text-xs text-slate-400">Pose longue &amp; temps d'exposition</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Vitesse sans filtre</label>
+                <select id="nd-base-speed" class="tool-select" onchange="calculateND()">
+                  <option value="0.000125">1/8000s</option>
+                  <option value="0.00025">1/4000s</option>
+                  <option value="0.0005">1/2000s</option>
+                  <option value="0.001">1/1000s</option>
+                  <option value="0.002">1/500s</option>
+                  <option value="0.004">1/250s</option>
+                  <option value="0.008">1/125s</option>
+                  <option value="0.0166">1/60s</option>
+                  <option value="0.0333">1/30s</option>
+                  <option value="0.0666">1/15s</option>
+                  <option value="0.125">1/8s</option>
+                  <option value="0.25">1/4s</option>
+                  <option value="0.5">1/2s</option>
+                  <option value="1">1 sec</option>
+                  <option value="2">2 sec</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Filtre ND utilisé</label>
+                <select id="nd-filter" class="tool-select" onchange="calculateND()">
+                  <option value="1">ND2 (1 Stop)</option>
+                  <option value="2">ND4 (2 Stops)</option>
+                  <option value="3">ND8 (3 Stops)</option>
+                  <option value="6">ND64 (6 Stops)</option>
+                  <option value="8">ND256 (8 Stops)</option>
+                  <option value="10" selected>ND1000 (10 Stops)</option>
+                  <option value="15">ND32000 (15 Stops)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Résultat Exposition -->
+            <div class="stat-box mt-4 text-center">
+              <span class="text-xs text-slate-400 block mb-1">Temps de pose recalculé</span>
+              <span id="nd-result" class="text-2xl font-black text-pink-400">1/1s</span>
+            </div>
           </div>
 
+          <!-- Chronomètre Pose Longue -->
+          <div class="pt-2 border-t border-slate-800 flex items-center justify-between gap-2">
+            <div id="timer-display" class="font-mono text-sm font-bold text-slate-300">00:00</div>
+            <div class="flex gap-2">
+              <button id="timer-btn" onclick="toggleTimer()" class="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+                Démarrer Chrono
+              </button>
+              <button onclick="resetTimer()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs transition-colors">
+                Reset
+              </button>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 4. CALCULATEUR D'HYPERFOCALE & PROFONDEUR DE CHAMP -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
           <div>
-            <label class="block text-slate-300 font-medium mb-1">Sensibilité ISO</label>
-            <select id="tri-iso" class="tool-select text-xs" onchange="calculateTriangle()">
-              <option value="100" selected>ISO 100</option>
-              <option value="200">ISO 200</option>
-              <option value="400">ISO 400</option>
-              <option value="800">ISO 800</option>
-              <option value="1600">ISO 1600</option>
-              <option value="3200">ISO 3200</option>
-              <option value="6400">ISO 6400</option>
-              <option value="12800">ISO 12800</option>
-            </select>
-          </div>
-        </div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Hyperfocale &amp; DoF</h2>
+                <p class="text-xs text-slate-400">Calculateur de netteté &amp; profondeur de champ</p>
+              </div>
+            </div>
 
-        <!-- Impacts visuels -->
-        <div class="grid grid-cols-2 gap-2 mt-4 text-center">
-          <div class="stat-box">
-            <span class="text-[10px] text-slate-400 block">Exposition globale</span>
-            <span id="tri-exp-res" class="text-xs font-bold text-emerald-400">Exposition Équilibrée (0 EV)</span>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Capteur</label>
+                <select id="dof-sensor" class="tool-select" onchange="calculateDoF()">
+                  <option value="0.030">Plein Format (35mm)</option>
+                  <option value="0.019">APS-C (Canon)</option>
+                  <option value="0.020">APS-C (Nikon, Sony, Fuji)</option>
+                  <option value="0.015">Micro 4/3</option>
+                  <option value="0.011">1 pouce</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Focale (mm)</label>
+                <input type="number" id="dof-focal" class="tool-input" value="24" min="8" max="800" oninput="calculateDoF()">
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Ouverture (f/)</label>
+                <select id="dof-aperture" class="tool-select" onchange="calculateDoF()">
+                  <option value="1.4">f/1.4</option>
+                  <option value="1.8">f/1.8</option>
+                  <option value="2.8">f/2.8</option>
+                  <option value="4">f/4</option>
+                  <option value="5.6">f/5.6</option>
+                  <option value="8" selected>f/8</option>
+                  <option value="11">f/11</option>
+                  <option value="16">f/16</option>
+                  <option value="22">f/22</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Distance Sujet (m)</label>
+                <input type="number" id="dof-distance" class="tool-input" value="3" step="0.5" min="0.2" oninput="calculateDoF()">
+              </div>
+            </div>
+
+            <!-- Résultats DoF -->
+            <div class="grid grid-cols-3 gap-2 mt-4 text-center">
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Hyperfocale</span>
+                <span id="res-hyperfocal" class="text-sm font-bold text-cyan-400">0.0 m</span>
+              </div>
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Net De</span>
+                <span id="res-near" class="text-sm font-bold text-emerald-400">0.0 m</span>
+              </div>
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Net À</span>
+                <span id="res-far" class="text-sm font-bold text-emerald-400">0.0 m</span>
+              </div>
+            </div>
           </div>
-          <div class="stat-box">
-            <span class="text-[10px] text-slate-400 block">Bruit numérique</span>
-            <span id="tri-noise-res" class="text-xs font-bold text-slate-200">Inexistant (Net)</span>
+        </section>
+
+
+        <!-- 5. CONVERTISSEUR D'ÉQUIVALENCE FOCALE (CROP FACTOR) -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Équivalence Focale</h2>
+                <p class="text-xs text-slate-400">Convertisseur Crop Factor &amp; Ouverture</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Focale réelle</label>
+                <input type="number" id="crop-focal" class="tool-input" value="50" min="4" max="1000" oninput="calculateCrop()">
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Ouverture réelle</label>
+                <input type="number" id="crop-aperture" class="tool-input" value="1.8" step="0.1" min="0.95" max="32" oninput="calculateCrop()">
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Capteur source</label>
+                <select id="crop-sensor" class="tool-select" onchange="calculateCrop()">
+                  <option value="1.5">APS-C (x1.5)</option>
+                  <option value="1.6">APS-C Canon (x1.6)</option>
+                  <option value="2.0">Micro 4/3 (x2.0)</option>
+                  <option value="2.7">1 pouce (x2.7)</option>
+                  <option value="0.79">Moyen Format (x0.79)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Résultat Équivalence -->
+            <div class="stat-box mt-4 text-center">
+              <span class="text-xs text-slate-400 block mb-1">Équivalent Plein Format 24x36</span>
+              <div id="crop-result" class="text-lg font-black text-pink-400">75mm (f/2.7 équiv. DoF)</div>
+            </div>
           </div>
-          <div class="stat-box">
-            <span class="text-[10px] text-slate-400 block">Profondeur de champ</span>
-            <span id="tri-dof-res" class="text-xs font-bold text-cyan-400">Grande (Paysage net)</span>
+        </section>
+
+
+        <!-- 6. MÉTÉO PHOTO & QUALITÉ DE LUMIÈRE -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-yellow-500/20 border border-yellow-500/30 text-yellow-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Météo Photo &amp; Lumière</h2>
+                <p class="text-xs text-slate-400">Diagnostic d'éclairage &amp; conseils terrain</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Moment de la journée</label>
+                <select id="weather-time" class="tool-select" onchange="calculateWeather()">
+                  <option value="golden">Heure Dorée / Coucher</option>
+                  <option value="noon">Plein Midi / Ciel haut</option>
+                  <option value="overcast">Journée nuageuse</option>
+                  <option value="blue">Heure Bleue / Crépuscule</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Nébulosité</label>
+                <select id="weather-clouds" class="tool-select" onchange="calculateWeather()">
+                  <option value="clear">Ciel dégagé (0-20%)</option>
+                  <option value="partly">Nuages épars (30-60%)</option>
+                  <option value="heavy">Très couvert (70-100%)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="stat-box mt-4 space-y-1.5">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Qualité de lumière :</span>
+                <span id="weather-light-type" class="font-bold text-yellow-400">Lumière Chaude &amp; Rase</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Accessoire recommandé :</span>
+                <span id="weather-gear" class="font-semibold text-slate-200">Pare-soleil / Filtre Polarisant</span>
+              </div>
+              <p id="weather-advice" class="text-[11px] text-slate-400 pt-1 border-t border-slate-800 leading-tight">
+                Idéal pour le portrait et le paysage avec des ombres étirées et un rendu chaud.
+              </p>
+            </div>
           </div>
-          <div class="stat-box">
-            <span class="text-[10px] text-slate-400 block">Flou de bougé</span>
-            <span id="tri-blur-res" class="text-xs font-bold text-slate-200">Net à main levée</span>
-          </div>
-        </div>
+        </section>
+
       </div>
     </section>
 
 
-    <!-- 2. CALCULATEUR D'ASTROPHOTOGRAPHIE (RÈGLE DES 500 / 300) -->
-    <section class="krea-card p-6 flex flex-col justify-between space-y-5">
-      <div>
-        <div class="flex items-center gap-3 mb-4">
-          <div class="p-2.5 rounded-xl bg-indigo-500/20 border border-indigo-500/30 text-indigo-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-            </svg>
-          </div>
-          <div>
-            <h2 class="text-lg font-bold text-white">Astrophotographie</h2>
-            <p class="text-xs text-slate-400">Temps de pose max sans traînée d'étoiles</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Règle de calcul</label>
-            <select id="astro-rule" class="tool-select" onchange="calculateAstro()">
-              <option value="500">Règle des 500 (Classique)</option>
-              <option value="300">Règle des 300 (Haute Résolution)</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Capteur</label>
-            <select id="astro-sensor" class="tool-select" onchange="calculateAstro()">
-              <option value="1.0">Plein Format (x1.0)</option>
-              <option value="1.5">APS-C Nikon/Sony/Fuji (x1.5)</option>
-              <option value="1.6">APS-C Canon (x1.6)</option>
-              <option value="2.0">Micro 4/3 (x2.0)</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Focale (mm)</label>
-            <input type="number" id="astro-focal" class="tool-input" value="14" min="8" max="400" oninput="calculateAstro()">
-          </div>
-        </div>
-
-        <!-- Résultat Astrophoto -->
-        <div class="stat-box mt-4 text-center">
-          <span class="text-xs text-slate-400 block mb-1">Temps d'exposition maximal (Étoiles nettes)</span>
-          <span id="astro-result" class="text-2xl font-black text-indigo-400">35.7 secondes</span>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- 3. CALCULATEUR DE FILTRE ND (POSE LONGUE) -->
-    <section class="krea-card p-6 flex flex-col justify-between space-y-5">
-      <div>
-        <div class="flex items-center gap-3 mb-4">
-          <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <div>
-            <h2 class="text-lg font-bold text-white">Calculateur Filtre ND</h2>
-            <p class="text-xs text-slate-400">Pose longue &amp; temps d'exposition</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Vitesse sans filtre</label>
-            <select id="nd-base-speed" class="tool-select" onchange="calculateND()">
-              <option value="0.000125">1/8000s</option>
-              <option value="0.00025">1/4000s</option>
-              <option value="0.0005">1/2000s</option>
-              <option value="0.001">1/1000s</option>
-              <option value="0.002">1/500s</option>
-              <option value="0.004">1/250s</option>
-              <option value="0.008">1/125s</option>
-              <option value="0.0166">1/60s</option>
-              <option value="0.0333">1/30s</option>
-              <option value="0.0666">1/15s</option>
-              <option value="0.125">1/8s</option>
-              <option value="0.25">1/4s</option>
-              <option value="0.5">1/2s</option>
-              <option value="1">1 sec</option>
-              <option value="2">2 sec</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Filtre ND utilisé</label>
-            <select id="nd-filter" class="tool-select" onchange="calculateND()">
-              <option value="1">ND2 (1 Stop)</option>
-              <option value="2">ND4 (2 Stops)</option>
-              <option value="3">ND8 (3 Stops)</option>
-              <option value="6">ND64 (6 Stops)</option>
-              <option value="8">ND256 (8 Stops)</option>
-              <option value="10" selected>ND1000 (10 Stops)</option>
-              <option value="15">ND32000 (15 Stops)</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Résultat Exposition -->
-        <div class="stat-box mt-4 text-center">
-          <span class="text-xs text-slate-400 block mb-1">Temps de pose recalculé</span>
-          <span id="nd-result" class="text-2xl font-black text-pink-400">1/1s</span>
-        </div>
+    <!-- CATEGORIE 2 : GUIDES VISUELS & COMPARATEURS -->
+    <section class="space-y-4 pt-4 border-t border-slate-800/80">
+      <div class="flex items-center gap-2 text-pink-400 text-xs font-bold uppercase tracking-wider">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+        <span>Guides visuels &amp; Comparateurs</span>
       </div>
 
-      <!-- Chronomètre Pose Longue -->
-      <div class="pt-2 border-t border-slate-800 flex items-center justify-between gap-2">
-        <div id="timer-display" class="font-mono text-sm font-bold text-slate-300">00:00</div>
-        <div class="flex gap-2">
-          <button id="timer-btn" onclick="toggleTimer()" class="px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
-            Démarrer Chrono
-          </button>
-          <button onclick="resetTimer()" class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 text-xs transition-colors">
-            Reset
-          </button>
-        </div>
-      </div>
-    </section>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-
-    <!-- 4. CALCULATEUR D'HYPERFOCALE & PROFONDEUR DE CHAMP -->
-    <section class="krea-card p-6 flex flex-col justify-between space-y-5">
-      <div>
-        <div class="flex items-center gap-3 mb-4">
-          <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-          </div>
+        <!-- 7. COMPARATEUR DE FOCALES & DÉFORMATION DE PORTRAIT -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
           <div>
-            <h2 class="text-lg font-bold text-white">Hyperfocale &amp; DoF</h2>
-            <p class="text-xs text-slate-400">Calculateur de netteté &amp; profondeur de champ</p>
-          </div>
-        </div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h0.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                  <circle cx="12" cy="13" r="3" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Comparateur de Focales</h2>
+                <p class="text-xs text-slate-400">Déformation de portrait &amp; séparation bokeh</p>
+              </div>
+            </div>
 
-        <div class="grid grid-cols-2 gap-3 text-xs">
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Longueur Focale</label>
+                <select id="focal-comp" class="tool-select" onchange="calculateFocalComp()">
+                  <option value="14">14 mm (Ultra Grand-Angle)</option>
+                  <option value="24">24 mm (Grand-Angle)</option>
+                  <option value="35">35 mm (Standard Large)</option>
+                  <option value="50">50 mm (Vue Humaine)</option>
+                  <option value="85" selected>85 mm (Portrait Standard)</option>
+                  <option value="135">135 mm (Téléobjectif Portrait)</option>
+                  <option value="200">200 mm (Super Téléobjectif)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Ouverture Diaphragme</label>
+                <select id="aperture-comp" class="tool-select" onchange="calculateFocalComp()">
+                  <option value="1.4" selected>f/1.4 (Bokeh Extrême)</option>
+                  <option value="2.8">f/2.8 (Bokeh Doux)</option>
+                  <option value="5.6">f/5.6 (Moyenne Nettté)</option>
+                  <option value="11">f/11 (Arrière-plan net)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Simulation visuelle interactive -->
+            <div class="stat-box mt-4 space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Rendu du visage :</span>
+                <span id="focal-deform-title" class="font-bold text-pink-400">Proportions Parfaites</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Séparation Sujet / Bokeh :</span>
+                <span id="focal-bokeh-title" class="font-bold text-cyan-400">Excellente (Fond Très Flou)</span>
+              </div>
+              <p id="focal-desc" class="text-[11px] text-slate-400 pt-1 border-t border-slate-800 leading-tight">
+                La focale reine du portrait. Aucune déformation perspective, la distance du sujet est idéale pour un contact naturel.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 8. GUIDE DE LECTURE DE L'HISTOGRAMME -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
           <div>
-            <label class="block text-slate-300 font-medium mb-1">Capteur</label>
-            <select id="dof-sensor" class="tool-select" onchange="calculateDoF()">
-              <option value="0.030">Plein Format (35mm)</option>
-              <option value="0.019">APS-C (Canon)</option>
-              <option value="0.020">APS-C (Nikon, Sony, Fuji)</option>
-              <option value="0.015">Micro 4/3</option>
-              <option value="0.011">1 pouce</option>
-            </select>
-          </div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Guide Histogramme</h2>
+                <p class="text-xs text-slate-400">Hautes lumières, ombres &amp; technique ETTR</p>
+              </div>
+            </div>
 
+            <div class="text-xs">
+              <label class="block text-slate-300 font-medium mb-1">Scénario d'exposition à analyser</label>
+              <select id="hist-preset" class="tool-select" onchange="calculateHistogram()">
+                <option value="balanced" selected>Exposition Équilibrée</option>
+                <option value="underexposed">Sous-exposition (Ombres bouchées)</option>
+                <option value="overexposed">Sur-exposition (Hautes lumières cramées)</option>
+                <option value="ettr">Exposition à Droite (Technique ETTR)</option>
+              </select>
+            </div>
+
+            <!-- Graphique Visuel SVG Dynamique -->
+            <div class="mt-3 p-3 bg-slate-900/80 rounded-xl border border-slate-800 flex flex-col items-center">
+              <svg viewBox="0 0 300 80" class="w-full h-20 overflow-visible">
+                <!-- Axes & Grille -->
+                <line x1="0" y1="75" x2="300" y2="75" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+                <line x1="100" y1="0" x2="100" y2="75" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2" />
+                <line x1="200" y1="0" x2="200" y2="75" stroke="rgba(255,255,255,0.08)" stroke-dasharray="2" />
+                
+                <!-- Courbe interactive d'histogramme -->
+                <path id="hist-path" d="M 0 75 Q 75 70, 150 20 T 300 75 Z" fill="rgba(6, 182, 212, 0.25)" stroke="#06b6d4" stroke-width="2" />
+              </svg>
+              <div class="flex justify-between w-full text-[9px] text-slate-500 mt-1 font-mono uppercase tracking-wider">
+                <span>0 (Ombres)</span>
+                <span>128 (Moyennes)</span>
+                <span>255 (Hautes lum.)</span>
+              </div>
+            </div>
+
+            <div class="stat-box mt-3 space-y-1">
+              <span id="hist-status" class="text-xs font-bold text-cyan-400 block">Exposition Normale</span>
+              <p id="hist-desc" class="text-[11px] text-slate-400 leading-tight">
+                La courbe est bien centrée sans toucher les extrémités. Les détails sont préservés aussi bien dans les ombres que dans les hautes lumières.
+              </p>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 9. AIDE-MÉMOIRE DES MODES AF & MESURE DE LUMIÈRE -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5 md:col-span-2">
           <div>
-            <label class="block text-slate-300 font-medium mb-1">Focale (mm)</label>
-            <input type="number" id="dof-focal" class="tool-input" value="24" min="8" max="800" oninput="calculateDoF()">
-          </div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Aide-Mémoire AF &amp; Mesure de Lumière</h2>
+                <p class="text-xs text-slate-400">Assistant de configuration selon la scène photo</p>
+              </div>
+            </div>
 
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Ouverture (f/)</label>
-            <select id="dof-aperture" class="tool-select" onchange="calculateDoF()">
-              <option value="1.4">f/1.4</option>
-              <option value="1.8">f/1.8</option>
-              <option value="2.8">f/2.8</option>
-              <option value="4">f/4</option>
-              <option value="5.6">f/5.6</option>
-              <option value="8" selected>f/8</option>
-              <option value="11">f/11</option>
-              <option value="16">f/16</option>
-              <option value="22">f/22</option>
-            </select>
-          </div>
+            <div class="text-xs mb-4">
+              <label class="block text-slate-300 font-medium mb-1">Sélectionnez le sujet / environnement de prise de vue</label>
+              <select id="af-scene" class="tool-select" onchange="calculateAFMode()">
+                <option value="portrait_statique" selected>Portrait statique / Pose</option>
+                <option value="sport_action">Sport / Action / Enfant en mouvement</option>
+                <option value="backlight">Sujet à contre-jour (Silhouettes)</option>
+                <option value="landscape">Paysage / Architecture / Trépied</option>
+                <option value="macro">Macro &amp; Studio</option>
+              </select>
+            </div>
 
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Distance Sujet (m)</label>
-            <input type="number" id="dof-distance" class="tool-input" value="3" step="0.5" min="0.2" oninput="calculateDoF()">
+            <!-- Tableau synthétique des recommandations -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Mode Autofocus (AF)</span>
+                <span id="af-mode-res" class="text-xs font-bold text-purple-400">AF-S / One-Shot</span>
+                <span id="af-coll-res" class="text-[10px] text-slate-400 block mt-0.5">(Collimateur unique / Oeil)</span>
+              </div>
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Mesure de Lumière</span>
+                <span id="meter-mode-res" class="text-xs font-bold text-cyan-400">Évaluative / Matricielle</span>
+                <span id="meter-desc-res" class="text-[10px] text-slate-400 block mt-0.5">(Analyse globale)</span>
+              </div>
+              <div class="stat-box sm:col-span-1">
+                <span class="text-[10px] text-slate-400 block">Astuce Pro</span>
+                <span id="af-tip-res" class="text-[11px] text-slate-300 font-medium block mt-0.5">Faites la mise au point sur l'œil le plus proche de l'objectif.</span>
+              </div>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <!-- Résultats DoF -->
-        <div class="grid grid-cols-3 gap-2 mt-4 text-center">
-          <div class="stat-box">
-            <span class="text-[10px] text-slate-400 block">Hyperfocale</span>
-            <span id="res-hyperfocal" class="text-sm font-bold text-cyan-400">0.0 m</span>
-          </div>
-          <div class="stat-box">
-            <span class="text-[10px] text-slate-400 block">Net De</span>
-            <span id="res-near" class="text-sm font-bold text-emerald-400">0.0 m</span>
-          </div>
-          <div class="stat-box">
-            <span class="text-[10px] text-slate-400 block">Net À</span>
-            <span id="res-far" class="text-sm font-bold text-emerald-400">0.0 m</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- 5. CONVERTISSEUR D'ÉQUIVALENCE FOCALE (CROP FACTOR) -->
-    <section class="krea-card p-6 flex flex-col justify-between space-y-5">
-      <div>
-        <div class="flex items-center gap-3 mb-4">
-          <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-            </svg>
-          </div>
-          <div>
-            <h2 class="text-lg font-bold text-white">Équivalence Focale</h2>
-            <p class="text-xs text-slate-400">Convertisseur Crop Factor &amp; Ouverture</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Focale réelle</label>
-            <input type="number" id="crop-focal" class="tool-input" value="50" min="4" max="1000" oninput="calculateCrop()">
-          </div>
-
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Ouverture réelle</label>
-            <input type="number" id="crop-aperture" class="tool-input" value="1.8" step="0.1" min="0.95" max="32" oninput="calculateCrop()">
-          </div>
-
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Capteur source</label>
-            <select id="crop-sensor" class="tool-select" onchange="calculateCrop()">
-              <option value="1.5">APS-C (x1.5)</option>
-              <option value="1.6">APS-C Canon (x1.6)</option>
-              <option value="2.0">Micro 4/3 (x2.0)</option>
-              <option value="2.7">1 pouce (x2.7)</option>
-              <option value="0.79">Moyen Format (x0.79)</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Résultat Équivalence -->
-        <div class="stat-box mt-4 text-center">
-          <span class="text-xs text-slate-400 block mb-1">Équivalent Plein Format 24x36</span>
-          <div id="crop-result" class="text-lg font-black text-pink-400">75mm (f/2.7 équiv. DoF)</div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- 6. MÉTÉO PHOTO & QUALITÉ DE LUMIÈRE -->
-    <section class="krea-card p-6 flex flex-col justify-between space-y-5">
-      <div>
-        <div class="flex items-center gap-3 mb-4">
-          <div class="p-2.5 rounded-xl bg-yellow-500/20 border border-yellow-500/30 text-yellow-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          </div>
-          <div>
-            <h2 class="text-lg font-bold text-white">Météo Photo &amp; Lumière</h2>
-            <p class="text-xs text-slate-400">Diagnostic d'éclairage &amp; conseils terrain</p>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 text-xs">
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Moment de la journée</label>
-            <select id="weather-time" class="tool-select" onchange="calculateWeather()">
-              <option value="golden">Heure Dorée / Coucher</option>
-              <option value="noon">Plein Midi / Ciel haut</option>
-              <option value="overcast">Journée nuageuse</option>
-              <option value="blue">Heure Bleue / Crépuscule</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-slate-300 font-medium mb-1">Nébulosité</label>
-            <select id="weather-clouds" class="tool-select" onchange="calculateWeather()">
-              <option value="clear">Ciel dégagé (0-20%)</option>
-              <option value="partly">Nuages épars (30-60%)</option>
-              <option value="heavy">Très couvert (70-100%)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="stat-box mt-4 space-y-1.5">
-          <div class="flex justify-between items-center text-xs">
-            <span class="text-slate-400">Qualité de lumière :</span>
-            <span id="weather-light-type" class="font-bold text-yellow-400">Lumière Chaude &amp; Rase</span>
-          </div>
-          <div class="flex justify-between items-center text-xs">
-            <span class="text-slate-400">Accessoire recommandé :</span>
-            <span id="weather-gear" class="font-semibold text-slate-200">Pare-soleil / Filtre Polarisant</span>
-          </div>
-          <p id="weather-advice" class="text-[11px] text-slate-400 pt-1 border-t border-slate-800 leading-tight">
-            Idéal pour le portrait et le paysage avec des ombres étirées et un rendu chaud.
-          </p>
-        </div>
       </div>
     </section>
 
@@ -478,7 +666,6 @@
       const speed = parseFloat(document.getElementById('tri-speed').value);
       const iso = parseInt(document.getElementById('tri-iso').value);
 
-      // Calcul de décalage EV relatif par rapport à la base f/8, 1/125s, ISO 100
       const aptShift = Math.log2(8 / apt) * 2;
       const speedShift = Math.log2(speed * 125);
       const isoShift = Math.log2(iso / 100);
@@ -498,20 +685,17 @@
         expClass = "text-blue-400";
       }
 
-      // Bruit numérique
       let noiseText = "";
       if (iso <= 200) noiseText = "Inexistant (Net)";
       else if (iso <= 800) noiseText = "Faible / Propre";
       else if (iso <= 3200) noiseText = "Modéré (Grain visible)";
       else noiseText = "Fort (Bruit numérique)";
 
-      // Profondeur de champ
       let dofText = "";
       if (apt <= 2.8) dofText = "Faible (Flou d'arrière-plan)";
       else if (apt <= 5.6) dofText = "Moyenne (Sujet isolé)";
       else dofText = "Grande (Paysage net)";
 
-      // Flou de bougé
       let blurText = "";
       if (speed <= 0.002) blurText = "Action figée";
       else if (speed <= 0.0166) blurText = "Net à main levée";
@@ -610,19 +794,16 @@
       const coc = parseFloat(document.getElementById('dof-sensor').value);
       const f = parseFloat(document.getElementById('dof-focal').value);
       const N = parseFloat(document.getElementById('dof-aperture').value);
-      const d = parseFloat(document.getElementById('dof-distance').value) * 1000; // Mètres en mm
+      const d = parseFloat(document.getElementById('dof-distance').value) * 1000;
 
       if (!f || !N || !d) return;
 
-      // Hyperfocale H (en mm) = f^2 / (N * coc)
       const H = (f * f) / (N * coc);
       const H_m = H / 1000;
 
-      // Premier plan net D_near (en mm) = (H * d) / (H + (d - f))
       const D_near = (H * d) / (H + (d - f));
       const D_near_m = D_near / 1000;
 
-      // Dernier plan net D_far
       let D_far_m_str = '';
       if (d >= H) {
         D_far_m_str = 'Infini (∞)';
@@ -690,7 +871,132 @@
       document.getElementById('weather-advice').textContent = advice;
     }
 
-    // Initialisation
+
+    // --- 7. COMPARATEUR DE FOCALES ---
+    function calculateFocalComp() {
+      const focal = parseInt(document.getElementById('focal-comp').value);
+      const apt = parseFloat(document.getElementById('aperture-comp').value);
+
+      let deformTitle = "";
+      let desc = "";
+
+      if (focal <= 24) {
+        deformTitle = "Déformation Extrême";
+        desc = "Effet 'Gros nez / Petites oreilles'. Le visage est étiré au centre et déformé sur les bords. À éviter en portrait serré.";
+      } else if (focal <= 35) {
+        deformTitle = "Légère Déformation Perspective";
+        desc = "Adapté aux portraits environnementaux (sujet dans son contexte), mais nécessite une distance raisonnable du sujet.";
+      } else if (focal <= 50) {
+        deformTitle = "Perspective Naturelle";
+        desc = "Très proche de la vision humaine. Parfait pour le portrait en plan américain ou en buste.";
+      } else if (focal <= 85) {
+        deformTitle = "Proportions Idéales";
+        desc = "La focale de référence. Aucune déformation perspective, traits du visage parfaitement respectés et bokeh très doux.";
+      } else {
+        deformTitle = "Compression des Plans";
+        desc = "Le visage apparaît légèrement 'aplati' de manière très avantageuse, l'arrière-plan semble rapproché du sujet.";
+      }
+
+      let bokehTitle = "";
+      if (apt <= 1.8 && focal >= 85) {
+        bokehTitle = "Extrême (Sujet totalement détaché)";
+      } else if (apt <= 2.8) {
+        bokehTitle = "Excellente (Fond Très Flou)";
+      } else if (apt <= 5.6) {
+        bokehTitle = "Modérée (Contexte lisible)";
+      } else {
+        bokehTitle = "Faible (Arrière-plan net)";
+      }
+
+      document.getElementById('focal-deform-title').textContent = deformTitle;
+      document.getElementById('focal-bokeh-title').textContent = bokehTitle;
+      document.getElementById('focal-desc').textContent = desc;
+    }
+
+
+    // --- 8. GUIDE HISTOGRAMME ---
+    function calculateHistogram() {
+      const preset = document.getElementById('hist-preset').value;
+      const path = document.getElementById('hist-path');
+      const status = document.getElementById('hist-status');
+      const desc = document.getElementById('hist-desc');
+
+      if (preset === 'balanced') {
+        path.setAttribute('d', 'M 0 75 Q 75 70, 150 20 T 300 75 Z');
+        path.setAttribute('fill', 'rgba(6, 182, 212, 0.25)');
+        path.setAttribute('stroke', '#06b6d4');
+        status.textContent = 'Exposition Équilibrée';
+        status.className = 'text-xs font-bold text-cyan-400 block';
+        desc.textContent = 'La courbe est bien centrée sans toucher les bords. Les détails sont entièrement préservés dans les ombres et les hautes lumières.';
+      } else if (preset === 'underexposed') {
+        path.setAttribute('d', 'M 0 10 Q 30 20, 100 70 T 300 75 Z');
+        path.setAttribute('fill', 'rgba(59, 130, 246, 0.25)');
+        path.setAttribute('stroke', '#3b82f6');
+        status.textContent = 'Sous-exposition (Ombres Bouchées)';
+        status.className = 'text-xs font-bold text-blue-400 block';
+        desc.textContent = 'La courbe vient s\'écraser contre le mur de gauche (valeur 0). Les informations de couleur et de texture dans les ombres sont irrécupérables.';
+      } else if (preset === 'overexposed') {
+        path.setAttribute('d', 'M 0 75 Q 200 70, 270 20 T 300 0 Z');
+        path.setAttribute('fill', 'rgba(239, 68, 68, 0.25)');
+        path.setAttribute('stroke', '#ef4444');
+        status.textContent = 'Sur-exposition (Hautes Lumières Cramées)';
+        status.className = 'text-xs font-bold text-red-400 block';
+        desc.textContent = 'La courbe est colée tout à droite (valeur 255). Le ciel ou les zones lumineuses sont complètement blancs et sans matière.';
+      } else if (preset === 'ettr') {
+        path.setAttribute('d', 'M 0 75 Q 100 70, 240 15 T 295 75 Z');
+        path.setAttribute('fill', 'rgba(16, 185, 129, 0.25)');
+        path.setAttribute('stroke', '#10b981');
+        status.textContent = 'Exposition à Droite (Technique ETTR)';
+        status.className = 'text-xs font-bold text-emerald-400 block';
+        desc.textContent = 'La courbe est poussée vers la droite au maximum SANS toucher le bord 255. Cela optimise le rapport signal/bruit du capteur RAW pour un développement parfait.';
+      }
+    }
+
+
+    // --- 9. AIDE-MÉMOIRE AF ---
+    function calculateAFMode() {
+      const scene = document.getElementById('af-scene').value;
+
+      const afMode = document.getElementById('af-mode-res');
+      const afColl = document.getElementById('af-coll-res');
+      const meterMode = document.getElementById('meter-mode-res');
+      const meterDesc = document.getElementById('meter-desc-res');
+      const tip = document.getElementById('af-tip-res');
+
+      if (scene === 'portrait_statique') {
+        afMode.textContent = 'AF-S / One-Shot';
+        afColl.textContent = '(Point unique / Eye-AF)';
+        meterMode.textContent = 'Évaluative / Matricielle';
+        meterDesc.textContent = '(Analyse globale)';
+        tip.textContent = 'Faites impérativement la mise au point sur la pupille de l\'œil le plus proche du capteur.';
+      } else if (scene === 'sport_action') {
+        afMode.textContent = 'AF-C / AI-Servo';
+        afColl.textContent = '(Suivi dynamique / Sujet)';
+        meterMode.textContent = 'Évaluative / Matricielle';
+        meterDesc.textContent = '(Correction rapide)';
+        tip.textContent = 'Verrouillez le sujet avant de déclencher et utilisez la rafale haute vitesse.';
+      } else if (scene === 'backlight') {
+        afMode.textContent = 'AF-S ou Manuel';
+        afColl.textContent = '(Collimateur central)';
+        meterMode.textContent = 'Mesure Spot';
+        meterDesc.textContent = '(Sur le visage du sujet)';
+        tip.textContent = 'La mesure Spot garantit que le visage soit correctement exposé, même si le fond est très lumineux.';
+      } else if (scene === 'landscape') {
+        afMode.textContent = 'AF-S ou Manuel (LiveView)';
+        afColl.textContent = '(Point précis sur tiers bas)';
+        meterMode.textContent = 'Évaluative / Matricielle';
+        meterDesc.textContent = '(Équilibre général)';
+        tip.textContent = 'Faites la mise au point à la distance d\'hyperfocale pour maximiser la netteté de l\'avant à l\'arrière-plan.';
+      } else if (scene === 'macro') {
+        afMode.textContent = 'Mise au Point Manuelle (MF)';
+        afColl.textContent = '(Focus Peaking + Loupe)';
+        meterMode.textContent = 'Pondérée Centrale / Spot';
+        meterDesc.textContent = '(Précision macro)';
+        tip.textContent = 'Basculez en manuel et déplacez légèrement votre corps d\'avant en arrière pour ajuster la zone de netteté.';
+      }
+    }
+
+    // Initialisation globale
     document.addEventListener('DOMContentLoaded', () => {
       calculateTriangle();
       calculateAstro();
@@ -698,6 +1004,9 @@
       calculateDoF();
       calculateCrop();
       calculateWeather();
+      calculateFocalComp();
+      calculateHistogram();
+      calculateAFMode();
     });
   </script>
 
