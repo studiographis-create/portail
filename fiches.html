@@ -1,1 +1,621 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Les Fiches &amp; Comparatifs — Graphis Studio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #0b0f19;
+      background-image: 
+        radial-gradient(at 15% 10%, rgba(139, 92, 246, 0.25) 0px, transparent 40%),
+        radial-gradient(at 85% 5%, rgba(37, 99, 235, 0.22) 0px, transparent 45%),
+        radial-gradient(at 50% 20%, rgba(244, 114, 182, 0.18) 0px, transparent 40%),
+        radial-gradient(at 70% 30%, rgba(6, 182, 212, 0.15) 0px, transparent 35%);
+      background-repeat: no-repeat;
+      color: #f1f5f9;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .krea-card {
+      background-color: #161e2e;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(12px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .tool-input, .tool-select {
+      background-color: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 0.6rem 0.8rem;
+      color: #f1f5f9;
+      width: 100%;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .tool-input:focus, .tool-select:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+    }
+
+    .stat-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
+
+  <!-- En-tête -->
+  <header class="max-w-5xl w-full my-6 text-center space-y-4">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold uppercase tracking-widest">
+      Bibliothèque Technique &amp; Guide Pratique
+    </div>
+    
+    <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
+      Les <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">Fiches &amp; Comparatifs</span>
+    </h1>
+    
+    <p class="text-xs md:text-sm text-slate-400 font-medium max-w-2xl mx-auto">
+      Guides synthétiques, analyses comparatives et aide-mémoires pour le photographe.
+      <br><span class="text-slate-500 text-[11px]">Par Dimitri Damblon — Graphis Studio</span>
+    </p>
+
+    <!-- Bouton Retour au Hub -->
+    <div class="pt-2">
+      <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/60 text-xs text-slate-200 transition-all shadow-md group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-400 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        <span>Retour au Hub Central</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Section Principale -->
+  <main class="max-w-5xl w-full space-y-6 my-auto">
+
+    <!-- BARRE DE FILTRES ET RECHERCHE -->
+    <section class="krea-card p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
+      <div class="flex flex-wrap gap-2 w-full sm:w-auto justify-center sm:justify-start" id="category-filters">
+        <button onclick="filterCategory('all', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-600 text-white transition-all shadow-sm">
+          Toutes les fiches
+        </button>
+        <button onclick="filterCategory('workflow', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all">
+          Logiciels &amp; Workflow
+        </button>
+        <button onclick="filterCategory('terrain', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all">
+          Techniques Terrain
+        </button>
+        <button onclick="filterCategory('print', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all">
+          Impression &amp; Couleur
+        </button>
+      </div>
+
+      <div class="w-full sm:w-64">
+        <input type="text" id="fiche-search" oninput="searchFiches()" placeholder="Rechercher une fiche..." class="tool-input text-xs">
+      </div>
+    </section>
+
+    <!-- ACCORDÉON / VOLETS DES FICHES -->
+    <div class="space-y-4" id="fiches-container">
+
+      <!-- FICHE 1 : LIGHTROOM VS LIGHTROOM CLASSIC -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="workflow" data-title="lightroom vs lightroom classic comparatif">
+        
+        <!-- En-tête du volet (Cliquable) -->
+        <button onclick="toggleFiche('fiche-lr-comp')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 01-2-2h-2a2 2 0 01-2 2" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-semibold uppercase">Logiciels &amp; Workflow</span>
+                <span class="text-[10px] text-slate-500">• Fiche #01</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Lightroom (Cloud) vs Lightroom Classic : Lequel choisir ?
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-lr-comp" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-lr-comp" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- Contenu du Volet (Masqué par défaut) -->
+        <div id="fiche-lr-comp" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+
+          <!-- Barre d'actions supérieures de la fiche -->
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Lightroom vs Lightroom Classic', 'content-lr-comp')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <!-- CONTENU REEL DE LA FICHE -->
+          <div id="content-lr-comp" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            
+            <!-- Intro -->
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                Introduction &amp; Deux philosophies distinctes
+              </h3>
+              <p>
+                Depuis la refonte de la suite Adobe Creative Cloud, la marque propose deux logiciels sous le nom « Lightroom ». Bien qu'ils partagent le même moteur de développement RAW (Camera Raw) et offrent une qualité d'image identique, ils répondent à des besoins et des modes de travail radicalement différents.
+              </p>
+            </div>
+
+            <!-- Grille d'Analyse Comparative (Pros & Cons) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <!-- LIGHTROOM CLASSIC -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Lightroom Classic</h4>
+                  <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono">Bureau / Catalogue Local</span>
+                </div>
+
+                <p class="text-xs text-slate-400">
+                  L'outil historique de référence pour les photographes professionnels. Conçu pour le stockage local et le traitement en volume sur ordinateur fixe.
+                </p>
+
+                <!-- Points Positifs -->
+                <div class="space-y-2">
+                  <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    Aspects Positifs (Avantages)
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                    <li><strong>Gestion de catalogue avancée :</strong> Mots-clés hiérarchiques, collections dynamiques poussées, filtres de métadonnées complets.</li>
+                    <li><strong>Contrôle total du stockage :</strong> Vos images restent sur vos disques durs physiques (locaux ou NAS) sans coût d'abonnement Cloud supplémentaire.</li>
+                    <li><strong>Modules complets :</strong> Module d'impression d'art (Fine Art), création de livres photo, diaporamas et cartes géographiques.</li>
+                    <li><strong>Capture connectée (Tethering) :</strong> Shooting directement relié au boîtier en studio.</li>
+                    <li><strong>Écosystème de plugins :</strong> Prise en charge des extensions tierces (Export vers banques d'images, logiciels externes).</li>
+                  </ul>
+                </div>
+
+                <!-- Points Négatifs -->
+                <div class="space-y-2 pt-2 border-t border-slate-800/80">
+                  <span class="text-xs font-bold text-rose-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    Aspects Négatifs (Inconvénients)
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-400">
+                    <li>Interface plus dense et complexe pour les débutants.</li>
+                    <li>Synchronisation nomade limitée aux aperçus dynamiques (Smart Previews).</li>
+                    <li>Nécessite de gérer soi-même la stratégie de sauvegarde de son catalogue et de ses RAW.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- LIGHTROOM CLOUD -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Lightroom (Cloud / Ecosystem)</h4>
+                  <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-mono">Multi-plateforme / Cloud</span>
+                </div>
+
+                <p class="text-xs text-slate-400">
+                  Application moderne réécrite pour une fluidité totale entre ordinateur, iPad, iPhone et navigateurs Web.
+                </p>
+
+                <!-- Points Positifs -->
+                <div class="space-y-2">
+                  <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    Aspects Positifs (Avantages)
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                    <li><strong>Synchronisation intégrale :</strong> Retouchez sur Mac/PC, poursuivez sur iPad ou smartphone avec accès direct à vos fichiers RAW complets.</li>
+                    <li><strong>Interface épurée :</strong> Prise en main ultra-rapide et ergonomique.</li>
+                    <li><strong>Moteur de recherche IA (Sensei) :</strong> Retrouvez des objets ou visages dans vos photos sans avoir saisi de mots-clés.</li>
+                    <li><strong>Sauvegarde automatique :</strong> Vos fichiers originaux sont sauvegardés dans le Cloud Adobe de manière transparente.</li>
+                  </ul>
+                </div>
+
+                <!-- Points Négatifs -->
+                <div class="space-y-2 pt-2 border-t border-slate-800/80">
+                  <span class="text-xs font-bold text-rose-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    Aspects Négatifs (Inconvénients)
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-400">
+                    <li><strong>Coût du stockage Cloud :</strong> La formule 1 To ou plus devient onéreuse à mesure que votre bibliothèque grandit.</li>
+                    <li>Absence des modules Impression d'art, Livre et Diaporama.</li>
+                    <li>Gestion des métadonnées et filtres d'archivage moins poussés.</li>
+                    <li>Dépendance à une bonne connexion Internet pour le téléversement des volumineux RAW.</li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Tableau Récapitulatif -->
+            <div class="space-y-2 pt-2">
+              <h3 class="text-sm font-bold text-white">Tableau Synthétique des Fonctionnalités</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-800 text-slate-200 border-b border-slate-700">
+                      <th class="p-2.5">Critère</th>
+                      <th class="p-2.5">Lightroom Classic</th>
+                      <th class="p-2.5">Lightroom (Cloud)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Stockage principal des RAW</td>
+                      <td class="p-2.5">Disques durs locaux / NAS</td>
+                      <td class="p-2.5">Serveurs Cloud Adobe</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Gestion de Catalogue</td>
+                      <td class="p-2.5 text-emerald-400">Avançée (Fichier .lrcat)</td>
+                      <td class="p-2.5 text-slate-400">Simplifiée (Par albums)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Impression Fine Art &amp; Livre</td>
+                      <td class="p-2.5 text-emerald-400">Oui (Modules dédiés)</td>
+                      <td class="p-2.5 text-rose-400">Non</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Recherche IA d'images</td>
+                      <td class="p-2.5 text-slate-400">Non (Mots-clés manuels)</td>
+                      <td class="p-2.5 text-emerald-400">Oui (Adobe Sensei)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Usage Nomade (Tablette/Mobile)</td>
+                      <td class="p-2.5 text-slate-400">Partiel (Aperçus dynamiques)</td>
+                      <td class="p-2.5 text-emerald-400">Total (Fichiers originaux)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Conclusion & Verdict -->
+            <div class="stat-box space-y-2 border-purple-500/30">
+              <h3 class="text-sm font-bold text-purple-400">Conclusion &amp; Verdict Pro</h3>
+              <p class="text-xs text-slate-300">
+                <strong>Choisissez Lightroom Classic</strong> si vous êtes un photographe professionnel ou averti possédant plusieurs téraoctets de photos archivés localement, nécessitant un contrôle précis de vos métadonnées, shooting en studio relié à votre ordinateur ou réalisant des tirages d'art.
+              </p>
+              <p class="text-xs text-slate-300">
+                <strong>Choisissez Lightroom (Cloud)</strong> si vous êtes un photographe nomade, créateur de contenu ou voyageur cherchant la possibilité de retoucher la même photo indistinctement sur votre ordinateur portable, votre iPad ou votre smartphone, tout en bénéficiant de sauvegardes automatiques.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </article>
+
+
+      <!-- FICHE 2 : RAW VS JPEG -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="terrain" data-title="raw vs jpeg format photo comparatif">
+        
+        <button onclick="toggleFiche('fiche-raw-jpeg')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-semibold uppercase">Techniques Terrain</span>
+                <span class="text-[10px] text-slate-500">• Fiche #02</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Format RAW vs JPEG : Quand utiliser l'un ou l'autre ?
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-raw-jpeg" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-raw-jpeg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <div id="fiche-raw-jpeg" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('RAW vs JPEG', 'content-raw-jpeg')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <div id="content-raw-jpeg" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            
+            <p>
+              Le choix entre enregistrer ses photos en <strong>RAW</strong> (fichier brut) ou en <strong>JPEG</strong> (fichier compressé) détermine toute la flexibilité de votre travail en post-traitement.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h4 class="font-bold text-cyan-400 text-base">Format RAW (Brut)</h4>
+                <ul class="text-xs space-y-2 list-disc list-inside text-slate-300">
+                  <li><strong>Profondeur de couleur :</strong> 12 ou 14 bits (des milliards de couleurs enregistrées).</li>
+                  <li><strong>Plage dynamique maximale :</strong> Permet de déboucher les ombres profondes et rattraper les hautes lumières sans détérioration.</li>
+                  <li><strong>Balance des blancs modifiable :</strong> Ajustable à volonté après la prise de vue sans perte de qualité.</li>
+                  <li><strong>Contrainte :</strong> Fichiers très lourds nécessitant un développement sous Lightroom, Camera Raw ou Capture One.</li>
+                </ul>
+              </div>
+
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h4 class="font-bold text-pink-400 text-base">Format JPEG (Compressé)</h4>
+                <ul class="text-xs space-y-2 list-disc list-inside text-slate-300">
+                  <li><strong>Profondeur de couleur :</strong> 8 bits (16.7 millions de couleurs).</li>
+                  <li><strong>Fichier fini :</strong> Traité directement par le processeur de l'appareil (netteté, contraste, profil de couleur appliqués).</li>
+                  <li><strong>Prêt à l'emploi :</strong> Utilisable immédiatement sur le Web ou envoyé au client sans traitement.</li>
+                  <li><strong>Contrainte :</strong> Très faible marge de manœuvre en cas d'erreur d'exposition ou de mauvaise balance des blancs.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="stat-box space-y-2 border-cyan-500/30">
+              <h3 class="text-sm font-bold text-cyan-400">Recommandation du Studio</h3>
+              <p class="text-xs text-slate-300">
+                Photographiez en <strong>RAW</strong> pour toutes vos séances importantes (portraits, paysages, mariages, tirages) afin de conserver la qualité maximale. Reservez le <strong>JPEG</strong> pour la photo de reportage rapide ou d'événementiel exigeant une livraison immédiate.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </article>
+
+
+      <!-- FICHE 3 : ESPACES COLORIMÉTRIQUES SRGB VS ADOBE RGB -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="print" data-title="srgb vs adobe rgb vs prophoto espaces couleur impression">
+        
+        <button onclick="toggleFiche('fiche-color-spaces')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-semibold uppercase">Impression &amp; Couleur</span>
+                <span class="text-[10px] text-slate-500">• Fiche #03</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Espaces Colorimétriques : sRGB vs Adobe RGB vs ProPhoto RGB
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-color-spaces" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-color-spaces" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <div id="fiche-color-spaces" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Espaces Colorimétriques', 'content-color-spaces')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <div id="content-color-spaces" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            
+            <p>
+              Un espace couleur est un réservoir définissant la quantité de nuances qu'une image contient. Choisir le bon espace évite les teintes affadies ou les dérives de couleurs au tirage.
+            </p>
+
+            <div class="space-y-3">
+              <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
+                <h4 class="font-bold text-pink-400 text-sm mb-1">1. sRGB (Standard Web)</h4>
+                <p class="text-xs text-slate-300">
+                  L'espace le plus restreint mais universel. C'est le standard de tous les navigateurs web, réseaux sociaux, smartphones et tirages photo grand public. Tout fichier destiné à être vu sur un écran doit être exporté en sRGB.
+                </p>
+              </div>
+
+              <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
+                <h4 class="font-bold text-purple-400 text-sm mb-1">2. Adobe RGB (1998)</h4>
+                <p class="text-xs text-slate-300">
+                  Contient environ 35% de couleurs en plus que le sRGB, notamment dans les teintes vert/cyan. C'est le standard pour la retouche photo professionnelle et les tirages d'art sur imprimantes jet d'encre pigmentaires.
+                </p>
+              </div>
+
+              <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
+                <h4 class="font-bold text-cyan-400 text-sm mb-1">3. ProPhoto RGB</h4>
+                <p class="text-xs text-slate-300">
+                  Un espace gigantesque englobant la quasi-totalité des couleurs captables par un capteur numérique RAW. À utiliser exclusivement pendant le travail de retouche sous Photoshop en 16-bit pour ne perdre aucune subtilité.
+                </p>
+              </div>
+            </div>
+
+            <div class="stat-box space-y-2 border-pink-500/30">
+              <h3 class="text-sm font-bold text-pink-400">Règle d'or du Workflow Couleur</h3>
+              <p class="text-xs text-slate-300">
+                Travaillez vos RAW dans un grand espace (ProPhoto / Adobe RGB en 16 bits), puis <strong>convertissez impérativement en sRGB 8 bits</strong> lors de l'export final si l'image est destinée au Web ou aux labos photo grand public.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+  </main>
+
+  <!-- Pied de page -->
+  <footer class="my-8 text-center text-xs text-slate-500 space-y-1">
+    <p class="font-medium text-slate-400">Graphis Studio — Dimitri Damblon</p>
+    <p>© Tous droits réservés — Les Fiches &amp; Comparatifs Photographie</p>
+  </footer>
+
+  <!-- SCRIPT LOGIQUE DES VOLETS ET RECHERCHE -->
+  <script>
+    // System Accordéon : Ouverture d'un seul volet à la fois
+    function toggleFiche(id) {
+      const allBodies = document.querySelectorAll('.fiche-body');
+      const allIcons = document.querySelectorAll('.fiche-icon');
+
+      allBodies.forEach(body => {
+        if (body.id !== id) {
+          body.classList.add('hidden');
+        }
+      });
+
+      allIcons.forEach(icon => {
+        if (icon.dataset.target !== id) {
+          icon.classList.remove('rotate-180');
+        }
+      });
+
+      const targetBody = document.getElementById(id);
+      const targetIcon = document.querySelector(`[data-target="${id}"]`);
+
+      if (targetBody.classList.contains('hidden')) {
+        targetBody.classList.remove('hidden');
+        if (targetIcon) targetIcon.classList.add('rotate-180');
+      } else {
+        targetBody.classList.add('hidden');
+        if (targetIcon) targetIcon.classList.remove('rotate-180');
+      }
+    }
+
+    // Filtres de Catégories
+    function filterCategory(cat, btnElement) {
+      const buttons = document.querySelectorAll('.cat-btn');
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-purple-600', 'text-white');
+        btn.classList.add('bg-slate-800/80', 'text-slate-300');
+      });
+
+      btnElement.classList.remove('bg-slate-800/80', 'text-slate-300');
+      btnElement.classList.add('bg-purple-600', 'text-white');
+
+      const cards = document.querySelectorAll('.fiche-card');
+      cards.forEach(card => {
+        if (cat === 'all' || card.dataset.category === cat) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    // Recherche dynamique par mot-clé
+    function searchFiches() {
+      const query = document.getElementById('fiche-search').value.toLowerCase();
+      const cards = document.querySelectorAll('.fiche-card');
+
+      cards.forEach(card => {
+        const searchData = card.dataset.title.toLowerCase();
+        if (searchData.includes(query)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    // Moteur d'impression & Téléchargement de Fiche
+    function printFiche(title, contentId) {
+      const content = document.getElementById(contentId).innerHTML;
+      const printWindow = window.open('', '_blank', 'width=900,height=800');
+      
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="fr">
+        <head>
+          <meta charset="UTF-8">
+          <title>${title} — Graphis Studio</title>
+          <script src="https://cdn.tailwindcss.com"><\/script>
+          <style>
+            body { font-family: system-ui, -apple-system, sans-serif; padding: 2.5rem; color: #0f172a; background: #ffffff; }
+            h1, h2, h3, h4 { color: #0f172a; font-weight: 800; }
+            .stat-box { border: 1px solid #cbd5e1; padding: 1rem; border-radius: 0.75rem; background: #f8fafc; margin-top: 1rem; }
+            table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+            th, td { border: 1px solid #cbd5e1; padding: 0.5rem; text-align: left; }
+            th { background: #f1f5f9; }
+            @media print {
+              body { padding: 1rem; }
+            }
+          </style>
+        </head>
+        <body onload="setTimeout(() => { window.print(); }, 400);">
+          
+          <!-- En-tête de la fiche imprimée -->
+          <div style="border-bottom: 2px solid #8b5cf6; padding-bottom: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+              <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #7c3aed; letter-spacing: 0.05em;">Graphis Studio — Fiche Technique</span>
+              <h1 style="font-size: 1.5rem; font-weight: 900; color: #0f172a; margin-top: 0.25rem;">${title}</h1>
+            </div>
+            <div style="text-align: right; font-size: 0.8rem; color: #475569;">
+              <strong>Dimitri Damblon</strong><br>
+              Graphis Studio Photo
+            </div>
+          </div>
+
+          <!-- Contenu principal -->
+          <div style="font-size: 0.9rem; line-height: 1.6;">
+            ${content}
+          </div>
+
+          <!-- Pied de page de la fiche imprimée -->
+          <div style="margin-top: 2.5rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; text-align: center; font-size: 0.75rem; color: #64748b;">
+            © ${new Date().getFullYear()} Graphis Studio — Dimitri Damblon — Tous droits réservés.
+          </div>
+
+        </body>
+        </html>
+      `);
+
+      printWindow.document.close();
+    }
+  </script>
+
+</body>
+</html>
