@@ -64,7 +64,7 @@
     </h1>
     
     <p class="text-xs md:text-sm text-slate-400 font-medium max-w-2xl mx-auto">
-      Calculateurs techniques, simulateurs d'exposition, guides visuels et outils d'impression &amp; pré-presse.
+      Calculateurs techniques, simulateurs d'exposition, guides visuels, éclairage studio et assistants d'impression.
     </p>
 
     <!-- Bouton Retour au Hub -->
@@ -478,7 +478,281 @@
     </section>
 
 
-    <!-- CATEGORIE 2 : GUIDES VISUELS & COMPARATEURS -->
+    <!-- CATEGORIE 2 : ÉCLAIRAGE & FLASH DE STUDIO -->
+    <section class="space-y-4 pt-4 border-t border-slate-800/80">
+      <div class="flex items-center gap-2 text-amber-400 text-xs font-bold uppercase tracking-wider">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        <span>Éclairage &amp; Flash de Studio</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- 15. CALCULATEUR NOMBRE GUIDE (GN) & PORTÉE FLASH -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Nombre Guide (GN) &amp; Portée</h2>
+                <p class="text-xs text-slate-400">Portée du flash, puissance &amp; ISO</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">NG de base (m @ ISO 100)</label>
+                <input type="number" id="flash-gn-base" class="tool-input" value="60" min="10" max="200" oninput="calculateFlashGN()">
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Puissance réglée</label>
+                <select id="flash-power" class="tool-select" onchange="calculateFlashGN()">
+                  <option value="1" selected>1/1 (Pleine puissance)</option>
+                  <option value="0.5">1/2 puissance</option>
+                  <option value="0.25">1/4 puissance</option>
+                  <option value="0.125">1/8 puissance</option>
+                  <option value="0.0625">1/16 puissance</option>
+                  <option value="0.03125">1/32 puissance</option>
+                  <option value="0.015625">1/64 puissance</option>
+                  <option value="0.0078125">1/128 puissance</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Sensibilité ISO</label>
+                <select id="flash-iso" class="tool-select" onchange="calculateFlashGN()">
+                  <option value="100" selected>ISO 100</option>
+                  <option value="200">ISO 200</option>
+                  <option value="400">ISO 400</option>
+                  <option value="800">ISO 800</option>
+                  <option value="1600">ISO 1600</option>
+                  <option value="3200">ISO 3200</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Ouverture choisie (f/)</label>
+                <select id="flash-apt" class="tool-select" onchange="calculateFlashGN()">
+                  <option value="1.4">f/1.4</option>
+                  <option value="2">f/2</option>
+                  <option value="2.8">f/2.8</option>
+                  <option value="4">f/4</option>
+                  <option value="5.6" selected>f/5.6</option>
+                  <option value="8">f/8</option>
+                  <option value="11">f/11</option>
+                  <option value="16">f/16</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Résultats Flash -->
+            <div class="grid grid-cols-2 gap-2 mt-4 text-center">
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Portée maximale</span>
+                <span id="flash-dist-res" class="text-lg font-black text-amber-400">10.7 mètres</span>
+              </div>
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">NG Effectif ajusté</span>
+                <span id="flash-gneff-res" class="text-lg font-bold text-slate-200">60.0</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 16. CALCULATEUR DE LA LOI EN CARRÉ INVERSE (LUMIÈRE STUDIO) -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-orange-500/20 border border-orange-500/30 text-orange-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 01-2 2h-0 0a2 2 0 01-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Loi en Carré Inverse</h2>
+                <p class="text-xs text-slate-400">Chute de lumière &amp; douceur de la softbox</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Distance de départ D1 (m)</label>
+                <input type="number" id="inv-d1" class="tool-input" value="1.0" step="0.5" min="0.2" max="20" oninput="calculateInverseSquare()">
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Nouvelle distance D2 (m)</label>
+                <input type="number" id="inv-d2" class="tool-input" value="2.0" step="0.5" min="0.2" max="20" oninput="calculateInverseSquare()">
+              </div>
+            </div>
+
+            <!-- Résultat loi en carré inverse -->
+            <div class="stat-box mt-4 space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Intensité lumineuse restante :</span>
+                <span id="inv-intensity-res" class="font-bold text-orange-400">25.0%</span>
+              </div>
+              <div class="flex justify-between items-center text-xs">
+                <span class="text-slate-400">Variation d'exposition :</span>
+                <span id="inv-stops-res" class="font-bold text-amber-400">-2.0 Stops (EV)</span>
+              </div>
+              <p id="inv-advice" class="text-[11px] text-slate-400 pt-1 border-t border-slate-800 leading-tight">
+                En reculant la source de 1m à 2m, l'intensité est divisée par 4. Les ombres deviennent plus dures et l'arrière-plan reçoit une lumière plus uniforme.
+              </p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+
+    <!-- CATEGORIE 3 : PLANIFICATION, TIME-LAPSE & MATÉRIEL -->
+    <section class="space-y-4 pt-4 border-t border-slate-800/80">
+      <div class="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Planification, Time-Lapse &amp; Matériel</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- 17. CALCULATEUR DE TIME-LAPSE -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Calculateur de Time-Lapse</h2>
+                <p class="text-xs text-slate-400">Planification de séquence &amp; stockage</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Durée vidéo voulue (sec)</label>
+                <input type="number" id="tl-duration" class="tool-input" value="10" min="1" max="600" oninput="calculateTimelapse()">
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Cadence vidéo (i/s)</label>
+                <select id="tl-fps" class="tool-select" onchange="calculateTimelapse()">
+                  <option value="24" selected>24 i/s (Cinéma)</option>
+                  <option value="25">25 i/s (PAL / Europe)</option>
+                  <option value="30">30 i/s (Web / NTSC)</option>
+                  <option value="60">60 i/s (Fluide)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Intervalle de tir (sec)</label>
+                <input type="number" id="tl-interval" class="tool-input" value="5" min="1" max="3600" oninput="calculateTimelapse()">
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Taille photo moy. (Mo)</label>
+                <input type="number" id="tl-photosize" class="tool-input" value="25" min="1" max="200" oninput="calculateTimelapse()">
+              </div>
+            </div>
+
+            <!-- Résultats Time-Lapse -->
+            <div class="grid grid-cols-3 gap-2 mt-4 text-center">
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Photos requises</span>
+                <span id="tl-photos-res" class="text-sm font-bold text-emerald-400">240</span>
+              </div>
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Temps de tournage</span>
+                <span id="tl-time-res" class="text-sm font-bold text-cyan-400">20 min 00s</span>
+              </div>
+              <div class="stat-box">
+                <span class="text-[10px] text-slate-400 block">Espace carte</span>
+                <span id="tl-storage-res" class="text-sm font-bold text-purple-400">6.0 Go</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- 18. CALCULATEUR DE CAPACITÉ CARTE MÉMOIRE & RAW -->
+        <section class="krea-card p-6 flex flex-col justify-between space-y-5">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="p-2.5 rounded-xl bg-teal-500/20 border border-teal-500/30 text-teal-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div>
+                <h2 class="text-lg font-bold text-white">Capacité Carte &amp; RAW</h2>
+                <p class="text-xs text-slate-400">Estimation du nombre de photos par carte SD/CFexpress</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Capacité Carte (Go)</label>
+                <select id="card-gb" class="tool-select" onchange="calculateCardCapacity()">
+                  <option value="32">32 Go</option>
+                  <option value="64" selected>64 Go</option>
+                  <option value="128">128 Go</option>
+                  <option value="256">256 Go</option>
+                  <option value="512">512 Go</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Capteur (Mégapixels)</label>
+                <select id="card-mpx" class="tool-select" onchange="calculateCardCapacity()">
+                  <option value="24" selected>24 Mpx (Standard)</option>
+                  <option value="33">33 Mpx (Pro)</option>
+                  <option value="45">45 Mpx (Studio)</option>
+                  <option value="61">61 Mpx (Ultra HD)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-slate-300 font-medium mb-1">Format de Fichier</label>
+                <select id="card-format" class="tool-select" onchange="calculateCardCapacity()">
+                  <option value="raw14_uncompressed" selected>RAW 14-bit Non Compressé</option>
+                  <option value="raw14_lossless">RAW 14-bit Compressé sans perte</option>
+                  <option value="raw12">RAW 12-bit</option>
+                  <option value="jpeg">JPEG Fine</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Résultat Capacité Carte -->
+            <div class="stat-box mt-4 space-y-2 text-center">
+              <div>
+                <span class="text-xs text-slate-400 block mb-0.5">Nombre de vues estimé</span>
+                <span id="card-count-res" class="text-2xl font-black text-teal-400">1 777 photos</span>
+              </div>
+              <div class="pt-2 border-t border-slate-800/80 flex justify-between items-center text-xs">
+                <span class="text-slate-400">Poids moyen estimé par fichier :</span>
+                <span id="card-filesize-res" class="font-bold text-slate-200">36.0 Mo</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+
+    <!-- CATEGORIE 4 : GUIDES VISUELS & COMPARATEURS -->
     <section class="space-y-4 pt-4 border-t border-slate-800/80">
       <div class="flex items-center gap-2 text-pink-400 text-xs font-bold uppercase tracking-wider">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -652,7 +926,7 @@
     </section>
 
 
-    <!-- CATEGORIE 3 : CALCULATEURS & CONVERTISSEURS D'IMPRESSION -->
+    <!-- CATEGORIE 5 : CALCULATEURS & CONVERTISSEURS D'IMPRESSION -->
     <section class="space-y-4 pt-4 border-t border-slate-800/80">
       <div class="flex items-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -846,7 +1120,7 @@
     </section>
 
 
-    <!-- CATEGORIE 4 : GESTION DE LA COULEUR & PRÉ-PRESSE (SOFT PROOFING) -->
+    <!-- CATEGORIE 6 : GESTION DE LA COULEUR & PRÉ-PRESSE (SOFT PROOFING) -->
     <section class="space-y-4 pt-4 border-t border-slate-800/80">
       <div class="flex items-center gap-2 text-indigo-400 text-xs font-bold uppercase tracking-wider">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -1496,6 +1770,115 @@
     }
 
 
+    // --- 15. NOMBRE GUIDE (GN) & PORTÉE FLASH ---
+    function calculateFlashGN() {
+      const baseGn = parseFloat(document.getElementById('flash-gn-base').value) || 60;
+      const powerFraction = parseFloat(document.getElementById('flash-power').value) || 1;
+      const iso = parseInt(document.getElementById('flash-iso').value) || 100;
+      const aperture = parseFloat(document.getElementById('flash-apt').value) || 5.6;
+
+      // NG effectif = NG_base * sqrt(Puissance) * sqrt(ISO / 100)
+      const gnEff = baseGn * Math.sqrt(powerFraction) * Math.sqrt(iso / 100);
+      const maxDistance = gnEff / aperture;
+
+      document.getElementById('flash-gneff-res').textContent = gnEff.toFixed(1);
+      document.getElementById('flash-dist-res').textContent = `${maxDistance.toFixed(1)} mètres`;
+    }
+
+
+    // --- 16. LOI EN CARRÉ INVERSE ---
+    function calculateInverseSquare() {
+      const d1 = parseFloat(document.getElementById('inv-d1').value) || 1;
+      const d2 = parseFloat(document.getElementById('inv-d2').value) || 2;
+
+      if (d1 <= 0 || d2 <= 0) return;
+
+      const intensityRatio = Math.pow(d1 / d2, 2);
+      const intensityPct = intensityRatio * 100;
+
+      // Variation d'EV = 2 * log2(d1 / d2)
+      const evChange = 2 * (Math.log2(d1 / d2));
+
+      document.getElementById('inv-intensity-res').textContent = `${intensityPct.toFixed(1)}%`;
+      
+      const evSign = evChange > 0 ? "+" : "";
+      document.getElementById('inv-stops-res').textContent = `${evSign}${evChange.toFixed(1)} Stops (EV)`;
+
+      const advice = document.getElementById('inv-advice');
+      if (d2 > d1) {
+        advice.textContent = `En reculant la source de ${d1}m à ${d2}m, l'intensité est réduite à ${intensityPct.toFixed(1)}%. L'éclairage devient plus doux et le fond reçoit une lumière plus égale par rapport au sujet.`;
+      } else if (d2 < d1) {
+        advice.textContent = `En rapprochant la source de ${d1}m à ${d2}m, l'intensité augmente de ${intensityPct.toFixed(1)}%. L'ombre tombe très vite en arrière-plan, isolant fortement le sujet.`;
+      } else {
+        advice.textContent = "Aucun changement de distance. L'exposition et la qualité de lumière restent identiques.";
+      }
+    }
+
+
+    // --- 17. TIME-LAPSE ---
+    function calculateTimelapse() {
+      const durationSec = parseFloat(document.getElementById('tl-duration').value) || 10;
+      const fps = parseInt(document.getElementById('tl-fps').value) || 24;
+      const intervalSec = parseFloat(document.getElementById('tl-interval').value) || 5;
+      const photoMb = parseFloat(document.getElementById('tl-photosize').value) || 25;
+
+      const totalPhotos = Math.round(durationSec * fps);
+      const shootingSec = totalPhotos * intervalSec;
+      const totalMb = totalPhotos * photoMb;
+
+      document.getElementById('tl-photos-res').textContent = totalPhotos.toLocaleString('fr-FR');
+
+      // Conversion temps
+      let timeStr = "";
+      if (shootingSec < 60) {
+        timeStr = `${shootingSec} sec`;
+      } else if (shootingSec < 3600) {
+        const mins = Math.floor(shootingSec / 60);
+        const secs = Math.round(shootingSec % 60);
+        timeStr = `${mins} min ${secs.toString().padStart(2, '0')}s`;
+      } else {
+        const hrs = Math.floor(shootingSec / 3600);
+        const mins = Math.round((shootingSec % 3600) / 60);
+        timeStr = `${hrs}h ${mins.toString().padStart(2, '0')}m`;
+      }
+      document.getElementById('tl-time-res').textContent = timeStr;
+
+      // Conversion stockage
+      let storageStr = "";
+      if (totalMb >= 1000) {
+        storageStr = `${(totalMb / 1000).toFixed(1)} Go`;
+      } else {
+        storageStr = `${Math.round(totalMb)} Mo`;
+      }
+      document.getElementById('tl-storage-res').textContent = storageStr;
+    }
+
+
+    // --- 18. CAPACITÉ CARTE MÉMOIRE & RAW ---
+    function calculateCardCapacity() {
+      const gb = parseInt(document.getElementById('card-gb').value) || 64;
+      const mpx = parseInt(document.getElementById('card-mpx').value) || 24;
+      const fmt = document.getElementById('card-format').value;
+
+      let fileMb = 36;
+      if (fmt === 'raw14_uncompressed') {
+        fileMb = mpx * 1.5;
+      } else if (fmt === 'raw14_lossless') {
+        fileMb = mpx * 1.05;
+      } else if (fmt === 'raw12') {
+        fileMb = mpx * 0.85;
+      } else if (fmt === 'jpeg') {
+        fileMb = mpx * 0.35;
+      }
+
+      const totalMb = gb * 1000;
+      const photoCount = Math.floor(totalMb / fileMb);
+
+      document.getElementById('card-count-res').textContent = `${photoCount.toLocaleString('fr-FR')} photos`;
+      document.getElementById('card-filesize-res').textContent = `${fileMb.toFixed(1)} Mo`;
+    }
+
+
     // Initialisation globale
     document.addEventListener('DOMContentLoaded', () => {
       calculateTriangle();
@@ -1512,6 +1895,10 @@
       calculateCropSimulator();
       calculateSoftProof();
       calculateColorSpace();
+      calculateFlashGN();
+      calculateInverseSquare();
+      calculateTimelapse();
+      calculateCardCapacity();
     });
   </script>
 
