@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -275,23 +274,23 @@
                     </tr>
                     <tr>
                       <td class="p-2.5 font-semibold text-slate-200">Gestion de Catalogue</td>
-                      <td class="p-2.5 text-emerald-400">Avançée (Fichier .lrcat)</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Avançée (Fichier .lrcat)</td>
                       <td class="p-2.5 text-slate-400">Simplifiée (Par albums)</td>
                     </tr>
                     <tr>
                       <td class="p-2.5 font-semibold text-slate-200">Impression Fine Art &amp; Livre</td>
-                      <td class="p-2.5 text-emerald-400">Oui (Modules dédiés)</td>
-                      <td class="p-2.5 text-rose-400">Non</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Oui (Modules dédiés)</td>
+                      <td class="p-2.5 text-rose-400 font-medium">Non</td>
                     </tr>
                     <tr>
                       <td class="p-2.5 font-semibold text-slate-200">Recherche IA d'images</td>
                       <td class="p-2.5 text-slate-400">Non (Mots-clés manuels)</td>
-                      <td class="p-2.5 text-emerald-400">Oui (Adobe Sensei)</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Oui (Adobe Sensei)</td>
                     </tr>
                     <tr>
                       <td class="p-2.5 font-semibold text-slate-200">Usage Nomade (Tablette/Mobile)</td>
                       <td class="p-2.5 text-slate-400">Partiel (Aperçus dynamiques)</td>
-                      <td class="p-2.5 text-emerald-400">Total (Fichiers originaux)</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Total (Fichiers originaux)</td>
                     </tr>
                   </tbody>
                 </table>
@@ -561,7 +560,7 @@
       });
     }
 
-    // Moteur d'impression & Téléchargement de Fiche
+    // Moteur d'impression & Téléchargement de Fiche - OPTIMISÉ HAUTE LISIBILITÉ PRINT / PDF
     function printFiche(title, contentId) {
       const content = document.getElementById(contentId).innerHTML;
       const printWindow = window.open('', '_blank', 'width=900,height=800');
@@ -574,38 +573,128 @@
           <title>${title} — Graphis Studio</title>
           <script src="https://cdn.tailwindcss.com"><\/script>
           <style>
-            body { font-family: system-ui, -apple-system, sans-serif; padding: 2.5rem; color: #0f172a; background: #ffffff; }
-            h1, h2, h3, h4 { color: #0f172a; font-weight: 800; }
-            .stat-box { border: 1px solid #cbd5e1; padding: 1rem; border-radius: 0.75rem; background: #f8fafc; margin-top: 1rem; }
-            table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
-            th, td { border: 1px solid #cbd5e1; padding: 0.5rem; text-align: left; }
-            th { background: #f1f5f9; }
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+            
+            body { 
+              font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+              padding: 2rem; 
+              color: #0f172a !important; 
+              background: #ffffff !important; 
+              line-height: 1.6;
+            }
+
+            /* Forcer tous les textes généraux en sombre pour un contraste parfait */
+            *, p, li, td, span, div, h1, h2, h3, h4 {
+              color: #0f172a;
+            }
+
+            .text-slate-200, .text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600, .text-white {
+              color: #1e293b !important;
+            }
+
+            /* Adaptations des couleurs d'accentuation en teintes sombres et contrastées */
+            .text-emerald-400, .text-emerald-500 { 
+              color: #047857 !important; 
+              font-weight: 700 !important; 
+            }
+            .text-rose-400, .text-red-400, .text-red-500 { 
+              color: #be123c !important; 
+              font-weight: 700 !important; 
+            }
+            .text-purple-400, .text-purple-500 { 
+              color: #6b21a8 !important; 
+              font-weight: 700 !important; 
+            }
+            .text-cyan-400, .text-cyan-500 { 
+              color: #0e7490 !important; 
+              font-weight: 700 !important; 
+            }
+            .text-pink-400, .text-pink-500 { 
+              color: #be185d !important; 
+              font-weight: 700 !important; 
+            }
+            .text-amber-400, .text-amber-500 { 
+              color: #b45309 !important; 
+              font-weight: 700 !important; 
+            }
+
+            /* Fond des cartes et boîtes de résumé pour l'impression */
+            .bg-slate-900, .bg-slate-900\/80, .bg-slate-800, .bg-slate-800\/80, .bg-slate-800\/60, .bg-slate-900\/60 {
+              background-color: #f8fafc !important;
+              border: 1px solid #cbd5e1 !important;
+              border-radius: 0.75rem !important;
+            }
+
+            .stat-box { 
+              border: 1.5px solid #8b5cf6 !important; 
+              padding: 1.25rem !important; 
+              border-radius: 0.75rem !important; 
+              background: #faf5ff !important; 
+              margin-top: 1.25rem !important; 
+            }
+
+            /* Optimisation des Tableaux pour l'impression */
+            table { 
+              width: 100% !important; 
+              border-collapse: collapse !important; 
+              margin-top: 1rem !important; 
+              margin-bottom: 1rem !important; 
+            }
+            th, td { 
+              border: 1px solid #cbd5e1 !important; 
+              padding: 0.65rem 0.75rem !important; 
+              text-align: left !important; 
+              font-size: 0.85rem !important;
+              color: #0f172a !important; 
+            }
+            th { 
+              background-color: #e2e8f0 !important; 
+              font-weight: 800 !important; 
+              color: #0f172a !important; 
+            }
+            tr {
+              background-color: #ffffff !important;
+            }
+            tr:nth-child(even) {
+              background-color: #f8fafc !important;
+            }
+
+            /* Bordures & Séparateurs */
+            .border-slate-800, .border-slate-700, .border-slate-800\/80 {
+              border-color: #cbd5e1 !important;
+            }
+
+            /* Masquer les éléments inutiles pour l'impression */
+            button, .no-print { 
+              display: none !important; 
+            }
+
             @media print {
-              body { padding: 1rem; }
+              body { padding: 0.5cm; }
             }
           </style>
         </head>
         <body onload="setTimeout(() => { window.print(); }, 400);">
           
           <!-- En-tête de la fiche imprimée -->
-          <div style="border-bottom: 2px solid #8b5cf6; padding-bottom: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end;">
+          <div style="border-bottom: 3px solid #8b5cf6; padding-bottom: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end;">
             <div>
-              <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: #7c3aed; letter-spacing: 0.05em;">Graphis Studio — Fiche Technique</span>
-              <h1 style="font-size: 1.5rem; font-weight: 900; color: #0f172a; margin-top: 0.25rem;">${title}</h1>
+              <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #6b21a8; letter-spacing: 0.05em;">Graphis Studio — Fiche Technique &amp; Comparatif</span>
+              <h1 style="font-size: 1.6rem; font-weight: 900; color: #0f172a; margin-top: 0.25rem; line-height: 1.2;">${title}</h1>
             </div>
-            <div style="text-align: right; font-size: 0.8rem; color: #475569;">
+            <div style="text-align: right; font-size: 0.8rem; color: #334155;">
               <strong>Dimitri Damblon</strong><br>
               Graphis Studio Photo
             </div>
           </div>
 
           <!-- Contenu principal -->
-          <div style="font-size: 0.9rem; line-height: 1.6;">
+          <div style="font-size: 0.875rem; line-height: 1.6;">
             ${content}
           </div>
 
           <!-- Pied de page de la fiche imprimée -->
-          <div style="margin-top: 2.5rem; border-top: 1px solid #e2e8f0; padding-top: 1rem; text-align: center; font-size: 0.75rem; color: #64748b;">
+          <div style="margin-top: 2.5rem; border-top: 1px solid #cbd5e1; padding-top: 1rem; text-align: center; font-size: 0.75rem; color: #475569;">
             © ${new Date().getFullYear()} Graphis Studio — Dimitri Damblon — Tous droits réservés.
           </div>
 
