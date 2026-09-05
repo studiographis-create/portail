@@ -475,7 +475,7 @@
             <div class="stat-box space-y-2 border-pink-500/30">
               <h3 class="text-sm font-bold text-pink-400">Règle d'or du Workflow Couleur</h3>
               <p class="text-xs text-slate-300">
-                Travaillez vos RAW dans un grand espace (ProPhoto / Adobe RGB en 16 bits), puis <strong>convertissez impérativement en sRGB 8 bits</strong> lors de l'export final si l'image est destinée au Web ou aux labos photo grand public.
+                Travaillez vos RAW dans un grand espace (ProPhoto / Adobe RGB en 16 bits), puis <strong>convertissez impérativement en sRGB 8 bits</strong> lors de l'export final si l'image me est destinée au Web ou aux labos photo grand public.
               </p>
             </div>
 
@@ -560,7 +560,7 @@
       });
     }
 
-    // Moteur d'impression & Téléchargement de Fiche - AVEC NETTOYAGE DES FONDS ET TEXTES
+    // Moteur d'impression & Téléchargement de Fiche - AVEC FONDS BLANCS & TEXTES SOMBRES CONTRASTÉS
     function printFiche(title, contentId) {
       const content = document.getElementById(contentId).innerHTML;
       const printWindow = window.open('', '_blank', 'width=900,height=800');
@@ -575,71 +575,84 @@
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
             
-            body { 
-              font-family: 'Inter', system-ui, -apple-system, sans-serif; 
-              padding: 2rem; 
-              color: #0f172a !important; 
+            /* Fond de page blanc pur */
+            html, body { 
               background-color: #ffffff !important; 
+              color: #0f172a !important; 
+              font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+              padding: 1.5rem; 
               line-height: 1.6;
             }
 
-            /* Remplacer systématiquement tous les fonds sombres Tailwind par du blanc ou du gris très clair */
-            div, section, article {
-              background-color: #ffffff !important;
-            }
-
-            /* Conteneurs, Cartes & Encadrés pour le rendu impression */
-            .bg-slate-900, 
-            .bg-slate-900\\/80, 
-            .bg-slate-900\\/60, 
-            .bg-slate-800, 
-            .bg-slate-800\\/80, 
-            .bg-slate-800\\/60,
-            div[class*="bg-slate-"] {
+            /* Forcer les conteneurs et cartes à avoir un fond gris très clair (#f8fafc) avec bordure nette */
+            .grid > div, 
+            div[class*="bg-slate"], 
+            div[class*="bg-"],
+            section, article {
               background-color: #f8fafc !important;
-              border: 1px solid #cbd5e1 !important;
+              border: 1.5px solid #cbd5e1 !important;
               border-radius: 0.75rem !important;
+              padding: 1.25rem !important;
               box-shadow: none !important;
             }
 
-            /* Neutralisation des fonds sombres des badges/tags */
-            .bg-cyan-500\\/10, .bg-pink-500\\/10, .bg-purple-500\\/10, .bg-emerald-500\\/10 {
-              background-color: #f1f5f9 !important;
-              border: 1px solid #cbd5e1 !important;
-            }
-
-            /* Forcer tous les textes en teintes sombres très lisibles */
-            *, p, li, td, th, span, div, h1, h2, h3, h4, strong {
+            /* Neutralisation complète des textes clairs vers du noir / ardoise foncé (#0f172a / #1e293b) */
+            *, p, li, td, th, span, div, h1, h2, h3, h4, strong, b {
               color: #0f172a !important;
               text-shadow: none !important;
             }
 
-            .text-slate-200, .text-slate-300, .text-slate-400, .text-slate-500, .text-white {
-              color: #334155 !important;
+            .text-slate-200, .text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600, .text-white {
+              color: #1e293b !important;
             }
 
-            /* Couleurs d'accentuation adaptées à l'impression sur fond blanc */
-            .text-emerald-400, .text-emerald-500 { color: #047857 !important; font-weight: 700 !important; }
-            .text-rose-400, .text-red-400, .text-red-500 { color: #b91c1c !important; font-weight: 700 !important; }
-            .text-purple-400, .text-purple-500 { color: #6b21a8 !important; font-weight: 700 !important; }
-            .text-cyan-400, .text-cyan-500 { color: #0e7490 !important; font-weight: 700 !important; }
-            .text-pink-400, .text-pink-500 { color: #be185d !important; font-weight: 700 !important; }
-            .text-amber-400, .text-amber-500 { color: #b45309 !important; font-weight: 700 !important; }
+            /* Badges / En-têtes secondaires */
+            span[class*="bg-"] {
+              background-color: #e2e8f0 !important;
+              border: 1px solid #cbd5e1 !important;
+              color: #0f172a !important;
+            }
 
-            /* Boîte de conclusion */
+            /* Couleurs d'accentuation vibrantes et très sombres sur fond blanc */
+            .text-emerald-400, .text-emerald-500, [class*="text-emerald"] { 
+              color: #15803d !important; 
+              font-weight: 800 !important; 
+            }
+            .text-rose-400, .text-red-400, .text-red-500, [class*="text-rose"], [class*="text-red"] { 
+              color: #b91c1c !important; 
+              font-weight: 800 !important; 
+            }
+            .text-purple-400, .text-purple-500, [class*="text-purple"] { 
+              color: #6b21a8 !important; 
+              font-weight: 800 !important; 
+            }
+            .text-cyan-400, .text-cyan-500, [class*="text-cyan"] { 
+              color: #0369a1 !important; 
+              font-weight: 800 !important; 
+            }
+            .text-pink-400, .text-pink-500, [class*="text-pink"] { 
+              color: #be185d !important; 
+              font-weight: 800 !important; 
+            }
+            .text-amber-400, .text-amber-500, [class*="text-amber"] { 
+              color: #b45309 !important; 
+              font-weight: 800 !important; 
+            }
+
+            /* Boîte de conclusion / Verdict */
             .stat-box { 
-              border: 1.5px solid #8b5cf6 !important; 
+              border: 2px solid #8b5cf6 !important; 
               padding: 1.25rem !important; 
               border-radius: 0.75rem !important; 
               background-color: #faf5ff !important; 
               margin-top: 1.25rem !important; 
             }
 
-            /* Rendu propre du tableau */
+            /* Tableaux de comparaison */
             table { 
               width: 100% !important; 
               border-collapse: collapse !important; 
-              margin: 1rem 0 !important; 
+              margin: 1.25rem 0 !important; 
             }
             th, td { 
               border: 1px solid #cbd5e1 !important; 
@@ -649,7 +662,7 @@
               color: #0f172a !important; 
             }
             th { 
-              background-color: #e2e8f0 !important; 
+              background-color: #f1f5f9 !important; 
               font-weight: 800 !important; 
               color: #0f172a !important; 
             }
@@ -660,7 +673,7 @@
               background-color: #f8fafc !important;
             }
 
-            /* Masquer boutons */
+            /* Masquer les boutons non imprimables */
             button, .no-print { 
               display: none !important; 
             }
