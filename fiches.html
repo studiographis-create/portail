@@ -1661,7 +1661,7 @@
                 Par défaut, lorsqu'un fichier RAW est ouvert dans Lightroom Classic ou Camera Raw, le logiciel applique automatiquement un profil de couleur (comme <em>Adobe Couleur</em> ou <em>Adobe Standard</em>). Ces profils intègrent une <strong>courbe de tonalité implicite en « S »</strong> qui ajoute du contraste, assombrit les ombres et bouscule la luminosité pour rendre la photo agréable à l'œil instantanément.
               </p>
               <p>
-                Un <strong>Profil Linéaire (Linear Profile)</strong> neutralise totalement cette courbe tonale forcée. Il restitue les valeurs de luminance captées par le capteur de façon strictement linéaire : la valeur de chaque pixel est interprétée sans artifice ni contraste préprogrammé.
+                Un <strong>Profil Linéaire (Linear Profile)</strong> neutralise totalement cette courbe tonale forcée. Il restitue les valeurs de luminance captées par le capteur de façon strictly linéaire : la valeur de chaque pixel est interprétée sans artifice ni contraste préprogrammé.
               </p>
             </div>
 
@@ -1757,6 +1757,187 @@
               <h3 class="text-sm font-bold text-cyan-400">Verdict Pro &amp; Conseil Graphis Studio</h3>
               <p class="text-xs text-slate-300">
                 Le profil linéaire est le secret le mieux gardé des retoucheurs paysagistes et portraitistes Fine Art. Utilisez-le systématiquement pour vos scènes à <strong>très fort contraste (contre-jour, ciels menaçants, intérieur/extérieur)</strong> : il vous évitera d'avoir des zones cramées ou des ombres irrécupérables en vous offrant une latitude de retouche inégalée.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </article>
+
+
+      <!-- FICHE 10 : DÉFINITION VS RÉSOLUTION (PIXELS, PPI, DPI) -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="print" data-title="définition vs résolution pixels ppi dpi calcul dimensionnement tirage papier impression a4 a3 a2 300 dpi grand format comparatif">
+        
+        <!-- En-tête du volet (Cliquable) -->
+        <button onclick="toggleFiche('fiche-def-res')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-semibold uppercase">Impression &amp; Couleur</span>
+                <span class="text-[10px] text-slate-500">• Fiche #10</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Définition vs Résolution : Pixels, PPI, DPI &amp; Calculs de Tirage
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-def-res" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-def-res" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- Contenu du Volet -->
+        <div id="fiche-def-res" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+
+          <!-- Barre d'actions supérieures -->
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Définition vs Résolution (Pixels, PPI, DPI)', 'content-def-res')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <!-- CONTENU DE LA FICHE -->
+          <div id="content-def-res" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            
+            <!-- Intro -->
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+                Démêler les notions : Définition, PPI et DPI
+              </h3>
+              <p>
+                Les termes <strong>Définition</strong> et <strong>Résolution</strong> sont très souvent confondus. En photographie, ils désignent deux mesures totalement distinctes mais complémentaires pour passer de l'écran virtuel au tirage physique.
+              </p>
+            </div>
+
+            <!-- Grille des notions clés -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              
+              <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                <strong class="text-white text-sm block border-b border-slate-800 pb-1 text-cyan-400">1. La Définition (Pixels)</strong>
+                <p class="text-xs text-slate-400">
+                  C'est la quantité totale de pixels qui composent l'image (Largeur × Hauteur).<br>
+                  <em>Exemple :</em> 6000 × 4000 px = 24 000 000 pixels = <strong>24 Mpx</strong>.
+                </p>
+              </div>
+
+              <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                <strong class="text-white text-sm block border-b border-slate-800 pb-1 text-purple-400">2. La Résolution PPI (Pixels/Pouce)</strong>
+                <p class="text-xs text-slate-400">
+                  C'est la <strong>densité de pixels</strong> contenus dans un pouce (1 pouce = 2.54 cm). Elle indique combien de pixels numériques sont compressés sur une surface donnée.
+                </p>
+              </div>
+
+              <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                <strong class="text-white text-sm block border-b border-slate-800 pb-1 text-pink-400">3. La Résolution DPI (Points/Pouce)</strong>
+                <p class="text-xs text-slate-400">
+                  C'est le nombre de <strong>gouttes d'encre physiques</strong> que l'imprimeur dépose par pouce sur le papier. C'est une valeur matérielle d'impression.
+                </p>
+              </div>
+
+            </div>
+
+            <!-- Formule de Calcul -->
+            <div class="stat-box space-y-2 border-purple-500/30">
+              <h3 class="text-sm font-bold text-purple-400">La Formule Magique de Calcul pour l'Impression</h3>
+              <p class="text-xs text-slate-300">
+                Pour connaître le nombre de pixels nécessaires pour imprimer à une taille précise avec une résolution donnée (ex: 300 DPI) :
+              </p>
+              <div class="p-3 bg-slate-950/80 rounded-lg border border-slate-800 font-mono text-xs text-center text-cyan-300">
+                Nombre de Pixels = ( Dimension en cm / 2.54 ) × DPI
+              </div>
+            </div>
+
+            <!-- Tableau comparatif : A4, A3, A2 @ 300 DPI vs Grand Format -->
+            <div class="space-y-2 pt-2">
+              <h3 class="text-sm font-bold text-white">Pixels requis selon le Format d'Impression</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-800 text-slate-200 border-b border-slate-700">
+                      <th class="p-2.5">Format Papier</th>
+                      <th class="p-2.5">Dimensions (cm)</th>
+                      <th class="p-2.5">Résolution Cible</th>
+                      <th class="p-2.5">Pixels Nécessaires</th>
+                      <th class="p-2.5">Capteur Minimal</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                    <tr>
+                      <td class="p-2.5 font-bold text-cyan-400">A4 (Standard)</td>
+                      <td class="p-2.5">21 × 29.7 cm</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">300 DPI (Excellente)</td>
+                      <td class="p-2.5 font-mono">2480 × 3508 px</td>
+                      <td class="p-2.5 font-semibold text-slate-200">8.7 Megapixels</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-bold text-purple-400">A3 (Moyen)</td>
+                      <td class="p-2.5">29.7 × 42 cm</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">300 DPI (Excellente)</td>
+                      <td class="p-2.5 font-mono">3508 × 4961 px</td>
+                      <td class="p-2.5 font-semibold text-slate-200">17.4 Megapixels</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-bold text-pink-400">A2 (Grand)</td>
+                      <td class="p-2.5">42 × 59.4 cm</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">300 DPI (Excellente)</td>
+                      <td class="p-2.5 font-mono">4961 × 7016 px</td>
+                      <td class="p-2.5 font-semibold text-slate-200">34.8 Megapixels</td>
+                    </tr>
+                    <tr class="bg-slate-900/50">
+                      <td class="p-2.5 font-bold text-amber-400">A0 (Très Grand)</td>
+                      <td class="p-2.5">84.1 × 118.9 cm</td>
+                      <td class="p-2.5 text-amber-400 font-medium">150 DPI (Distance > 1.5m)</td>
+                      <td class="p-2.5 font-mono">4967 × 7022 px</td>
+                      <td class="p-2.5 font-semibold text-slate-200">34.8 Megapixels</td>
+                    </tr>
+                    <tr class="bg-slate-900/50">
+                      <td class="p-2.5 font-bold text-rose-400">Bâche / Abribus</td>
+                      <td class="p-2.5">120 × 180 cm</td>
+                      <td class="p-2.5 text-rose-400 font-medium">75 à 100 DPI (Distance > 3m)</td>
+                      <td class="p-2.5 font-mono">3543 × 5315 px</td>
+                      <td class="p-2.5 font-semibold text-slate-200">18.8 Megapixels</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Distance de Recul & Mythe des 300 DPI -->
+            <div class="space-y-2">
+              <h4 class="font-bold text-white text-sm text-pink-400">Le Secret du Pro : La Distance de Recul</h4>
+              <p class="text-xs text-slate-300">
+                La règle universelle des <strong>300 DPI</strong> s'applique aux tirages tenus à bras (30 à 40 cm des yeux). Plus le tirage est grand, plus l'observateur s'éloigne naturellement pour l'admirer dans son ensemble :
+              </p>
+              <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                <li><strong>Lecture à 40 cm (Livre, A4) :</strong> 300 DPI requis pour une netteté parfaite.</li>
+                <li><strong>Observation à 1 mètre (A2, Poster) :</strong> 150 à 200 DPI suffisent amplement.</li>
+                <li><strong>Observation à 3 mètres (Panneau 4×3m) :</strong> 30 à 50 DPI offrent une illusion de netteté parfaite à cette distance.</li>
+              </ul>
+            </div>
+
+            <!-- Conclusion & Recommandation Studio -->
+            <div class="stat-box space-y-2 border-pink-500/30">
+              <h3 class="text-sm font-bold text-pink-400">Recommandation Graphis Studio</h3>
+              <p class="text-xs text-slate-300">
+                Inutile de chercher à ré-échantillonner artificiellement une photo de 24 Mpx pour atteindre 300 DPI sur un grand tirage A0 ! La résolution perçue dépend directement de la distance d'observation. Un fichier propre de 24 Mpx permet d'imprimer à n'importe quelle échelle avec un rendu spectaculaire.
               </p>
             </div>
 
