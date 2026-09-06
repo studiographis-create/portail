@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fiches & Comparatifs — Graphis Studio</title>
+  <title>Les Fiches &amp; Comparatifs — Graphis Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     html { scroll-behavior: smooth; }
@@ -27,236 +27,966 @@
       backdrop-filter: blur(12px);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
+    .tool-input, .tool-select {
+      background-color: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 0.6rem 0.8rem;
+      color: #f1f5f9;
+      width: 100%;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .tool-input:focus, .tool-select:focus {
+      border-color: #8b5cf6;
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+    }
+
+    .stat-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-between p-4 md:p-8">
 
-  <!-- EN-TÊTE -->
-  <header class="max-w-5xl w-full my-6 flex flex-col items-center text-center space-y-4">
-    <div class="w-full flex justify-start mb-2">
-      <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 transition-all">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+  <!-- En-tête -->
+  <header class="max-w-5xl w-full my-6 text-center space-y-4">
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold uppercase tracking-widest">
+      Bibliothèque Technique &amp; Guide Pratique
+    </div>
+    
+    <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
+      Les <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">Fiches &amp; Comparatifs</span>
+    </h1>
+    
+    <p class="text-xs md:text-sm text-slate-400 font-medium max-w-2xl mx-auto">
+      Guides synthétiques, analyses comparatives et aide-mémoires pour le photographe.
+      <br><span class="text-slate-500 text-[11px]">Par Dimitri Damblon — Graphis Studio</span>
+    </p>
+
+    <!-- Bouton Retour au Hub -->
+    <div class="pt-2">
+      <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/60 text-xs text-slate-200 transition-all shadow-md group">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-400 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
         <span>Retour au Hub Central</span>
       </a>
     </div>
-
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold uppercase tracking-widest">
-      Ressources Pédagogiques
-    </div>
-    
-    <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
-      Fiches & <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">Comparatifs</span>
-    </h1>
-    
-    <p class="text-xs md:text-sm text-slate-400 font-medium max-w-xl mx-auto">
-      Guides synthétiques, fiches techniques et fiches mémo pour maîtriser les fondamentaux de l'image.
-    </p>
   </header>
 
-  <!-- CONTENEUR DES FICHES -->
-  <main class="max-w-5xl w-full space-y-8 my-auto">
+  <!-- Section Principale -->
+  <main class="max-w-5xl w-full space-y-6 my-auto">
 
-    <!-- FICHE 1 : PIXEL VS VECTORIEL -->
-    <article class="krea-card p-6 md:p-8 space-y-6">
-      <!-- En-tête de la fiche -->
-      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-        <div class="p-3 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-          </svg>
-        </div>
-        <div>
-          <span class="text-[10px] font-bold uppercase tracking-widest text-pink-400 bg-pink-500/10 px-2 py-0.5 rounded-full border border-pink-500/20">Fiche Technique</span>
-          <h2 class="text-xl md:text-2xl font-black text-white mt-1">Image Pixel (Matricielle) vs Image Vectorielle</h2>
-        </div>
+    <!-- BARRE DE FILTRES ET RECHERCHE -->
+    <section class="krea-card p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
+      <div class="flex flex-wrap gap-2 w-full sm:w-auto justify-center sm:justify-start" id="category-filters">
+        <button onclick="filterCategory('all', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-600 text-white transition-all shadow-sm">
+          Toutes les fiches
+        </button>
+        <button onclick="filterCategory('workflow', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all">
+          Logiciels &amp; Workflow
+        </button>
+        <button onclick="filterCategory('terrain', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all">
+          Techniques Terrain
+        </button>
+        <button onclick="filterCategory('print', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all">
+          Impression &amp; Graphisme
+        </button>
       </div>
 
-      <!-- Résumé visuel en 2 colonnes -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="w-full sm:w-64">
+        <input type="text" id="fiche-search" oninput="searchFiches()" placeholder="Rechercher une fiche..." class="tool-input text-xs">
+      </div>
+    </section>
+
+    <!-- ACCORDÉON / VOLETS DES FICHES -->
+    <div class="space-y-4" id="fiches-container">
+
+      <!-- FICHE 1 : LIGHTROOM VS LIGHTROOM CLASSIC -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="workflow" data-title="lightroom vs lightroom classic comparatif">
         
-        <!-- CARTE PIXEL -->
-        <div class="p-5 rounded-2xl bg-slate-900/60 border border-blue-500/30 space-y-4">
-          <div class="flex items-center justify-between">
-            <h3 class="text-lg font-bold text-blue-400 flex items-center gap-2">
-              <span class="w-3 h-3 rounded-full bg-blue-500 inline-block"></span>
-              Image Pixel (Matricielle / Bitmap)
-            </h3>
-            <span class="text-xs px-2.5 py-1 rounded-md bg-blue-500/10 text-blue-300 border border-blue-500/20 font-mono">Photographie</span>
-          </div>
-
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Une image matricielle est composée d'une grille fixe de minuscules carrés de couleur appelés <strong class="text-white">pixels</strong>. Chaque pixel contient une information de couleur précise.
-          </p>
-
-          <div class="space-y-2 text-xs">
-            <div class="flex items-start gap-2 text-slate-300">
-              <span class="text-blue-400 font-bold">•</span>
-              <span><strong class="text-white">Redimensionnement :</strong> Sensible à la perte de qualité. Zoomer ou agrandir fait apparaître la trame (pixellisation/flou).</span>
-            </div>
-            <div class="flex items-start gap-2 text-slate-300">
-              <span class="text-blue-400 font-bold">•</span>
-              <span><strong class="text-white">Poids :</strong> Dépend de la définition (nombre total de pixels) et de la compression. Souvent lourd à haute résolution.</span>
-            </div>
-            <div class="flex items-start gap-2 text-slate-300">
-              <span class="text-blue-400 font-bold">•</span>
-              <span><strong class="text-white">Détails :</strong> Idéal pour les dégradés complexes, les textures naturelles et les ombres subtiles.</span>
-            </div>
-          </div>
-
-          <div class="pt-2 border-t border-slate-800/80 grid grid-cols-2 gap-2 text-[11px]">
-            <div>
-              <span class="text-slate-400 block font-semibold mb-1">Formats courants</span>
-              <div class="flex flex-wrap gap-1">
-                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono">.JPG</span>
-                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono">.PNG</span>
-                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono">.PSD</span>
-                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono">.TIFF</span>
-                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono">.WEBP</span>
-              </div>
+        <button onclick="toggleFiche('fiche-lr-comp')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 01-2-2h-2a2 2 0 01-2 2" />
+              </svg>
             </div>
             <div>
-              <span class="text-slate-400 block font-semibold mb-1">Logiciels de référence</span>
-              <div class="flex flex-wrap gap-1">
-                <span class="px-1.5 py-0.5 rounded bg-blue-900/40 text-blue-200 border border-blue-700/50">Photoshop</span>
-                <span class="px-1.5 py-0.5 rounded bg-blue-900/40 text-blue-200 border border-blue-700/50">Lightroom</span>
-                <span class="px-1.5 py-0.5 rounded bg-blue-900/40 text-blue-200 border border-blue-700/50">GIMP</span>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-semibold uppercase">Logiciels &amp; Workflow</span>
+                <span class="text-[10px] text-slate-500">• Fiche #01</span>
               </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Lightroom (Cloud) vs Lightroom Classic : Lequel choisir ?
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-lr-comp" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-lr-comp" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <div id="fiche-lr-comp" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Lightroom vs Lightroom Classic', 'content-lr-comp')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <div id="content-lr-comp" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                Introduction &amp; Deux philosophies distinctes
+              </h3>
+              <p>
+                Depuis la refonte de la suite Adobe Creative Cloud, la marque propose deux logiciels sous le nom « Lightroom ». Bien qu'ils partagent le même moteur de développement RAW (Camera Raw) et offrent une qualité d'image identique, ils répondent à des besoins et des modes de travail radicalement différents.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Lightroom Classic</h4>
+                  <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono">Bureau / Catalogue Local</span>
+                </div>
+                <p class="text-xs text-slate-400">
+                  L'outil historique de référence pour les photographes professionnels. Conçu pour le stockage local et le traitement en volume sur ordinateur fixe.
+                </p>
+                <div class="space-y-2">
+                  <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    Aspects Positifs (Avantages)
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                    <li><strong>Gestion de catalogue avancée :</strong> Mots-clés hiérarchiques, collections dynamiques poussées, filtres de métadonnées complets.</li>
+                    <li><strong>Contrôle total du stockage :</strong> Vos images restent sur vos disques durs physiques (locaux ou NAS) sans coût d'abonnement Cloud supplémentaire.</li>
+                    <li><strong>Modules complets :</strong> Module d'impression d'art (Fine Art), création de livres photo, diaporamas et cartes géographiques.</li>
+                    <li><strong>Capture connectée (Tethering) :</strong> Shooting directement relié au boîtier en studio.</li>
+                    <li><strong>Écosystème de plugins :</strong> Prise en charge des extensions tierces.</li>
+                  </ul>
+                </div>
+                <div class="space-y-2 pt-2 border-t border-slate-800/80">
+                  <span class="text-xs font-bold text-rose-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    Aspects Négatifs (Inconvénients)
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-400">
+                    <li>Interface plus dense et complexe pour les débutants.</li>
+                    <li>Synchronisation nomade limitée aux aperçus dynamiques (Smart Previews).</li>
+                    <li>Nécessite de gérer soi-même la stratégie de sauvegarde de son catalogue et de ses RAW.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Lightroom (Cloud / Ecosystem)</h4>
+                  <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-mono">Multi-plateforme / Cloud</span>
+                </div>
+                <p class="text-xs text-slate-400">
+                  Application moderne réécrite pour une fluidité totale entre ordinateur, iPad, iPhone et navigateurs Web.
+                </p>
+                <div class="space-y-2">
+                  <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    Aspects Positifs (Avantages)
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                    <li><strong>Synchronisation intégrale :</strong> Retouchez sur Mac/PC, poursuivez sur iPad ou smartphone avec accès direct à vos fichiers RAW complets.</li>
+                    <li><strong>Interface épurée :</strong> Prise en main ultra-rapide et ergonomique.</li>
+                    <li><strong>Moteur de recherche IA (Sensei) :</strong> Retrouvez des objets ou visages dans vos photos sans mots-clés.</li>
+                    <li><strong>Sauvegarde automatique :</strong> Vos fichiers originaux sont sauvegardés dans le Cloud Adobe.</li>
+                  </ul>
+                </div>
+                <div class="space-y-2 pt-2 border-t border-slate-800/80">
+                  <span class="text-xs font-bold text-rose-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    Aspects Négatifs (Inconvénients)
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-400">
+                    <li><strong>Coût du stockage Cloud :</strong> La formule 1 To ou plus devient onéreuse à mesure que votre bibliothèque grandit.</li>
+                    <li>Absence des modules Impression d'art, Livre et Diaporama.</li>
+                    <li>Gestion des métadonnées et filtres d'archivage moins poussés.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="stat-box space-y-2 border-purple-500/30">
+              <h3 class="text-sm font-bold text-purple-400">Conclusion &amp; Verdict Pro</h3>
+              <p class="text-xs text-slate-300">
+                <strong>Choisissez Lightroom Classic</strong> si vous êtes un photographe professionnel ou averti possédant plusieurs téraoctets de photos archivés localement, nécessitant un contrôle précis de vos métadonnées ou réalisant des tirages d'art.
+              </p>
+              <p class="text-xs text-slate-300">
+                <strong>Choisissez Lightroom (Cloud)</strong> si vous êtes un photographe nomade cherchant la possibilité de retoucher la même photo indistinctement sur ordinateur, iPad ou smartphone.
+              </p>
             </div>
           </div>
         </div>
+      </article>
 
-        <!-- CARTE VECTORIEL -->
-        <div class="p-5 rounded-2xl bg-slate-900/60 border border-purple-500/30 space-y-4">
-          <div class="flex items-center justify-between">
-            <h3 class="text-lg font-bold text-purple-400 flex items-center gap-2">
-              <span class="w-3 h-3 rounded-full bg-purple-500 inline-block"></span>
-              Image Vectorielle
-            </h3>
-            <span class="text-xs px-2.5 py-1 rounded-md bg-purple-500/10 text-purple-300 border border-purple-500/20 font-mono">Graphisme</span>
-          </div>
 
-          <p class="text-xs text-slate-300 leading-relaxed">
-            Une image vectorielle est générée par des <strong class="text-white">formules mathématiques</strong> (points d'ancrage, lignes, courbes de Bézier, formes géométriques et couleurs).
-          </p>
-
-          <div class="space-y-2 text-xs">
-            <div class="flex items-start gap-2 text-slate-300">
-              <span class="text-purple-400 font-bold">•</span>
-              <span><strong class="text-white">Redimensionnement :</strong> Infini sans aucune perte de qualité. S'adapte d'une carte de visite à un panneau géant.</span>
+      <!-- FICHE 2 : PHOTOSHOP VS LIGHTROOM CLASSIC -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="workflow" data-title="photoshop vs lightroom classic comparatif retouche retoucheur photomontage">
+        <button onclick="toggleFiche('fiche-ps-lr')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
             </div>
-            <div class="flex items-start gap-2 text-slate-300">
-              <span class="text-purple-400 font-bold">•</span>
-              <span><strong class="text-white">Poids :</strong> Généralement très léger car le fichier ne stocke que les coordonnées et instructions des tracés.</span>
-            </div>
-            <div class="flex items-start gap-2 text-slate-300">
-              <span class="text-purple-400 font-bold">•</span>
-              <span><strong class="text-white">Détails :</strong> Idéal pour les contours nets, aplats de couleurs, formes géométriques et typographies.</span>
-            </div>
-          </div>
-
-          <div class="pt-2 border-t border-slate-800/80 grid grid-cols-2 gap-2 text-[11px]">
             <div>
-              <span class="text-slate-400 block font-semibold mb-1">Formats courants</span>
-              <div class="flex flex-wrap gap-1">
-                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono">.SVG</span>
-                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono">.AI</span>
-                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono">.EPS</span>
-                <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono">.PDF</span>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-semibold uppercase">Logiciels &amp; Workflow</span>
+                <span class="text-[10px] text-slate-500">• Fiche #02</span>
               </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Photoshop vs Lightroom Classic : Deux outils complémentaires
+              </h2>
             </div>
-            <div>
-              <span class="text-slate-400 block font-semibold mb-1">Logiciels de référence</span>
-              <div class="flex flex-wrap gap-1">
-                <span class="px-1.5 py-0.5 rounded bg-purple-900/40 text-purple-200 border border-purple-700/50">Illustrator</span>
-                <span class="px-1.5 py-0.5 rounded bg-purple-900/40 text-purple-200 border border-purple-700/50">Inkscape</span>
-                <span class="px-1.5 py-0.5 rounded bg-purple-900/40 text-purple-200 border border-purple-700/50">Figma</span>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-ps-lr" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-ps-lr" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <div id="fiche-ps-lr" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Photoshop vs Lightroom Classic', 'content-ps-lr')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <div id="content-ps-lr" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                Pas de compétition : La puissance de la complémentarité
+              </h3>
+              <p>
+                Opposer <strong>Photoshop</strong> et <strong>Lightroom Classic</strong> est une erreur fréquente. Ces deux logiciels <strong>ne sont pas concurrents, mais parfaitement complémentaires</strong>.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Lightroom Classic</h4>
+                  <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono">Développement &amp; Flux global</span>
+                </div>
+                <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                  <li><strong>Traitement non-destructif :</strong> Fichier RAW préservé.</li>
+                  <li><strong>Traitement par lots :</strong> Synchronisation rapide sur des centaines de vues.</li>
+                  <li><strong>Organisation :</strong> Mots-clés, notes, collections.</li>
+                </ul>
+              </div>
+
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Adobe Photoshop</h4>
+                  <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-mono">Retouche au pixel &amp; Création</span>
+                </div>
+                <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                  <li><strong>Contrôle au pixel :</strong> Calques, masques, objets dynamiques.</li>
+                  <li><strong>Retouche poussée :</strong> Séparation de fréquence, fluidité.</li>
+                  <li><strong>Photomontage :</strong> Détourage complexe et incrustations.</li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
+      </article>
 
-      </div>
 
-      <!-- Tableau récapitulatif -->
-      <div class="overflow-x-auto rounded-xl border border-slate-800">
-        <table class="w-full text-left text-xs text-slate-300">
-          <thead class="bg-slate-900 text-slate-200 uppercase text-[10px] tracking-wider border-b border-slate-800">
-            <tr>
-              <th class="p-3">Critère</th>
-              <th class="p-3 text-blue-400">Pixel (Bitmap)</th>
-              <th class="p-3 text-purple-400">Vectoriel</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-800/60 bg-slate-950/40">
-            <tr>
-              <td class="p-3 font-semibold text-white">Composition</td>
-              <td class="p-3">Grille de pixels (points de couleur)</td>
-              <td class="p-3">Tracés mathématiques et coordonnées</td>
-            </tr>
-            <tr>
-              <td class="p-3 font-semibold text-white">Agrandissement</td>
-              <td class="p-3 text-rose-400">Perte de qualité (pixellisation)</td>
-              <td class="p-3 text-emerald-400">Infini sans perte de netteté</td>
-            </tr>
-            <tr>
-              <td class="p-3 font-semibold text-white">Cas d'usage principal</td>
-              <td class="p-3">Photos, retouches complexes, peintures digitales</td>
-              <td class="p-3">Logos, icônes, pictos, typographies, bâches grand format</td>
-            </tr>
-            <tr>
-              <td class="p-3 font-semibold text-white">Conversion Pixels ➔ Vectoriel</td>
-              <td class="p-3" colspan="2">Nécessite une étape de <strong>vectorisation automatique ou manuelle</strong> (ex: "Vectorisation de l'image" dans Illustrator).</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </article>
+      <!-- FICHE 3 : RAW VS JPEG -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="terrain" data-title="raw vs jpeg format photo comparatif">
+        <button onclick="toggleFiche('fiche-raw-jpeg')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-semibold uppercase">Techniques Terrain</span>
+                <span class="text-[10px] text-slate-500">• Fiche #03</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Format RAW vs JPEG : Quand utiliser l'un ou l'autre ?
+              </h2>
+            </div>
+          </div>
 
-    <!-- FICHE 2 : RAW VS JPEG (Rappel / Exemple additionnel) -->
-    <article class="krea-card p-6 md:p-8 space-y-6">
-      <div class="flex items-center gap-3 border-b border-slate-800 pb-4">
-        <div class="p-3 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h0.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-            <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-        </div>
-        <div>
-          <span class="text-[10px] font-bold uppercase tracking-widest text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">Fiche Photo</span>
-          <h2 class="text-xl md:text-2xl font-black text-white mt-1">Fichier RAW vs Fichier JPEG</h2>
-        </div>
-      </div>
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-raw-jpeg" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-raw-jpeg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-300">
-        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-2">
-          <h3 class="font-bold text-cyan-400 text-sm">Fichier RAW ("Brut")</h3>
-          <p>Données brutes enregistrées par le capteur sans aucun traitement ni compression.</p>
-          <ul class="list-disc list-inside space-y-1 text-slate-400">
-            <li>Plage dynamique maximale (récupération d'ombres/hautes lumières)</li>
-            <li>Balance des blancs modifiable à 100% après coup</li>
-            <li>Nécessite un développement (Lightroom, Camera Raw)</li>
-          </ul>
+        <div id="fiche-raw-jpeg" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('RAW vs JPEG', 'content-raw-jpeg')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <div id="content-raw-jpeg" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            <p>
+              Le choix entre enregistrer ses photos en <strong>RAW</strong> ou en <strong>JPEG</strong> détermine toute la flexibilité de votre travail en post-traitement.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h4 class="font-bold text-cyan-400 text-base">Format RAW (Brut)</h4>
+                <ul class="text-xs space-y-2 list-disc list-inside text-slate-300">
+                  <li><strong>Profondeur de couleur :</strong> 12, 14 ou 16 bits.</li>
+                  <li><strong>Plage dynamique maximale :</strong> Récupération des ombres et hautes lumières.</li>
+                  <li><strong>Balance des blancs :</strong> Modifiable sans perte.</li>
+                </ul>
+              </div>
+
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h4 class="font-bold text-pink-400 text-base">Format JPEG (Compressé)</h4>
+                <ul class="text-xs space-y-2 list-disc list-inside text-slate-300">
+                  <li><strong>Profondeur de couleur :</strong> 8 bits.</li>
+                  <li><strong>Prêt à l'emploi :</strong> Utilisable directement sur le web.</li>
+                  <li><strong>Contrainte :</strong> Retouche très limitée.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="p-4 rounded-xl bg-slate-900/50 border border-slate-800 space-y-2">
-          <h3 class="font-bold text-amber-400 text-sm">Fichier JPEG ("Compressé")</h3>
-          <p>Image traitée et compressée directement par l'appareil photo.</p>
-          <ul class="list-disc list-inside space-y-1 text-slate-400">
-            <li>Utilisable immédiatement et lisible partout</li>
-            <li>Poids léger, idéal pour le partage rapide</li>
-            <li>Perte importante de données (retouche limitée)</li>
-          </ul>
+      </article>
+
+
+      <!-- FICHE 4 : ESPACES COLORIMÉTRIQUES -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="print" data-title="srgb vs adobe rgb vs prophoto espaces couleur impression">
+        <button onclick="toggleFiche('fiche-color-spaces')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-semibold uppercase">Impression &amp; Couleur</span>
+                <span class="text-[10px] text-slate-500">• Fiche #04</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Espaces Colorimétriques : sRGB vs Adobe RGB vs ProPhoto RGB
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-color-spaces" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-color-spaces" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <div id="fiche-color-spaces" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Espaces Colorimétriques', 'content-color-spaces')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <div id="content-color-spaces" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            <p>
+              Un espace couleur définit la quantité de nuances qu'une image contient.
+            </p>
+            <div class="space-y-3">
+              <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
+                <h4 class="font-bold text-pink-400 text-sm mb-1">1. sRGB (Standard Web)</h4>
+                <p class="text-xs text-slate-300">Standard universel des écrans, web et réseaux sociaux.</p>
+              </div>
+              <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
+                <h4 class="font-bold text-purple-400 text-sm mb-1">2. Adobe RGB (1998)</h4>
+                <p class="text-xs text-slate-300">Standard pour l'impression Fine Art et le prépresse.</p>
+              </div>
+              <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
+                <h4 class="font-bold text-cyan-400 text-sm mb-1">3. ProPhoto RGB</h4>
+                <p class="text-xs text-slate-300">Espace géant pour la retouche 16 bits sous Photoshop.</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
+
+
+      <!-- FICHE 5 : DNG VS RAW PROPRIÉTAIRES -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="workflow" data-title="dng vs raw propriétaires nef cr2 cr3 arw raf convertisseur adobe">
+        <button onclick="toggleFiche('fiche-dng-raw')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-semibold uppercase">Logiciels &amp; Workflow</span>
+                <span class="text-[10px] text-slate-500">• Fiche #05</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Format DNG vs RAW Propriétaires (NEF, CR3, ARW, RAF...)
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-dng-raw" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-dng-raw" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <div id="fiche-dng-raw" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('DNG vs RAW Propriétaires', 'content-dng-raw')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <div id="content-dng-raw" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            <p>
+              Le format <strong>DNG</strong> est un standard universel créé par Adobe, face aux formats fermés constructeurs (NEF, CR3, ARW...).
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h4 class="font-bold text-amber-400 text-base">Format DNG</h4>
+                <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                  <li>Compatibilité et pérennité universelles.</li>
+                  <li>Métadonnées intégrées (pas de fichier sidecar .xmp).</li>
+                  <li>Compression sans perte efficace.</li>
+                </ul>
+              </div>
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h4 class="font-bold text-cyan-400 text-base">RAW Natifs</h4>
+                <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                  <li>Données et métadonnées 100% natives du constructeur.</li>
+                  <li>Importation directe sans temps de conversion.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+
+      <!-- FICHE 6 : IMAGE PIXEL VS IMAGE VECTORIELLE (NOUVELLE FICHE INCLUSE) -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="print" data-title="image pixel vs vectorielle matricielle bitmap svg png jpg pdf ai illustrator photoshop comparatif">
+        
+        <!-- En-tête du volet (Cliquable) -->
+        <button onclick="toggleFiche('fiche-pixel-vector')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-semibold uppercase">Impression &amp; Graphisme</span>
+                <span class="text-[10px] text-slate-500">• Fiche #06</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Image Pixel (Matricielle) vs Image Vectorielle
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-pixel-vector" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-pixel-vector" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- Contenu du Volet -->
+        <div id="fiche-pixel-vector" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+
+          <!-- Barre d'actions supérieures -->
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Image Pixel vs Image Vectorielle', 'content-pixel-vector')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <!-- CONTENU DE LA FICHE -->
+          <div id="content-pixel-vector" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            
+            <!-- Intro -->
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+                Comprendre les deux familles d'images numériques
+              </h3>
+              <p>
+                En graphisme et en photographie, toutes les images numériques appartiennent à l'une de ces deux grandes catégories : les images <strong class="text-white">mosaïques de pixels</strong> (matricielles) ou les images <strong class="text-white">tracés géométriques</strong> (vectorielles). Connaître leurs différences est indispensable pour choisir le bon format selon vos créations.
+              </p>
+            </div>
+
+            <!-- Cartes comparatives -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              <!-- CARTE PIXEL -->
+              <div class="p-5 rounded-2xl bg-slate-900/80 border border-blue-500/30 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="text-base font-bold text-blue-400 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500 inline-block"></span>
+                    Image Pixel (Matricielle / Bitmap)
+                  </h4>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20 font-mono">Photographie</span>
+                </div>
+
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Grille fixe de minuscules carrés de couleur appelés <strong class="text-white">pixels</strong>. Chaque pixel contient une information de couleur précise.
+                </p>
+
+                <div class="space-y-2 text-xs">
+                  <div class="flex items-start gap-2 text-slate-300">
+                    <span class="text-blue-400 font-bold">•</span>
+                    <span><strong class="text-white">Redimensionnement :</strong> Sensible à la perte de qualité. Agrandir fait apparaître la trame (pixellisation / flou).</span>
+                  </div>
+                  <div class="flex items-start gap-2 text-slate-300">
+                    <span class="text-blue-400 font-bold">•</span>
+                    <span><strong class="text-white">Poids :</strong> Dépend du nombre total de pixels (définition) et de la compression. Souvent lourd à haute résolution.</span>
+                  </div>
+                  <div class="flex items-start gap-2 text-slate-300">
+                    <span class="text-blue-400 font-bold">•</span>
+                    <span><strong class="text-white">Détails :</strong> Idéal pour les dégradés complexes, textures naturelles et ombres subtiles.</span>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-slate-800/80 grid grid-cols-2 gap-2 text-[11px]">
+                  <div>
+                    <span class="text-slate-400 block font-semibold mb-1">Formats courants</span>
+                    <div class="flex flex-wrap gap-1">
+                      <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono text-[10px]">.JPG</span>
+                      <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono text-[10px]">.PNG</span>
+                      <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono text-[10px]">.PSD</span>
+                      <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono text-[10px]">.TIFF</span>
+                      <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono text-[10px]">.WEBP</span>
+                    </div>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 block font-semibold mb-1">Logiciels de référence</span>
+                    <div class="flex flex-wrap gap-1">
+                      <span class="px-1.5 py-0.5 rounded bg-blue-900/40 text-blue-200 border border-blue-700/50 text-[10px]">Photoshop</span>
+                      <span class="px-1.5 py-0.5 rounded bg-blue-900/40 text-blue-200 border border-blue-700/50 text-[10px]">Lightroom</span>
+                      <span class="px-1.5 py-0.5 rounded bg-blue-900/40 text-blue-200 border border-blue-700/50 text-[10px]">GIMP</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CARTE VECTORIEL -->
+              <div class="p-5 rounded-2xl bg-slate-900/80 border border-purple-500/30 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="text-base font-bold text-purple-400 flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span>
+                    Image Vectorielle
+                  </h4>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 font-mono">Graphisme</span>
+                </div>
+
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Générée par des <strong class="text-white">formules mathématiques</strong> (points d'ancrage, lignes, courbes de Bézier, formes géométriques et couleurs).
+                </p>
+
+                <div class="space-y-2 text-xs">
+                  <div class="flex items-start gap-2 text-slate-300">
+                    <span class="text-purple-400 font-bold">•</span>
+                    <span><strong class="text-white">Redimensionnement :</strong> Infini sans aucune perte de qualité. S'adapte d'une icône à un panneau géant.</span>
+                  </div>
+                  <div class="flex items-start gap-2 text-slate-300">
+                    <span class="text-purple-400 font-bold">•</span>
+                    <span><strong class="text-white">Poids :</strong> Généralement très léger car le fichier stocke uniquement les instructions géométriques.</span>
+                  </div>
+                  <div class="flex items-start gap-2 text-slate-300">
+                    <span class="text-purple-400 font-bold">•</span>
+                    <span><strong class="text-white">Détails :</strong> Idéal pour les contours nets, aplats de couleurs, formes géométriques et typographies.</span>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-slate-800/80 grid grid-cols-2 gap-2 text-[11px]">
+                  <div>
+                    <span class="text-slate-400 block font-semibold mb-1">Formats courants</span>
+                    <div class="flex flex-wrap gap-1">
+                      <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono text-[10px]">.SVG</span>
+                      <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono text-[10px]">.AI</span>
+                      <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono text-[10px]">.EPS</span>
+                      <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 border border-slate-700 font-mono text-[10px]">.PDF</span>
+                    </div>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 block font-semibold mb-1">Logiciels de référence</span>
+                    <div class="flex flex-wrap gap-1">
+                      <span class="px-1.5 py-0.5 rounded bg-purple-900/40 text-purple-200 border border-purple-700/50 text-[10px]">Illustrator</span>
+                      <span class="px-1.5 py-0.5 rounded bg-purple-900/40 text-purple-200 border border-purple-700/50 text-[10px]">Inkscape</span>
+                      <span class="px-1.5 py-0.5 rounded bg-purple-900/40 text-purple-200 border border-purple-700/50 text-[10px]">Figma</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Tableau récapitulatif -->
+            <div class="space-y-2 pt-2">
+              <h3 class="text-sm font-bold text-white">Tableau Synthétique de Comparaison</h3>
+              <div class="overflow-x-auto rounded-xl border border-slate-800">
+                <table class="w-full text-left text-xs text-slate-300 border-collapse">
+                  <thead>
+                    <tr class="bg-slate-800 text-slate-200 border-b border-slate-700">
+                      <th class="p-2.5">Critère</th>
+                      <th class="p-2.5 text-blue-400 font-bold">Pixel (Bitmap)</th>
+                      <th class="p-2.5 text-purple-400 font-bold">Vectoriel</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 bg-slate-950/40">
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Composition de l'image</td>
+                      <td class="p-2.5">Grille de pixels (points de couleur)</td>
+                      <td class="p-2.5">Tracés mathématiques et coordonnées</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Agrandissement / Zoom</td>
+                      <td class="p-2.5 text-rose-400 font-medium">Perte de qualité (pixellisation)</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Infini sans aucune perte</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Cas d'usage principal</td>
+                      <td class="p-2.5">Photos, retouches complexes, peintures digitales</td>
+                      <td class="p-2.5">Logos, icônes, pictos, typographies, grands formats</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Conversion Pixel ➔ Vectoriel</td>
+                      <td class="p-2.5" colspan="2">Nécessite une étape de <strong>vectorisation automatique ou manuelle</strong> (ex: outil « Vectorisation de l'image » sous Illustrator).</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Conclusion & Verdict -->
+            <div class="stat-box space-y-2 border-pink-500/30">
+              <h3 class="text-sm font-bold text-pink-400">Recommandation du Studio</h3>
+              <p class="text-xs text-slate-300">
+                Utilisez le <strong class="text-white">Vectoriel</strong> pour toutes vos créations de marque (logos, pictogrammes, typographies, cartes de visite et affiches grand format) afin de garantir une netteté absolue quelle que soit la taille d'impression.
+              </p>
+              <p class="text-xs text-slate-300">
+                Conservez le format <strong class="text-white">Pixel</strong> pour la photographie, la retouche de portrait, les dégradés complexes et les rendus réalistes.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </article>
+
+    </div>
 
   </main>
 
-  <!-- PIED DE PAGE -->
-  <footer class="my-8 text-center text-xs text-slate-500">
-    <p>Graphis Studio Hub — Dimitri Damblon</p>
+  <!-- Pied de page -->
+  <footer class="my-8 text-center text-xs text-slate-500 space-y-1">
+    <p class="font-medium text-slate-400">Graphis Studio — Dimitri Damblon</p>
+    <p>© Tous droits réservés — Les Fiches &amp; Comparatifs Photographie</p>
   </footer>
+
+  <!-- SCRIPT LOGIQUE DES VOLETS ET RECHERCHE -->
+  <script>
+    // System Accordéon : Ouverture d'un seul volet à la fois
+    function toggleFiche(id) {
+      const allBodies = document.querySelectorAll('.fiche-body');
+      const allIcons = document.querySelectorAll('.fiche-icon');
+
+      allBodies.forEach(body => {
+        if (body.id !== id) {
+          body.classList.add('hidden');
+        }
+      });
+
+      allIcons.forEach(icon => {
+        if (icon.dataset.target !== id) {
+          icon.classList.remove('rotate-180');
+        }
+      });
+
+      const targetBody = document.getElementById(id);
+      const targetIcon = document.querySelector(`[data-target="${id}"]`);
+
+      if (targetBody.classList.contains('hidden')) {
+        targetBody.classList.remove('hidden');
+        if (targetIcon) targetIcon.classList.add('rotate-180');
+      } else {
+        targetBody.classList.add('hidden');
+        if (targetIcon) targetIcon.classList.remove('rotate-180');
+      }
+    }
+
+    // Filtres de Catégories
+    function filterCategory(cat, btnElement) {
+      const buttons = document.querySelectorAll('.cat-btn');
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-purple-600', 'text-white');
+        btn.classList.add('bg-slate-800/80', 'text-slate-300');
+      });
+
+      btnElement.classList.remove('bg-slate-800/80', 'text-slate-300');
+      btnElement.classList.add('bg-purple-600', 'text-white');
+
+      const cards = document.querySelectorAll('.fiche-card');
+      cards.forEach(card => {
+        if (cat === 'all' || card.dataset.category === cat) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    // Recherche dynamique par mot-clé
+    function searchFiches() {
+      const query = document.getElementById('fiche-search').value.toLowerCase();
+      const cards = document.querySelectorAll('.fiche-card');
+
+      cards.forEach(card => {
+        const searchData = card.dataset.title.toLowerCase();
+        if (searchData.includes(query)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    // Moteur d'impression & Téléchargement de Fiche - AVEC FONDS BLANCS & TEXTES SOMBRES CONTRASTÉS
+    function printFiche(title, contentId) {
+      const content = document.getElementById(contentId).innerHTML;
+      const printWindow = window.open('', '_blank', 'width=900,height=800');
+      
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="fr">
+        <head>
+          <meta charset="UTF-8">
+          <title>${title} — Graphis Studio</title>
+          <script src="https://cdn.tailwindcss.com"><\/script>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+            
+            /* Fond de page blanc pur */
+            html, body { 
+              background-color: #ffffff !important; 
+              color: #0f172a !important; 
+              font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+              padding: 1.5rem; 
+              line-height: 1.6;
+            }
+
+            /* Forcer les conteneurs et cartes à avoir un fond gris très clair (#f8fafc) avec bordure nette */
+            .grid > div, 
+            div[class*="bg-slate"], 
+            div[class*="bg-"],
+            section, article {
+              background-color: #f8fafc !important;
+              border: 1.5px solid #cbd5e1 !important;
+              border-radius: 0.75rem !important;
+              padding: 1.25rem !important;
+              box-shadow: none !important;
+            }
+
+            /* Neutralisation complète des textes clairs vers du noir / ardoise foncé (#0f172a / #1e293b) */
+            *, p, li, td, th, span, div, h1, h2, h3, h4, strong, b {
+              color: #0f172a !important;
+              text-shadow: none !important;
+            }
+
+            .text-slate-200, .text-slate-300, .text-slate-400, .text-slate-500, .text-slate-600, .text-white {
+              color: #1e293b !important;
+            }
+
+            /* Badges / En-têtes secondaires */
+            span[class*="bg-"] {
+              background-color: #e2e8f0 !important;
+              border: 1px solid #cbd5e1 !important;
+              color: #0f172a !important;
+            }
+
+            /* Couleurs d'accentuation vibrantes et très sombres sur fond blanc */
+            .text-emerald-400, .text-emerald-500, [class*="text-emerald"] { 
+              color: #15803d !important; 
+              font-weight: 800 !important; 
+            }
+            .text-rose-400, .text-red-400, .text-red-500, [class*="text-rose"], [class*="text-red"] { 
+              color: #b91c1c !important; 
+              font-weight: 800 !important; 
+            }
+            .text-purple-400, .text-purple-500, [class*="text-purple"] { 
+              color: #6b21a8 !important; 
+              font-weight: 800 !important; 
+            }
+            .text-cyan-400, .text-cyan-500, [class*="text-cyan"] { 
+              color: #0369a1 !important; 
+              font-weight: 800 !important; 
+            }
+            .text-pink-400, .text-pink-500, [class*="text-pink"] { 
+              color: #be185d !important; 
+              font-weight: 800 !important; 
+            }
+            .text-amber-400, .text-amber-500, [class*="text-amber"] { 
+              color: #b45309 !important; 
+              font-weight: 800 !important; 
+            }
+
+            /* Boîte de conclusion / Verdict */
+            .stat-box { 
+              border: 2px solid #8b5cf6 !important; 
+              padding: 1.25rem !important; 
+              border-radius: 0.75rem !important; 
+              background-color: #faf5ff !important; 
+              margin-top: 1.25rem !important; 
+            }
+
+            /* Tableaux de comparaison */
+            table { 
+              width: 100% !important; 
+              border-collapse: collapse !important; 
+              margin: 1.25rem 0 !important; 
+            }
+            th, td { 
+              border: 1px solid #cbd5e1 !important; 
+              padding: 0.65rem 0.75rem !important; 
+              text-align: left !important; 
+              font-size: 0.85rem !important;
+              color: #0f172a !important; 
+            }
+            th { 
+              background-color: #f1f5f9 !important; 
+              font-weight: 800 !important; 
+              color: #0f172a !important; 
+            }
+            tr {
+              background-color: #ffffff !important;
+            }
+            tr:nth-child(even) {
+              background-color: #f8fafc !important;
+            }
+
+            /* Masquer les boutons non imprimables */
+            button, .no-print, kbd { 
+              display: none !important; 
+            }
+
+            @media print {
+              body { padding: 0.5cm; }
+            }
+          </style>
+        </head>
+        <body onload="setTimeout(() => { window.print(); }, 400);">
+          
+          <!-- En-tête de la fiche imprimée -->
+          <div style="border-bottom: 3px solid #8b5cf6; padding-bottom: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+              <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #6b21a8; letter-spacing: 0.05em;">Graphis Studio — Fiche Technique &amp; Comparatif</span>
+              <h1 style="font-size: 1.6rem; font-weight: 900; color: #0f172a; margin-top: 0.25rem; line-height: 1.2;">${title}</h1>
+            </div>
+            <div style="text-align: right; font-size: 0.8rem; color: #334155;">
+              <strong>Dimitri Damblon</strong><br>
+              Graphis Studio Photo
+            </div>
+          </div>
+
+          <!-- Contenu principal -->
+          <div style="font-size: 0.875rem; line-height: 1.6;">
+            ${content}
+          </div>
+
+          <!-- Pied de page de la fiche imprimée -->
+          <div style="margin-top: 2.5rem; border-top: 1px solid #cbd5e1; padding-top: 1rem; text-align: center; font-size: 0.75rem; color: #475569;">
+            © ${new Date().getFullYear()} Graphis Studio — Dimitri Damblon — Tous droits réservés.
+          </div>
+
+        </body>
+        </html>
+      `);
+
+      printWindow.document.close();
+    }
+  </script>
 
 </body>
 </html>
