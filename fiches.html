@@ -1599,6 +1599,171 @@
         </div>
       </article>
 
+
+      <!-- FICHE 9 : LE PROFIL LINÉAIRE -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="workflow" data-title="le profil linéaire profil lineaire linear profile lightroom classic dng profile editor camera raw courbe tonalite contraste plage dynamique ombres hautes lumieres comparatif">
+        
+        <!-- En-tête du volet (Cliquable) -->
+        <button onclick="toggleFiche('fiche-linear-profile')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-semibold uppercase">Logiciels &amp; Workflow</span>
+                <span class="text-[10px] text-slate-500">• Fiche #09</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Le Profil Linéaire dans Lightroom Classic : Utilité, Avantages &amp; Importation
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-linear-profile" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-linear-profile" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- Contenu du Volet -->
+        <div id="fiche-linear-profile" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+
+          <!-- Barre d'actions supérieures -->
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Le Profil Linéaire dans Lightroom Classic', 'content-linear-profile')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <!-- CONTENU DE LA FICHE -->
+          <div id="content-linear-profile" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            
+            <!-- Intro -->
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                Qu'est-ce qu'un Profil Linéaire &amp; Quel est son but ?
+              </h3>
+              <p>
+                Par défaut, lorsqu'un fichier RAW est ouvert dans Lightroom Classic ou Camera Raw, le logiciel applique automatiquement un profil de couleur (comme <em>Adobe Couleur</em> ou <em>Adobe Standard</em>). Ces profils intègrent une <strong>courbe de tonalité implicite en « S »</strong> qui ajoute du contraste, assombrit les ombres et bouscule la luminosité pour rendre la photo agréable à l'œil instantanément.
+              </p>
+              <p>
+                Un <strong>Profil Linéaire (Linear Profile)</strong> neutralise totalement cette courbe tonale forcée. Il restitue les valeurs de luminance captées par le capteur de façon strictement linéaire : la valeur de chaque pixel est interprétée sans artifice ni contraste préprogrammé.
+              </p>
+            </div>
+
+            <!-- Grille Avantages vs Inconvénients -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <!-- AVANTAGES -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Les Avantages Majeurs</h4>
+                  <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">Contrôle Total</span>
+                </div>
+
+                <ul class="text-xs space-y-2 list-disc list-inside text-slate-300">
+                  <li><strong>Plage dynamique maximale :</strong> Empêche le logiciel d'écrêter prématurément les hautes lumières extrêmes ou de bloquer les ombres.</li>
+                  <li><strong>Contrôle chirurgical des tonalités :</strong> C'est vous qui construisez le contraste exact souhaité grâce à la courbe des tonalités, au lieu de compenser un profil d'usine.</li>
+                  <li><strong>Transition de dégradés d'une douceur absolue :</strong> Idéal pour les ciels délicats, les couchers de soleil et les tons chair (peau) en portrait Fine Art.</li>
+                  <li><strong>Base neutre idéale :</strong> Offre un point de départ vierge pour le color grading poussé et la photo d'art.</li>
+                </ul>
+              </div>
+
+              <!-- POINTS D'ATTENTION -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Ce qu'il faut Anticiper</h4>
+                  <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono">Exigence Technique</span>
+                </div>
+
+                <ul class="text-xs space-y-2 list-disc list-inside text-slate-300">
+                  <li><strong>Rendu initial « plat » et terne :</strong> L'image apparaît délavée et manque de peps au premier abord (c'est le comportement normal).</li>
+                  <li><strong>Temps de développement accru :</strong> Exige un ajustement manuel des points de noir, de blanc et du contraste pour chaque image.</li>
+                  <li><strong>Inadapté au traitement de masse rapide :</strong> À réserver aux projets créatifs ou aux images complexes exigeant une qualité Fine Art.</li>
+                </ul>
+              </div>
+
+            </div>
+
+            <!-- TUTO GUIDE ÉTAPE PAR ÉTAPE -->
+            <div class="space-y-4 pt-2">
+              <h3 class="text-base font-bold text-white flex items-center gap-2 border-b border-slate-800 pb-2">
+                <svg class="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+                Comment Créer &amp; Charger un Profil Linéaire dans Lightroom Classic ?
+              </h3>
+
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <!-- ÉTAPE 1 -->
+                <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-purple-600 text-white font-bold text-xs flex items-center justify-center shrink-0">1</span>
+                    <strong class="text-xs text-white">Création du Profil (.dcp)</strong>
+                  </div>
+                  <p class="text-[11px] text-slate-400">
+                    • Convertissez un fichier RAW de votre boîtier en <strong>.DNG</strong> avec Adobe DNG Converter.<br>
+                    • Ouvrez-le dans l'application gratuite <strong>Adobe DNG Profile Editor</strong>.<br>
+                    • Dans l'onglet <em>Tone Curve</em>, choisissez <strong>Linear</strong>.<br>
+                    • Allez dans <em>File &gt; Export profile</em> et enregistrez votre fichier <code class="text-cyan-300 font-mono text-[10px]">.dcp</code>.
+                  </p>
+                </div>
+
+                <!-- ÉTAPE 2 -->
+                <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-purple-600 text-white font-bold text-xs flex items-center justify-center shrink-0">2</span>
+                    <strong class="text-xs text-white">Importation dans Lightroom</strong>
+                  </div>
+                  <p class="text-[11px] text-slate-400">
+                    • Dans Lightroom Classic, allez dans le module <strong>Développement</strong>.<br>
+                    • En haut du panneau <em>Réglages de base</em>, cliquez sur l'icône du <strong>Navigateur de profils</strong> (4 petits carrés).<br>
+                    • Cliquez sur le bouton <strong>« + »</strong> en haut à gauche du panneau &gt; <strong>Importer des profils</strong>.<br>
+                    • Sélectionnez votre fichier <code class="text-cyan-300 font-mono text-[10px]">.dcp</code> ou <code class="text-cyan-300 font-mono text-[10px]">.xmp</code>.
+                  </p>
+                </div>
+
+                <!-- ÉTAPE 3 -->
+                <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-purple-600 text-white font-bold text-xs flex items-center justify-center shrink-0">3</span>
+                    <strong class="text-xs text-white">Application &amp; Preset</strong>
+                  </div>
+                  <p class="text-[11px] text-slate-400">
+                    • Retrouvez votre profil dans la section <strong>Profils Utilisateur</strong> du navigateur.<br>
+                    • Appliquez-le sur votre photo RAW : les ombres se débloquent instantanément et le contraste s'adoucit.<br>
+                    • Créez un <strong>Preset d'Importation</strong> pour l'appliquer automatiquement à vos futurs travaux.
+                  </p>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Conclusion & Recommandation Studio -->
+            <div class="stat-box space-y-2 border-cyan-500/30">
+              <h3 class="text-sm font-bold text-cyan-400">Verdict Pro &amp; Conseil Graphis Studio</h3>
+              <p class="text-xs text-slate-300">
+                Le profil linéaire est le secret le mieux gardé des retoucheurs paysagistes et portraitistes Fine Art. Utilisez-le systématiquement pour vos scènes à <strong>très fort contraste (contre-jour, ciels menaçants, intérieur/extérieur)</strong> : il vous évitera d'avoir des zones cramées ou des ombres irrécupérables en vous offrant une latitude de retouche inégalée.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </article>
+
     </div>
 
   </main>
