@@ -1289,6 +1289,316 @@
         </div>
       </article>
 
+
+      <!-- FICHE 8 : GUIDE COMPLET DES FORMATS D'IMAGE -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="workflow" data-title="guide complet des formats d'image jpg jpeg png gif webp heif raw psd tiff psb ai svg extensions comparatif">
+        
+        <!-- En-tête du volet (Cliquable) -->
+        <button onclick="toggleFiche('fiche-guide-formats')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-semibold uppercase">Logiciels &amp; Workflow</span>
+                <span class="text-[10px] text-slate-500">• Fiche #08</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Le Guide des Formats d’Image (JPG, PNG, GIF, WEBP, HEIF, RAW, PSD, TIFF, PSB, AI, SVG)
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-guide-formats" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-guide-formats" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- Contenu du Volet -->
+        <div id="fiche-guide-formats" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+
+          <!-- Barre d'actions supérieures -->
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Le Guide des Formats d’Image', 'content-guide-formats')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <!-- CONTENU DE LA FICHE -->
+          <div id="content-guide-formats" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            
+            <!-- Intro -->
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
+                Introduction : Choisir la bonne extension d'image
+              </h3>
+              <p>
+                Chaque format d'image a été conçu dans un but bien précis : compression rapide, transparence, animation, qualité maximale pour l'impression ou édition sur calques. Voici la vue d'ensemble exhaustive des 11 formats essentiels du photographe et du graphiste.
+              </p>
+            </div>
+
+            <!-- SECTION 1 : FORMATS DE DIFFUSION ET WEB -->
+            <div class="space-y-3">
+              <h4 class="font-bold text-white text-base border-b border-slate-800 pb-2 text-cyan-400">
+                1. Formats de Diffusion (Web &amp; Réseaux)
+              </h4>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <!-- JPG / JPEG -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">JPG / JPEG</strong>
+                    <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono">Pixel avec perte</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Le standard universel de la photographie. Utilise une compression avec perte (destructive) pour des fichiers très légers. Ne gère ni la transparence ni les calques.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Envoi client, Web, réseaux sociaux, impression grand public.</div>
+                </div>
+
+                <!-- PNG -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">PNG</strong>
+                    <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">Pixel sans perte</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Format avec compression sans perte (Lossless) gérant la <strong>transparence (canal Alpha)</strong>. Fichiers plus lourds que le JPG.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Logos sur fond transparent, icônes, captures d'écran.</div>
+                </div>
+
+                <!-- WEBP -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">WEBP</strong>
+                    <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-mono">Web Moderne</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Développé par Google pour remplacer le JPG et le PNG. Offre des images 30% plus légères à qualité égale avec support de la transparence et des animations.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Optimisation SEO des sites web modernes.</div>
+                </div>
+
+                <!-- GIF -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">GIF</strong>
+                    <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-mono">Animate / 256 Couleurs</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Format très ancien limité à 256 couleurs seulement. Principalement célèbre pour la gestion des petites animations en boucle.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Courtes animations web, memes.</div>
+                </div>
+
+                <!-- HEIF / HEIC -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2 md:col-span-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">HEIF / HEIC</strong>
+                    <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 text-[10px] font-mono">Haute Efficacité Mobile</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Format haute efficacité utilisé par Apple (iOS) et Android. Stocke des images en 10 ou 12 bits à la moitié du poids d'un JPG tout en conservant une meilleure plage dynamique.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Prise de vue sur smartphones récents.</div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- SECTION 2 : FORMATS DE RETOUCHE ET D'IMPRESSION -->
+            <div class="space-y-3">
+              <h4 class="font-bold text-white text-base border-b border-slate-800 pb-2 text-purple-400">
+                2. Formats de Retouche, Travail &amp; Impression
+              </h4>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <!-- RAW -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">RAW (.NEF, .CR3, .ARW, .DNG)</strong>
+                    <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono">Brut Capteur</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Le négatif numérique. Contient toutes les données brutes enregistrées par le capteur de l'appareil sans aucun traitement préalable.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Capture photo pro, retouche poussée en laboratoire.</div>
+                </div>
+
+                <!-- TIFF -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">TIFF</strong>
+                    <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-mono">Standard Studio</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Format lourd sans perte, compatible 16-bit, calques et profils ICC d'impression. Standard de qualité maximale des laboratoires d'art.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Tirages d'art Fine Art, archivage master non-destructif.</div>
+                </div>
+
+                <!-- PSD -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">PSD (Photoshop Document)</strong>
+                    <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono">Master Travail (&lt; 2 Go)</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Format natif d'Adobe Photoshop. Conserve l'intégralité de vos calques de réglage, masques de fusion, objets dynamiques et textes.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Retouche en cours de création sous Photoshop.</div>
+                </div>
+
+                <!-- PSB -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">PSB (Photoshop Big Document)</strong>
+                    <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-mono">Très Grand Format (&gt; 2 Go)</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Version très grands fichiers du PSD. Nécessaire dès que le fichier dépasse les 2 Go de taille ou 30 000 pixels de côté.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Panoramas gigapixels, affiches XXL, composites denses.</div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- SECTION 3 : FORMATS VECTORIELS -->
+            <div class="space-y-3">
+              <h4 class="font-bold text-white text-base border-b border-slate-800 pb-2 text-pink-400">
+                3. Formats Vectoriels &amp; Graphisme
+              </h4>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <!-- AI -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">AI (Adobe Illustrator)</strong>
+                    <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-mono">Master Vectoriel</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Fichier natif d'Adobe Illustrator. Contient des tracés vectoriels modifiables à l'infini sans pixellisation.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Création originale de logos, charte graphique, typographie.</div>
+                </div>
+
+                <!-- SVG -->
+                <div class="bg-slate-900/80 p-4 rounded-xl border border-slate-800 space-y-2">
+                  <div class="flex items-center justify-between">
+                    <strong class="text-white text-sm">SVG (Scalable Vector Graphics)</strong>
+                    <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-mono">Vectoriel Web</span>
+                  </div>
+                  <p class="text-xs text-slate-400">
+                    Standard vectoriel ouvert pour le Web. S'affiche parfaitement net sur n'importe quel écran y compris Retina/4K.
+                  </p>
+                  <div class="text-[11px] text-slate-300 font-medium">Usage : Logos sur sites internet, icônes interactives en CSS/JS.</div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Tableau Récapitulatif Global -->
+            <div class="space-y-2 pt-2">
+              <h3 class="text-sm font-bold text-white">Tableau Synthétique des Formats</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-800 text-slate-200 border-b border-slate-700">
+                      <th class="p-2.5">Format</th>
+                      <th class="p-2.5">Nature</th>
+                      <th class="p-2.5">Transparence</th>
+                      <th class="p-2.5">Calques</th>
+                      <th class="p-2.5">Usage Recommandé</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                    <tr>
+                      <td class="p-2.5 font-bold text-cyan-400">JPG</td>
+                      <td class="p-2.5">Pixel (Lossy)</td>
+                      <td class="p-2.5 text-rose-400">Non</td>
+                      <td class="p-2.5 text-rose-400">Non</td>
+                      <td class="p-2.5">Photos pour le web &amp; tirages standard</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-bold text-emerald-400">PNG</td>
+                      <td class="p-2.5">Pixel (Lossless)</td>
+                      <td class="p-2.5 text-emerald-400">Oui</td>
+                      <td class="p-2.5 text-rose-400">Non</td>
+                      <td class="p-2.5">Logos &amp; graphismes sur fond transparent</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-bold text-purple-400">WEBP</td>
+                      <td class="p-2.5">Pixel (Lossy/Lossless)</td>
+                      <td class="p-2.5 text-emerald-400">Oui</td>
+                      <td class="p-2.5 text-rose-400">Non</td>
+                      <td class="p-2.5">Optimisation web haute performance</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-bold text-amber-400">RAW</td>
+                      <td class="p-2.5">Brut capteur</td>
+                      <td class="p-2.5 text-rose-400">Non</td>
+                      <td class="p-2.5 text-rose-400">Non</td>
+                      <td class="p-2.5">Capture photo initiale de haute qualité</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-bold text-blue-400">PSD / PSB</td>
+                      <td class="p-2.5">Pixel Master</td>
+                      <td class="p-2.5 text-emerald-400">Oui</td>
+                      <td class="p-2.5 text-emerald-400">Oui</td>
+                      <td class="p-2.5">Fichier de retouche en cours (Photoshop)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-bold text-emerald-400">TIFF</td>
+                      <td class="p-2.5">Pixel HD</td>
+                      <td class="p-2.5 text-emerald-400">Oui</td>
+                      <td class="p-2.5 text-emerald-400">Oui</td>
+                      <td class="p-2.5">Tirage Fine Art &amp; archivage Master</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-bold text-pink-400">AI / SVG</td>
+                      <td class="p-2.5">Vectoriel</td>
+                      <td class="p-2.5 text-emerald-400">Oui</td>
+                      <td class="p-2.5 text-emerald-400">Oui</td>
+                      <td class="p-2.5">Logos, icônes et illustrations vectorielles</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Recommandation Studio -->
+            <div class="stat-box space-y-2 border-purple-500/30">
+              <h3 class="text-sm font-bold text-purple-400">Règle d'or des exports chez Graphis Studio</h3>
+              <p class="text-xs text-slate-300">
+                • <strong>Photographie :</strong> Capturez toujours en <strong>RAW</strong>, travaillez sous <strong>PSD/TIFF</strong> en 16 bits, et exportez en <strong>JPG (sRGB)</strong> pour les clients ou le web.<br>
+                • <strong>Identité Visuelle :</strong> Créez toujours votre marque en <strong>AI / SVG</strong> vectoriel, puis déclinez en <strong>PNG transparent</strong> pour la bureautique.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </article>
+
     </div>
 
   </main>
