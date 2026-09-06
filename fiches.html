@@ -1120,6 +1120,175 @@
         </div>
       </article>
 
+
+      <!-- FICHE 7 : MODE RVB VS MODE CMJN -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="print" data-title="mode rvb vs mode cmjn rgb cmyk couleur impression ecran profil colorimetrique comparatif">
+        
+        <!-- En-tête du volet (Cliquable) -->
+        <button onclick="toggleFiche('fiche-rvb-cmjn')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-semibold uppercase">Impression &amp; Couleur</span>
+                <span class="text-[10px] text-slate-500">• Fiche #07</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Mode RVB (RGB) vs Mode CMJN (CMYK) : Écran vs Impression
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-rvb-cmjn" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-rvb-cmjn" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- Contenu du Volet -->
+        <div id="fiche-rvb-cmjn" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+
+          <!-- Barre d'actions supérieures -->
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Mode RVB vs Mode CMJN', 'content-rvb-cmjn')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <!-- CONTENU DE LA FICHE -->
+          <div id="content-rvb-cmjn" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            
+            <!-- Intro -->
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-pink-400"></span>
+                Les deux modes de restitution de la couleur
+              </h3>
+              <p>
+                La couleur numérique repose sur deux physiques totalement opposées : la <strong class="text-white">synthèse additive (lumière)</strong> pour l'affichage sur écrans, et la <strong class="text-white">synthèse soustrative (pigments / encre)</strong> pour l'impression physique.
+              </p>
+            </div>
+
+            <!-- Grille d'Analyse Comparative -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <!-- CARTE RVB -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Mode RVB (RGB)</h4>
+                  <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono">Synthèse Additive</span>
+                </div>
+
+                <p class="text-xs text-slate-400">
+                  Basé sur la superposition de faisceaux lumineux : <strong class="text-slate-200">Rouge, Vert et Bleu</strong>. L'addition maximale des trois couleurs donne le blanc pur.
+                </p>
+
+                <div class="space-y-2">
+                  <span class="text-xs font-bold text-cyan-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Caractéristiques Principales
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                    <li><strong>Destination :</strong> Écrans (smartphones, ordinateurs, TV, web, réseaux sociaux).</li>
+                    <li><strong>Gamme de couleurs (Gamut) :</strong> Très vaste, permet d'afficher des couleurs très saturées et lumineuses.</li>
+                    <li><strong>Formats de fichiers :</strong> JPG, PNG, WEBP, GIF, PSD.</li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- CARTE CMJN -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Mode CMJN (CMYK)</h4>
+                  <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-mono">Synthèse Soustrative</span>
+                </div>
+
+                <p class="text-xs text-slate-400">
+                  Basé sur le mélange d'encres physiques : <strong class="text-slate-200">Cyan, Magenta, Jaune et Noir</strong>. L'addition des encres absorbe la lumière pour créer les teintes.
+                </p>
+
+                <div class="space-y-2">
+                  <span class="text-xs font-bold text-pink-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Caractéristiques Principales
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                    <li><strong>Destination :</strong> Impression papier, presse, brochures, affiches, emballages (Quadrichromie).</li>
+                    <li><strong>Gamme de couleurs (Gamut) :</strong> Plus restreinte que le RVB. Les teintes très lumineuses/fluo s'assombrissent à l'impression.</li>
+                    <li><strong>Formats de fichiers :</strong> PDF haute définition, TIFF, EPS, AI.</li>
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Tableau Récapitulatif -->
+            <div class="space-y-2 pt-2">
+              <h3 class="text-sm font-bold text-white">Tableau Comparatif RVB vs CMJN</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-800 text-slate-200 border-b border-slate-700">
+                      <th class="p-2.5">Critère</th>
+                      <th class="p-2.5">Mode RVB (RGB)</th>
+                      <th class="p-2.5">Mode CMJN (CMYK)</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Principe physique</td>
+                      <td class="p-2.5">Lumière (Synthèse additive)</td>
+                      <td class="p-2.5">Encres / Pigments (Synthèse soustrative)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Support final</td>
+                      <td class="p-2.5 text-cyan-400 font-medium">Écrans &amp; Web</td>
+                      <td class="p-2.5 text-pink-400 font-medium">Impression &amp; Papeterie</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Étendue des couleurs (Gamut)</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Large (couleurs très vives)</td>
+                      <td class="p-2.5 text-amber-400 font-medium">Plus restreint (adapté à l'encre)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Mélange de toutes les couleurs</td>
+                      <td class="p-2.5">Donne du Blanc</td>
+                      <td class="p-2.5">Donne du Noir / Brun foncé</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Conclusion & Recommandation Studio -->
+            <div class="stat-box space-y-2 border-pink-500/30">
+              <h3 class="text-sm font-bold text-pink-400">Recommandation &amp; Workflow du Studio</h3>
+              <p class="text-xs text-slate-300">
+                <strong>Concevez toujours vos visuels en RVB</strong> dans Photoshop ou Illustrator pour bénéficier de la totalité des fonctionnalités et filtres.
+              </p>
+              <p class="text-xs text-slate-300">
+                Si le projet est destiné à l'impression, effectuez un <strong>Aperçu d'épreuve (Soft Proofing)</strong> avant d'exporter en <strong>CMJN (PDF/X)</strong> pour valider l'interprétation des couleurs par l'imprimeur sans mauvaises surprises.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </article>
+
     </div>
 
   </main>
