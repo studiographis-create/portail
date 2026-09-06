@@ -313,7 +313,233 @@
       </article>
 
 
-      <!-- FICHE 2 : RAW VS JPEG -->
+      <!-- FICHE 2 : PHOTOSHOP VS LIGHTROOM CLASSIC -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="workflow" data-title="photoshop vs lightroom classic comparatif retouche retoucheur photomontage">
+        
+        <!-- En-tête du volet (Cliquable) -->
+        <button onclick="toggleFiche('fiche-ps-lr')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 text-[10px] font-semibold uppercase">Logiciels &amp; Workflow</span>
+                <span class="text-[10px] text-slate-500">• Fiche #02</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Photoshop vs Lightroom Classic : Deux outils complémentaires
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-ps-lr" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-ps-lr" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- Contenu du Volet -->
+        <div id="fiche-ps-lr" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+
+          <!-- Barre d'actions supérieures -->
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Photoshop vs Lightroom Classic', 'content-ps-lr')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <!-- CONTENU DE LA FICHE -->
+          <div id="content-ps-lr" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            
+            <!-- Intro -->
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+                Pas de compétition : La puissance de la complémentarité
+              </h3>
+              <p>
+                Opposer <strong>Photoshop</strong> et <strong>Lightroom Classic</strong> est une erreur fréquente chez les débutants. Ces deux logiciels phares d'Adobe <strong>ne sont pas concurrents, mais parfaitement complémentaires</strong>. Ils ont été pensés pour se passer le relais à des étapes distinctes du flux de travail photographique. Utilisés main dans la main, ils font de véritables merveilles.
+              </p>
+            </div>
+
+            <!-- Grille d'Analyse Comparative -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <!-- LIGHTROOM CLASSIC -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Lightroom Classic</h4>
+                  <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono">Développement &amp; Flux global</span>
+                </div>
+
+                <p class="text-xs text-slate-400">
+                  Le laboratoire numérique global : du tri des cartes mémoire à l'archivage, en passant par le développement chromatique par lots.
+                </p>
+
+                <!-- Points Positifs -->
+                <div class="space-y-2">
+                  <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    Avantages Principaux
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                    <li><strong>Traitement non-destructif :</strong> Le fichier RAW original n'est jamais altéré.</li>
+                    <li><strong>Traitement par lots ultra-rapide :</strong> Synchronisez la balance des blancs et l'exposition sur des centaines de photos en 1 clic.</li>
+                    <li><strong>Gestion documentaire complète (DAM) :</strong> Mots-clés, notes, étoiles, géolocalisation et collections.</li>
+                    <li><strong>Workflow direct :</strong> Importation, tri, correction globale, exportation et impression d'art dans un seul logiciel.</li>
+                  </ul>
+                </div>
+
+                <!-- Points Négatifs -->
+                <div class="space-y-2 pt-2 border-t border-slate-800/80">
+                  <span class="text-xs font-bold text-rose-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    Limites
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-400">
+                    <li>Gestion des calques et des masques complexes limitée.</li>
+                    <li>Outils de retouche de peau avancée (Dodge &amp; Burn, Séparation de fréquence) absents ou rudimentaires.</li>
+                    <li>Pas de montage ou de suppression d'objets complexes.</li>
+                  </ul>
+                </div>
+
+                <!-- À qui s'adresse-t-il -->
+                <div class="pt-2 border-t border-slate-800/80">
+                  <span class="text-xs font-bold text-blue-400 block mb-1">À qui s'adresse-t-il ?</span>
+                  <p class="text-xs text-slate-300">
+                    À <strong>tous les photographes</strong> (reportage, mariage, paysage, portrait, événementiel) qui doivent trier, organiser et révéler la couleur de séries entières d'images de manière fluide.
+                  </p>
+                </div>
+              </div>
+
+              <!-- PHOTOSHOP -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                  <h4 class="font-bold text-white text-base">Adobe Photoshop</h4>
+                  <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-mono">Retouche au pixel &amp; Création</span>
+                </div>
+
+                <p class="text-xs text-slate-400">
+                  L'atelier de chirurgie esthétique et de composition visuelle au pixel près.
+                </p>
+
+                <!-- Points Positifs -->
+                <div class="space-y-2">
+                  <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    Avantages Principaux
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                    <li><strong>Contrôle absolu au pixel :</strong> Calques de réglage, masques de fusion, modes de fusion et objets dynamiques.</li>
+                    <li><strong>Retouche de beauté / Studio poussée :</strong> Séparation de fréquence, correction ciblée des imperfections, fluidité.</li>
+                    <li><strong>Trucage &amp; Photomontage :</strong> Détourage de cheveux, incrustation d'éléments, remplacement de ciel IA complexe.</li>
+                    <li><strong>Création graphique &amp; Texte :</strong> Intégration de typographies, logos, posters et maquettes.</li>
+                  </ul>
+                </div>
+
+                <!-- Points Négatifs -->
+                <div class="space-y-2 pt-2 border-t border-slate-800/80">
+                  <span class="text-xs font-bold text-rose-400 flex items-center gap-1">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    Limites
+                  </span>
+                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-400">
+                    <li>Aucune gestion de catalogue ou de bibliothèque de fichiers.</li>
+                    <li>Inadapté au traitement simultané de plus d'une poignée de photos.</li>
+                    <li>Courbe d'apprentissage beaucoup plus longue et technique.</li>
+                  </ul>
+                </div>
+
+                <!-- À qui s'adresse-t-il -->
+                <div class="pt-2 border-t border-slate-800/80">
+                  <span class="text-xs font-bold text-purple-400 block mb-1">À qui s'adresse-t-il ?</span>
+                  <p class="text-xs text-slate-300">
+                    Aux <strong>retoucheurs portrait / beauté</strong>, créateurs d'affiches, photographes publicitaires, artistes Fine Art et spécialistes du photomontage.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Tableau Récapitulatif -->
+            <div class="space-y-2 pt-2">
+              <h3 class="text-sm font-bold text-white">Tableau Comparatif des Usages</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-800 text-slate-200 border-b border-slate-700">
+                      <th class="p-2.5">Tâche ou Fonctionnalité</th>
+                      <th class="p-2.5">Lightroom Classic</th>
+                      <th class="p-2.5">Adobe Photoshop</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Tri &amp; Archivage de 1000 photos</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Idéal (Collections &amp; Notes)</td>
+                      <td class="p-2.5 text-rose-400 font-medium">Inadapté (Pas de catalogue)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Développement de la couleur &amp; RAW</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Excellent (Moteur Camera RAW)</td>
+                      <td class="p-2.5 text-slate-300">Possible (via plugin Camera Raw)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Retouche de peau avancée (Dodge&amp;Burn)</td>
+                      <td class="p-2.5 text-slate-400">Basique (Pinceau local)</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Inégalable (Séparation fréquence)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Détourage &amp; Photomontage de calques</td>
+                      <td class="p-2.5 text-rose-400 font-medium">Impossible</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Inégalable (Calques &amp; Masques)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Suppression d'objets ou passants complexes</td>
+                      <td class="p-2.5 text-slate-400">Limité (Correction IA de base)</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Avancé (Remplissage génératif IA)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Workflow Idéal / Les deux ensemble font des merveilles -->
+            <div class="stat-box space-y-3 border-blue-500/30">
+              <h3 class="text-sm font-bold text-blue-400 flex items-center gap-2">
+                <svg class="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                Le Workflow Idéal : "Les deux ensemble font des merveilles"
+              </h3>
+              <p class="text-xs text-slate-300">
+                La combinaison de ces deux géants forme la colonne vertébrale du travail photographique professionnel :
+              </p>
+              <ol class="text-xs space-y-1.5 list-decimal list-inside text-slate-200 font-medium">
+                <li><strong>Dans Lightroom Classic :</strong> Vous importez le reportage, triez les meilleures vues, ajustez la balance des blancs, l'exposition et appliquez votre signature couleur globale à toute la série.</li>
+                <li><strong>Passerelle directe vers Photoshop :</strong> Sur les portraits ou les images pépites nécessitant une retouche chirurgicale, faites un clic droit &gt; <em>Modifier dans &gt; Adobe Photoshop</em>.</li>
+                <li><strong>Dans Photoshop :</strong> Vous effectuez le nettoyage précis de la peau, le détourage ou l'élimination des éléments perturbateurs complexes.</li>
+                <li><strong>Enregistrement fluide :</strong> Faites un simple <kbd class="bg-slate-800 px-1 py-0.5 rounded text-slate-200 font-mono text-[10px]">Ctrl+S</kbd> / <kbd class="bg-slate-800 px-1 py-0.5 rounded text-slate-200 font-mono text-[10px]">Cmd+S</kbd>. L'image retouchée (Tiff/PSD) se réintègre automatiquement dans votre catalogue Lightroom Classic, empilée aux côtés de la photo originale !</li>
+              </ol>
+            </div>
+
+          </div>
+        </div>
+      </article>
+
+
+      <!-- FICHE 3 : RAW VS JPEG -->
       <article class="fiche-card krea-card overflow-hidden" data-category="terrain" data-title="raw vs jpeg format photo comparatif">
         
         <button onclick="toggleFiche('fiche-raw-jpeg')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
@@ -326,7 +552,7 @@
             <div>
               <div class="flex items-center gap-2 mb-0.5">
                 <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-semibold uppercase">Techniques Terrain</span>
-                <span class="text-[10px] text-slate-500">• Fiche #02</span>
+                <span class="text-[10px] text-slate-500">• Fiche #03</span>
               </div>
               <h2 class="text-base md:text-lg font-bold text-white leading-tight">
                 Format RAW vs JPEG : Quand utiliser l'un ou l'autre ?
@@ -398,7 +624,7 @@
       </article>
 
 
-      <!-- FICHE 3 : ESPACES COLORIMÉTRIQUES SRGB VS ADOBE RGB -->
+      <!-- FICHE 4 : ESPACES COLORIMÉTRIQUES SRGB VS ADOBE RGB -->
       <article class="fiche-card krea-card overflow-hidden" data-category="print" data-title="srgb vs adobe rgb vs prophoto espaces couleur impression">
         
         <button onclick="toggleFiche('fiche-color-spaces')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
@@ -411,7 +637,7 @@
             <div>
               <div class="flex items-center gap-2 mb-0.5">
                 <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-semibold uppercase">Impression &amp; Couleur</span>
-                <span class="text-[10px] text-slate-500">• Fiche #03</span>
+                <span class="text-[10px] text-slate-500">• Fiche #04</span>
               </div>
               <h2 class="text-base md:text-lg font-bold text-white leading-tight">
                 Espaces Colorimétriques : sRGB vs Adobe RGB vs ProPhoto RGB
@@ -475,7 +701,7 @@
             <div class="stat-box space-y-2 border-pink-500/30">
               <h3 class="text-sm font-bold text-pink-400">Règle d'or du Workflow Couleur</h3>
               <p class="text-xs text-slate-300">
-                Travaillez vos RAW dans un grand espace (ProPhoto / Adobe RGB en 16 bits), puis <strong>convertissez impérativement en sRGB 8 bits</strong> lors de l'export final si l'image me est destinée au Web ou aux labos photo grand public.
+                Travaillez vos RAW dans un grand espace (ProPhoto / Adobe RGB en 16 bits), puis <strong>convertissez impérativement en sRGB 8 bits</strong> lors de l'export final si l'image est destinée au Web ou aux labos photo grand public.
               </p>
             </div>
 
@@ -674,7 +900,7 @@
             }
 
             /* Masquer les boutons non imprimables */
-            button, .no-print { 
+            button, .no-print, kbd { 
               display: none !important; 
             }
 
