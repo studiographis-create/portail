@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Les Fiches &amp; Comparatifs — Graphis Studio</title>
+  <title>Hub Central — Graphis Studio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     html { scroll-behavior: smooth; }
@@ -28,26 +28,48 @@
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .tool-input, .tool-select {
-      background-color: #0f172a;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 10px;
-      padding: 0.6rem 0.8rem;
-      color: #f1f5f9;
-      width: 100%;
-      outline: none;
-      transition: all 0.2s ease;
+    .hub-btn {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 0.875rem 2.25rem 0.875rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      height: 100%;
+      position: relative;
     }
-    .tool-input:focus, .tool-select:focus {
-      border-color: #8b5cf6;
-      box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+    .hub-btn:hover {
+      border-color: rgba(244, 114, 182, 0.5);
+      background: rgba(30, 41, 59, 0.95);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -4px rgba(244, 114, 182, 0.25);
     }
 
-    .stat-box {
-      background: rgba(15, 23, 42, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 0.75rem 1rem;
+    .hub-btn-new {
+      border-color: rgba(139, 92, 246, 0.4);
+    }
+    .hub-btn-new:hover {
+      border-color: #8B5CF6;
+      box-shadow: 0 8px 20px -4px rgba(139, 92, 246, 0.35);
+    }
+
+    .fav-star-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      opacity: 0.3;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+    .hub-btn:hover .fav-star-btn, .fav-star-btn.is-fav {
+      opacity: 1;
+    }
+    .fav-star-btn.is-fav svg {
+      fill: #facc15;
+      stroke: #facc15;
     }
   </style>
 </head>
@@ -55,651 +77,1143 @@
 
   <!-- En-tête -->
   <header class="max-w-5xl w-full my-6 text-center space-y-4">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-bold uppercase tracking-widest">
-      Bibliothèque Technique &amp; Guide Pratique
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-bold uppercase tracking-widest">
+      Portail Officiel
     </div>
     
     <h1 class="text-3xl md:text-5xl font-black tracking-tight text-white">
-      Les <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">Fiches &amp; Comparatifs</span>
+      Graphis <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400">Hub</span>
     </h1>
     
-    <p class="text-xs md:text-sm text-slate-400 font-medium max-w-2xl mx-auto">
-      Guides synthétiques, analyses comparatives et aide-mémoires pour le photographe.
-      <br><span class="text-slate-500 text-[11px]">Par Dimitri Damblon — Graphis Studio</span>
+    <p class="text-xs md:text-sm text-slate-400 font-medium whitespace-nowrap overflow-x-auto max-w-full mx-auto px-2">
+      Accès centralisé à mes applications, liens et ressources pédagogiques.
     </p>
 
-    <!-- Bouton Retour au Hub -->
+    <!-- Indication Favoris en haut -->
     <div class="pt-2">
-      <a href="index.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/60 text-xs text-slate-200 transition-all shadow-md group">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-pink-400 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-800/80 border border-slate-700/60 text-xs text-slate-300 shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-yellow-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
-        <span>Retour au Hub Central</span>
-      </a>
+        <span>Ajouter ce Hub aux favoris : <kbd class="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 font-mono text-[11px] text-pink-400">Ctrl + D</kbd> <span class="text-slate-500">(ou <kbd class="px-1.5 py-0.5 rounded bg-slate-900 border border-slate-700 font-mono text-[11px] text-pink-400">Cmd + D</kbd>)</span></span>
+      </div>
     </div>
   </header>
 
-  <!-- Section Principale -->
-  <main class="max-w-5xl w-full space-y-6 my-auto">
+  <!-- Conteneur des Sections -->
+  <main class="max-w-5xl w-full space-y-8 my-auto">
 
-    <!-- BARRE DE FILTRES ET RECHERCHE -->
-    <section class="krea-card p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
-      <div class="flex flex-wrap gap-2 w-full sm:w-auto justify-center sm:justify-start" id="category-filters">
-        <button onclick="filterCategory('all', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-purple-600 text-white transition-all shadow-sm">
-          Toutes les fiches
-        </button>
-        <button onclick="filterCategory('workflow', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all">
-          Logiciels &amp; Workflow
-        </button>
-        <button onclick="filterCategory('terrain', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all">
-          Techniques Terrain
-        </button>
-        <button onclick="filterCategory('print', this)" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition-all">
-          Impression &amp; Couleur
-        </button>
+    <!-- SECTION 0 : MES FAVORIS ÉPINGLÉS -->
+    <section id="section-favoris" class="krea-card p-6 md:p-8 border-yellow-500/30">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-xl bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-white">Mes Favoris</h2>
+            <p class="text-xs text-slate-400">Vos raccourcis personnalisés (jusqu'à 4 liens)</p>
+          </div>
+        </div>
+        <span id="fav-count-badge" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">0 / 4</span>
       </div>
 
-      <div class="w-full sm:w-64">
-        <input type="text" id="fiche-search" oninput="searchFiches()" placeholder="Rechercher une fiche..." class="tool-input text-xs">
+      <div id="favorites-empty" class="p-6 text-center border border-dashed border-slate-700/60 rounded-xl bg-slate-900/30">
+        <p class="text-xs text-slate-400">Aucun favori épinglé. Cliquez sur l'étoile <span class="text-yellow-400">★</span> de vos cartes préférées ci-dessous pour les ajouter ici.</p>
+      </div>
+
+      <div id="favorites-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4 hidden"></div>
+    </section>
+
+    <!-- SECTION 1 : OUTILS -->
+    <section class="krea-card p-6 md:p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Outils</h2>
+          <p class="text-xs text-slate-400">Applications et utilitaires en ligne</p>
+        </div>
+      </div>
+
+      <!-- Première ligne (Outils) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- 1. MAJ DES SUPPORTS -->
+        <a href="https://script.google.com/macros/s/AKfycbwdu4h2wjH1G11ORoJrOHbB-4Aju8qkjok2DojTR2lU80b_lzuldCexnSlmmCWWFPqWCQ/exec" target="_blank" rel="noopener noreferrer" data-id="maj-supports" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'maj-supports')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gk1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gk2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gk2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gk1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">MAJ</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">MAJ des supports</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Outil de mise à jour</p>
+          </div>
+        </a>
+
+        <!-- 2. KREA -->
+        <a href="https://krea-actu.streamlit.app/" target="_blank" rel="noopener noreferrer" data-id="krea" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'krea')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gk1_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gk2_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gk2_2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gk1_2)"/>
+            <text x="48" y="61" font-family="sans-serif" font-weight="900" font-size="44" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 61)">k</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Krea</h3>
+            <p class="text-xs text-slate-400 mt-0.5">L'actualité créative &amp; IA en continu</p>
+          </div>
+        </a>
+
+        <!-- 3. SHORTCUT PRO -->
+        <a href="https://studiographis-create.github.io/shortcut/" target="_blank" rel="noopener noreferrer" data-id="shortcut-pro" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'shortcut-pro')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gs1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gs2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gs2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gs1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="34" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Sc</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Shortcut PRO</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Entraîneur de raccourcis Photoshop &amp; Lightroom</p>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Seconde ligne (Outils) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        
+        <!-- 4. NOTEBOOK GEMINI -->
+        <a href="https://notebook.google.com/notebook/6d50ce7a-4470-48f4-bdcd-e761f7b73529" target="_blank" rel="noopener noreferrer" data-id="notebook-gemini" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'notebook-gemini')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gn1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gn2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gn2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gn1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="34" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Nb</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Notebook Gemini</h3>
+              <span class="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-semibold border border-purple-500/30">IA</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Assistant de cours propulsé par l'IA</p>
+          </div>
+        </a>
+
+        <!-- 5. QCM PHOTOSHOP & LIGHTROOM -->
+        <a href="https://studiographis-create.github.io/portail/qcm.html" target="_blank" rel="noopener noreferrer" data-id="qcm-pslr" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'qcm-pslr')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gqcm1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gqcm2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gqcm2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gqcm1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Qcm</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">QCM Ps &amp; Lr</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Évaluation interactive &amp; 3 niveaux de difficulté</p>
+          </div>
+        </a>
+
+        <!-- 6. PAGE RESSOURCES -->
+        <a href="ressources.html" data-id="page-ressources" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'page-ressources')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gres1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gres2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gres2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gres1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Res</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Page Ressources</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Banques d'images, typographies, textures &amp; outils IA</p>
+          </div>
+        </a>
+
       </div>
     </section>
 
-    <!-- ACCORDÉON / VOLETS DES FICHES -->
-    <div class="space-y-4" id="fiches-container">
-
-      <!-- FICHE 1 : LIGHTROOM VS LIGHTROOM CLASSIC -->
-      <article class="fiche-card krea-card overflow-hidden" data-category="workflow" data-title="lightroom vs lightroom classic comparatif">
-        
-        <!-- En-tête du volet (Cliquable) -->
-        <button onclick="toggleFiche('fiche-lr-comp')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
-          <div class="flex items-center gap-3">
-            <div class="p-2.5 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400 shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 01-2-2h-2a2 2 0 01-2 2" />
-              </svg>
-            </div>
-            <div>
-              <div class="flex items-center gap-2 mb-0.5">
-                <span class="px-2 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-semibold uppercase">Logiciels &amp; Workflow</span>
-                <span class="text-[10px] text-slate-500">• Fiche #01</span>
-              </div>
-              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
-                Lightroom (Cloud) vs Lightroom Classic : Lequel choisir ?
-              </h2>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3 shrink-0">
-            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
-            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
-              <svg id="icon-fiche-lr-comp" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-lr-comp" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
-        </button>
-
-        <!-- Contenu du Volet (Masqué par défaut) -->
-        <div id="fiche-lr-comp" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
-
-          <!-- Barre d'actions supérieures de la fiche -->
-          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-            <div class="text-xs text-slate-400">
-              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
-            </div>
-            <button onclick="printFiche('Lightroom vs Lightroom Classic', 'content-lr-comp')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              <span>Télécharger / Imprimer la Fiche</span>
-            </button>
-          </div>
-
-          <!-- CONTENU REEL DE LA FICHE -->
-          <div id="content-lr-comp" class="space-y-6 text-sm text-slate-300 leading-relaxed">
-            
-            <!-- Intro -->
-            <div class="space-y-2">
-              <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-purple-400"></span>
-                Introduction &amp; Deux philosophies distinctes
-              </h3>
-              <p>
-                Depuis la refonte de la suite Adobe Creative Cloud, la marque propose deux logiciels sous le nom « Lightroom ». Bien qu'ils partagent le même moteur de développement RAW (Camera Raw) et offrent une qualité d'image identique, ils répondent à des besoins et des modes de travail radicalement différents.
-              </p>
-            </div>
-
-            <!-- Grille d'Analyse Comparative (Pros & Cons) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-              <!-- LIGHTROOM CLASSIC -->
-              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <h4 class="font-bold text-white text-base">Lightroom Classic</h4>
-                  <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-mono">Bureau / Catalogue Local</span>
-                </div>
-
-                <p class="text-xs text-slate-400">
-                  L'outil historique de référence pour les photographes professionnels. Conçu pour le stockage local et le traitement en volume sur ordinateur fixe.
-                </p>
-
-                <!-- Points Positifs -->
-                <div class="space-y-2">
-                  <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    Aspects Positifs (Avantages)
-                  </span>
-                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
-                    <li><strong>Gestion de catalogue avancée :</strong> Mots-clés hiérarchiques, collections dynamiques poussées, filtres de métadonnées complets.</li>
-                    <li><strong>Contrôle total du stockage :</strong> Vos images restent sur vos disques durs physiques (locaux ou NAS) sans coût d'abonnement Cloud supplémentaire.</li>
-                    <li><strong>Modules complets :</strong> Module d'impression d'art (Fine Art), création de livres photo, diaporamas et cartes géographiques.</li>
-                    <li><strong>Capture connectée (Tethering) :</strong> Shooting directement relié au boîtier en studio.</li>
-                    <li><strong>Écosystème de plugins :</strong> Prise en charge des extensions tierces (Export vers banques d'images, logiciels externes).</li>
-                  </ul>
-                </div>
-
-                <!-- Points Négatifs -->
-                <div class="space-y-2 pt-2 border-t border-slate-800/80">
-                  <span class="text-xs font-bold text-rose-400 flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                    Aspects Négatifs (Inconvénients)
-                  </span>
-                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-400">
-                    <li>Interface plus dense et complexe pour les débutants.</li>
-                    <li>Synchronisation nomade limitée aux aperçus dynamiques (Smart Previews).</li>
-                    <li>Nécessite de gérer soi-même la stratégie de sauvegarde de son catalogue et de ses RAW.</li>
-                  </ul>
-                </div>
-              </div>
-
-              <!-- LIGHTROOM CLOUD -->
-              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-4">
-                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <h4 class="font-bold text-white text-base">Lightroom (Cloud / Ecosystem)</h4>
-                  <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-mono">Multi-plateforme / Cloud</span>
-                </div>
-
-                <p class="text-xs text-slate-400">
-                  Application moderne réécrite pour une fluidité totale entre ordinateur, iPad, iPhone et navigateurs Web.
-                </p>
-
-                <!-- Points Positifs -->
-                <div class="space-y-2">
-                  <span class="text-xs font-bold text-emerald-400 flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    Aspects Positifs (Avantages)
-                  </span>
-                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
-                    <li><strong>Synchronisation intégrale :</strong> Retouchez sur Mac/PC, poursuivez sur iPad ou smartphone avec accès direct à vos fichiers RAW complets.</li>
-                    <li><strong>Interface épurée :</strong> Prise en main ultra-rapide et ergonomique.</li>
-                    <li><strong>Moteur de recherche IA (Sensei) :</strong> Retrouvez des objets ou visages dans vos photos sans avoir saisi de mots-clés.</li>
-                    <li><strong>Sauvegarde automatique :</strong> Vos fichiers originaux sont sauvegardés dans le Cloud Adobe de manière transparente.</li>
-                  </ul>
-                </div>
-
-                <!-- Points Négatifs -->
-                <div class="space-y-2 pt-2 border-t border-slate-800/80">
-                  <span class="text-xs font-bold text-rose-400 flex items-center gap-1">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-                    Aspects Négatifs (Inconvénients)
-                  </span>
-                  <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-400">
-                    <li><strong>Coût du stockage Cloud :</strong> La formule 1 To ou plus devient onéreuse à mesure que votre bibliothèque grandit.</li>
-                    <li>Absence des modules Impression d'art, Livre et Diaporama.</li>
-                    <li>Gestion des métadonnées et filtres d'archivage moins poussés.</li>
-                    <li>Dépendance à une bonne connexion Internet pour le téléversement des volumineux RAW.</li>
-                  </ul>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Tableau Récapitulatif -->
-            <div class="space-y-2 pt-2">
-              <h3 class="text-sm font-bold text-white">Tableau Synthétique des Fonctionnalités</h3>
-              <div class="overflow-x-auto">
-                <table class="w-full text-xs text-left border-collapse">
-                  <thead>
-                    <tr class="bg-slate-800 text-slate-200 border-b border-slate-700">
-                      <th class="p-2.5">Critère</th>
-                      <th class="p-2.5">Lightroom Classic</th>
-                      <th class="p-2.5">Lightroom (Cloud)</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-800/60 text-slate-300">
-                    <tr>
-                      <td class="p-2.5 font-semibold text-slate-200">Stockage principal des RAW</td>
-                      <td class="p-2.5">Disques durs locaux / NAS</td>
-                      <td class="p-2.5">Serveurs Cloud Adobe</td>
-                    </tr>
-                    <tr>
-                      <td class="p-2.5 font-semibold text-slate-200">Gestion de Catalogue</td>
-                      <td class="p-2.5 text-emerald-400 font-medium">Avançée (Fichier .lrcat)</td>
-                      <td class="p-2.5 text-slate-400">Simplifiée (Par albums)</td>
-                    </tr>
-                    <tr>
-                      <td class="p-2.5 font-semibold text-slate-200">Impression Fine Art &amp; Livre</td>
-                      <td class="p-2.5 text-emerald-400 font-medium">Oui (Modules dédiés)</td>
-                      <td class="p-2.5 text-rose-400 font-medium">Non</td>
-                    </tr>
-                    <tr>
-                      <td class="p-2.5 font-semibold text-slate-200">Recherche IA d'images</td>
-                      <td class="p-2.5 text-slate-400">Non (Mots-clés manuels)</td>
-                      <td class="p-2.5 text-emerald-400 font-medium">Oui (Adobe Sensei)</td>
-                    </tr>
-                    <tr>
-                      <td class="p-2.5 font-semibold text-slate-200">Usage Nomade (Tablette/Mobile)</td>
-                      <td class="p-2.5 text-slate-400">Partiel (Aperçus dynamiques)</td>
-                      <td class="p-2.5 text-emerald-400 font-medium">Total (Fichiers originaux)</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <!-- Conclusion & Verdict -->
-            <div class="stat-box space-y-2 border-purple-500/30">
-              <h3 class="text-sm font-bold text-purple-400">Conclusion &amp; Verdict Pro</h3>
-              <p class="text-xs text-slate-300">
-                <strong>Choisissez Lightroom Classic</strong> si vous êtes un photographe professionnel ou averti possédant plusieurs téraoctets de photos archivés localement, nécessitant un contrôle précis de vos métadonnées, shooting en studio relié à votre ordinateur ou réalisant des tirages d'art.
-              </p>
-              <p class="text-xs text-slate-300">
-                <strong>Choisissez Lightroom (Cloud)</strong> si vous êtes un photographe nomade, créateur de contenu ou voyageur cherchant la possibilité de retoucher la même photo indistinctement sur votre ordinateur portable, votre iPad ou votre smartphone, tout en bénéficiant de sauvegardes automatiques.
-              </p>
-            </div>
-
-          </div>
+    <!-- SECTION 2 : LIENS -->
+    <section class="krea-card p-6 md:p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
         </div>
-      </article>
-
-
-      <!-- FICHE 2 : RAW VS JPEG -->
-      <article class="fiche-card krea-card overflow-hidden" data-category="terrain" data-title="raw vs jpeg format photo comparatif">
-        
-        <button onclick="toggleFiche('fiche-raw-jpeg')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
-          <div class="flex items-center gap-3">
-            <div class="p-2.5 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <div>
-              <div class="flex items-center gap-2 mb-0.5">
-                <span class="px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 text-[10px] font-semibold uppercase">Techniques Terrain</span>
-                <span class="text-[10px] text-slate-500">• Fiche #02</span>
-              </div>
-              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
-                Format RAW vs JPEG : Quand utiliser l'un ou l'autre ?
-              </h2>
-            </div>
-          </div>
-
-          <div class="flex items-center gap-3 shrink-0">
-            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
-            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
-              <svg id="icon-fiche-raw-jpeg" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-raw-jpeg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
-        </button>
-
-        <div id="fiche-raw-jpeg" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
-
-          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-            <div class="text-xs text-slate-400">
-              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
-            </div>
-            <button onclick="printFiche('RAW vs JPEG', 'content-raw-jpeg')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              <span>Télécharger / Imprimer la Fiche</span>
-            </button>
-          </div>
-
-          <div id="content-raw-jpeg" class="space-y-6 text-sm text-slate-300 leading-relaxed">
-            
-            <p>
-              Le choix entre enregistrer ses photos en <strong>RAW</strong> (fichier brut) ou en <strong>JPEG</strong> (fichier compressé) détermine toute la flexibilité de votre travail en post-traitement.
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
-                <h4 class="font-bold text-cyan-400 text-base">Format RAW (Brut)</h4>
-                <ul class="text-xs space-y-2 list-disc list-inside text-slate-300">
-                  <li><strong>Profondeur de couleur :</strong> 12 ou 14 bits (des milliards de couleurs enregistrées).</li>
-                  <li><strong>Plage dynamique maximale :</strong> Permet de déboucher les ombres profondes et rattraper les hautes lumières sans détérioration.</li>
-                  <li><strong>Balance des blancs modifiable :</strong> Ajustable à volonté après la prise de vue sans perte de qualité.</li>
-                  <li><strong>Contrainte :</strong> Fichiers très lourds nécessitant un développement sous Lightroom, Camera Raw ou Capture One.</li>
-                </ul>
-              </div>
-
-              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
-                <h4 class="font-bold text-pink-400 text-base">Format JPEG (Compressé)</h4>
-                <ul class="text-xs space-y-2 list-disc list-inside text-slate-300">
-                  <li><strong>Profondeur de couleur :</strong> 8 bits (16.7 millions de couleurs).</li>
-                  <li><strong>Fichier fini :</strong> Traité directement par le processeur de l'appareil (netteté, contraste, profil de couleur appliqués).</li>
-                  <li><strong>Prêt à l'emploi :</strong> Utilisable immédiatement sur le Web ou envoyé au client sans traitement.</li>
-                  <li><strong>Contrainte :</strong> Très faible marge de manœuvre en cas d'erreur d'exposition ou de mauvaise balance des blancs.</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="stat-box space-y-2 border-cyan-500/30">
-              <h3 class="text-sm font-bold text-cyan-400">Recommandation du Studio</h3>
-              <p class="text-xs text-slate-300">
-                Photographiez en <strong>RAW</strong> pour toutes vos séances importantes (portraits, paysages, mariages, tirages) afin de conserver la qualité maximale. Reservez le <strong>JPEG</strong> pour la photo de reportage rapide ou d'événementiel exigeant une livraison immédiate.
-              </p>
-            </div>
-
-          </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Liens</h2>
+          <p class="text-xs text-slate-400">Vos raccourcis externes</p>
         </div>
-      </article>
+      </div>
 
-
-      <!-- FICHE 3 : ESPACES COLORIMÉTRIQUES SRGB VS ADOBE RGB -->
-      <article class="fiche-card krea-card overflow-hidden" data-category="print" data-title="srgb vs adobe rgb vs prophoto espaces couleur impression">
+      <!-- Première ligne de liens -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
-        <button onclick="toggleFiche('fiche-color-spaces')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
-          <div class="flex items-center gap-3">
-            <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 shrink-0">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-              </svg>
-            </div>
-            <div>
-              <div class="flex items-center gap-2 mb-0.5">
-                <span class="px-2 py-0.5 rounded bg-pink-500/10 text-pink-400 border border-pink-500/20 text-[10px] font-semibold uppercase">Impression &amp; Couleur</span>
-                <span class="text-[10px] text-slate-500">• Fiche #03</span>
-              </div>
-              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
-                Espaces Colorimétriques : sRGB vs Adobe RGB vs ProPhoto RGB
-              </h2>
-            </div>
+        <!-- GROUPE FACEBOOK -->
+        <a href="https://www.facebook.com/groups/photoshop.lightroom.Evere.Philippeville" target="_blank" rel="noopener noreferrer" data-id="fb-group" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'fb-group')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gfb1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
+              <linearGradient id="gfb2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gfb2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gfb1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">fb</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Groupe Facebook</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Communauté Photoshop &amp; Lightroom</p>
           </div>
+        </a>
 
-          <div class="flex items-center gap-3 shrink-0">
-            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
-            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
-              <svg id="icon-fiche-color-spaces" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-color-spaces" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
+        <!-- SITE GRAPHISTUDIO.BE -->
+        <a href="https://graphistudio.be/" target="_blank" rel="noopener noreferrer" data-id="site-gs" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'site-gs')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.784.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="ggs1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EC4899"/><stop offset="100%" stop-color="#BE185D"/></linearGradient>
+              <linearGradient id="ggs2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F472B6" stop-opacity="0.6"/><stop offset="100%" stop-color="#8B5CF6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#ggs2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#ggs1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">GS</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Graphis Studio</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Site professionnel de graphisme</p>
           </div>
-        </button>
+        </a>
 
-        <div id="fiche-color-spaces" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
-
-          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
-            <div class="text-xs text-slate-400">
-              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
-            </div>
-            <button onclick="printFiche('Espaces Colorimétriques', 'content-color-spaces')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-              </svg>
-              <span>Télécharger / Imprimer la Fiche</span>
-            </button>
+        <!-- BROL.SHOP -->
+        <a href="https://brol.shop/" target="_blank" rel="noopener noreferrer" data-id="brol-shop" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'brol-shop')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.784.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gbr1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FACC15"/><stop offset="100%" stop-color="#CA8A04"/></linearGradient>
+              <linearGradient id="gbr2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF08A" stop-opacity="0.6"/><stop offset="100%" stop-color="#EAB308" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gbr2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gbr1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#1E293B" text-anchor="middle" transform="rotate(-10 48 60)">Br</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Brol.shop</h3>
+            <p class="text-xs text-slate-400 mt-0.5">La petite boutique</p>
           </div>
+        </a>
 
-          <div id="content-color-spaces" class="space-y-6 text-sm text-slate-300 leading-relaxed">
-            
-            <p>
-              Un espace couleur est un réservoir définissant la quantité de nuances qu'une image contient. Choisir le bon espace évite les teintes affadies ou les dérives de couleurs au tirage.
-            </p>
+      </div>
 
-            <div class="space-y-3">
-              <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
-                <h4 class="font-bold text-pink-400 text-sm mb-1">1. sRGB (Standard Web)</h4>
-                <p class="text-xs text-slate-300">
-                  L'espace le plus restreint mais universel. C'est le standard de tous les navigateurs web, réseaux sociaux, smartphones et tirages photo grand public. Tout fichier destiné à être vu sur un écran doit être exporté en sRGB.
-                </p>
-              </div>
-
-              <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
-                <h4 class="font-bold text-purple-400 text-sm mb-1">2. Adobe RGB (1998)</h4>
-                <p class="text-xs text-slate-300">
-                  Contient environ 35% de couleurs en plus que le sRGB, notamment dans les teintes vert/cyan. C'est le standard pour la retouche photo professionnelle et les tirages d'art sur imprimantes jet d'encre pigmentaires.
-                </p>
-              </div>
-
-              <div class="p-4 bg-slate-900/80 rounded-xl border border-slate-800">
-                <h4 class="font-bold text-cyan-400 text-sm mb-1">3. ProPhoto RGB</h4>
-                <p class="text-xs text-slate-300">
-                  Un espace gigantesque englobant la quasi-totalité des couleurs captables par un capteur numérique RAW. À utiliser exclusivement pendant le travail de retouche sous Photoshop en 16-bit pour ne perdre aucune subtilité.
-                </p>
-              </div>
-            </div>
-
-            <div class="stat-box space-y-2 border-pink-500/30">
-              <h3 class="text-sm font-bold text-pink-400">Règle d'or du Workflow Couleur</h3>
-              <p class="text-xs text-slate-300">
-                Travaillez vos RAW dans un grand espace (ProPhoto / Adobe RGB en 16 bits), puis <strong>convertissez impérativement en sRGB 8 bits</strong> lors de l'export final si l'image est destinée au Web ou aux labos photo grand public.
-              </p>
-            </div>
-
+      <!-- Seconde ligne de liens -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        
+        <!-- 1. YOUTUBE -->
+        <a href="https://www.youtube.com/@graphisstudio" target="_blank" rel="noopener noreferrer" data-id="youtube" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'youtube')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gyt1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#DC2626"/><stop offset="100%" stop-color="#991B1B"/></linearGradient>
+              <linearGradient id="gyt2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FCA5A5" stop-opacity="0.6"/><stop offset="100%" stop-color="#DC2626" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gyt2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gyt1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Y</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">YouTube</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Chaîne Graphis Studio</p>
           </div>
+        </a>
+
+        <!-- 2. URBEX WORLD -->
+        <a href="https://www.facebook.com/worldofurbex/" target="_blank" rel="noopener noreferrer" data-id="urbex-world" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'urbex-world')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="guw1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#0F172A"/></linearGradient>
+              <linearGradient id="guw2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#94A3B8" stop-opacity="0.6"/><stop offset="100%" stop-color="#334155" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#guw2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#guw1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Uw</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Urbex World</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Photos de lieux abandonnés</p>
+          </div>
+        </a>
+
+        <!-- 3. PHOTOGRAPHES DU PASSÉ -->
+        <a href="https://photographesdupasse.com/" target="_blank" rel="noopener noreferrer" data-id="photographes-passe" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'photographes-passe')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gpdp1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1E293B"/><stop offset="100%" stop-color="#020617"/></linearGradient>
+              <linearGradient id="gpdp2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#475569" stop-opacity="0.6"/><stop offset="100%" stop-color="#0F172A" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gpdp2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gpdp1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="30" fill="#FACC15" text-anchor="middle" transform="rotate(-10 48 60)">PdP</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Photographes du passé</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Collectif de photographes urbex</p>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Troisième ligne de liens -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        
+        <!-- PHOTOSHOP FORMATION -->
+        <a href="https://photoshop-formation.be/" target="_blank" rel="noopener noreferrer" data-id="photoshop-formation" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'photoshop-formation')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.784.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gpf1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#172554"/><stop offset="100%" stop-color="#020617"/></linearGradient>
+              <linearGradient id="gpf2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1E40AF" stop-opacity="0.6"/><stop offset="100%" stop-color="#0F172A" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gpf2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gpf1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="30" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Pf</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Photoshop Formation</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Site de formations</p>
+          </div>
+        </a>
+
+        <!-- EAFC PHILIPPEVILLE -->
+        <a href="https://coursdusoir-philippeville-florennes.be/" target="_blank" rel="noopener noreferrer" data-id="eafc-philippeville" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'eafc-philippeville')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="geafc1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FACC15"/><stop offset="100%" stop-color="#CA8A04"/></linearGradient>
+              <linearGradient id="geafc2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FEF08A" stop-opacity="0.6"/><stop offset="100%" stop-color="#EAB308" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#geafc2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#geafc1)"/>
+            <text x="48" y="61" font-family="sans-serif" font-weight="900" font-size="24" fill="#1E293B" text-anchor="middle" transform="rotate(-10 48 61)">EAFC</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">EAFC Philippeville</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Le site de l'école</p>
+          </div>
+        </a>
+
+        <!-- PHESTIVAL -->
+        <a href="https://festivalphotophilippeville.be/" target="_blank" rel="noopener noreferrer" data-id="phestival" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'phestival')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.784.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gph1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#38BDF8"/><stop offset="100%" stop-color="#0284C7"/></linearGradient>
+              <linearGradient id="gph2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7DD3FC" stop-opacity="0.6"/><stop offset="100%" stop-color="#0384C7" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gph2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gph1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="30" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">PH</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">PHestival</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Festival de photo de Philippeville</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- SECTION 3 : ÉCOLES -->
+    <section class="krea-card p-6 md:p-8 space-y-6">
+      <div class="flex items-center gap-3 mb-2">
+        <div class="p-2.5 rounded-xl bg-pink-500/20 border border-pink-500/30 text-pink-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
         </div>
-      </article>
+        <div>
+          <h2 class="text-xl font-bold text-white">Ecoles</h2>
+          <p class="text-xs text-slate-400">Accès direct aux espaces étudiants</p>
+        </div>
+      </div>
 
-    </div>
+      <!-- SOUS-CATÉGORIE 1 : ACCÈS AUX DOSSIERS -->
+      <div class="p-4 md:p-5 rounded-2xl bg-slate-900/40 border border-slate-800/80 space-y-3">
+        <div class="flex items-center gap-2 text-pink-400 text-xs font-bold uppercase tracking-wider">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+          </svg>
+          <span>Accès aux dossiers</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- 1. PHOTOSHOP & LIGHTROOM 1 (GROUPE PHILIPPEVILLE) -->
+          <a href="https://drive.google.com/drive/folders/1RFm1_2iHxqhyC3XE1eSPPdt79RY0kIWB?usp=sharing" target="_blank" rel="noopener noreferrer" data-id="drive-pl1-philippeville" class="hub-btn group">
+            <button type="button" onclick="toggleFav(event, 'drive-pl1-philippeville')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.784.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gk1_3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gk2_3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gk2_3)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gk1_3)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">P&amp;L</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Photoshop &amp; Lightroom 1</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Groupe Philippeville</p>
+            </div>
+          </a>
+
+          <!-- 2. PHOTOSHOP & LIGHTROOM 1 (GROUPE THUIN) -->
+          <a href="https://drive.google.com/drive/folders/1ekD6j2f66k-2PS-XlVD4LSW_D1KGx3Z2?usp=sharing" target="_blank" rel="noopener noreferrer" data-id="drive-pl1-thuin" class="hub-btn group">
+            <button type="button" onclick="toggleFav(event, 'drive-pl1-thuin')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gthu1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#3B82F6"/></linearGradient>
+                <linearGradient id="gthu2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#22D3EE" stop-opacity="0.6"/><stop offset="100%" stop-color="#60A5FA" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gthu2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gthu1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">P&amp;L</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Photoshop &amp; Lightroom 1</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Groupe Thuin</p>
+            </div>
+          </a>
+
+          <!-- 3. PHOTOSHOP & LIGHTROOM 2 (PHILIPPEVILLE) -->
+          <a href="https://drive.google.com/drive/folders/103WSM_Nep_weSDWEtyyX_8XhjqPX56ui?usp=sharing" target="_blank" rel="noopener noreferrer" data-id="drive-pl2-philippeville" class="hub-btn group">
+            <button type="button" onclick="toggleFav(event, 'drive-pl2-philippeville')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gdark1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1E40AF"/><stop offset="100%" stop-color="#1E3A8A"/></linearGradient>
+                <linearGradient id="gdark2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3B82F6" stop-opacity="0.6"/><stop offset="100%" stop-color="#1D4ED8" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gdark2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gdark1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">P&amp;L</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Photoshop &amp; Lightroom 2</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Philippeville</p>
+            </div>
+          </a>
+
+          <!-- 4. PHOTOSHOP ARTISTIQUE (PHILIPPEVILLE) -->
+          <a href="https://drive.google.com/drive/folders/1P9JiqQGoXC38bRgqfDKabCPY_aEc39pg?usp=sharing" target="_blank" rel="noopener noreferrer" data-id="drive-ps-artistic" class="hub-btn hub-btn-new group">
+            <button type="button" onclick="toggleFav(event, 'drive-ps-artistic')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gdeep1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gdeep2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gdeep2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gdeep1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Pa</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Photoshop artistique</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Philippeville</p>
+            </div>
+          </a>
+
+          <!-- 5. PHOTOSHOP SUPPORT -->
+          <a href="https://drive.google.com/drive/folders/1pM8xmveRFgaC9NBpO1SfOJEW1DfjZ0vf?usp=sharing" target="_blank" rel="noopener noreferrer" data-id="drive-ps-support" class="hub-btn hub-btn-new group">
+            <button type="button" onclick="toggleFav(event, 'drive-ps-support')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gpssup1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gpssup2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gpssup2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gpssup1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Ps</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Photoshop support</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Le support du cours</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- SOUS-CATÉGORIE 2 : VIDÉOCONFÉRENCE -->
+      <div class="p-4 md:p-5 rounded-2xl bg-slate-900/40 border border-slate-800/80 space-y-3">
+        <div class="flex items-center gap-2 text-cyan-400 text-xs font-bold uppercase tracking-wider">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          <span>Vidéoconférence</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- ZOOM PS & LR 1 (PHILIPPEVILLE) -->
+          <a href="https://us06web.zoom.us/j/84233717211" target="_blank" rel="noopener noreferrer" id="zoom-philippeville" data-id="zoom-philippeville" class="hub-btn hub-btn-new group relative transition-all duration-300">
+            <button type="button" onclick="toggleFav(event, 'zoom-philippeville')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gzm1_1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gzm1_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gzm1_2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gzm1_1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Zm1</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1.5">
+                <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Zoom PS &amp; LR 1</h3>
+                <span id="badge-philippeville" class="zoom-badge hidden inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[9px] font-bold tracking-wider uppercase">
+                  <span class="relative flex h-1.5 w-1.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                  </span>
+                  Direct
+                </span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">Classe en ligne Philippeville</p>
+            </div>
+          </a>
+
+          <!-- ZOOM PS & LR 1 (THUIN) -->
+          <a href="https://us06web.zoom.us/j/83277955441" target="_blank" rel="noopener noreferrer" id="zoom-thuin" data-id="zoom-thuin" class="hub-btn hub-btn-new group relative transition-all duration-300">
+            <button type="button" onclick="toggleFav(event, 'zoom-thuin')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gzm1t1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gzm1t2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gzm1t2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gzm1t1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Zm1</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1.5">
+                <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Zoom PS &amp; LR 1</h3>
+                <span id="badge-thuin" class="zoom-badge hidden inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[9px] font-bold tracking-wider uppercase">
+                  <span class="relative flex h-1.5 w-1.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                  </span>
+                  Direct
+                </span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">Classe en ligne Thuin</p>
+            </div>
+          </a>
+
+          <!-- ZOOM PS & LR 2 -->
+          <a href="https://us06web.zoom.us/j/86778085819" target="_blank" rel="noopener noreferrer" id="zoom-pslr2" data-id="zoom-pslr2" class="hub-btn hub-btn-new group relative transition-all duration-300">
+            <button type="button" onclick="toggleFav(event, 'zoom-pslr2')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gzm2_1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gzm2_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gzm2_2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gzm2_1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Zm2</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1.5">
+                <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Zoom PS &amp; LR 2</h3>
+                <span id="badge-pslr2" class="zoom-badge hidden inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[9px] font-bold tracking-wider uppercase">
+                  <span class="relative flex h-1.5 w-1.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                  </span>
+                  Direct
+                </span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">Classe en ligne</p>
+            </div>
+          </a>
+
+          <!-- ZOOM PS ARTISTIQUE -->
+          <a href="https://us06web.zoom.us/j/87867481952" target="_blank" rel="noopener noreferrer" id="zoom-artistic" data-id="zoom-artistic" class="hub-btn hub-btn-new group relative transition-all duration-300">
+            <button type="button" onclick="toggleFav(event, 'zoom-artistic')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gzma_1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gzma_2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gzma_2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gzma_1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">ZmA</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1.5">
+                <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Zoom PS artistique</h3>
+                <span id="badge-artistic" class="zoom-badge hidden inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-[9px] font-bold tracking-wider uppercase">
+                  <span class="relative flex h-1.5 w-1.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                  </span>
+                  Direct
+                </span>
+              </div>
+              <p class="text-xs text-slate-400 mt-0.5">Classe en ligne</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- SOUS-CATÉGORIE 3 : LA TROUSSE À OUTILS -->
+      <div class="p-4 md:p-5 rounded-2xl bg-slate-900/40 border border-slate-800/80 space-y-3">
+        <div class="flex items-center gap-2 text-purple-400 text-xs font-bold uppercase tracking-wider">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a2 2 0 01-2 2 2 2 0 01-2-2V4zm-6 8a2 2 0 114 0v1a2 2 0 01-2 2 2 2 0 01-2-2v-1zm12 0a2 2 0 114 0v1a2 2 0 01-2 2 2 2 0 01-2-2v-1z" />
+          </svg>
+          <span>La trousse à outils</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- FAQ DES COURS -->
+          <a href="faq.html" data-id="faq-cours" class="hub-btn hub-btn-new group">
+            <button type="button" onclick="toggleFav(event, 'faq-cours')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gfaq1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gfaq2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gfaq2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gfaq1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Faq</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">FAQ des cours</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Foire aux questions &amp; aide</p>
+            </div>
+          </a>
+
+          <!-- CALENDRIER SCOLAIRE -->
+          <a href="calendrier.html" data-id="calendrier-scolaire" class="hub-btn hub-btn-new group">
+            <button type="button" onclick="toggleFav(event, 'calendrier-scolaire')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gcal1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gcal2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gcal2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gcal1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Cal</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Calendrier scolaire</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Congés &amp; vacances en Wallonie</p>
+            </div>
+          </a>
+
+          <!-- GLOSSAIRE TECHNIQUE -->
+          <a href="glossaire.html" data-id="glossaire-technique" class="hub-btn hub-btn-new group">
+            <button type="button" onclick="toggleFav(event, 'glossaire-technique')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gglos1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gglos2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gglos2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gglos1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Lex</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Glossaire technique</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Définitions Photo, Ps, Lr &amp; AI</p>
+            </div>
+          </a>
+
+          <!-- RACCOURCIS CLAVIER -->
+          <a href="raccourcis.html" data-id="raccourcis-clavier" class="hub-btn hub-btn-new group">
+            <button type="button" onclick="toggleFav(event, 'raccourcis-clavier')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="grac1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="grac2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#grac2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#grac1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Rac</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Raccourcis clavier</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Photoshop &amp; Lightroom (PC &amp; Mac)</p>
+            </div>
+          </a>
+
+          <!-- PHOTOGRAPHIE -->
+          <a href="photographie.html" data-id="page-photographie" class="hub-btn hub-btn-new group">
+            <button type="button" onclick="toggleFav(event, 'page-photographie')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gphoto1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gphoto2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gphoto2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gphoto1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Pho</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Photographie</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Techniques, réglages &amp; fiches</p>
+            </div>
+          </a>
+
+          <!-- FICHES & COMPARATIFS -->
+          <a href="fiches.html" data-id="fiches-comparatifs" class="hub-btn hub-btn-new group">
+            <button type="button" onclick="toggleFav(event, 'fiches-comparatifs')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gfich1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gfich2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gfich2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gfich1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Fic</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Fiches &amp; Comparatifs</h3>
+              <p class="text-xs text-slate-400 mt-0.5">Guides synthétiques &amp; fiches techniques</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- SOUS-CATÉGORIE 4 : LES TESTS D'ADMISSION -->
+      <div class="p-4 md:p-5 rounded-2xl bg-slate-900/40 border border-slate-800/80 space-y-3">
+        <div class="flex items-center gap-2 text-yellow-400 text-xs font-bold uppercase tracking-wider">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Les tests d'admission</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- TEST D'ADMISSION (PS ET LR 2) -->
+          <a href="https://forms.gle/ymLTGQvFmGpXfXi6A" target="_blank" rel="noopener noreferrer" data-id="test-admission-pslr2" class="hub-btn hub-btn-new group">
+            <button type="button" onclick="toggleFav(event, 'test-admission-pslr2')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gtest1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gtest2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gtest2)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gtest1)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Test</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Test d'admission</h3>
+              <p class="text-xs text-slate-400 mt-0.5">PS et LR 2</p>
+            </div>
+          </a>
+
+          <!-- TEST D'ADMISSION (PS ET LR 1) -->
+          <a href="https://drive.google.com/file/d/1Olgw_nLyaNN8dO5L1JIgMOEsHPfetjnr/view?usp=sharing" target="_blank" rel="noopener noreferrer" data-id="test-admission-pslr1" class="hub-btn hub-btn-new group">
+            <button type="button" onclick="toggleFav(event, 'test-admission-pslr1')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+            </button>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+              <defs>
+                <linearGradient id="gtest1_pdf" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+                <linearGradient id="gtest2_pdf" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+              </defs>
+              <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gtest2_pdf)" transform="rotate(-6 54 54)"/>
+              <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gtest1_pdf)"/>
+              <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Test</text>
+              <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+            </svg>
+            <div class="flex-1 min-w-0">
+              <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Test d'admission</h3>
+              <p class="text-xs text-slate-400 mt-0.5">PS et LR 1</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 4 : CONTACT -->
+    <section class="krea-card p-6 md:p-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="p-2.5 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-400 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div>
+          <h2 class="text-xl font-bold text-white">Contact</h2>
+          <p class="text-xs text-slate-400">Contactez-moi</p>
+        </div>
+      </div>
+
+      <!-- Premiere ligne de contact -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        
+        <!-- EMAIL -->
+        <a href="mailto:graphisstudio@me.com" data-id="contact-email" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'contact-email')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gmail1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gmail2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gmail2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gmail1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="32" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Mail</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">graphisstudio@me.com</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Envoyez-moi un mail</p>
+          </div>
+        </a>
+
+        <!-- MESSENGER -->
+        <a href="https://m.me/lost.urbex.the.past" target="_blank" rel="noopener noreferrer" data-id="contact-messenger" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'contact-messenger')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gmsg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gmsg2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gmsg2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gmsg1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="30" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Msg</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Messenger</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Une petite conversation?</p>
+          </div>
+        </a>
+
+        <!-- WETRANSFER -->
+        <a href="https://graphisstudio.wetransfer.com" target="_blank" rel="noopener noreferrer" data-id="contact-wetransfer" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'contact-wetransfer')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gwt1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gwt2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gwt2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gwt1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="38" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">W</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">WeTransfer</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Un fichier à envoyer ?</p>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Seconde ligne de contact : Rendez-vous & Téléphone -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        
+        <!-- COURS À DOMICILE -->
+        <a href="reservation.html" data-id="contact-rdv" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'contact-rdv')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gresv1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gresv2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gresv2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gresv1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Rdv</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Cours à domicile</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Prendre un rendez-vous</p>
+          </div>
+        </a>
+
+        <!-- TÉLÉPHONE -->
+        <a href="tel:+32496867054" data-id="contact-tel" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'contact-tel')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-14 h-14 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
+            <defs>
+              <linearGradient id="gtel1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
+              <linearGradient id="gtel2" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#06B6D4" stop-opacity="0.6"/><stop offset="100%" stop-color="#3B82F6" stop-opacity="0.3"/></linearGradient>
+            </defs>
+            <rect x="23" y="23" width="62" height="62" rx="14" fill="url(#gtel2)" transform="rotate(-6 54 54)"/>
+            <rect x="17" y="17" width="62" height="62" rx="14" fill="url(#gtel1)"/>
+            <text x="48" y="60" font-family="sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle" transform="rotate(-10 48 60)">Tél</text>
+            <path d="M 77 11 Q 77 19 85 19 Q 77 19 77 27 Q 77 19 69 19 Q 77 19 77 11 Z" fill="#F472B6"/>
+          </svg>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-bold text-white text-sm group-hover:text-pink-400 transition-colors leading-tight">Téléphone</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Une urgence ? +32 496 86 70 54</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
 
   </main>
 
   <!-- Pied de page -->
-  <footer class="my-8 text-center text-xs text-slate-500 space-y-1">
-    <p class="font-medium text-slate-400">Graphis Studio — Dimitri Damblon</p>
-    <p>© Tous droits réservés — Les Fiches &amp; Comparatifs Photographie</p>
+  <footer class="my-8 text-center text-xs text-slate-500">
+    <p>Graphis Studio Hub — Dimitri Damblon</p>
   </footer>
 
-  <!-- SCRIPT LOGIQUE DES VOLETS ET RECHERCHE -->
+  <!-- SCRIPTS : DÉTECTION DIRECT ZOOM & GESTION DES FAVORIS -->
   <script>
-    // System Accordéon : Ouverture d'un seul volet à la fois
-    function toggleFiche(id) {
-      const allBodies = document.querySelectorAll('.fiche-body');
-      const allIcons = document.querySelectorAll('.fiche-icon');
+    // --- GESTION DU DIRECT ZOOM ---
+    function checkLiveZoom() {
+      const now = new Date();
+      const day = now.getDay(); // 0: Dim, 1: Lun, 2: Mar, 3: Mer, 4: Jeu, 5: Ven, 6: Sam
+      const currentMins = now.getHours() * 60 + now.getMinutes();
 
-      allBodies.forEach(body => {
-        if (body.id !== id) {
-          body.classList.add('hidden');
-        }
+      const schedule = [
+        { btnId: 'zoom-philippeville', day: 4, start: 17 * 60, end: 21 * 60 },
+        { btnId: 'zoom-thuin', day: 2, start: 17 * 60 + 30, end: 20 * 60 + 50 },
+        { btnId: 'zoom-pslr2', day: 1, start: 17 * 60 + 15, end: 20 * 60 + 30 },
+        { btnId: 'zoom-artistic', day: 3, start: 17 * 60, end: 20 * 60 + 50 }
+      ];
+
+      schedule.forEach(item => {
+        const buttons = document.querySelectorAll(`[data-id="${item.btnId}"]`);
+        buttons.forEach(btn => {
+          const badge = btn.querySelector('.zoom-badge');
+          const isLive = (day === item.day) && (currentMins >= item.start) && (currentMins <= item.end);
+
+          if (isLive) {
+            if (badge) badge.classList.remove('hidden');
+            btn.style.borderColor = '#10b981';
+            btn.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
+          } else {
+            if (badge) badge.classList.add('hidden');
+            btn.style.borderColor = '';
+            btn.style.boxShadow = '';
+          }
+        });
       });
+    }
 
-      allIcons.forEach(icon => {
-        if (icon.dataset.target !== id) {
-          icon.classList.remove('rotate-180');
-        }
-      });
+    // --- GESTION DES FAVORIS (LOCALSTORAGE) ---
+    const STORAGE_KEY = 'graphis_hub_favorites';
+    const MAX_FAVS = 4;
 
-      const targetBody = document.getElementById(id);
-      const targetIcon = document.querySelector(`[data-target="${id}"]`);
-
-      if (targetBody.classList.contains('hidden')) {
-        targetBody.classList.remove('hidden');
-        if (targetIcon) targetIcon.classList.add('rotate-180');
-      } else {
-        targetBody.classList.add('hidden');
-        if (targetIcon) targetIcon.classList.remove('rotate-180');
+    function getFavs() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (e) {
+        return [];
       }
     }
 
-    // Filtres de Catégories
-    function filterCategory(cat, btnElement) {
-      const buttons = document.querySelectorAll('.cat-btn');
-      buttons.forEach(btn => {
-        btn.classList.remove('bg-purple-600', 'text-white');
-        btn.classList.add('bg-slate-800/80', 'text-slate-300');
-      });
+    function saveFavs(favs) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(favs));
+      renderFavs();
+    }
 
-      btnElement.classList.remove('bg-slate-800/80', 'text-slate-300');
-      btnElement.classList.add('bg-purple-600', 'text-white');
+    function toggleFav(event, id) {
+      event.preventDefault();
+      event.stopPropagation();
 
-      const cards = document.querySelectorAll('.fiche-card');
-      cards.forEach(card => {
-        if (cat === 'all' || card.dataset.category === cat) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
+      let favs = getFavs();
+      const index = favs.indexOf(id);
+
+      if (index > -1) {
+        favs.splice(index, 1);
+      } else {
+        if (favs.length >= MAX_FAVS) {
+          alert(`Vous pouvez épingler un maximum de ${MAX_FAVS} favoris.`);
+          return;
+        }
+        favs.push(id);
+      }
+
+      saveFavs(favs);
+    }
+
+    function renderFavs() {
+      const favs = getFavs();
+      const grid = document.getElementById('favorites-grid');
+      const emptyState = document.getElementById('favorites-empty');
+      const counter = document.getElementById('fav-count-badge');
+
+      // 1. Mettre à jour le compteur
+      counter.textContent = `${favs.length} / ${MAX_FAVS}`;
+
+      // 2. Mettre à jour l'apparence des étoiles partout dans la page
+      document.querySelectorAll('.fav-star-btn').forEach(btn => {
+        const card = btn.closest('[data-id]');
+        if (card) {
+          const id = card.getAttribute('data-id');
+          if (favs.includes(id)) {
+            btn.classList.add('is-fav');
+          } else {
+            btn.classList.remove('is-fav');
+          }
         }
       });
-    }
 
-    // Recherche dynamique par mot-clé
-    function searchFiches() {
-      const query = document.getElementById('fiche-search').value.toLowerCase();
-      const cards = document.querySelectorAll('.fiche-card');
+      // 3. Afficher/Masquer l'état vide
+      if (favs.length === 0) {
+        emptyState.classList.remove('hidden');
+        grid.classList.add('hidden');
+        grid.innerHTML = '';
+        return;
+      }
 
-      cards.forEach(card => {
-        const searchData = card.dataset.title.toLowerCase();
-        if (searchData.includes(query)) {
-          card.classList.remove('hidden');
-        } else {
-          card.classList.add('hidden');
+      emptyState.classList.add('hidden');
+      grid.classList.remove('hidden');
+      grid.innerHTML = '';
+
+      // 4. Cloner et afficher les cartes favoris
+      favs.forEach(id => {
+        const original = document.querySelector(`main section:not(#section-favoris) [data-id="${id}"]`);
+        if (original) {
+          const clone = original.cloneNode(true);
+          clone.removeAttribute('id');
+          grid.appendChild(clone);
         }
       });
+
+      // Synchroniser le statut direct sur les clones favoris
+      checkLiveZoom();
     }
 
-    // Moteur d'impression & Téléchargement de Fiche - AVEC NETTOYAGE DES FONDS ET TEXTES
-    function printFiche(title, contentId) {
-      const content = document.getElementById(contentId).innerHTML;
-      const printWindow = window.open('', '_blank', 'width=900,height=800');
-      
-      printWindow.document.write(`
-        <!DOCTYPE html>
-        <html lang="fr">
-        <head>
-          <meta charset="UTF-8">
-          <title>${title} — Graphis Studio</title>
-          <script src="https://cdn.tailwindcss.com"><\/script>
-          <style>
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-            
-            body { 
-              font-family: 'Inter', system-ui, -apple-system, sans-serif; 
-              padding: 2rem; 
-              color: #0f172a !important; 
-              background-color: #ffffff !important; 
-              line-height: 1.6;
-            }
-
-            /* Remplacer systématiquement tous les fonds sombres Tailwind par du blanc ou du gris très clair */
-            div, section, article {
-              background-color: #ffffff !important;
-            }
-
-            /* Conteneurs, Cartes & Encadrés pour le rendu impression */
-            .bg-slate-900, 
-            .bg-slate-900\\/80, 
-            .bg-slate-900\\/60, 
-            .bg-slate-800, 
-            .bg-slate-800\\/80, 
-            .bg-slate-800\\/60,
-            div[class*="bg-slate-"] {
-              background-color: #f8fafc !important;
-              border: 1px solid #cbd5e1 !important;
-              border-radius: 0.75rem !important;
-              box-shadow: none !important;
-            }
-
-            /* Neutralisation des fonds sombres des badges/tags */
-            .bg-cyan-500\\/10, .bg-pink-500\\/10, .bg-purple-500\\/10, .bg-emerald-500\\/10 {
-              background-color: #f1f5f9 !important;
-              border: 1px solid #cbd5e1 !important;
-            }
-
-            /* Forcer tous les textes en teintes sombres très lisibles */
-            *, p, li, td, th, span, div, h1, h2, h3, h4, strong {
-              color: #0f172a !important;
-              text-shadow: none !important;
-            }
-
-            .text-slate-200, .text-slate-300, .text-slate-400, .text-slate-500, .text-white {
-              color: #334155 !important;
-            }
-
-            /* Couleurs d'accentuation adaptées à l'impression sur fond blanc */
-            .text-emerald-400, .text-emerald-500 { color: #047857 !important; font-weight: 700 !important; }
-            .text-rose-400, .text-red-400, .text-red-500 { color: #b91c1c !important; font-weight: 700 !important; }
-            .text-purple-400, .text-purple-500 { color: #6b21a8 !important; font-weight: 700 !important; }
-            .text-cyan-400, .text-cyan-500 { color: #0e7490 !important; font-weight: 700 !important; }
-            .text-pink-400, .text-pink-500 { color: #be185d !important; font-weight: 700 !important; }
-            .text-amber-400, .text-amber-500 { color: #b45309 !important; font-weight: 700 !important; }
-
-            /* Boîte de conclusion */
-            .stat-box { 
-              border: 1.5px solid #8b5cf6 !important; 
-              padding: 1.25rem !important; 
-              border-radius: 0.75rem !important; 
-              background-color: #faf5ff !important; 
-              margin-top: 1.25rem !important; 
-            }
-
-            /* Rendu propre du tableau */
-            table { 
-              width: 100% !important; 
-              border-collapse: collapse !important; 
-              margin: 1rem 0 !important; 
-            }
-            th, td { 
-              border: 1px solid #cbd5e1 !important; 
-              padding: 0.65rem 0.75rem !important; 
-              text-align: left !important; 
-              font-size: 0.85rem !important;
-              color: #0f172a !important; 
-            }
-            th { 
-              background-color: #e2e8f0 !important; 
-              font-weight: 800 !important; 
-              color: #0f172a !important; 
-            }
-            tr {
-              background-color: #ffffff !important;
-            }
-            tr:nth-child(even) {
-              background-color: #f8fafc !important;
-            }
-
-            /* Masquer boutons */
-            button, .no-print { 
-              display: none !important; 
-            }
-
-            @media print {
-              body { padding: 0.5cm; }
-            }
-          </style>
-        </head>
-        <body onload="setTimeout(() => { window.print(); }, 400);">
-          
-          <!-- En-tête de la fiche imprimée -->
-          <div style="border-bottom: 3px solid #8b5cf6; padding-bottom: 1rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: flex-end;">
-            <div>
-              <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #6b21a8; letter-spacing: 0.05em;">Graphis Studio — Fiche Technique &amp; Comparatif</span>
-              <h1 style="font-size: 1.6rem; font-weight: 900; color: #0f172a; margin-top: 0.25rem; line-height: 1.2;">${title}</h1>
-            </div>
-            <div style="text-align: right; font-size: 0.8rem; color: #334155;">
-              <strong>Dimitri Damblon</strong><br>
-              Graphis Studio Photo
-            </div>
-          </div>
-
-          <!-- Contenu principal -->
-          <div style="font-size: 0.875rem; line-height: 1.6;">
-            ${content}
-          </div>
-
-          <!-- Pied de page de la fiche imprimée -->
-          <div style="margin-top: 2.5rem; border-top: 1px solid #cbd5e1; padding-top: 1rem; text-align: center; font-size: 0.75rem; color: #475569;">
-            © ${new Date().getFullYear()} Graphis Studio — Dimitri Damblon — Tous droits réservés.
-          </div>
-
-        </body>
-        </html>
-      `);
-
-      printWindow.document.close();
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+      renderFavs();
+      checkLiveZoom();
+      setInterval(checkLiveZoom, 30000);
+    });
   </script>
 
 </body>
