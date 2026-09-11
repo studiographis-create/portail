@@ -32,13 +32,14 @@
       background: rgba(30, 41, 59, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 14px;
-      padding: 1rem 1.25rem;
+      padding: 1rem 2.25rem 1rem 1.25rem;
       display: flex;
       align-items: center;
       gap: 1rem;
       transition: all 0.25s ease;
       text-decoration: none;
       height: 100%;
+      position: relative;
     }
     .hub-btn:hover {
       border-color: rgba(244, 114, 182, 0.5);
@@ -53,6 +54,23 @@
     .hub-btn-new:hover {
       border-color: #8B5CF6;
       box-shadow: 0 8px 20px -4px rgba(139, 92, 246, 0.35);
+    }
+
+    /* Style du système de favoris */
+    .fav-star-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      opacity: 0.3;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+    .hub-btn:hover .fav-star-btn, .fav-star-btn.is-fav {
+      opacity: 1;
+    }
+    .fav-star-btn.is-fav svg {
+      fill: #facc15;
+      stroke: #facc15;
     }
   </style>
 </head>
@@ -96,6 +114,30 @@
   <!-- Conteneur principal -->
   <main class="max-w-5xl w-full space-y-8 my-auto">
 
+    <!-- SECTION 0 : MES FAVORIS ÉPINGLÉS -->
+    <section id="section-favoris" class="krea-card p-6 md:p-8 border-yellow-500/30">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3">
+          <div class="p-2.5 rounded-xl bg-yellow-500/20 border border-yellow-500/30 text-yellow-400 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-xl font-bold text-white">Mes Favoris</h2>
+            <p class="text-xs text-slate-400">Vos ressources préférées (jusqu'à 4 liens)</p>
+          </div>
+        </div>
+        <span id="fav-count-badge" class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">0 / 4</span>
+      </div>
+
+      <div id="favorites-empty" class="p-6 text-center border border-dashed border-slate-700/60 rounded-xl bg-slate-900/30">
+        <p class="text-xs text-slate-400">Aucun favori épinglé. Cliquez sur l'étoile <span class="text-yellow-400">★</span> de vos cartes préférées ci-dessous pour les ajouter ici.</p>
+      </div>
+
+      <div id="favorites-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4 hidden"></div>
+    </section>
+
     <!-- SECTION 1 : UTILITAIRES & IA -->
     <section class="krea-card p-6 md:p-8">
       <div class="flex items-center gap-3 mb-6">
@@ -114,7 +156,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         <!-- REMOVE.BG -->
-        <a href="https://www.remove.bg/fr" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://www.remove.bg/fr" target="_blank" rel="noopener noreferrer" data-id="res-removebg" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-removebg')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="grbg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -132,7 +177,10 @@
         </a>
 
         <!-- CLIPDROP -->
-        <a href="https://clipdrop.co/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://clipdrop.co/" target="_blank" rel="noopener noreferrer" data-id="res-clipdrop" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-clipdrop')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gcd1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -150,7 +198,10 @@
         </a>
 
         <!-- VECTORIZER AI -->
-        <a href="https://vectorizer.ai/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://vectorizer.ai/" target="_blank" rel="noopener noreferrer" data-id="res-vectorizer" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-vectorizer')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gvai1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -173,7 +224,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
 
         <!-- UPSCAYL -->
-        <a href="https://www.upscayl.org/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://www.upscayl.org/" target="_blank" rel="noopener noreferrer" data-id="res-upscayl" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-upscayl')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gups1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -191,7 +245,10 @@
         </a>
 
         <!-- CLEANUP PICTURES -->
-        <a href="https://cleanup.pictures/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://cleanup.pictures/" target="_blank" rel="noopener noreferrer" data-id="res-cleanup" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-cleanup')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gcln1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -209,7 +266,10 @@
         </a>
 
         <!-- PALETTE FM -->
-        <a href="https://palette.fm/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://palette.fm/" target="_blank" rel="noopener noreferrer" data-id="res-palettefm" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-palettefm')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gpal1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -232,7 +292,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
 
         <!-- ADOBE COLOR -->
-        <a href="https://color.adobe.com/fr/create/color-wheel" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://color.adobe.com/fr/create/color-wheel" target="_blank" rel="noopener noreferrer" data-id="res-adobecolor" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-adobecolor')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gadc1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -250,7 +313,10 @@
         </a>
 
         <!-- COOLORS -->
-        <a href="https://coolors.co/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://coolors.co/" target="_blank" rel="noopener noreferrer" data-id="res-coolors" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-coolors')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gcoo1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -268,7 +334,10 @@
         </a>
 
         <!-- CLOUDCONVERT -->
-        <a href="https://cloudconvert.com/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://cloudconvert.com/" target="_blank" rel="noopener noreferrer" data-id="res-cloudconvert" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-cloudconvert')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gccv1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -291,7 +360,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
 
         <!-- TINYPNG -->
-        <a href="https://tinypng.com/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://tinypng.com/" target="_blank" rel="noopener noreferrer" data-id="res-tinypng" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-tinypng')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gtpng1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -309,7 +381,10 @@
         </a>
 
         <!-- ILOVEIMG -->
-        <a href="https://www.iloveimg.com/fr" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://www.iloveimg.com/fr" target="_blank" rel="noopener noreferrer" data-id="res-iloveimg" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-iloveimg')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gilv1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -327,7 +402,10 @@
         </a>
 
         <!-- FONTJOY -->
-        <a href="https://fontjoy.com/" target="_blank" rel="noopener noreferrer" class="hub-btn hub-btn-new group">
+        <a href="https://fontjoy.com/" target="_blank" rel="noopener noreferrer" data-id="res-fontjoy" class="hub-btn hub-btn-new group">
+          <button type="button" onclick="toggleFav(event, 'res-fontjoy')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gftj1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#2563EB"/></linearGradient>
@@ -364,7 +442,10 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         
         <!-- 1. ADOBE SITE OFFICIEL -->
-        <a href="https://www.adobe.com/fr/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.adobe.com/fr/" target="_blank" rel="noopener noreferrer" data-id="res-adobe-officiel" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-adobe-officiel')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gadb1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EF4444"/><stop offset="100%" stop-color="#991B1B"/></linearGradient>
@@ -382,7 +463,10 @@
         </a>
 
         <!-- 2. ABONNEMENT PHOTOGRAPHIE -->
-        <a href="https://www.adobe.com/fr/creativecloud/photography.html" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.adobe.com/fr/creativecloud/photography.html" target="_blank" rel="noopener noreferrer" data-id="res-adobe-photo" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-adobe-photo')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gpho1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EF4444"/><stop offset="100%" stop-color="#991B1B"/></linearGradient>
@@ -400,7 +484,10 @@
         </a>
 
         <!-- 3. CREATIVE CLOUD -->
-        <a href="https://www.adobe.com/fr/creativecloud.html" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.adobe.com/fr/creativecloud.html" target="_blank" rel="noopener noreferrer" data-id="res-creative-cloud" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-creative-cloud')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gccl1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EF4444"/><stop offset="100%" stop-color="#991B1B"/></linearGradient>
@@ -418,7 +505,10 @@
         </a>
 
         <!-- 4. ADOBE FIREFLY -->
-        <a href="https://firefly.adobe.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://firefly.adobe.com/" target="_blank" rel="noopener noreferrer" data-id="res-adobe-firefly" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-adobe-firefly')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gffy1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EF4444"/><stop offset="100%" stop-color="#991B1B"/></linearGradient>
@@ -436,7 +526,10 @@
         </a>
 
         <!-- 5. ADOBE STOCK -->
-        <a href="https://stock.adobe.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://stock.adobe.com/" target="_blank" rel="noopener noreferrer" data-id="res-adobe-stock" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-adobe-stock')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gstk1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EF4444"/><stop offset="100%" stop-color="#991B1B"/></linearGradient>
@@ -454,7 +547,10 @@
         </a>
 
         <!-- 6. ADOBE PORTFOLIO -->
-        <a href="https://portfolio.adobe.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://portfolio.adobe.com/" target="_blank" rel="noopener noreferrer" data-id="res-adobe-portfolio" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-adobe-portfolio')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gprf1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EF4444"/><stop offset="100%" stop-color="#991B1B"/></linearGradient>
@@ -492,7 +588,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         <!-- UNSPLASH -->
-        <a href="https://unsplash.com/fr" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://unsplash.com/fr" target="_blank" rel="noopener noreferrer" data-id="res-unsplash" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-unsplash')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="guns1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EC4899"/><stop offset="100%" stop-color="#BE185D"/></linearGradient>
@@ -510,7 +609,10 @@
         </a>
 
         <!-- PEXELS -->
-        <a href="https://www.pexels.com/fr-fr/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.pexels.com/fr-fr/" target="_blank" rel="noopener noreferrer" data-id="res-pexels" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-pexels')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gpex1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#10B981"/><stop offset="100%" stop-color="#047857"/></linearGradient>
@@ -528,7 +630,10 @@
         </a>
 
         <!-- PIXABAY -->
-        <a href="https://pixabay.com/fr/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://pixabay.com/fr/" target="_blank" rel="noopener noreferrer" data-id="res-pixabay" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-pixabay')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gpix1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#EC4899"/><stop offset="100%" stop-color="#BE185D"/></linearGradient>
@@ -551,7 +656,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
 
         <!-- TEXTURELABS -->
-        <a href="https://texturelabs.org/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://texturelabs.org/" target="_blank" rel="noopener noreferrer" data-id="res-texturelabs" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-texturelabs')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gtxl1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#D97706"/><stop offset="100%" stop-color="#78350F"/></linearGradient>
@@ -569,7 +677,10 @@
         </a>
 
         <!-- TEXTURES.COM -->
-        <a href="https://www.textures.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.textures.com/" target="_blank" rel="noopener noreferrer" data-id="res-texturescom" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-texturescom')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gtex1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#D97706"/><stop offset="100%" stop-color="#78350F"/></linearGradient>
@@ -587,7 +698,10 @@
         </a>
 
         <!-- AMBIENTCG -->
-        <a href="https://ambientcg.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://ambientcg.com/" target="_blank" rel="noopener noreferrer" data-id="res-ambientcg" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-ambientcg')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gacg1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#D97706"/><stop offset="100%" stop-color="#78350F"/></linearGradient>
@@ -610,7 +724,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
 
         <!-- KABOOMPICS -->
-        <a href="https://kaboompics.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://kaboompics.com/" target="_blank" rel="noopener noreferrer" data-id="res-kaboompics" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-kaboompics')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gkbm1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#10B981"/><stop offset="100%" stop-color="#047857"/></linearGradient>
@@ -628,7 +745,10 @@
         </a>
 
         <!-- RESOURCE BOY -->
-        <a href="https://resourceboy.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://resourceboy.com/" target="_blank" rel="noopener noreferrer" data-id="res-resourceboy" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-resourceboy')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="grsb1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#D97706"/><stop offset="100%" stop-color="#78350F"/></linearGradient>
@@ -646,7 +766,10 @@
         </a>
 
         <!-- BURST BY SHOPIFY -->
-        <a href="https://burst.shopify.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://burst.shopify.com/" target="_blank" rel="noopener noreferrer" data-id="res-burst" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-burst')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gbst1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#10B981"/><stop offset="100%" stop-color="#047857"/></linearGradient>
@@ -684,7 +807,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         <!-- GOOGLE FONTS -->
-        <a href="https://fonts.google.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://fonts.google.com/" target="_blank" rel="noopener noreferrer" data-id="res-googlefonts" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-googlefonts')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gfnt1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
@@ -702,7 +828,10 @@
         </a>
 
         <!-- FONTSHARE -->
-        <a href="https://www.fontshare.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.fontshare.com/" target="_blank" rel="noopener noreferrer" data-id="res-fontshare" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-fontshare')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gfsh1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
@@ -720,7 +849,10 @@
         </a>
 
         <!-- DAFONT -->
-        <a href="https://www.dafont.com/fr/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.dafont.com/fr/" target="_blank" rel="noopener noreferrer" data-id="res-dafont" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-dafont')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gdf1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#DC2626"/><stop offset="100%" stop-color="#991B1B"/></linearGradient>
@@ -743,7 +875,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
 
         <!-- VELVETYNE -->
-        <a href="https://velvetyne.fr/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://velvetyne.fr/" target="_blank" rel="noopener noreferrer" data-id="res-velvetyne" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-velvetyne')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gvvt1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
@@ -761,7 +896,10 @@
         </a>
 
         <!-- FONT SQUIRREL -->
-        <a href="https://www.fontsquirrel.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.fontsquirrel.com/" target="_blank" rel="noopener noreferrer" data-id="res-fontsquirrel" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-fontsquirrel')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gfsq1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
@@ -779,7 +917,10 @@
         </a>
 
         <!-- WHATTHEFONT -->
-        <a href="https://www.myfonts.com/pages/whatthefont" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.myfonts.com/pages/whatthefont" target="_blank" rel="noopener noreferrer" data-id="res-whatthefont" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-whatthefont')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gwtf1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0284C7"/><stop offset="100%" stop-color="#075985"/></linearGradient>
@@ -802,7 +943,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
 
         <!-- TYPEWOLF -->
-        <a href="https://www.typewolf.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.typewolf.com/" target="_blank" rel="noopener noreferrer" data-id="res-typewolf" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-typewolf')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gtwf1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
@@ -820,7 +964,10 @@
         </a>
 
         <!-- FONTS IN USE -->
-        <a href="https://fontsinuse.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://fontsinuse.com/" target="_blank" rel="noopener noreferrer" data-id="res-fontsinuse" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-fontsinuse')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gfiu1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
@@ -838,7 +985,10 @@
         </a>
 
         <!-- FREE FACES -->
-        <a href="https://www.freefaces.gallery/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.freefaces.gallery/" target="_blank" rel="noopener noreferrer" data-id="res-freefaces" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-freefaces')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gffc1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2563EB"/><stop offset="100%" stop-color="#1D4ED8"/></linearGradient>
@@ -876,7 +1026,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         
         <!-- BRUSHEEZY -->
-        <a href="https://www.brusheezy.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.brusheezy.com/" target="_blank" rel="noopener noreferrer" data-id="res-brusheezy" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-brusheezy')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gbzy1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CA8A04"/><stop offset="100%" stop-color="#854D0E"/></linearGradient>
@@ -894,7 +1047,10 @@
         </a>
 
         <!-- MY PHOTOSHOP BRUSHES -->
-        <a href="https://myphotoshopbrushes.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://myphotoshopbrushes.com/" target="_blank" rel="noopener noreferrer" data-id="res-mypsbrushes" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-mypsbrushes')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gmpb1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CA8A04"/><stop offset="100%" stop-color="#854D0E"/></linearGradient>
@@ -912,7 +1068,10 @@
         </a>
 
         <!-- BRUSHES DOWNLOAD -->
-        <a href="https://fbrushes.com" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://fbrushes.com" target="_blank" rel="noopener noreferrer" data-id="res-fbrushes" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-fbrushes')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gbdl1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#CA8A04"/><stop offset="100%" stop-color="#854D0E"/></linearGradient>
@@ -935,7 +1094,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
 
         <!-- FREEPIK -->
-        <a href="https://fr.freepik.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://fr.freepik.com/" target="_blank" rel="noopener noreferrer" data-id="res-freepik" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-freepik')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gfpk1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#064E3B"/></linearGradient>
@@ -953,7 +1115,10 @@
         </a>
 
         <!-- VECTEEZY -->
-        <a href="https://www.vecteezy.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.vecteezy.com/" target="_blank" rel="noopener noreferrer" data-id="res-vecteezy" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-vecteezy')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gvey1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#064E3B"/></linearGradient>
@@ -971,7 +1136,10 @@
         </a>
 
         <!-- FLATICON -->
-        <a href="https://www.flaticon.com/fr/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.flaticon.com/fr/" target="_blank" rel="noopener noreferrer" data-id="res-flaticon" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-flaticon')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gfic1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#064E3B"/></linearGradient>
@@ -994,7 +1162,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
 
         <!-- PAAATTERNS -->
-        <a href="https://products.ls.graphics/paaatterns/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://products.ls.graphics/paaatterns/" target="_blank" rel="noopener noreferrer" data-id="res-paaatterns" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-paaatterns')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gptr1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4F46E5"/><stop offset="100%" stop-color="#312E81"/></linearGradient>
@@ -1012,7 +1183,10 @@
         </a>
 
         <!-- HAIKEI -->
-        <a href="https://haikei.app/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://haikei.app/" target="_blank" rel="noopener noreferrer" data-id="res-haikei" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-haikei')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="ghki1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4F46E5"/><stop offset="100%" stop-color="#312E81"/></linearGradient>
@@ -1030,7 +1204,10 @@
         </a>
 
         <!-- MOCKUP WORLD -->
-        <a href="https://www.mockupworld.co/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.mockupworld.co/" target="_blank" rel="noopener noreferrer" data-id="res-mockupworld" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-mockupworld')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gmw1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4F46E5"/><stop offset="100%" stop-color="#312E81"/></linearGradient>
@@ -1067,7 +1244,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
         <!-- BOOK OF SHAPES -->
-        <a href="https://bookofshapes.com/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://bookofshapes.com/" target="_blank" rel="noopener noreferrer" data-id="res-bookofshapes" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-bookofshapes')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gbos1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#4338CA"/></linearGradient>
@@ -1085,7 +1265,10 @@
         </a>
 
         <!-- DESIGN MINIS - SHATTER -->
-        <a href="https://www.designminis.com/shatter" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.designminis.com/shatter" target="_blank" rel="noopener noreferrer" data-id="res-shatter" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-shatter')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gsht1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#4338CA"/></linearGradient>
@@ -1103,7 +1286,10 @@
         </a>
 
         <!-- DESIGN MINIS - SIGNAL -->
-        <a href="https://www.designminis.com/signal" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://www.designminis.com/signal" target="_blank" rel="noopener noreferrer" data-id="res-signal" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-signal')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gsgn1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#4338CA"/></linearGradient>
@@ -1126,7 +1312,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
 
         <!-- DUOTONE BY SHAPEFACTORY -->
-        <a href="https://duotone.shapefactory.co/" target="_blank" rel="noopener noreferrer" class="hub-btn group">
+        <a href="https://duotone.shapefactory.co/" target="_blank" rel="noopener noreferrer" data-id="res-duotone" class="hub-btn group">
+          <button type="button" onclick="toggleFav(event, 'res-duotone')" class="fav-star-btn p-1.5 rounded-lg text-slate-400 hover:text-yellow-400 hover:bg-slate-800/80" title="Épingler aux favoris">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
+          </button>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" class="w-16 h-16 flex-shrink-0 group-hover:scale-105 transition-transform overflow-visible">
             <defs>
               <linearGradient id="gdtn1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6366F1"/><stop offset="100%" stop-color="#4338CA"/></linearGradient>
@@ -1152,6 +1341,94 @@
   <footer class="my-8 text-center text-xs text-slate-500">
     <p>Graphis Studio Hub — Dimitri Damblon</p>
   </footer>
+
+  <!-- SCRIPT GESTION DES FAVORIS LOCALSTORAGE -->
+  <script>
+    const STORAGE_KEY = 'graphis_ressources_favorites';
+    const MAX_FAVS = 4;
+
+    function getFavs() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveFavs(favs) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(favs));
+      renderFavs();
+    }
+
+    function toggleFav(event, id) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      let favs = getFavs();
+      const index = favs.indexOf(id);
+
+      if (index > -1) {
+        favs.splice(index, 1);
+      } else {
+        if (favs.length >= MAX_FAVS) {
+          alert(`Vous pouvez épingler un maximum de ${MAX_FAVS} favoris.`);
+          return;
+        }
+        favs.push(id);
+      }
+
+      saveFavs(favs);
+    }
+
+    function renderFavs() {
+      const favs = getFavs();
+      const grid = document.getElementById('favorites-grid');
+      const emptyState = document.getElementById('favorites-empty');
+      const counter = document.getElementById('fav-count-badge');
+
+      if (counter) counter.textContent = `${favs.length} / ${MAX_FAVS}`;
+
+      document.querySelectorAll('.fav-star-btn').forEach(btn => {
+        const card = btn.closest('[data-id]');
+        if (card) {
+          const id = card.getAttribute('data-id');
+          if (favs.includes(id)) {
+            btn.classList.add('is-fav');
+          } else {
+            btn.classList.remove('is-fav');
+          }
+        }
+      });
+
+      if (favs.length === 0) {
+        if (emptyState) emptyState.classList.remove('hidden');
+        if (grid) {
+          grid.classList.add('hidden');
+          grid.innerHTML = '';
+        }
+        return;
+      }
+
+      if (emptyState) emptyState.classList.add('hidden');
+      if (grid) {
+        grid.classList.remove('hidden');
+        grid.innerHTML = '';
+
+        favs.forEach(id => {
+          const original = document.querySelector(`main section:not(#section-favoris) [data-id="${id}"]`);
+          if (original) {
+            const clone = original.cloneNode(true);
+            clone.removeAttribute('id');
+            grid.appendChild(clone);
+          }
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderFavs();
+    });
+  </script>
 
 </body>
 </html>
