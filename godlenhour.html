@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -11,6 +10,7 @@
       margin: 0;
       padding: 0;
       user-select: none;
+      -webkit-user-select: none;
     }
 
     body {
@@ -190,7 +190,7 @@
       touch-action: none;
     }
 
-    /* Compare Button */
+    /* Compare Button (Optimisé Mobile) */
     .compare-bar {
       position: absolute;
       bottom: 14px;
@@ -208,6 +208,8 @@
       display: none;
       align-items: center;
       gap: 6px;
+      touch-action: none;
+      -webkit-touch-callout: none;
       transition: all 0.2s;
     }
 
@@ -347,9 +349,31 @@
       margin-top: 18px;
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 12px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       padding-top: 16px;
+    }
+
+    .btn-reset {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #e4e4e7;
+      padding: 12px 22px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-reset:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
     .btn-download {
@@ -590,6 +614,10 @@
 
       <!-- Actions -->
       <div class="actions-bar">
+        <button id="resetBtn" class="btn-reset" onclick="resetToDefaults()">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Réinitialiser
+        </button>
         <button id="downloadBtn" class="btn-download">
           <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Télécharger la Photo HD
@@ -930,10 +958,53 @@
       }
     });
 
-    // --- COMPARATEUR AVANT/APRÈS ---
-    compareBtn.addEventListener('mousedown', () => { showOriginal = true; scheduleRender(); });
-    compareBtn.addEventListener('mouseup', () => { showOriginal = false; scheduleRender(); });
-    compareBtn.addEventListener('mouseleave', () => { showOriginal = false; scheduleRender(); });
+    // --- COMPARATEUR AVANT/APRÈS (SUPPORTE SOURIS ET SMARTPHONE / TACTILE) ---
+    const startCompare = (e) => {
+      if (e.cancelable) e.preventDefault();
+      showOriginal = true;
+      scheduleRender();
+    };
+
+    const stopCompare = (e) => {
+      if (showOriginal) {
+        showOriginal = false;
+        scheduleRender();
+      }
+    };
+
+    compareBtn.addEventListener('mousedown', startCompare);
+    compareBtn.addEventListener('mouseup', stopCompare);
+    compareBtn.addEventListener('mouseleave', stopCompare);
+
+    compareBtn.addEventListener('touchstart', startCompare, { passive: false });
+    compareBtn.addEventListener('touchend', stopCompare);
+    compareBtn.addEventListener('touchcancel', stopCompare);
+
+    // --- REINITIALISATION DES PARAMETRES ---
+    function resetToDefaults() {
+      kelvinInput.value = 5500;
+      tintInput.value = 0;
+      warmthInput.value = 50;
+      glowInput.value = 45;
+      brightnessInput.value = 100;
+      contrastInput.value = 105;
+      coolShadowsInput.value = 30;
+      flareInput.value = 40;
+      vignetteInput.value = 35;
+      dustGrainInput.value = 35;
+      enableBrushInput.checked = false;
+      brushSizeInput.value = 40;
+      brushFeatherInput.value = 50;
+
+      sunNormX = 0.8;
+      sunNormY = 0.2;
+      cropAlignX = 0.5;
+      cropAlignY = 0.5;
+
+      clearMask();
+      updateCanvasCursor();
+      scheduleRender();
+    }
 
     // --- PINCEAU GOMME AVEC DOUCEUR (FEATHER) ---
     enableBrushInput.addEventListener('change', updateCanvasCursor);
