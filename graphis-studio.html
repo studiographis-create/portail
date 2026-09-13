@@ -84,11 +84,9 @@
         cursor: grab;
         transform-origin: center center; 
         background: transparent !important;
-        mix-blend-mode: normal;
     }
     .canvas-layer:active { cursor: grabbing; }
 
-    /* Neutralisation absolue de tout fond ou reflet bleu */
     #transform-bounding-box {
         position: absolute;
         display: none;
@@ -177,12 +175,20 @@
         font-weight: bold;
     }
 
+    .layer-settings-box {
+        background: rgba(0, 0, 0, 0.25);
+        border: 1px solid #333;
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 12px;
+    }
+
     .transform-box {
         margin-top: 15px;
         border-top: 1px solid #333;
         padding-top: 10px;
     }
-    .transform-box h4 { margin: 0 0 8px 0; font-size: 11px; color: var(--accent-color); text-transform: uppercase; }
+    .transform-box h4, .layer-settings-box h4 { margin: 0 0 8px 0; font-size: 11px; color: var(--accent-color); text-transform: uppercase; }
     .transform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
 
     #panel { position: absolute; top: 20px; right: 20px; width: 340px; max-height: 90vh; background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 10; }
@@ -252,6 +258,27 @@
             <div class="tool-select-box">
                 <button class="tool-btn active" id="toolMove">✛ Déplacement</button>
                 <button class="tool-btn" id="toolFreeTransform">⌖ Transformation Libre</button>
+            </div>
+
+            <!-- Options de fusion et d'opacité -->
+            <div class="layer-settings-box">
+                <h4>Style du Calque Actif</h4>
+                <div class="control-group">
+                    <label>Mode de Fusion 
+                        <select id="layerBlendMode">
+                            <option value="normal">Normal</option>
+                            <option value="screen">Superposition</option>
+                            <option value="multiply">Produit</option>
+                            <option value="overlay">Incrustation</option>
+                            <option value="soft-light">Lumière tamisée</option>
+                            <option value="color">Couleur</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="control-group" style="margin-bottom:0;">
+                    <label>Opacité <span class="value-display" id="val_opacity">100%</span></label>
+                    <input type="range" id="layerOpacity" min="0" max="100" value="100">
+                </div>
             </div>
 
             <div id="layersContainer"></div>
@@ -518,7 +545,9 @@
                 scale: 1, rotation: 0,
                 skewX: 0, skewY: 0,
                 perspX: 0, perspY: 0,
-                flipX: 1, flipY: 1
+                flipX: 1, flipY: 1,
+                opacity: 100,
+                blendMode: 'normal'
             };
 
             let isDraggingLayer = false, startX, startY;
@@ -598,6 +627,8 @@
         function applyLayerTransform(layer) {
             const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) skew(${layer.skewX}deg, ${layer.skewY}deg) rotateX(${layer.perspY}deg) rotateY(${layer.perspX}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
             layer.img.style.transform = transformStr;
+            layer.img.style.opacity = layer.opacity / 100;
+            layer.img.style.mixBlendMode = layer.blendMode;
             updateBoundingBoxPosition();
         }
 
@@ -626,7 +657,28 @@
             document.getElementById('val_perspX').innerText = active.perspX + '°';
             document.getElementById('tr_perspY').value = active.perspY;
             document.getElementById('val_perspY').innerText = active.perspY + '°';
+            
+            // Sync opacité et mode de fusion
+            document.getElementById('layerOpacity').value = active.opacity;
+            document.getElementById('val_opacity').innerText = active.opacity + '%';
+            document.getElementById('layerBlendMode').value = active.blendMode;
         }
+
+        // Écouteurs pour l'opacité et le mode de fusion
+        document.getElementById('layerOpacity').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.opacity = parseFloat(e.target.value);
+            document.getElementById('val_opacity').innerText = active.opacity + '%';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('layerBlendMode').addEventListener('change', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.blendMode = e.target.value;
+            applyLayerTransform(active);
+        });
 
         function updateLayersUI() {
             layersContainer.innerHTML = '';
