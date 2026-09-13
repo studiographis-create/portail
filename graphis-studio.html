@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Éditeur RAW Web - Complet et Fonctionnel</title>
+<title>Éditeur RAW Web - Graphis Studio</title>
 <style>
     :root {
         --bg-color: #121212;
@@ -14,12 +14,35 @@
 
     body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; overflow: hidden; }
 
-    header { padding: 12px 20px; background: #1a1a1a; display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); }
+    header { padding: 12px 20px; background: #1a1a1a; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+    
+    /* Style du logo Graphis Studio en haut à gauche */
+    .brand-logo {
+        font-weight: 800;
+        font-size: 16px;
+        letter-spacing: 1.5px;
+        color: var(--accent-color);
+        text-transform: uppercase;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .brand-logo span {
+        color: #fff;
+        font-weight: 300;
+    }
+
+    .header-center {
+        display: flex;
+        align-items: center;
+    }
+
     button { background: transparent; color: var(--accent-color); border: 1px solid var(--accent-color); padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: all 0.2s; }
     button:hover { background: var(--accent-color); color: var(--bg-color); }
 
     /* Espace de travail central avec barre de zoom intégrée */
-    #workspace { display: flex; flex-direction: column; justify-content: center; align-items: center; height: calc(100vh - 50px); position: relative; overflow: hidden; }
+    #workspace { display: flex; flex-direction: column; justify-content: center; align-items: center; height: calc(100vh - 57px); position: relative; overflow: hidden; }
     
     #zoom-toolbar {
         position: absolute;
@@ -49,7 +72,7 @@
         display: block; 
         max-width: 90%; 
         max-height: 90%; 
-        object-fit: contain; /* Garantit que l'image est entièrement visible à l'ouverture */
+        object-fit: contain; 
         transition: transform 0.1s ease-out; 
         transform-origin: center center; 
     }
@@ -103,7 +126,12 @@
     </svg>
 
     <header>
-        <div>
+        <!-- Logo en haut à gauche -->
+        <div class="brand-logo">
+            Graphis<span>Studio</span>
+        </div>
+
+        <div class="header-center">
             <input type="file" id="fileInput" accept="image/*, .cr2, .cr3, .nef, .arw, .dng, .raw, .orf, .rw2" style="display: none;">
             <button id="importBtn">Importer</button>
             <button id="layersBtn" style="margin-left: 10px;">Système de Calques</button>
@@ -112,7 +140,6 @@
     </header>
 
     <div id="workspace">
-        <!-- Barre d'outils de Zoom -->
         <div id="zoom-toolbar">
             <button id="zoomOutBtn" title="Dézoomer">-</button>
             <button id="fitScreenBtn" title="Taille écran">Ajuster</button>
@@ -272,7 +299,7 @@
     <script>
         const photo = document.getElementById('photo');
         const overlay = document.getElementById('vignette-overlay');
-        let currentScale = 1; // Gestionnaire du zoom
+        let currentScale = 1;
 
         const v = (id) => {
             const el = document.getElementById(id);
@@ -314,8 +341,6 @@
                 let totalBlur = (blur * 0.1) + (noiseLum * 0.05);
 
                 photo.style.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#rawEngine)`;
-                
-                // Combinaison des transformations géométriques et du zoom utilisateur
                 photo.style.transform = `perspective(1000px) rotateX(${gVert * -0.5}deg) rotateY(${gHoriz * -0.5}deg) rotateZ(${gRot}deg) scale(${currentScale})`;
                 
                 let vigTotal = Math.min(1, Math.abs((v('e_viggain') + v('o_vig')) * -0.01));
@@ -330,7 +355,7 @@
         document.getElementById('zoomInBtn').addEventListener('click', () => { currentScale += 0.25; processImage(); });
         document.getElementById('zoomOutBtn').addEventListener('click', () => { currentScale = Math.max(0.2, currentScale - 0.25); processImage(); });
         document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); });
-        document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); }); // Réinitialise à l'ajustement auto de l'écran
+        document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); });
 
         // --- GESTION DES ÉVÉNEMENTS DES CURSEURS ---
         document.getElementById('controls').addEventListener('input', (e) => {
