@@ -863,6 +863,10 @@
         let activeLayerId = null;
         let selectedLayerIds = [];
         let lastSelectedLayerId = null;
+        
+        // SYSTÈMES DE GESTION D'HISTORIQUE (CTRL+Z / CMD+Z)
+        let historyStack = [];
+        const MAX_HISTORY_STEPS = 20;
 
         let currentScale = 1;
         let currentTool = 'move';
@@ -890,6 +894,143 @@
                 defaults[id] = el ? parseFloat(el.value) || 0 : 0;
             });
             return defaults;
+        }
+
+        function saveHistoryState() {
+            const state = layers.map(layer => ({
+                id: layer.id,
+                name: layer.name,
+                src: layer.rawImg.src,
+                x: layer.x,
+                y: layer.y,
+                scale: layer.scale,
+                rotation: layer.rotation,
+                skewX: layer.skewX,
+                skewY: layer.skewY,
+                perspX: layer.perspX,
+                perspY: layer.perspY,
+                flipX: layer.flipX,
+                flipY: layer.flipY,
+                opacity: layer.opacity,
+                blendMode: layer.blendMode,
+                visible: layer.visible,
+                locked: layer.locked,
+                isText: layer.isText,
+                isLogo: layer.isLogo,
+                textConfig: layer.textConfig ? JSON.parse(JSON.stringify(layer.textConfig)) : null,
+                hasMask: layer.hasMask,
+                maskDataUrl: layer.hasMask ? layer.maskCanvas.toDataURL() : null,
+                settings: JSON.parse(JSON.stringify(layer.settings))
+            }));
+
+            historyStack.push(state);
+            if (historyStack.length > MAX_HISTORY_STEPS) {
+                historyStack.shift();
+            }
+        }
+
+        function undoAction() {
+            if (historyStack.length <= 1) return;
+            historyStack.pop(); // Retire l'état actuel
+            const previousState = historyStack[historyStack.length - 1];
+            restoreState(previousState);
+        }
+
+        function restoreState(state) {
+            layers.forEach(l => { if (l.img && l.img.parentNode) l.img.remove(); });
+            layers = [];
+
+            state.forEach((item, index) => {
+                const canvasLayer = document.createElement('canvas');
+                canvasLayer.className = 'canvas-layer';
+                const rawImg = new Image();
+                rawImg.crossOrigin = 'anonymous';
+
+                const layerObj = {
+                    id: item.id,
+                    name: item.name,
+                    img: canvasLayer,
+                    rawImg: rawImg,
+                    isSmartObject: true,
+                    x: item.x,
+                    y: item.y,
+                    scale: item.scale,
+                    rotation: item.rotation,
+                    skewX: item.skewX,
+                    skewY: item.skewY,
+                    perspX: item.perspX,
+                    perspY: item.perspY,
+                    flipX: item.flipX,
+                    flipY: item.flipY,
+                    opacity: item.opacity,
+                    blendMode: item.blendMode,
+                    visible: item.visible,
+                    locked: item.locked,
+                    isText: item.isText,
+                    isLogo: item.isLogo,
+                    textConfig: item.textConfig,
+                    hasMask: item.hasMask,
+                    maskCanvas: null,
+                    maskCtx: null,
+                    maskDataUrl: item.maskDataUrl,
+                    settings: item.settings
+                };
+
+                rawImg.onload = () => {
+                    canvasLayer.width = rawImg.naturalWidth || 800;
+                    canvasLayer.height = rawImg.naturalHeight || 600;
+                    
+                    if (layerObj.hasMask && layerObj.maskDataUrl) {
+                        const mCanvas = document.createElement('canvas');
+                        mCanvas.width = canvasLayer.width;
+                        mCanvas.height = canvasLayer.height;
+                        const mCtx = mCanvas.getContext('2d');
+                        const mImg = new Image();
+                        mImg.onload = () => {
+                            mCtx.drawImage(mImg, 0, 0);
+                            layerObj.maskCanvas = mCanvas;
+                            layerObj.maskCtx = mCtx;
+                            renderLayerComposite(layerObj);
+                            applyLayerTransform(layerObj);
+                        };
+                        mImg.src = layerObj.maskDataUrl;
+                    } else {
+                        renderLayerComposite(layerObj);
+                        applyLayerTransform(layerObj);
+                    }
+
+                    if (index === 0) {
+                        handleLayerSelection(layerObj.id);
+                    }
+                    updateLayersUI();
+                    processImage();
+                };
+
+                rawImg.src = item.src;
+
+                canvasLayer.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleLayerSelection(item.id, e);
+                    
+                    if (currentTool === 'move' && layerObj.visible && !layerObj.locked) {
+                        isDraggingLayer = true;
+                        startX = e.clientX - layerObj.x;
+                        startY = e.clientY - layerObj.y;
+                    } else if (currentTool === 'maskBrush' && !layerObj.locked) {
+                        if (!layerObj.hasMask) addLayerMask(layerObj.id);
+                        isPaintingMask = true;
+                        lastMaskPos = null;
+                        paintMask(layerObj, e);
+                    }
+                });
+
+                imageContainer.insertBefore(canvasLayer, overlay);
+                layers.push(layerObj);
+            });
+
+            updateZIndices();
+            updateLayersUI();
         }
 
         const btnMove = document.getElementById('toolMove');
@@ -956,6 +1097,7 @@
             });
             layers = layers.filter(l => !l.isText && !l.isLogo);
             updateZIndices();
+            saveHistoryState();
         }
 
         function handleTextToolActivation() {
@@ -1048,6 +1190,7 @@
 
             applyLayerTransform(active);
             updateBoundingBoxPosition();
+            saveHistoryState();
         }
 
         document.getElementById('posTopLeft').addEventListener('click', () => positionActiveLayer('top-left'));
@@ -1137,6 +1280,7 @@
             const active = getActiveLayer();
             if (active && active.hasMask) {
                 invertLayerMask(active.id);
+                saveHistoryState();
             }
         });
 
@@ -1144,6 +1288,7 @@
             const active = getActiveLayer();
             if (active && active.hasMask) {
                 deleteLayerMask(active.id);
+                saveHistoryState();
             }
         });
 
@@ -1169,7 +1314,6 @@
             boundingBox.style.height = rect.height + 'px';
         }
 
-        /* MANIPULATION INTERACTIVE DE LA TRANSFORMATION PAR POIGNÉES */
         let isTransforming = false;
         let transformType = null;
         let startMouseX, startMouseY, initialScale, initialRotation;
@@ -1212,7 +1356,10 @@
         });
 
         document.addEventListener('mouseup', () => { 
-            isTransforming = false; 
+            if (isTransforming) {
+                isTransforming = false;
+                saveHistoryState();
+            }
         });
 
         function createTextLayer(text = "Graphis Studio", fontFamily = "Dancing Script", style = "normal", size = 54, color = "#FFD700") {
@@ -1304,6 +1451,7 @@
                 applyLayerTransform(layerObj);
                 updateLayersUI();
                 processImage();
+                saveHistoryState();
             };
             
             rawImg.src = imgSrc;
@@ -1351,9 +1499,15 @@
             });
 
             document.addEventListener('mouseup', () => { 
-                isDraggingLayer = false; 
-                isPaintingMask = false; 
-                lastMaskPos = null;
+                if (isDraggingLayer) {
+                    isDraggingLayer = false;
+                    saveHistoryState();
+                }
+                if (isPaintingMask) {
+                    isPaintingMask = false;
+                    lastMaskPos = null;
+                    saveHistoryState();
+                }
             });
 
             imageContainer.insertBefore(canvasLayer, overlay);
@@ -1425,12 +1579,19 @@
             }
         });
 
+        document.getElementById('controls').addEventListener('change', (e) => {
+            if (e.target.type === 'range' || e.target.tagName === 'SELECT') {
+                saveHistoryState();
+            }
+        });
+
         document.getElementById('resetFiltersBtn').addEventListener('click', () => {
             const active = getActiveLayer();
             if (!active) return;
             active.settings = getDefaultSettings();
             syncCameraRAWUI();
             processImage();
+            saveHistoryState();
         });
 
         function renderLayerComposite(layer) {
@@ -1474,6 +1635,7 @@
             
             updateMaskCSS(layer);
             updateLayersUI();
+            saveHistoryState();
         }
 
         function invertLayerMask(id) {
@@ -1503,7 +1665,6 @@
             updateLayersUI();
         }
 
-        /* GESTION DU TRACÉ DU MASQUE AVEC DURETÉ DU PINCEAU RESTITUÉE */
         function paintMask(layer, e) {
             if (!layer.hasMask) return;
             const rect = layer.img.getBoundingClientRect();
@@ -1604,6 +1765,7 @@
             layer.img.style.display = layer.visible ? 'block' : 'none';
             updateLayersUI();
             updateBoundingBoxVisibility();
+            saveHistoryState();
         }
 
         function toggleLayerLock(id) {
@@ -1612,6 +1774,7 @@
             layer.locked = !layer.locked;
             updateLayersUI();
             updateBoundingBoxVisibility();
+            saveHistoryState();
         }
 
         function renameLayer(id) {
@@ -1621,6 +1784,7 @@
             if (newName && newName.trim() !== "") {
                 layer.name = newName.trim();
                 updateLayersUI();
+                saveHistoryState();
             }
         }
 
@@ -1738,6 +1902,7 @@
             }
             updateZIndices();
             processImage();
+            saveHistoryState();
         }
 
         window.deleteLayer = function(id) {
@@ -1764,6 +1929,9 @@
 
             rangeEl.addEventListener('input', (e) => updateValue(e.target.value));
             numEl.addEventListener('input', (e) => updateValue(e.target.value));
+            
+            rangeEl.addEventListener('change', () => saveHistoryState());
+            numEl.addEventListener('change', () => saveHistoryState());
         }
 
         setupTransformFieldSync('tr_scale', 'num_scale', 'scale', true);
@@ -1777,7 +1945,18 @@
             const rangeEl = document.getElementById(rangeId);
             rangeEl.value = defaultValue;
             rangeEl.dispatchEvent(new Event('input'));
+            rangeEl.dispatchEvent(new Event('change'));
         };
+
+        // ECOUTEUR GLOBAL DU RACCOURCI CLAVIER CTRL+Z / CMD+Z
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')) {
+                // Si l'utilisateur est dans un champ de texte, on laisse le comportement par défaut du champ
+                if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+                e.preventDefault();
+                undoAction();
+            }
+        });
 
         function processImage() {
             layers.forEach((layer) => {
@@ -1827,6 +2006,7 @@
                     if (layers.length > 0) {
                         layers[0].rawImg.src = evt.target.result;
                         layers[0].name = e.target.files[0].name;
+                        saveHistoryState();
                     } else createLayer(evt.target.result, e.target.files[0].name);
                 };
                 reader.readAsDataURL(e.target.files[0]);
