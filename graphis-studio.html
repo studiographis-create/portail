@@ -369,7 +369,7 @@
                 </button>
             </div>
 
-            <!-- Réglages du Pinceau de Masque -->
+            <!-- Réglages du Pinceau de Masque (Taille & Dureté) -->
             <div class="mask-brush-box" id="maskBrushBox">
                 <h4>Option du Pinceau de Masque</h4>
                 <div class="control-group">
@@ -383,6 +383,10 @@
                 <div class="control-group">
                     <label>Taille du pinceau <span class="value-display" id="val_brushSize">30px</span></label>
                     <input type="range" id="brushSize" min="5" max="150" value="30">
+                </div>
+                <div class="control-group">
+                    <label>Dureté <span class="value-display" id="val_brushHardness">50%</span></label>
+                    <input type="range" id="brushHardness" min="0" max="100" value="50">
                 </div>
             </div>
 
@@ -616,7 +620,9 @@
         let activeLayerId = null;
         let currentScale = 1;
         let currentTool = 'move';
+        
         let isPaintingMask = false;
+        let lastMaskPos = null; // Stocke la dernière position pour l'interpolation lissée
 
         const btnMove = document.getElementById('toolMove');
         const btnFreeTrans = document.getElementById('toolFreeTransform');
@@ -637,6 +643,10 @@
 
         document.getElementById('brushSize').addEventListener('input', (e) => {
             document.getElementById('val_brushSize').innerText = e.target.value + 'px';
+        });
+
+        document.getElementById('brushHardness').addEventListener('input', (e) => {
+            document.getElementById('val_brushHardness').innerText = e.target.value + '%';
         });
 
         function updateBoundingBoxVisibility() {
@@ -669,7 +679,6 @@
         function createLayer(imgSrc, name = "Calque", initialData = null) {
             const id = 'layer_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
             
-            // On utilise Canvas HTML5 à la place de l'image seule pour la transparence dynamique
             const canvasLayer = document.createElement('canvas');
             canvasLayer.className = 'canvas-layer';
             
@@ -720,6 +729,7 @@
                     startY = e.clientY - layerObj.y;
                 } else if (currentTool === 'maskBrush' && layerObj.hasMask && !layerObj.locked) {
                     isPaintingMask = true;
+                    lastMaskPos = null;
                     paintMask(layerObj, e);
                 }
             });
@@ -740,6 +750,7 @@
             document.addEventListener('mouseup', () => { 
                 isDraggingLayer = false; 
                 isPaintingMask = false; 
+                lastMaskPos = null;
             });
 
             imageContainer.insertBefore(canvasLayer, overlay);
@@ -766,14 +777,12 @@
             ctx.clearRect(0, 0, width, height);
             ctx.drawImage(layer.rawImg, 0, 0, width, height);
 
-            // Traitement du masque de fusion avec le canal Alpha
             if (layer.hasMask && layer.maskCanvas) {
                 const imgData = ctx.getImageData(0, 0, width, height);
                 const maskCtx = layer.maskCanvas.getContext('2d');
                 const maskData = maskCtx.getImageData(0, 0, width, height);
 
                 for (let i = 0; i < imgData.data.length; i += 4) {
-                    // Calcul de la luminance de la couleur du masque (Noir = 0 Alpha, Blanc = 255 Alpha)
                     const maskLuminance = (maskData.data[i] + maskData.data[i + 1] + maskData.data[i + 2]) / 3;
                     imgData.data[i + 3] = Math.round(imgData.data[i + 3] * (maskLuminance / 255));
                 }
@@ -804,6 +813,7 @@
             updateLayersUI();
         }
 
+        // Peinture fluide avec lissage (pas rapproché) et dureté personnalisée
         function paintMask(layer, e) {
             if (!layer.hasMask) return;
             const rect = layer.img.getBoundingClientRect();
@@ -814,17 +824,52 @@
             const scaleX = layer.maskCanvas.width / rect.width;
             const scaleY = layer.maskCanvas.height / rect.height;
 
-            const canvasX = clickX * scaleX;
-            const canvasY = clickY * scaleY;
+            const currX = clickX * scaleX;
+            const currY = clickY * scaleY;
 
             const brushSize = parseFloat(document.getElementById('brushSize').value) * scaleX;
-            const brushColor = document.getElementById('brushColorSelect').value === 'black' ? '#000000' : '#FFFFFF';
+            const hardness = parseFloat(document.getElementById('brushHardness').value) / 100;
+            const isBlack = document.getElementById('brushColorSelect').value === 'black';
 
-            layer.maskCtx.fillStyle = brushColor;
-            layer.maskCtx.beginPath();
-            layer.maskCtx.arc(canvasX, canvasY, brushSize / 2, 0, Math.PI * 2);
-            layer.maskCtx.fill();
+            const radius = brushSize / 2;
+            const innerRadius = radius * hardness;
 
+            // Fonction pour dessiner un point unique avec dureté radiale
+            const drawBrushSpot = (x, y) => {
+                const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
+                
+                if (isBlack) {
+                    grad.addColorStop(0, 'rgba(0, 0, 0, 1)');
+                    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                } else {
+                    grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                }
+
+                layer.maskCtx.fillStyle = grad;
+                layer.maskCtx.beginPath();
+                layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                layer.maskCtx.fill();
+            };
+
+            // Interpolation continue pour éliminer les paquets / taches
+            if (!lastMaskPos) {
+                drawBrushSpot(currX, currY);
+            } else {
+                const dx = currX - lastMaskPos.x;
+                const dy = currY - lastMaskPos.y;
+                const dist = Math.hypot(dx, dy);
+                const step = Math.max(1, radius * 0.1); // Pas très resserré
+
+                for (let i = 0; i < dist; i += step) {
+                    const interX = lastMaskPos.x + (dx * (i / dist));
+                    const interY = lastMaskPos.y + (dy * (i / dist));
+                    drawBrushSpot(interX, interY);
+                }
+                drawBrushSpot(currX, currY);
+            }
+
+            lastMaskPos = { x: currX, y: currY };
             updateMaskCSS(layer);
         }
 
