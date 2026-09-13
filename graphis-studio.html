@@ -835,21 +835,22 @@
             }
         });
 
-        // Correction du placement direct dans les coins (basé sur le conteneur et les dimensions du calque)
+        // Correction du positionnement précis dans les coins
         function positionActiveLayer(corner) {
             const active = getActiveLayer();
             const baseLayer = layers[0];
             if (!active || !baseLayer) return;
 
-            const containerRect = imageContainer.getBoundingClientRect();
-            const baseRect = baseLayer.img.getBoundingClientRect();
-            const activeRect = active.img.getBoundingClientRect();
+            const baseWidth = baseLayer.img.width || 800;
+            const baseHeight = baseLayer.img.height || 600;
 
-            const margin = 20;
+            const activeWidth = active.img.width || 400;
+            const activeHeight = active.img.height || 100;
 
-            // Calcul de la position par rapport au centre de l'écran/conteneur
-            const maxOffsetX = (baseRect.width / 2) - (activeRect.width / 2) - margin;
-            const maxOffsetY = (baseRect.height / 2) - (activeRect.height / 2) - margin;
+            const margin = 40;
+
+            const maxOffsetX = (baseWidth / 2) - (activeWidth / 2) - margin;
+            const maxOffsetY = (baseHeight / 2) - (activeHeight / 2) - margin;
 
             if (corner === 'bottom-right') {
                 active.x = maxOffsetX;
