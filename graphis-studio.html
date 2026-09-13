@@ -331,6 +331,54 @@
     .transform-grid button svg { width: 14px; height: 14px; stroke: var(--accent-color); fill: none; stroke-width: 1.8; }
     .transform-grid button:hover svg { stroke: var(--bg-color); }
 
+    .transform-input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .reset-btn {
+        background: transparent;
+        border: none;
+        color: #888;
+        cursor: pointer;
+        padding: 2px 4px;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: color 0.2s;
+    }
+    .reset-btn:hover {
+        color: var(--accent-color);
+        background: rgba(255, 255, 255, 0.05);
+    }
+    .reset-btn svg {
+        width: 12px;
+        height: 12px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .number-input {
+        width: 50px !important;
+        text-align: right;
+        padding: 2px 4px !important;
+        font-size: 11px !important;
+        background: #1e1e1e !important;
+        border: 1px solid #444 !important;
+        border-radius: 3px !important;
+        color: var(--accent-color) !important;
+        -moz-appearance: textfield;
+    }
+    .number-input::-webkit-inner-spin-button, 
+    .number-input::-webkit-outer-spin-button { 
+        -webkit-appearance: none; 
+        margin: 0; 
+    }
+
     #panel { position: absolute; top: 20px; right: 20px; width: 340px; max-height: 90vh; background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 10; }
     .panel-header { padding: 15px; border-bottom: 1px solid var(--border-color); cursor: move; display: flex; justify-content: space-between; align-items: center; }
     .panel-header h2 { margin: 0; font-size: 14px; color: var(--accent-color); text-transform: uppercase; letter-spacing: 1px; }
@@ -353,7 +401,6 @@
     .module-content { padding: 10px 5px 15px 5px; }
     .control-group { margin-bottom: 12px; }
     .control-group label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 11px; color: #bbb; align-items: center; }
-    .value-display { color: var(--accent-color); font-variant-numeric: tabular-nums; }
     
     input[type=range] { width: 100%; accent-color: var(--accent-color); height: 4px; background: #333; outline: none; -webkit-appearance: none; border-radius: 2px; }
     input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent-color); cursor: pointer; }
@@ -558,32 +605,82 @@
             <div id="layersContainer"></div>
             <button id="addLayerBtn" style="width: 100%; margin-top: 10px; font-size: 11px;">+ Nouveau Calque Image</button>
 
+            <!-- TITRE RENOMMÉ ET PARAMÈTRES MIS À JOUR AVEC CASES ET FLÈCHES -->
             <div class="transform-box">
-                <h4>Paramètres Précis</h4>
+                <h4>Géométrie & Transformation</h4>
+                
                 <div class="control-group">
-                    <label>Échelle <span class="value-display" id="val_scale">100%</span></label>
+                    <label>Échelle 
+                        <div class="transform-input-wrapper">
+                            <button class="reset-btn" onclick="resetTransformField('tr_scale', 100)" title="Réinitialiser l'échelle">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
+                            <input type="number" id="num_scale" class="number-input" value="100" min="10" max="300"> %
+                        </div>
+                    </label>
                     <input type="range" id="tr_scale" min="10" max="300" value="100">
                 </div>
+
                 <div class="control-group">
-                    <label>Rotation <span class="value-display" id="val_rot">0°</span></label>
+                    <label>Rotation 
+                        <div class="transform-input-wrapper">
+                            <button class="reset-btn" onclick="resetTransformField('tr_rot', 0)" title="Réinitialiser la rotation">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
+                            <input type="number" id="num_rot" class="number-input" value="0" min="-180" max="180"> °
+                        </div>
+                    </label>
                     <input type="range" id="tr_rot" min="-180" max="180" value="0">
                 </div>
+
                 <div class="control-group">
-                    <label>Inclinaison X (Skew X) <span class="value-display" id="val_skewX">0°</span></label>
+                    <label>Inclinaison H 
+                        <div class="transform-input-wrapper">
+                            <button class="reset-btn" onclick="resetTransformField('tr_skewX', 0)" title="Réinitialiser l'inclinaison horizontale">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
+                            <input type="number" id="num_skewX" class="number-input" value="0" min="-60" max="60"> °
+                        </div>
+                    </label>
                     <input type="range" id="tr_skewX" min="-60" max="60" value="0">
                 </div>
+
                 <div class="control-group">
-                    <label>Inclinaison Y (Skew Y) <span class="value-display" id="val_skewY">0°</span></label>
+                    <label>Inclinaison V 
+                        <div class="transform-input-wrapper">
+                            <button class="reset-btn" onclick="resetTransformField('tr_skewY', 0)" title="Réinitialiser l'inclinaison verticale">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
+                            <input type="number" id="num_skewY" class="number-input" value="0" min="-60" max="60"> °
+                        </div>
+                    </label>
                     <input type="range" id="tr_skewY" min="-60" max="60" value="0">
                 </div>
+
                 <div class="control-group">
-                    <label>Perspective Horiz. <span class="value-display" id="val_perspX">0°</span></label>
+                    <label>Perspective Horiz. 
+                        <div class="transform-input-wrapper">
+                            <button class="reset-btn" onclick="resetTransformField('tr_perspX', 0)" title="Réinitialiser la perspective horizontale">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
+                            <input type="number" id="num_perspX" class="number-input" value="0" min="-75" max="75"> °
+                        </div>
+                    </label>
                     <input type="range" id="tr_perspX" min="-75" max="75" value="0">
                 </div>
+
                 <div class="control-group">
-                    <label>Perspective Vert. <span class="value-display" id="val_perspY">0°</span></label>
+                    <label>Perspective Vert. 
+                        <div class="transform-input-wrapper">
+                            <button class="reset-btn" onclick="resetTransformField('tr_perspY', 0)" title="Réinitialiser la perspective verticale">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
+                            <input type="number" id="num_perspY" class="number-input" value="0" min="-75" max="75"> °
+                        </div>
+                    </label>
                     <input type="range" id="tr_perspY" min="-75" max="75" value="0">
                 </div>
+
                 <div class="transform-grid" style="grid-template-columns: repeat(2, 1fr);">
                     <button id="tr_flipH" style="font-size:11px;">Miroir H</button>
                     <button id="tr_flipV" style="font-size:11px;">Miroir V</button>
@@ -863,7 +960,6 @@
             }
         }
 
-        // SUPPRESSION DU TEXTE ET CHARGEMENT DU LOGO
         const importLogoBtn = document.getElementById('importLogoBtn');
         const logoFileInput = document.getElementById('logoFileInput');
         
@@ -877,15 +973,11 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = (evt) => {
-                    // Supprime les calques de texte et logos préexistants
                     removeAllSignatureAndTextLayers();
-                    
-                    // Crée et affiche immédiatement le nouveau calque de logo
                     createLayer(evt.target.result, `Logo Signature: ${file.name}`, {
                         isLogo: true,
                         scale: 0.5
                     });
-                    
                     setTool('move');
                     logoFileInput.value = '';
                 };
@@ -1526,13 +1618,14 @@
                 let dx = e.clientX - startMouseX;
                 let newScale = Math.max(0.1, initialScale + (dx * 0.005));
                 active.scale = newScale;
-                document.getElementById('tr_scale').value = Math.round(active.scale * 100);
-                document.getElementById('val_scale').innerText = Math.round(active.scale * 100) + '%';
+                const scaleVal = Math.round(active.scale * 100);
+                document.getElementById('tr_scale').value = scaleVal;
+                document.getElementById('num_scale').value = scaleVal;
             } else if (transformType === 'rotate') {
                 let dx = e.clientX - startMouseX;
                 active.rotation = Math.round((initialRotation + dx * 0.5) % 360);
                 document.getElementById('tr_rot').value = active.rotation;
-                document.getElementById('val_rot').innerText = active.rotation + '°';
+                document.getElementById('num_rot').value = active.rotation;
             }
             applyLayerTransform(active);
             updateBoundingBoxPosition();
@@ -1562,18 +1655,24 @@
         function syncTransformUI() {
             const active = getActiveLayer();
             if(!active) return;
-            document.getElementById('tr_scale').value = Math.round(active.scale * 100);
-            document.getElementById('val_scale').innerText = Math.round(active.scale * 100) + '%';
+            const scaleVal = Math.round(active.scale * 100);
+            document.getElementById('tr_scale').value = scaleVal;
+            document.getElementById('num_scale').value = scaleVal;
+            
             document.getElementById('tr_rot').value = active.rotation;
-            document.getElementById('val_rot').innerText = active.rotation + '°';
+            document.getElementById('num_rot').value = active.rotation;
+
             document.getElementById('tr_skewX').value = active.skewX;
-            document.getElementById('val_skewX').innerText = active.skewX + '°';
+            document.getElementById('num_skewX').value = active.skewX;
+
             document.getElementById('tr_skewY').value = active.skewY;
-            document.getElementById('val_skewY').innerText = active.skewY + '°';
+            document.getElementById('num_skewY').value = active.skewY;
+
             document.getElementById('tr_perspX').value = active.perspX;
-            document.getElementById('val_perspX').innerText = active.perspX + '°';
+            document.getElementById('num_perspX').value = active.perspX;
+
             document.getElementById('tr_perspY').value = active.perspY;
-            document.getElementById('val_perspY').innerText = active.perspY + '°';
+            document.getElementById('num_perspY').value = active.perspY;
             
             document.getElementById('layerOpacity').value = active.opacity;
             document.getElementById('val_opacity').innerText = active.opacity + '%';
@@ -1757,53 +1856,45 @@
             deleteSelectedLayers();
         };
 
-        document.getElementById('tr_scale').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active || active.locked) return;
-            active.scale = parseFloat(e.target.value) / 100;
-            document.getElementById('val_scale').innerText = e.target.value + '%';
-            applyLayerTransform(active);
-        });
+        // GESTION ET SYNCHRONISATION DES INPUTS GEOMETRIE
+        function setupTransformFieldSync(rangeId, numId, layerProp, isScale = false) {
+            const rangeEl = document.getElementById(rangeId);
+            const numEl = document.getElementById(numId);
 
-        document.getElementById('tr_rot').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active || active.locked) return;
-            active.rotation = parseFloat(e.target.value);
-            document.getElementById('val_rot').innerText = e.target.value + '°';
-            applyLayerTransform(active);
-        });
+            const updateValue = (val) => {
+                const active = getActiveLayer();
+                if (!active || active.locked) return;
+                
+                let numVal = parseFloat(val);
+                if (isNaN(numVal)) numVal = 0;
 
-        document.getElementById('tr_skewX').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active || active.locked) return;
-            active.skewX = parseFloat(e.target.value);
-            document.getElementById('val_skewX').innerText = e.target.value + '°';
-            applyLayerTransform(active);
-        });
+                rangeEl.value = numVal;
+                numEl.value = numVal;
 
-        document.getElementById('tr_skewY').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active || active.locked) return;
-            active.skewY = parseFloat(e.target.value);
-            document.getElementById('val_skewY').innerText = e.target.value + '°';
-            applyLayerTransform(active);
-        });
+                if (isScale) {
+                    active[layerProp] = numVal / 100;
+                } else {
+                    active[layerProp] = numVal;
+                }
+                applyLayerTransform(active);
+            };
 
-        document.getElementById('tr_perspX').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active || active.locked) return;
-            active.perspX = parseFloat(e.target.value);
-            document.getElementById('val_perspX').innerText = e.target.value + '°';
-            applyLayerTransform(active);
-        });
+            rangeEl.addEventListener('input', (e) => updateValue(e.target.value));
+            numEl.addEventListener('input', (e) => updateValue(e.target.value));
+        }
 
-        document.getElementById('tr_perspY').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active || active.locked) return;
-            active.perspY = parseFloat(e.target.value);
-            document.getElementById('val_perspY').innerText = e.target.value + '°';
-            applyLayerTransform(active);
-        });
+        setupTransformFieldSync('tr_scale', 'num_scale', 'scale', true);
+        setupTransformFieldSync('tr_rot', 'num_rot', 'rotation');
+        setupTransformFieldSync('tr_skewX', 'num_skewX', 'skewX');
+        setupTransformFieldSync('tr_skewY', 'num_skewY', 'skewY');
+        setupTransformFieldSync('tr_perspX', 'num_perspX', 'perspX');
+        setupTransformFieldSync('tr_perspY', 'num_perspY', 'perspY');
+
+        window.resetTransformField = function(rangeId, defaultValue) {
+            const rangeEl = document.getElementById(rangeId);
+            rangeEl.value = defaultValue;
+            rangeEl.dispatchEvent(new Event('input'));
+        };
 
         document.getElementById('tr_flipH').addEventListener('click', () => {
             const active = getActiveLayer();
