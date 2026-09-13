@@ -135,7 +135,7 @@
     }
     .layer-item {
         background: #222;
-        padding: 8px 10px;
+        padding: 6px 10px;
         border-radius: 4px;
         display: flex;
         justify-content: space-between;
@@ -148,6 +148,20 @@
     .layer-item.active { border-color: var(--accent-color); background: #2a2a2a; }
     .layer-info { display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     
+    /* Style de la miniature (Thumbnail) */
+    .layer-thumbnail {
+        width: 28px;
+        height: 28px;
+        object-fit: cover;
+        border-radius: 3px;
+        border: 1px solid #555;
+        background-color: #1a1a1a;
+        background-image: linear-gradient(45deg, #2b2b2b 25%, transparent 25%), linear-gradient(-45deg, #2b2b2b 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #2b2b2b 75%), linear-gradient(-45deg, transparent 75%, #2b2b2b 75%);
+        background-size: 8px 8px;
+        background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+        flex-shrink: 0;
+    }
+
     /* Style des Boutons d'Action Vectoriels */
     .icon-btn {
         background: transparent;
@@ -806,6 +820,7 @@
                         <button class="icon-btn ${layer.visible ? '' : 'hidden-eye'}" title="${layer.visible ? 'Masquer' : 'Afficher'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
                             <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </button>
+                        <img class="layer-thumbnail" src="${layer.img.src}" alt="Vignette">
                         <span>${layer.name}</span>
                     </div>
                     <div class="layer-actions">
