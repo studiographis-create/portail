@@ -993,9 +993,8 @@
             renderLayerComposite(layer);
             if (currentTool === 'maskBrush') {
                 setTool('move');
-            } else {
-                updateLayersUI();
             }
+            updateLayersUI(); // Met à jour l'interface pour retirer immédiatement la vignette du masque
         }
 
         function paintMask(layer, e) {
