@@ -440,18 +440,14 @@
             </div>
 
             <div class="text-options-box" id="textOptionsBox">
-                <h4>Propriétés du Texte</h4>
+                <h4 id="textPanelTitle">Propriétés du Texte</h4>
                 <div class="control-group">
                     <label>Texte <input type="text" id="textInputVal" value="Graphis Studio"></label>
                 </div>
                 <div class="control-group">
-                    <label>Police
+                    <label>Police Système
                         <select id="textFontSelect">
-                            <option value="sans-serif">Sans-Serif (Standard)</option>
-                            <option value="serif">Serif</option>
-                            <option value="monospace">Monospace</option>
-                            <option value="Impact">Impact</option>
-                            <option value="Georgia">Georgia</option>
+                            <option value="sans-serif">Chargement des polices...</option>
                         </select>
                     </label>
                 </div>
@@ -472,7 +468,7 @@
                 <div class="control-group">
                     <label>Couleur <input type="color" id="textColorPicker" value="#FFD700"></label>
                 </div>
-                <button id="applyTextChangesBtn" style="width:100%; margin-top:5px; font-size:11px;">Créer le Calque Texte</button>
+                <button id="applyTextChangesBtn" style="width:100%; margin-top:5px; font-size:11px;">Créer / Mettre à jour le Texte</button>
             </div>
 
             <div class="layer-settings-box">
@@ -719,7 +715,36 @@
                 addLayerMask(active.id);
             }
         });
-        btnText.addEventListener('click', () => { setTool('text'); });
+        btnText.addEventListener('click', () => { 
+            setTool('text'); 
+            prepareTextToolForActiveOrNew();
+        });
+
+        // Chargement dynamique des polices système
+        async function loadSystemFonts() {
+            const fontSelect = document.getElementById('textFontSelect');
+            let fontSet = new Set(['sans-serif', 'serif', 'monospace', 'Arial', 'Georgia', 'Impact', 'Times New Roman', 'Verdana', 'Courier New']);
+            
+            if ('queryLocalFonts' in window) {
+                try {
+                    const availableFonts = await window.queryLocalFonts();
+                    for (const font of availableFonts) {
+                        fontSet.add(font.family);
+                    }
+                } catch (err) {
+                    console.log("Accès aux polices locales restreint, utilisation des polices standards.");
+                }
+            }
+
+            fontSelect.innerHTML = '';
+            Array.from(fontSet).sort().forEach(font => {
+                const opt = document.createElement('option');
+                opt.value = font;
+                opt.textContent = font;
+                fontSelect.appendChild(opt);
+            });
+        }
+        loadSystemFonts();
 
         function setTool(tool) {
             currentTool = tool;
@@ -739,6 +764,26 @@
             }
 
             updateBoundingBoxVisibility();
+        }
+
+        function prepareTextToolForActiveOrNew() {
+            const active = getActiveLayer();
+            const btnAction = document.getElementById('applyTextChangesBtn');
+            const titleEl = document.getElementById('textPanelTitle');
+
+            if (active && active.isText) {
+                titleEl.textContent = "Modifier le Calque Texte";
+                btnAction.textContent = "Mettre à jour le Texte";
+                document.getElementById('textInputVal').value = active.textConfig.text;
+                document.getElementById('textFontSelect').value = active.textConfig.fontFamily;
+                document.getElementById('textStyleSelect').value = active.textConfig.style;
+                document.getElementById('textSizeRange').value = active.textConfig.size;
+                document.getElementById('val_textSize').innerText = active.textConfig.size + 'px';
+                document.getElementById('textColorPicker').value = active.textConfig.color;
+            } else {
+                titleEl.textContent = "Propriétés du Texte";
+                btnAction.textContent = "Créer un Calque Texte";
+            }
         }
 
         function updateBrushCursorDimensions() {
@@ -815,7 +860,17 @@
             const fontSize = document.getElementById('textSizeRange').value;
             const color = document.getElementById('textColorPicker').value;
 
-            createTextLayer(textVal, `${fontStyle} ${fontSize}px ${fontFam}`, color);
+            const active = getActiveLayer();
+            if (currentTool === 'text' && active && active.isText) {
+                // Mise à jour du calque texte existant
+                active.textConfig = { text: textVal, fontFamily: fontFam, style: fontStyle, size: fontSize, color: color };
+                active.name = `Texte: "${textVal}"`;
+                redrawTextLayer(active);
+            } else {
+                // Création d'un nouveau calque texte
+                createTextLayer(textVal, fontFam, fontStyle, fontSize, color);
+            }
+            updateLayersUI();
         });
 
         function updateBoundingBoxVisibility() {
@@ -845,20 +900,41 @@
             return el ? (parseFloat(el.value) || 0) : 0;
         };
 
-        function createTextLayer(textContent = "Graphis Studio", fontSpec = "bold 48px sans-serif", textColor = "#FFD700") {
+        function createTextLayer(text = "Graphis Studio", fontFamily = "sans-serif", style = "normal", size = 48, color = "#FFD700") {
             const canvas = document.createElement('canvas');
-            canvas.width = 900;
-            canvas.height = 200;
+            canvas.width = 1200;
+            canvas.height = 300;
             const ctx = canvas.getContext('2d');
             
+            const fontSpec = `${style === 'normal' ? '' : style} ${size}px "${fontFamily}"`;
             ctx.font = fontSpec;
-            ctx.fillStyle = textColor;
+            ctx.fillStyle = color;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(textContent, 450, 100);
+            ctx.fillText(text, 600, 150);
 
             const dataUrl = canvas.toDataURL();
-            createLayer(dataUrl, `Texte: "${textContent}"`);
+            createLayer(dataUrl, `Texte: "${text}"`, {
+                isText: true,
+                textConfig: { text, fontFamily, style, size, color }
+            });
+        }
+
+        function redrawTextLayer(layer) {
+            const canvas = layer.img;
+            const ctx = canvas.getContext('2d');
+            const cfg = layer.textConfig;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const fontSpec = `${cfg.style === 'normal' ? '' : cfg.style} ${cfg.size}px "${cfg.fontFamily}"`;
+            ctx.font = fontSpec;
+            ctx.fillStyle = cfg.color;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(cfg.text, canvas.width / 2, canvas.height / 2);
+
+            layer.rawImg.src = canvas.toDataURL();
+            renderLayerComposite(layer);
         }
 
         function createLayer(imgSrc, name = "Calque", initialData = null) {
@@ -875,20 +951,22 @@
                 id, name, 
                 img: canvasLayer,
                 rawImg: rawImg,
-                x: initialData ? initialData.x : 0,
-                y: initialData ? initialData.y : 0,
-                scale: initialData ? initialData.scale : 1,
-                rotation: initialData ? initialData.rotation : 0,
-                skewX: initialData ? initialData.skewX : 0,
-                skewY: initialData ? initialData.skewY : 0,
-                perspX: initialData ? initialData.perspX : 0,
-                perspY: initialData ? initialData.perspY : 0,
-                flipX: initialData ? initialData.flipX : 1,
-                flipY: initialData ? initialData.flipY : 1,
-                opacity: initialData ? initialData.opacity : 100,
-                blendMode: initialData ? initialData.blendMode : 'normal',
+                x: initialData && initialData.x !== undefined ? initialData.x : 0,
+                y: initialData && initialData.y !== undefined ? initialData.y : 0,
+                scale: initialData && initialData.scale !== undefined ? initialData.scale : 1,
+                rotation: initialData && initialData.rotation !== undefined ? initialData.rotation : 0,
+                skewX: initialData && initialData.skewX !== undefined ? initialData.skewX : 0,
+                skewY: initialData && initialData.skewY !== undefined ? initialData.skewY : 0,
+                perspX: initialData && initialData.perspX !== undefined ? initialData.perspX : 0,
+                perspY: initialData && initialData.perspY !== undefined ? initialData.perspY : 0,
+                flipX: initialData && initialData.flipX !== undefined ? initialData.flipX : 1,
+                flipY: initialData && initialData.flipY !== undefined ? initialData.flipY : 1,
+                opacity: initialData && initialData.opacity !== undefined ? initialData.opacity : 100,
+                blendMode: initialData && initialData.blendMode !== undefined ? initialData.blendMode : 'normal',
                 visible: initialData && initialData.visible !== undefined ? initialData.visible : true,
                 locked: initialData && initialData.locked !== undefined ? initialData.locked : false,
+                isText: initialData && initialData.isText ? true : false,
+                textConfig: initialData && initialData.textConfig ? initialData.textConfig : null,
                 hasMask: false,
                 maskCanvas: null,
                 maskCtx: null,
@@ -896,8 +974,13 @@
             };
 
             rawImg.onload = () => {
-                canvasLayer.width = rawImg.naturalWidth || 800;
-                canvasLayer.height = rawImg.naturalHeight || 600;
+                if (!layerObj.isText) {
+                    canvasLayer.width = rawImg.naturalWidth || 800;
+                    canvasLayer.height = rawImg.naturalHeight || 600;
+                } else {
+                    canvasLayer.width = 1200;
+                    canvasLayer.height = 300;
+                }
                 renderLayerComposite(layerObj);
             };
 
@@ -1001,6 +1084,10 @@
             updateLayersUI();
             syncTransformUI();
             updateBoundingBoxVisibility();
+
+            if (currentTool === 'text') {
+                prepareTextToolForActiveOrNew();
+            }
         }
 
         function renderLayerComposite(layer) {
@@ -1225,6 +1312,8 @@
                 blendMode: source.blendMode,
                 visible: source.visible,
                 locked: false,
+                isText: source.isText,
+                textConfig: source.textConfig ? JSON.parse(JSON.stringify(source.textConfig)) : null,
                 insertIndex: sourceIdx + 1
             };
 
@@ -1598,7 +1687,7 @@
                 overlay.style.boxShadow = `inset 0 0 ${100 - v('e_vigmid')}vmin rgba(0,0,0,${vigTotal})`;
 
             } catch (error) {
-                console.error("Erreur dans le moteur de rendu : ", error);
+                console.error("Erreur dans le rendu : ", error);
             }
         }
 
