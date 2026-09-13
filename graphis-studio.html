@@ -777,6 +777,22 @@
             return el ? (parseFloat(el.value) || 0) : 0;
         };
 
+        function createTextLayer(textContent = "Graphis Studio") {
+            const canvas = document.createElement('canvas');
+            canvas.width = 800;
+            canvas.height = 200;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.font = 'bold 48px sans-serif';
+            ctx.fillStyle = '#FFD700';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(textContent, 400, 100);
+
+            const dataUrl = canvas.toDataURL();
+            createLayer(dataUrl, `Texte: "${textContent}"`);
+        }
+
         function createLayer(imgSrc, name = "Calque", initialData = null) {
             const id = 'layer_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
             
@@ -962,7 +978,7 @@
                 updateMaskCSS(layer);
             }
             updateLayersUI();
-            setTool('maskBrush'); // Ouvre automatiquement le panneau/outil du masque
+            setTool('maskBrush');
         }
 
         function invertLayerMask(id) {
@@ -1317,6 +1333,9 @@
                         <button class="icon-btn" title="Masque de fusion" onclick="event.stopPropagation(); addLayerMask('${layer.id}')">
                             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18a9 9 0 0 0 0-18z" fill="var(--accent-color)"></path></svg>
                         </button>
+                        <button class="icon-btn" title="Ajouter un calque de texte" onclick="event.stopPropagation(); const t = prompt('Entrez votre texte :', 'Graphis Studio'); if(t) createTextLayer(t);">
+                            <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="12" y1="4" x2="12" y2="20"></line><line x1="8" y1="20" x2="16" y2="20"></line></svg>
+                        </button>
                         <button class="icon-btn" title="Renommer" onclick="event.stopPropagation(); renameLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         </button>
@@ -1539,8 +1558,8 @@
 
             if (isRaw) {
                 try {
-                    const buffer = await file.arrayBuffer();
-                    const view = new Uint8Array(buffer);
+                    const buffer = file.arrayBuffer();
+                    const view = new Uint8Array(await buffer);
                     let start = -1, end = -1, maxLen = 0, bestStart = -1, bestEnd = -1;
 
                     for (let i = 0; i < view.length - 1; i++) {
