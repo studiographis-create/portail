@@ -835,22 +835,24 @@
             }
         });
 
-        // Correction du positionnement précis dans les coins
+        // Calcul corrigé : alignement précis sur les bords visibles calculés de l'arrière-plan
         function positionActiveLayer(corner) {
             const active = getActiveLayer();
             const baseLayer = layers[0];
             if (!active || !baseLayer) return;
 
-            const baseWidth = baseLayer.img.width || 800;
-            const baseHeight = baseLayer.img.height || 600;
+            const baseRect = baseLayer.img.getBoundingClientRect();
+            const activeRect = active.img.getBoundingClientRect();
 
-            const activeWidth = active.img.width || 400;
-            const activeHeight = active.img.height || 100;
+            const margin = 20;
 
-            const margin = 40;
+            const unscaledBaseW = baseRect.width / currentScale;
+            const unscaledBaseH = baseRect.height / currentScale;
+            const unscaledActiveW = activeRect.width / currentScale;
+            const unscaledActiveH = activeRect.height / currentScale;
 
-            const maxOffsetX = (baseWidth / 2) - (activeWidth / 2) - margin;
-            const maxOffsetY = (baseHeight / 2) - (activeHeight / 2) - margin;
+            const maxOffsetX = (unscaledBaseW / 2) - (unscaledActiveW / 2) - (margin / currentScale);
+            const maxOffsetY = (unscaledBaseH / 2) - (unscaledActiveH / 2) - (margin / currentScale);
 
             if (corner === 'bottom-right') {
                 active.x = maxOffsetX;
