@@ -199,16 +199,6 @@
         flex: 1;
         min-width: 0;
     }
-
-    .smart-badge {
-        font-size: 9px;
-        color: var(--accent-color);
-        border: 1px solid var(--accent-color);
-        border-radius: 2px;
-        padding: 1px 3px;
-        margin-left: 4px;
-        flex-shrink: 0;
-    }
     
     .layer-thumbnail, .layer-mask-thumbnail {
         width: 28px;
@@ -411,8 +401,7 @@
     .module-content { padding: 10px 5px 15px 5px; }
     .control-group { margin-bottom: 12px; }
     .control-group label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 11px; color: #bbb; align-items: center; }
-    .value-display { color: var(--accent-color); font-variant-numeric: tabular-nums; }
-
+    
     input[type=range] { width: 100%; accent-color: var(--accent-color); height: 4px; background: #333; outline: none; -webkit-appearance: none; border-radius: 2px; }
     input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent-color); cursor: pointer; }
     select, input[type=text] { width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 4px; border-radius: 4px; font-size: 11px; box-sizing: border-box; }
@@ -479,7 +468,6 @@
 
         <img id="thumbnail-preview-popover" alt="Agrandissement calque">
 
-        <!-- PANNEAU SYSTÈME DE CALQUES -->
         <div id="layersPanel">
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Calques</h3>
             
@@ -617,7 +605,7 @@
             <div id="layersContainer"></div>
             <button id="addLayerBtn" style="width: 100%; margin-top: 10px; font-size: 11px;">+ Nouveau Calque Image</button>
 
-            <!-- GÉOMÉTRIE & TRANSFORMATION -->
+            <!-- TITRE RENOMMÉ ET PARAMÈTRES MIS À JOUR AVEC CASES ET FLÈCHES -->
             <div class="transform-box">
                 <h4>Géométrie & Transformation</h4>
                 
@@ -718,12 +706,8 @@
             <div id="vignette-overlay"></div>
         </div>
         
-        <!-- PANNEAU CAMÉRA RAW (À DROITE) -->
         <div id="panel">
-            <div class="panel-header" id="panelHeader">
-                <h2>Caméra Raw</h2>
-                <button id="resetFiltersBtn" style="font-size:10px; padding:3px 6px;">Réinitialiser</button>
-            </div>
+            <div class="panel-header" id="panelHeader"><h2>Caméra Raw</h2></div>
             <div class="local-tools">
                 <button title="Cadrage et redressement">◩</button>
                 <button title="Suppression">🩹</button>
@@ -877,39 +861,22 @@
         let isPaintingMask = false;
         let lastMaskPos = null;
         let draggedLayerId = null;
+        
         let savedSignatureConfig = null;
-
-        const rawControlIds = [
-            't_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat',
-            'c_hl', 'c_light', 'c_dark', 'c_shad',
-            'm_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag',
-            'cg_hue', 'cg_sat', 'cg_lum', 'cg_blend', 'cg_bal',
-            'd_gain', 'd_rad', 'd_det', 'd_mask', 'd_nlum', 'd_ncol',
-            'b_int', 'o_dist', 'o_vig', 'g_vert', 'g_horiz', 'g_rot',
-            'e_viggain', 'e_vigmid', 'e_grngain', 'e_grnsize',
-            'cal_shad', 'cal_rh', 'cal_rs', 'cal_gh', 'cal_gs', 'cal_bh', 'cal_bs'
-        ];
-
-        function getDefaultSettings() {
-            const defaults = {};
-            rawControlIds.forEach(id => {
-                const el = document.getElementById(id);
-                defaults[id] = el ? parseFloat(el.value) || 0 : 0;
-            });
-            return defaults;
-        }
 
         const btnMove = document.getElementById('toolMove');
         const btnFreeTrans = document.getElementById('toolFreeTransform');
         const btnMaskBrush = document.getElementById('toolMaskBrush');
         const btnText = document.getElementById('toolText');
 
-        btnMove.addEventListener('click', () => setTool('move'));
-        btnFreeTrans.addEventListener('click', () => setTool('transform'));
+        btnMove.addEventListener('click', () => { setTool('move'); });
+        btnFreeTrans.addEventListener('click', () => { setTool('transform'); });
         btnMaskBrush.addEventListener('click', () => { 
             setTool('maskBrush'); 
             const active = getActiveLayer();
-            if (active && !active.hasMask) addLayerMask(active.id);
+            if (active && !active.hasMask) {
+                addLayerMask(active.id);
+            }
         });
         btnText.addEventListener('click', () => { 
             setTool('text'); 
@@ -923,8 +890,12 @@
             if ('queryLocalFonts' in window) {
                 try {
                     const availableFonts = await window.queryLocalFonts();
-                    for (const font of availableFonts) fontSet.add(font.family);
-                } catch (err) {}
+                    for (const font of availableFonts) {
+                        fontSet.add(font.family);
+                    }
+                } catch (err) {
+                    console.log("Accès aux polices locales restreint, utilisation des polices standards.");
+                }
             }
 
             optGroup.innerHTML = '';
@@ -947,8 +918,9 @@
             maskBrushBox.style.display = (tool === 'maskBrush') ? 'block' : 'none';
             textOptionsBox.style.display = (tool === 'text') ? 'block' : 'none';
 
-            if (tool === 'maskBrush') document.body.classList.add('tool-brush');
-            else {
+            if (tool === 'maskBrush') {
+                document.body.classList.add('tool-brush');
+            } else {
                 document.body.classList.remove('tool-brush');
                 brushCursor.style.display = 'none';
             }
@@ -959,7 +931,9 @@
         function removeAllSignatureAndTextLayers() {
             const signatureLayers = layers.filter(l => l.isText || l.isLogo);
             signatureLayers.forEach(l => {
-                if (l.img && l.img.parentNode) l.img.remove();
+                if (l.img && l.img.parentNode) {
+                    l.img.remove();
+                }
             });
             layers = layers.filter(l => !l.isText && !l.isLogo);
             updateZIndices();
@@ -1029,9 +1003,11 @@
 
             const baseRect = baseLayer.img.getBoundingClientRect();
             const activeRect = active.img.getBoundingClientRect();
+
             const margin = 20;
 
-            let deltaX = 0, deltaY = 0;
+            let deltaX = 0;
+            let deltaY = 0;
 
             if (corner === 'bottom-right') {
                 deltaX = (baseRect.right - margin) - activeRect.right;
@@ -1040,7 +1016,9 @@
                 deltaX = (baseRect.left + margin) - activeRect.left;
                 deltaY = (baseRect.bottom - margin) - activeRect.bottom;
             } else if (corner === 'bottom-center') {
-                deltaX = (baseRect.left + (baseRect.width / 2)) - (activeRect.left + (activeRect.width / 2));
+                const baseCenterX = baseRect.left + (baseRect.width / 2);
+                const activeCenterX = activeRect.left + (activeRect.width / 2);
+                deltaX = baseCenterX - activeCenterX;
                 deltaY = (baseRect.bottom - margin) - activeRect.bottom;
             } else if (corner === 'top-right') {
                 deltaX = (baseRect.right - margin) - activeRect.right;
@@ -1091,23 +1069,118 @@
         });
         document.getElementById('textColorPicker').addEventListener('input', handleTextParamChange);
 
+        function updateBrushCursorDimensions() {
+            const active = getActiveLayer();
+            if (!active) return;
+
+            const rect = active.img.getBoundingClientRect();
+            const scaleX = rect.width / (active.img.width || 800);
+
+            const size = parseFloat(document.getElementById('brushSize').value);
+            const hardness = parseFloat(document.getElementById('brushHardness').value) / 100;
+
+            const displayOuterSize = size * scaleX;
+            const displayInnerSize = displayOuterSize * hardness;
+
+            brushCursor.style.width = displayOuterSize + 'px';
+            brushCursor.style.height = displayOuterSize + 'px';
+
+            brushInnerCircle.style.width = displayInnerSize + 'px';
+            brushInnerCircle.style.height = displayInnerSize + 'px';
+        }
+
+        imageContainer.addEventListener('mousemove', (e) => {
+            if (currentTool === 'maskBrush') {
+                brushCursor.style.display = 'block';
+                brushCursor.style.left = e.clientX + 'px';
+                brushCursor.style.top = e.clientY + 'px';
+                updateBrushCursorDimensions();
+            } else {
+                brushCursor.style.display = 'none';
+            }
+        });
+
+        imageContainer.addEventListener('mouseleave', () => {
+            brushCursor.style.display = 'none';
+        });
+
+        document.getElementById('brushSize').addEventListener('input', (e) => {
+            document.getElementById('val_brushSize').innerText = e.target.value + 'px';
+            updateBrushCursorDimensions();
+        });
+
+        document.getElementById('brushOpacity').addEventListener('input', (e) => {
+            document.getElementById('val_brushOpacity').innerText = e.target.value + '%';
+        });
+
+        document.getElementById('brushHardness').addEventListener('input', (e) => {
+            document.getElementById('val_brushHardness').innerText = e.target.value + '%';
+            updateBrushCursorDimensions();
+        });
+
+        document.getElementById('invertMaskBtn').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if (active && active.hasMask) {
+                invertLayerMask(active.id);
+            }
+        });
+
+        document.getElementById('deleteMaskBtn').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if (active && active.hasMask) {
+                deleteLayerMask(active.id);
+            }
+        });
+
+        function updateBoundingBoxVisibility() {
+            const active = getActiveLayer();
+            if (currentTool === 'transform' && active && active.visible && !active.locked) {
+                boundingBox.style.display = 'block';
+                updateBoundingBoxPosition();
+            } else {
+                boundingBox.style.display = 'none';
+            }
+        }
+
+        function updateBoundingBoxPosition() {
+            const active = getActiveLayer();
+            if (!active || !active.visible || active.locked) return;
+            const rect = active.img.getBoundingClientRect();
+            const containerRect = imageContainer.getBoundingClientRect();
+
+            boundingBox.style.left = (rect.left - containerRect.left) + 'px';
+            boundingBox.style.top = (rect.top - containerRect.top) + 'px';
+            boundingBox.style.width = rect.width + 'px';
+            boundingBox.style.height = rect.height + 'px';
+        }
+
+        const v = (id) => {
+            const el = document.getElementById(id);
+            return el ? (parseFloat(el.value) || 0) : 0;
+        };
+
         function createTextLayer(text = "Graphis Studio", fontFamily = "Dancing Script", style = "normal", size = 54, color = "#FFD700") {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
+            
             const fontSpec = `${style === 'normal' ? '' : style} ${size}px "${fontFamily}", cursive`;
             ctx.font = fontSpec;
             
             const metrics = ctx.measureText(text);
-            canvas.width = Math.ceil(metrics.width) + 30;
-            canvas.height = Math.ceil(size * 1.5);
+            const textWidth = Math.ceil(metrics.width) + 30;
+            const textHeight = Math.ceil(size * 1.5);
 
+            canvas.width = textWidth;
+            canvas.height = textHeight;
+            
             ctx.font = fontSpec;
             ctx.fillStyle = color;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
-            createLayer(canvas.toDataURL(), `Signature: "${text}"`, {
+            const dataUrl = canvas.toDataURL();
+            createLayer(dataUrl, `Signature: "${text}"`, {
                 isText: true,
                 textConfig: { text, fontFamily, style, size, color }
             });
@@ -1117,12 +1190,16 @@
             const canvas = layer.img;
             const ctx = canvas.getContext('2d');
             const cfg = layer.textConfig;
-            const fontSpec = `${cfg.style === 'normal' ? '' : cfg.style} ${cfg.size}px "${cfg.fontFamily}", cursive`;
             
+            const fontSpec = `${cfg.style === 'normal' ? '' : cfg.style} ${cfg.size}px "${cfg.fontFamily}", cursive`;
             ctx.font = fontSpec;
+            
             const metrics = ctx.measureText(cfg.text);
-            canvas.width = Math.ceil(metrics.width) + 30;
-            canvas.height = Math.ceil(cfg.size * 1.5);
+            const textWidth = Math.ceil(metrics.width) + 30;
+            const textHeight = Math.ceil(cfg.size * 1.5);
+
+            canvas.width = textWidth;
+            canvas.height = textHeight;
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.font = fontSpec;
@@ -1135,9 +1212,9 @@
             renderLayerComposite(layer);
         }
 
-        // CRÉATION ET CONFIGURATION D'UN CALQUE (SMART OBJECT DYNAMIQUE NATIVE)
         function createLayer(imgSrc, name = "Calque", initialData = null) {
             const id = 'layer_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+            
             const canvasLayer = document.createElement('canvas');
             canvasLayer.className = 'canvas-layer';
             
@@ -1148,31 +1225,27 @@
                 id, name, 
                 img: canvasLayer,
                 rawImg: rawImg,
-                isSmartObject: true,
-                x: initialData?.x ?? 0,
-                y: initialData?.y ?? 0,
-                scale: initialData?.scale ?? 1,
-                rotation: initialData?.rotation ?? 0,
-                skewX: initialData?.skewX ?? 0,
-                skewY: initialData?.skewY ?? 0,
-                perspX: initialData?.perspX ?? 0,
-                perspY: initialData?.perspY ?? 0,
-                flipX: initialData?.flipX ?? 1,
-                flipY: initialData?.flipY ?? 1,
-                opacity: initialData?.opacity ?? 100,
-                blendMode: initialData?.blendMode ?? 'normal',
-                visible: initialData?.visible ?? true,
-                locked: initialData?.locked ?? false,
-                isText: !!initialData?.isText,
-                isLogo: !!initialData?.isLogo,
-                textConfig: initialData?.textConfig ?? null,
+                x: initialData && initialData.x !== undefined ? initialData.x : 0,
+                y: initialData && initialData.y !== undefined ? initialData.y : 0,
+                scale: initialData && initialData.scale !== undefined ? initialData.scale : 1,
+                rotation: initialData && initialData.rotation !== undefined ? initialData.rotation : 0,
+                skewX: initialData && initialData.skewX !== undefined ? initialData.skewX : 0,
+                skewY: initialData && initialData.skewY !== undefined ? initialData.skewY : 0,
+                perspX: initialData && initialData.perspX !== undefined ? initialData.perspX : 0,
+                perspY: initialData && initialData.perspY !== undefined ? initialData.perspY : 0,
+                flipX: initialData && initialData.flipX !== undefined ? initialData.flipX : 1,
+                flipY: initialData && initialData.flipY !== undefined ? initialData.flipY : 1,
+                opacity: initialData && initialData.opacity !== undefined ? initialData.opacity : 100,
+                blendMode: initialData && initialData.blendMode !== undefined ? initialData.blendMode : 'normal',
+                visible: initialData && initialData.visible !== undefined ? initialData.visible : true,
+                locked: initialData && initialData.locked !== undefined ? initialData.locked : false,
+                isText: initialData && initialData.isText ? true : false,
+                isLogo: initialData && initialData.isLogo ? true : false,
+                textConfig: initialData && initialData.textConfig ? initialData.textConfig : null,
                 hasMask: false,
                 maskCanvas: null,
                 maskCtx: null,
-                maskDataUrl: null,
-                
-                // PARAMÈTRES DE RÉGLAGE INDÉPENDANTS ET NON DESTRUCTIFS DU CALQUE
-                settings: initialData?.settings ? JSON.parse(JSON.stringify(initialData.settings)) : getDefaultSettings()
+                maskDataUrl: null
             };
 
             rawImg.onload = () => {
@@ -1181,12 +1254,12 @@
                 renderLayerComposite(layerObj);
                 applyLayerTransform(layerObj);
                 updateLayersUI();
-                processImage();
             };
             
             rawImg.src = imgSrc;
 
             let isDraggingLayer = false, startX, startY;
+            
             canvasLayer.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -1197,7 +1270,9 @@
                     startX = e.clientX - layerObj.x;
                     startY = e.clientY - layerObj.y;
                 } else if (currentTool === 'maskBrush' && !layerObj.locked) {
-                    if (!layerObj.hasMask) addLayerMask(layerObj.id);
+                    if (!layerObj.hasMask) {
+                        addLayerMask(layerObj.id);
+                    }
                     isPaintingMask = true;
                     lastMaskPos = null;
                     paintMask(layerObj, e);
@@ -1245,6 +1320,7 @@
             handleLayerSelection(id);
             updateZIndices();
             updateLayersUI();
+            processImage();
         }
 
         function handleLayerSelection(id, event = null) {
@@ -1259,8 +1335,20 @@
                         selectedLayerIds = selectedLayerIds.filter(item => item !== id);
                         activeLayerId = selectedLayerIds[selectedLayerIds.length - 1];
                     }
-                } else selectedLayerIds.push(id);
+                } else {
+                    selectedLayerIds.push(id);
+                }
                 lastSelectedLayerId = id;
+            } else if (event.shiftKey && lastSelectedLayerId) {
+                const reversedLayers = layers.slice().reverse();
+                const idx1 = reversedLayers.findIndex(l => l.id === lastSelectedLayerId);
+                const idx2 = reversedLayers.findIndex(l => l.id === id);
+                
+                const start = Math.min(idx1, idx2);
+                const end = Math.max(idx1, idx2);
+                
+                selectedLayerIds = reversedLayers.slice(start, end + 1).map(l => l.id);
+                activeLayerId = id;
             } else {
                 activeLayerId = id;
                 selectedLayerIds = [id];
@@ -1269,49 +1357,8 @@
             
             updateLayersUI();
             syncTransformUI();
-            syncCameraRAWUI();
             updateBoundingBoxVisibility();
         }
-
-        // SYNCHRONISE LE PANNEAU CAMÉRA RAW AVEC LE CALQUE SÉLECTIONNÉ
-        function syncCameraRAWUI() {
-            const active = getActiveLayer();
-            if (!active) return;
-
-            rawControlIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el && active.settings[id] !== undefined) {
-                    el.value = active.settings[id];
-                    const label = el.previousElementSibling;
-                    if (label && label.querySelector('.value-display')) {
-                        label.querySelector('.value-display').innerText = el.step === '0.1' ? parseFloat(el.value).toFixed(1) : el.value;
-                    }
-                }
-            });
-        }
-
-        // CAPTURE DES PARAMÈTRES RAW DIRECTEMENT SUR LE CALQUE ACTIF
-        document.getElementById('controls').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if (!active || active.isText || active.isLogo) return;
-
-            if (e.target.type === 'range') {
-                active.settings[e.target.id] = parseFloat(e.target.value);
-                const label = e.target.previousElementSibling;
-                if (label && label.querySelector('.value-display')) {
-                    label.querySelector('.value-display').innerText = e.target.step === '0.1' ? parseFloat(e.target.value).toFixed(1) : e.target.value;
-                }
-                processImage();
-            }
-        });
-
-        document.getElementById('resetFiltersBtn').addEventListener('click', () => {
-            const active = getActiveLayer();
-            if (!active) return;
-            active.settings = getDefaultSettings();
-            syncCameraRAWUI();
-            processImage();
-        });
 
         function renderLayerComposite(layer) {
             if (!layer.rawImg.complete || layer.rawImg.naturalWidth === 0) return;
@@ -1338,21 +1385,23 @@
 
         function addLayerMask(id) {
             const layer = layers.find(l => l.id === id);
-            if (!layer || layer.hasMask) return;
+            if (!layer) return;
 
-            const canvas = document.createElement('canvas');
-            canvas.width = layer.img.width || 800;
-            canvas.height = layer.img.height || 600;
-            const ctx = canvas.getContext('2d');
-            
-            ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            if (!layer.hasMask) {
+                const canvas = document.createElement('canvas');
+                canvas.width = layer.img.width || 800;
+                canvas.height = layer.img.height || 600;
+                const ctx = canvas.getContext('2d');
+                
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            layer.hasMask = true;
-            layer.maskCanvas = canvas;
-            layer.maskCtx = ctx;
-            
-            updateMaskCSS(layer);
+                layer.hasMask = true;
+                layer.maskCanvas = canvas;
+                layer.maskCtx = ctx;
+                
+                updateMaskCSS(layer);
+            }
             updateLayersUI();
         }
 
@@ -1360,9 +1409,13 @@
             const layer = layers.find(l => l.id === id);
             if (!layer || !layer.hasMask) return;
 
-            const imgData = layer.maskCtx.getImageData(0, 0, layer.maskCanvas.width, layer.maskCanvas.height);
-            for (let i = 0; i < imgData.data.length; i += 4) {
-                imgData.data[i + 3] = 255 - imgData.data[i + 3];
+            const width = layer.maskCanvas.width;
+            const height = layer.maskCanvas.height;
+            const imgData = layer.maskCtx.getImageData(0, 0, width, height);
+            const data = imgData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                data[i + 3] = 255 - data[i + 3];
             }
 
             layer.maskCtx.putImageData(imgData, 0, 0);
@@ -1379,7 +1432,9 @@
             layer.maskDataUrl = null;
 
             renderLayerComposite(layer);
-            if (currentTool === 'maskBrush') setTool('move');
+            if (currentTool === 'maskBrush') {
+                setTool('move');
+            }
             updateLayersUI();
         }
 
@@ -1387,32 +1442,97 @@
             if (!layer.hasMask) return;
             const rect = layer.img.getBoundingClientRect();
 
-            const currX = (e.clientX - rect.left) * (layer.maskCanvas.width / rect.width);
-            const currY = (e.clientY - rect.top) * (layer.maskCanvas.height / rect.height);
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const ratioX = layer.maskCanvas.width / rect.width;
+            const ratioY = layer.maskCanvas.height / rect.height;
+
+            const currX = mouseX * ratioX;
+            const currY = mouseY * ratioY;
 
             const sizeSetting = parseFloat(document.getElementById('brushSize').value);
             const opacitySetting = parseFloat(document.getElementById('brushOpacity').value) / 100;
+            const hardnessSetting = parseFloat(document.getElementById('brushHardness').value) / 100;
             const isBlack = document.getElementById('brushColorSelect').value === 'black';
 
-            const radius = (sizeSetting / 2) * (layer.maskCanvas.width / rect.width);
+            const radius = (sizeSetting / 2) * ratioX;
+            const innerRadius = radius * Math.pow(hardnessSetting, 2);
 
-            layer.maskCtx.save();
-            layer.maskCtx.globalCompositeOperation = isBlack ? 'destination-out' : 'source-over';
-            layer.maskCtx.fillStyle = isBlack ? `rgba(0,0,0,${opacitySetting})` : `rgba(255,255,255,${opacitySetting})`;
-            layer.maskCtx.beginPath();
-            layer.maskCtx.arc(currX, currY, radius, 0, Math.PI * 2);
-            layer.maskCtx.fill();
-            layer.maskCtx.restore();
+            const drawBrushSpot = (x, y) => {
+                layer.maskCtx.save();
+                
+                if (isBlack) {
+                    layer.maskCtx.globalCompositeOperation = 'destination-out';
+                    
+                    if (hardnessSetting >= 0.99) {
+                        layer.maskCtx.fillStyle = `rgba(0,0,0,${opacitySetting})`;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    } else {
+                        const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
+                        grad.addColorStop(0, `rgba(0, 0, 0, ${opacitySetting})`);
+                        grad.addColorStop(0.5, `rgba(0, 0, 0, ${opacitySetting * (0.4 + 0.6 * hardnessSetting)})`);
+                        grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
+                        layer.maskCtx.fillStyle = grad;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    }
+                } else {
+                    layer.maskCtx.globalCompositeOperation = 'source-over';
+                    
+                    if (hardnessSetting >= 0.99) {
+                        layer.maskCtx.fillStyle = `rgba(255, 255, 255, ${opacitySetting})`;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    } else {
+                        const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
+                        grad.addColorStop(0, `rgba(255, 255, 255, ${opacitySetting})`);
+                        grad.addColorStop(0.5, `rgba(255, 255, 255, ${opacitySetting * (0.4 + 0.6 * hardnessSetting)})`);
+                        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+                        layer.maskCtx.fillStyle = grad;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    }
+                }
+
+                layer.maskCtx.restore();
+            };
+
+            if (!lastMaskPos) {
+                drawBrushSpot(currX, currY);
+            } else {
+                const dx = currX - lastMaskPos.x;
+                const dy = currY - lastMaskPos.y;
+                const dist = Math.hypot(dx, dy);
+                const step = Math.max(0.5, radius * 0.05);
+
+                for (let i = 0; i < dist; i += step) {
+                    const interX = lastMaskPos.x + (dx * (i / dist));
+                    const interY = lastMaskPos.y + (dy * (i / dist));
+                    drawBrushSpot(interX, interY);
+                }
+                drawBrushSpot(currX, currY);
+            }
+
+            lastMaskPos = { x: currX, y: currY };
             updateMaskCSS(layer);
         }
 
         function updateMaskCSS(layer) {
             if (!layer.hasMask) return;
             renderLayerComposite(layer);
-            layer.maskDataUrl = layer.maskCanvas.toDataURL();
+            const url = layer.maskCanvas.toDataURL();
+            layer.maskDataUrl = url;
+            
             const maskThumb = document.getElementById(`mask_thumb_${layer.id}`);
-            if (maskThumb) maskThumb.src = layer.maskDataUrl;
+            if (maskThumb) maskThumb.src = url;
         }
 
         function toggleLayerVisibility(id) {
@@ -1447,19 +1567,80 @@
             if (!source) return;
             
             const sourceIdx = layers.findIndex(l => l.id === id);
-            createLayer(source.rawImg.src, `${source.name} (copie)`, {
-                ...source,
+            const duplicateData = {
                 x: source.x + 20,
                 y: source.y + 20,
-                settings: JSON.parse(JSON.stringify(source.settings)),
+                scale: source.scale,
+                rotation: source.rotation,
+                skewX: source.skewX,
+                skewY: source.skewY,
+                perspX: source.perspX,
+                perspY: source.perspY,
+                flipX: source.flipX,
+                flipY: source.flipY,
+                opacity: source.opacity,
+                blendMode: source.blendMode,
+                visible: source.visible,
+                locked: false,
+                isText: source.isText,
+                isLogo: source.isLogo,
+                textConfig: source.textConfig ? JSON.parse(JSON.stringify(source.textConfig)) : null,
                 insertIndex: sourceIdx + 1
-            });
+            };
+
+            createLayer(source.rawImg.src, `${source.name} (copie)`, duplicateData);
         }
 
-        function getActiveLayer() { return layers.find(l => l.id === activeLayerId); }
+        let isTransforming = false;
+        let transformType = null;
+        let startMouseX, initialScale, initialRotation;
+
+        document.querySelectorAll('.t-handle').forEach(handle => {
+            handle.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const active = getActiveLayer();
+                if (!active || !active.visible || active.locked) return;
+                isTransforming = true;
+                startMouseX = e.clientX;
+                initialScale = active.scale;
+                initialRotation = active.rotation;
+                transformType = handle.id === 'h_rot' ? 'rotate' : 'scale';
+            });
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isTransforming) return;
+            const active = getActiveLayer();
+            if (!active || !active.visible || active.locked) return;
+
+            if (transformType === 'scale') {
+                let dx = e.clientX - startMouseX;
+                let newScale = Math.max(0.1, initialScale + (dx * 0.005));
+                active.scale = newScale;
+                const scaleVal = Math.round(active.scale * 100);
+                document.getElementById('tr_scale').value = scaleVal;
+                document.getElementById('num_scale').value = scaleVal;
+            } else if (transformType === 'rotate') {
+                let dx = e.clientX - startMouseX;
+                active.rotation = Math.round((initialRotation + dx * 0.5) % 360);
+                document.getElementById('tr_rot').value = active.rotation;
+                document.getElementById('num_rot').value = active.rotation;
+            }
+            applyLayerTransform(active);
+            updateBoundingBoxPosition();
+        });
+
+        document.addEventListener('mouseup', () => { isTransforming = false; });
+
+        function getActiveLayer() {
+            return layers.find(l => l.id === activeLayerId);
+        }
 
         function updateZIndices() {
-            layers.forEach((l, index) => { l.img.style.zIndex = index + 1; });
+            layers.forEach((l, index) => {
+                l.img.style.zIndex = index + 1;
+            });
         }
 
         function applyLayerTransform(layer) {
@@ -1474,62 +1655,208 @@
         function syncTransformUI() {
             const active = getActiveLayer();
             if(!active) return;
+            const scaleVal = Math.round(active.scale * 100);
+            document.getElementById('tr_scale').value = scaleVal;
+            document.getElementById('num_scale').value = scaleVal;
+            
+            document.getElementById('tr_rot').value = active.rotation;
+            document.getElementById('num_rot').value = active.rotation;
 
-            const fields = [
-                { range: 'tr_scale', num: 'num_scale', val: Math.round(active.scale * 100) },
-                { range: 'tr_rot', num: 'num_rot', val: active.rotation },
-                { range: 'tr_skewX', num: 'num_skewX', val: active.skewX },
-                { range: 'tr_skewY', num: 'num_skewY', val: active.skewY },
-                { range: 'tr_perspX', num: 'num_perspX', val: active.perspX },
-                { range: 'tr_perspY', num: 'num_perspY', val: active.perspY }
-            ];
+            document.getElementById('tr_skewX').value = active.skewX;
+            document.getElementById('num_skewX').value = active.skewX;
 
-            fields.forEach(f => {
-                document.getElementById(f.range).value = f.val;
-                document.getElementById(f.num).value = f.val;
-            });
+            document.getElementById('tr_skewY').value = active.skewY;
+            document.getElementById('num_skewY').value = active.skewY;
 
+            document.getElementById('tr_perspX').value = active.perspX;
+            document.getElementById('num_perspX').value = active.perspX;
+
+            document.getElementById('tr_perspY').value = active.perspY;
+            document.getElementById('num_perspY').value = active.perspY;
+            
             document.getElementById('layerOpacity').value = active.opacity;
             document.getElementById('val_opacity').innerText = active.opacity + '%';
             document.getElementById('layerBlendMode').value = active.blendMode;
         }
+
+        document.getElementById('layerOpacity').addEventListener('input', (e) => {
+            selectedLayerIds.forEach(id => {
+                const layer = layers.find(l => l.id === id);
+                if (layer && !layer.locked) {
+                    layer.opacity = parseFloat(e.target.value);
+                    applyLayerTransform(layer);
+                }
+            });
+            document.getElementById('val_opacity').innerText = e.target.value + '%';
+        });
+
+        document.getElementById('layerBlendMode').addEventListener('change', (e) => {
+            selectedLayerIds.forEach(id => {
+                const layer = layers.find(l => l.id === id);
+                if (layer && !layer.locked) {
+                    layer.blendMode = e.target.value;
+                    applyLayerTransform(layer);
+                }
+            });
+        });
 
         function updateLayersUI() {
             layersContainer.innerHTML = '';
             layers.slice().reverse().forEach((layer) => {
                 const item = document.createElement('div');
                 const isSelected = selectedLayerIds.includes(layer.id);
+                
                 item.className = `layer-item ${isSelected ? 'active' : ''}`;
-                item.onclick = (e) => handleLayerSelection(layer.id, e);
+                item.setAttribute('draggable', 'true');
+                item.dataset.id = layer.id;
+                
+                item.onclick = (e) => {
+                    handleLayerSelection(layer.id, e);
+                };
 
+                item.ondragstart = (e) => {
+                    draggedLayerId = layer.id;
+                    item.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                };
+
+                item.ondragend = () => {
+                    item.classList.remove('dragging');
+                    document.querySelectorAll('.layer-item').forEach(el => el.classList.remove('drag-over'));
+                };
+
+                item.ondragover = (e) => {
+                    e.preventDefault();
+                    item.classList.add('drag-over');
+                };
+
+                item.ondragleave = () => {
+                    item.classList.remove('drag-over');
+                };
+
+                item.ondrop = (e) => {
+                    e.preventDefault();
+                    item.classList.remove('drag-over');
+                    if (!draggedLayerId || draggedLayerId === layer.id) return;
+
+                    const fromIndex = layers.findIndex(l => l.id === draggedLayerId);
+                    const toIndex = layers.findIndex(l => l.id === layer.id);
+
+                    if (fromIndex !== -1 && toIndex !== -1) {
+                        const [movedLayer] = layers.splice(fromIndex, 1);
+                        layers.splice(toIndex, 0, movedLayer);
+                        updateZIndices();
+                        updateLayersUI();
+                    }
+                };
+                
                 let maskHTML = layer.hasMask 
-                    ? `<img id="mask_thumb_${layer.id}" class="layer-mask-thumbnail" src="${layer.maskDataUrl}" title="Masque">` 
+                    ? `<img id="mask_thumb_${layer.id}" class="layer-mask-thumbnail ${currentTool === 'maskBrush' ? 'active-target' : ''}" src="${layer.maskDataUrl}" title="Masque de fusion N&B" onclick="event.stopPropagation(); setTool('maskBrush');">`
                     : '';
 
                 item.innerHTML = `
                     <div class="layer-info">
-                        <button class="icon-btn ${layer.visible ? '' : 'hidden-eye'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
+                        <button class="icon-btn ${layer.visible ? '' : 'hidden-eye'}" title="${layer.visible ? 'Masquer' : 'Afficher'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
                             <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </button>
-                        <img class="layer-thumbnail" src="${layer.rawImg.src}">
+                        <img class="layer-thumbnail" src="${layer.rawImg.src}" alt="Vignette">
                         ${maskHTML}
                         <span class="layer-name" title="${layer.name}">${layer.name}</span>
-                        <span class="smart-badge">SMART</span>
                     </div>
                     <div class="layer-actions">
-                        <button class="icon-btn" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">
+                        <button class="icon-btn" title="Renommer" onclick="event.stopPropagation(); renameLayer('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                        </button>
+                        <button class="icon-btn" title="Dupliquer (Ctrl+J)" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         </button>
-                        <button class="icon-btn" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">
+                        <button class="icon-btn" title="Supprimer le calque (Suppr / Backspace)" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                        <button class="icon-btn ${layer.locked ? 'locked-btn' : ''}" title="${layer.locked ? 'Déverrouiller' : 'Verrouiller'}" onclick="event.stopPropagation(); toggleLayerLock('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </button>
                     </div>
                 `;
+                
+                const thumbImg = item.querySelector('.layer-thumbnail');
+                thumbImg.addEventListener('mouseenter', (e) => {
+                    previewPopover.src = layer.rawImg.src;
+                    previewPopover.style.display = 'block';
+                    positionPopover(e);
+                });
+                thumbImg.addEventListener('mousemove', (e) => { positionPopover(e); });
+                thumbImg.addEventListener('mouseleave', () => { previewPopover.style.display = 'none'; });
+
                 layersContainer.appendChild(item);
             });
         }
 
-        // SYNCHRONISATION DES INPUTS GEOMETRIE ET CASE NUMÉRIQUE
+        document.addEventListener('keydown', (e) => {
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                e.preventDefault();
+                deleteSelectedLayers();
+            }
+
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'j' || e.key === 'J')) {
+                e.preventDefault();
+                if (activeLayerId) {
+                    duplicateLayer(activeLayerId);
+                }
+            }
+
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'i' || e.key === 'I')) {
+                e.preventDefault();
+                const active = getActiveLayer();
+                if (active && active.hasMask) {
+                    invertLayerMask(active.id);
+                }
+            }
+        });
+
+        function deleteSelectedLayers() {
+            if (layers.length <= selectedLayerIds.length) {
+                alert("Impossible de supprimer tous les calques. Conservez au moins un calque.");
+                return;
+            }
+
+            const idsToDelete = [...selectedLayerIds];
+            idsToDelete.forEach(id => {
+                const layer = layers.find(l => l.id === id);
+                if (layer && !layer.locked) {
+                    layer.img.remove();
+                    layers = layers.filter(l => l.id !== id);
+                }
+            });
+
+            selectedLayerIds = [];
+            if (layers.length > 0) {
+                handleLayerSelection(layers[layers.length - 1].id);
+            }
+            updateZIndices();
+            processImage();
+        }
+
+        function positionPopover(e) {
+            const offset = 15;
+            let left = e.clientX + offset;
+            let top = e.clientY + offset;
+            if (left + 180 > window.innerWidth) left = e.clientX - 180 - offset;
+            if (top + 180 > window.innerHeight) top = e.clientY - 180 - offset;
+            previewPopover.style.left = `${left}px`;
+            previewPopover.style.top = `${top}px`;
+        }
+
+        window.deleteLayer = function(id) {
+            if (!selectedLayerIds.includes(id)) {
+                selectedLayerIds = [id];
+            }
+            deleteSelectedLayers();
+        };
+
+        // GESTION ET SYNCHRONISATION DES INPUTS GEOMETRIE
         function setupTransformFieldSync(rangeId, numId, layerProp, isScale = false) {
             const rangeEl = document.getElementById(rangeId);
             const numEl = document.getElementById(numId);
@@ -1537,11 +1864,18 @@
             const updateValue = (val) => {
                 const active = getActiveLayer();
                 if (!active || active.locked) return;
-                let numVal = parseFloat(val) || 0;
+                
+                let numVal = parseFloat(val);
+                if (isNaN(numVal)) numVal = 0;
 
                 rangeEl.value = numVal;
                 numEl.value = numVal;
-                active[layerProp] = isScale ? numVal / 100 : numVal;
+
+                if (isScale) {
+                    active[layerProp] = numVal / 100;
+                } else {
+                    active[layerProp] = numVal;
+                }
                 applyLayerTransform(active);
             };
 
@@ -1562,30 +1896,74 @@
             rangeEl.dispatchEvent(new Event('input'));
         };
 
-        // RENDU VISUEL DYNAMIQUE DE TOUS LES CALQUES
-        function processImage() {
-            layers.forEach((layer) => {
-                if (layer.isText || layer.isLogo) {
-                    applyLayerTransform(layer);
-                    return;
-                }
+        document.getElementById('tr_flipH').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if(!active || active.locked) return;
+            active.flipX *= -1;
+            applyLayerTransform(active);
+        });
 
-                const s = layer.settings;
-                const exp = s.t_exp || 0, cont = s.t_cont || 0, sat = s.t_sat || 0, vib = s.t_vib || 0;
-                const blur = s.b_int || 0, noiseLum = s.d_nlum || 0, cgHue = s.cg_hue || 0, cgSat = s.cg_sat || 0, cgLum = s.cg_lum || 0;
+        document.getElementById('tr_flipV').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if(!active || active.locked) return;
+            active.flipY *= -1;
+            applyLayerTransform(active);
+        });
+
+        function processImage() {
+            try {
+                const exp = v('t_exp'), cont = v('t_cont'), sat = v('t_sat'), vib = v('t_vib');
+                const temp = v('t_temp'), tint = v('t_tint'), dehaze = v('t_dehaze'), clar = v('t_clar');
+                const hl = v('t_hl') + v('c_hl'), shad = v('t_shad') + v('c_shad');
+                const whites = v('t_white') + v('c_light'), blacks = v('t_black') + v('c_dark');
+                const blur = v('b_int'), noiseLum = v('d_nlum');
+                const cgHue = v('cg_hue'), cgSat = v('cg_sat'), cgLum = v('cg_lum');
+
+                let rR = 1 + (v('cal_rs')*0.01) + (v('m_red')*0.01) + (v('m_org')*0.005) + (v('m_mag')*0.005) + (temp * 0.005) + (v('cal_rh') * 0.002) - (v('cal_shad') * 0.005);
+                let gG = 1 + (v('cal_gs')*0.01) + (v('m_grn')*0.01) + (v('m_yel')*0.005) + (v('m_aqu')*0.005) - (tint * 0.005) - (v('cal_gh') * 0.002) + (v('cal_shad') * 0.005);
+                let bB = 1 + (v('cal_bs')*0.01) + (v('m_blu')*0.01) + (v('m_aqu')*0.005) + (v('m_vio')*0.005) - (temp * 0.005) - (v('cal_bh') * 0.002);
+                
+                document.getElementById('svg_color').setAttribute('values', `${rR} 0 0 0 0  0 ${gG} 0 0 0  0 0 ${bB} 0 0  0 0 0 1 0`);
+
+                let pB = Math.max(0, Math.min(1, 0 - (blacks * 0.002)));
+                let pS = Math.max(0, Math.min(1, 0.25 - (shad * 0.002)));
+                let pL = Math.max(0, Math.min(1, 0.75 + (whites * 0.002)));
+                let pW = Math.max(0, Math.min(1, 1 + (hl * 0.002)));
+                let curveStr = `${pB} ${pS} 0.5 ${pL} ${pW}`;
+                
+                document.getElementById('svg_r').setAttribute('tableValues', curveStr);
+                document.getElementById('svg_g').setAttribute('tableValues', curveStr);
+                document.getElementById('svg_b').setAttribute('tableValues', curveStr);
+
+                document.getElementById('svg_turb').setAttribute('baseFrequency', 0.5 + (v('e_grnsize') * 0.01));
+                document.getElementById('svg_noise').setAttribute('values', `1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 ${v('e_grngain') * 0.01} 0`);
 
                 let brightness = 100 + (exp * 20) + (cgLum * 0.2);
-                let contrast = 100 + cont;
+                let contrast = 100 + cont + (clar * 0.2) + (dehaze * 0.2) + (v('t_text') * 0.1);
                 let saturate = 100 + sat + (vib * 0.5) + (cgSat * 0.2);
                 let totalBlur = (blur * 0.1) + (noiseLum * 0.05);
 
-                layer.img.style.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg)`;
-                applyLayerTransform(layer);
-            });
+                let activeFilterString = 'none';
+                if (exp !== 0 || cont !== 0 || sat !== 0 || vib !== 0 || temp !== 0 || tint !== 0 || cgHue !== 0 || blur !== 0) {
+                    activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#rawEngine)`;
+                }
+
+                layers.forEach((layer) => {
+                    layer.img.style.filter = (layer.id === activeLayerId) ? activeFilterString : 'none';
+                    applyLayerTransform(layer);
+                });
+                
+                let vigTotal = Math.min(1, Math.abs((v('e_viggain') + v('o_vig')) * -0.01));
+                overlay.style.boxShadow = `inset 0 0 ${100 - v('e_vigmid')}vmin rgba(0,0,0,${vigTotal})`;
+
+            } catch (error) {
+                console.error("Erreur dans le rendu : ", error);
+            }
         }
 
         const layersBtn = document.getElementById('layersBtn');
         const layersPanel = document.getElementById('layersPanel');
+        
         layersBtn.addEventListener('click', () => {
             layersPanel.style.display = (layersPanel.style.display === 'none' || layersPanel.style.display === '') ? 'block' : 'none';
         });
@@ -1594,11 +1972,43 @@
         const layerFileInput = document.getElementById('layerFileInput');
         addLayerBtn.addEventListener('click', () => layerFileInput.click());
 
+        async function handleImageFile(file, callback) {
+            const fileName = file.name.toLowerCase();
+            const isRaw = fileName.match(/\.(cr2|cr3|nef|arw|dng|raw|orf|rw2)$/);
+
+            if (isRaw) {
+                try {
+                    const buffer = file.arrayBuffer();
+                    const view = new Uint8Array(await buffer);
+                    let start = -1, end = -1, maxLen = 0, bestStart = -1, bestEnd = -1;
+
+                    for (let i = 0; i < view.length - 1; i++) {
+                        if (view[i] === 0xFF && view[i+1] === 0xD8) start = i;
+                        if (view[i] === 0xFF && view[i+1] === 0xD9 && start !== -1) {
+                            end = i + 2;
+                            let len = end - start;
+                            if (len > maxLen) { maxLen = len; bestStart = start; bestEnd = end; }
+                        }
+                    }
+                    if (bestStart !== -1 && bestEnd !== -1) {
+                        const blob = new Blob([view.slice(bestStart, bestEnd)], { type: 'image/jpeg' });
+                        callback(URL.createObjectURL(blob), file.name);
+                    } else {
+                        alert("Aperçu RAW introuvable.");
+                    }
+                } catch (err) {
+                    alert("Erreur de lecture du fichier RAW.");
+                }
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => callback(e.target.result, file.name);
+                reader.readAsDataURL(file);
+            }
+        }
+
         layerFileInput.addEventListener('change', (e) => {
             if(e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (evt) => createLayer(evt.target.result, e.target.files[0].name);
-                reader.readAsDataURL(e.target.files[0]);
+                handleImageFile(e.target.files[0], (url, name) => { createLayer(url, name); });
             }
         });
 
@@ -1606,16 +2016,58 @@
         document.getElementById('importBtn').addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', (e) => {
             if(e.target.files[0]) {
-                const reader = new FileReader();
-                reader.onload = (evt) => {
-                    if (layers.length > 0) {
-                        layers[0].rawImg.src = evt.target.result;
-                        layers[0].name = e.target.files[0].name;
-                    } else createLayer(evt.target.result, e.target.files[0].name);
-                };
-                reader.readAsDataURL(e.target.files[0]);
+                handleImageFile(e.target.files[0], (url, name) => {
+                    if(layers.length > 0) {
+                        layers[0].rawImg.src = url;
+                        layers[0].name = name;
+                        layers[0].rawImg.onload = () => {
+                            layers[0].img.width = layers[0].rawImg.naturalWidth;
+                            layers[0].img.height = layers[0].rawImg.naturalHeight;
+                            renderLayerComposite(layers[0]);
+                            updateLayersUI();
+                            processImage();
+                        };
+                    } else {
+                        createLayer(url, name);
+                    }
+                });
             }
         });
+
+        document.getElementById('zoomInBtn').addEventListener('click', () => { currentScale += 0.25; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+        document.getElementById('zoomOutBtn').addEventListener('click', () => { currentScale = Math.max(0.2, currentScale - 0.25); processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+        document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+        document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+
+        document.getElementById('controls').addEventListener('input', (e) => {
+            if (e.target.type === 'range') {
+                const label = e.target.previousElementSibling;
+                if(label && label.querySelector('.value-display')) {
+                    label.querySelector('.value-display').innerText = e.target.step === '0.1' ? parseFloat(e.target.value).toFixed(1) : e.target.value;
+                }
+                processImage();
+            }
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            alert("Rendu en cours...");
+        });
+
+        const panel = document.getElementById('panel');
+        const header = document.getElementById('panelHeader');
+        let isDragging = false, startX, startY, initX, initY;
+
+        header.addEventListener('mousedown', (e) => {
+            isDragging = true; startX = e.clientX; startY = e.clientY;
+            initX = panel.offsetLeft; initY = panel.offsetTop;
+            header.style.cursor = 'grabbing';
+        });
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            panel.style.left = `${initX + (e.clientX - startX)}px`;
+            panel.style.top = `${initY + (e.clientY - startY)}px`;
+        });
+        document.addEventListener('mouseup', () => { isDragging = false; header.style.cursor = 'move'; });
 
         window.onload = () => {
             createLayer("https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80", "Arrière-plan principal");
