@@ -126,13 +126,9 @@
         display: none;
         border: 1px dashed var(--accent-color);
         background: transparent !important;
-        background-color: transparent !important;
         pointer-events: none;
         z-index: 1000;
         box-sizing: border-box;
-        filter: none !important;
-        box-shadow: none !important;
-        outline: none !important;
     }
     .t-handle {
         position: absolute;
@@ -222,9 +218,6 @@
     .layer-mask-thumbnail {
         border-color: #fff;
         background: #fff;
-    }
-    .layer-mask-thumbnail.active-target {
-        border: 2px solid var(--accent-color);
     }
 
     #thumbnail-preview-popover {
@@ -1176,6 +1169,52 @@
             boundingBox.style.height = rect.height + 'px';
         }
 
+        /* MANIPULATION INTERACTIVE DE LA TRANSFORMATION PAR POIGNÉES */
+        let isTransforming = false;
+        let transformType = null;
+        let startMouseX, startMouseY, initialScale, initialRotation;
+
+        document.querySelectorAll('.t-handle').forEach(handle => {
+            handle.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const active = getActiveLayer();
+                if (!active || !active.visible || active.locked) return;
+
+                isTransforming = true;
+                startMouseX = e.clientX;
+                startMouseY = e.clientY;
+                initialScale = active.scale;
+                initialRotation = active.rotation;
+                transformType = handle.id === 'h_rot' ? 'rotate' : 'scale';
+            });
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isTransforming) return;
+            const active = getActiveLayer();
+            if (!active || !active.visible || active.locked) return;
+
+            if (transformType === 'scale') {
+                let dx = e.clientX - startMouseX;
+                let newScale = Math.max(0.1, initialScale + (dx * 0.005));
+                active.scale = newScale;
+                const scaleVal = Math.round(active.scale * 100);
+                document.getElementById('tr_scale').value = scaleVal;
+                document.getElementById('num_scale').value = scaleVal;
+            } else if (transformType === 'rotate') {
+                let dx = e.clientX - startMouseX;
+                active.rotation = Math.round((initialRotation + dx * 0.5) % 360);
+                document.getElementById('tr_rot').value = active.rotation;
+                document.getElementById('num_rot').value = active.rotation;
+            }
+            applyLayerTransform(active);
+        });
+
+        document.addEventListener('mouseup', () => { 
+            isTransforming = false; 
+        });
+
         function createTextLayer(text = "Graphis Studio", fontFamily = "Dancing Script", style = "normal", size = 54, color = "#FFD700") {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -1464,27 +1503,89 @@
             updateLayersUI();
         }
 
+        /* GESTION DU TRACÉ DU MASQUE AVEC DURETÉ DU PINCEAU RESTITUÉE */
         function paintMask(layer, e) {
             if (!layer.hasMask) return;
             const rect = layer.img.getBoundingClientRect();
 
-            const currX = (e.clientX - rect.left) * (layer.maskCanvas.width / rect.width);
-            const currY = (e.clientY - rect.top) * (layer.maskCanvas.height / rect.height);
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const ratioX = layer.maskCanvas.width / rect.width;
+            const ratioY = layer.maskCanvas.height / rect.height;
+
+            const currX = mouseX * ratioX;
+            const currY = mouseY * ratioY;
 
             const sizeSetting = parseFloat(document.getElementById('brushSize').value);
             const opacitySetting = parseFloat(document.getElementById('brushOpacity').value) / 100;
+            const hardnessSetting = parseFloat(document.getElementById('brushHardness').value) / 100;
             const isBlack = document.getElementById('brushColorSelect').value === 'black';
 
-            const radius = (sizeSetting / 2) * (layer.maskCanvas.width / rect.width);
+            const radius = (sizeSetting / 2) * ratioX;
+            const innerRadius = radius * hardnessSetting;
 
-            layer.maskCtx.save();
-            layer.maskCtx.globalCompositeOperation = isBlack ? 'destination-out' : 'source-over';
-            layer.maskCtx.fillStyle = isBlack ? `rgba(0,0,0,${opacitySetting})` : `rgba(255,255,255,${opacitySetting})`;
-            layer.maskCtx.beginPath();
-            layer.maskCtx.arc(currX, currY, radius, 0, Math.PI * 2);
-            layer.maskCtx.fill();
-            layer.maskCtx.restore();
+            const drawBrushSpot = (x, y) => {
+                layer.maskCtx.save();
+                
+                if (isBlack) {
+                    layer.maskCtx.globalCompositeOperation = 'destination-out';
+                    
+                    if (hardnessSetting >= 0.99) {
+                        layer.maskCtx.fillStyle = `rgba(0,0,0,${opacitySetting})`;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    } else {
+                        const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
+                        grad.addColorStop(0, `rgba(0, 0, 0, ${opacitySetting})`);
+                        grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
+                        layer.maskCtx.fillStyle = grad;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    }
+                } else {
+                    layer.maskCtx.globalCompositeOperation = 'source-over';
+                    
+                    if (hardnessSetting >= 0.99) {
+                        layer.maskCtx.fillStyle = `rgba(255, 255, 255, ${opacitySetting})`;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    } else {
+                        const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
+                        grad.addColorStop(0, `rgba(255, 255, 255, ${opacitySetting})`);
+                        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+                        layer.maskCtx.fillStyle = grad;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    }
+                }
+
+                layer.maskCtx.restore();
+            };
+
+            if (!lastMaskPos) {
+                drawBrushSpot(currX, currY);
+            } else {
+                const dx = currX - lastMaskPos.x;
+                const dy = currY - lastMaskPos.y;
+                const dist = Math.hypot(dx, dy);
+                const step = Math.max(0.5, radius * 0.05);
+
+                for (let i = 0; i < dist; i += step) {
+                    const interX = lastMaskPos.x + (dx * (i / dist));
+                    const interY = lastMaskPos.y + (dy * (i / dist));
+                    drawBrushSpot(interX, interY);
+                }
+                drawBrushSpot(currX, currY);
+            }
+
+            lastMaskPos = { x: currX, y: currY };
             updateMaskCSS(layer);
         }
 
@@ -1575,7 +1676,6 @@
             document.getElementById('layerBlendMode').value = active.blendMode;
         }
 
-        // AFFICHAGE DES CALQUES ET DE LEURS BOUTONS D'ACTION (AVEC VERROUILLAGE ET RENOMMAGE REINTEGRÉS)
         function updateLayersUI() {
             layersContainer.innerHTML = '';
             layers.slice().reverse().forEach((layer) => {
@@ -1647,7 +1747,6 @@
             deleteSelectedLayers();
         };
 
-        // SYNCHRONISATION DES INPUTS GEOMETRIE ET CASE NUMÉRIQUE
         function setupTransformFieldSync(rangeId, numId, layerProp, isScale = false) {
             const rangeEl = document.getElementById(rangeId);
             const numEl = document.getElementById(numId);
@@ -1680,7 +1779,6 @@
             rangeEl.dispatchEvent(new Event('input'));
         };
 
-        // RENDU VISUEL NON DESTRUCTIF BASÉ SUR L'ÉTAT SPÉCIFIQUE DU CALQUE
         function processImage() {
             layers.forEach((layer) => {
                 if (layer.isText || layer.isLogo) {
