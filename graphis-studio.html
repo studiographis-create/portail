@@ -94,7 +94,7 @@
         background: transparent !important;
         background-color: transparent !important;
         pointer-events: none;
-        z-index: 100;
+        z-index: 1000;
         box-sizing: border-box;
         filter: none !important;
         box-shadow: none !important;
@@ -114,7 +114,7 @@
     #h_br { bottom: -5px; right: -5px; cursor: nwse-resize; }
     #h_rot { top: -25px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; border-radius: 50%; background: var(--accent-color); cursor: grab; }
     
-    #vignette-overlay { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 99; transition: none; }
+    #vignette-overlay { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 999; transition: none; }
 
     /* Panneau des Calques & Outils */
     #layersPanel {
@@ -122,7 +122,7 @@
         position: absolute;
         top: 70px;
         left: 20px;
-        width: 310px;
+        width: 320px;
         max-height: 80vh;
         overflow-y: auto;
         background: var(--panel-bg);
@@ -147,7 +147,7 @@
     }
     .layer-item.active { border-color: var(--accent-color); background: #2a2a2a; }
     .layer-info { display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .layer-actions { display: flex; gap: 5px; }
+    .layer-actions { display: flex; gap: 4px; }
     .layer-actions button { padding: 2px 6px; font-size: 10px; }
 
     .tool-select-box {
@@ -575,6 +575,7 @@
             imageContainer.insertBefore(img, overlay);
             layers.push(layerObj);
             setActiveLayer(id);
+            updateZIndices();
             updateLayersUI();
             processImage();
         }
@@ -624,6 +625,12 @@
             return layers.find(l => l.id === activeLayerId);
         }
 
+        function updateZIndices() {
+            layers.forEach((l, index) => {
+                l.img.style.zIndex = index + 1;
+            });
+        }
+
         function applyLayerTransform(layer) {
             const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) skew(${layer.skewX}deg, ${layer.skewY}deg) rotateX(${layer.perspY}deg) rotateY(${layer.perspX}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
             layer.img.style.transform = transformStr;
@@ -634,9 +641,6 @@
 
         function setActiveLayer(id) {
             activeLayerId = id;
-            layers.forEach(l => {
-                l.img.style.zIndex = (l.id === id) ? 10 : 1;
-            });
             updateLayersUI();
             syncTransformUI();
             updateBoundingBoxVisibility();
@@ -658,13 +662,11 @@
             document.getElementById('tr_perspY').value = active.perspY;
             document.getElementById('val_perspY').innerText = active.perspY + '°';
             
-            // Sync opacité et mode de fusion
             document.getElementById('layerOpacity').value = active.opacity;
             document.getElementById('val_opacity').innerText = active.opacity + '%';
             document.getElementById('layerBlendMode').value = active.blendMode;
         }
 
-        // Écouteurs pour l'opacité et le mode de fusion
         document.getElementById('layerOpacity').addEventListener('input', (e) => {
             const active = getActiveLayer();
             if(!active) return;
@@ -680,8 +682,31 @@
             applyLayerTransform(active);
         });
 
+        function moveLayerUp(id) {
+            const idx = layers.findIndex(l => l.id === id);
+            if (idx < layers.length - 1) {
+                const temp = layers[idx];
+                layers[idx] = layers[idx + 1];
+                layers[idx + 1] = temp;
+                updateZIndices();
+                updateLayersUI();
+            }
+        }
+
+        function moveLayerDown(id) {
+            const idx = layers.findIndex(l => l.id === id);
+            if (idx > 0) {
+                const temp = layers[idx];
+                layers[idx] = layers[idx - 1];
+                layers[idx - 1] = temp;
+                updateZIndices();
+                updateLayersUI();
+            }
+        }
+
         function updateLayersUI() {
             layersContainer.innerHTML = '';
+            // Affichage dans le panneau : du calque du haut vers le bas
             layers.slice().reverse().forEach((layer) => {
                 const item = document.createElement('div');
                 item.className = `layer-item ${layer.id === activeLayerId ? 'active' : ''}`;
@@ -693,7 +718,9 @@
                         <span>${layer.name}</span>
                     </div>
                     <div class="layer-actions">
-                        <button onclick="event.stopPropagation(); deleteLayer('${layer.id}')">Suppr</button>
+                        <button title="Monter" onclick="event.stopPropagation(); moveLayerUp('${layer.id}')">▲</button>
+                        <button title="Descendre" onclick="event.stopPropagation(); moveLayerDown('${layer.id}')">▼</button>
+                        <button title="Supprimer" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">Suppr</button>
                     </div>
                 `;
                 layersContainer.appendChild(item);
@@ -709,6 +736,7 @@
             if(idx !== -1) {
                 layers[idx].img.remove();
                 layers.splice(idx, 1);
+                updateZIndices();
                 setActiveLayer(layers[layers.length - 1].id);
                 processImage();
             }
