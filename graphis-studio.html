@@ -148,30 +148,39 @@
     .layer-item.active { border-color: var(--accent-color); background: #2a2a2a; }
     .layer-info { display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     
-    .layer-eye-btn {
+    /* Style des Boutons d'Action Vectoriels */
+    .icon-btn {
         background: transparent;
         border: 1px solid var(--accent-color);
-        color: var(--accent-color);
-        padding: 2px 5px;
-        font-size: 11px;
         border-radius: 4px;
+        padding: 3px 5px;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        transition: all 0.2s;
     }
-    .layer-eye-btn:hover {
+    .icon-btn svg {
+        width: 12px;
+        height: 12px;
+        stroke: var(--accent-color);
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+    .icon-btn:hover {
         background: var(--accent-color);
-        color: var(--bg-color);
     }
-    .layer-eye-btn.hidden-layer {
-        opacity: 0.4;
-        border-color: #666;
-        color: #888;
+    .icon-btn:hover svg {
+        stroke: var(--bg-color);
+    }
+    .icon-btn.hidden-eye {
+        opacity: 0.35;
+        border-style: dashed;
     }
 
     .layer-actions { display: flex; gap: 4px; }
-    .layer-actions button { padding: 2px 6px; font-size: 10px; }
 
     .tool-select-box {
         display: flex;
@@ -625,6 +634,16 @@
             updateBoundingBoxVisibility();
         }
 
+        function renameLayer(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer) return;
+            const newName = prompt("Nouveau nom du calque :", layer.name);
+            if (newName && newName.trim() !== "") {
+                layer.name = newName.trim();
+                updateLayersUI();
+            }
+        }
+
         function duplicateLayer(id) {
             const source = layers.find(l => l.id === id);
             if (!source) return;
@@ -784,16 +803,27 @@
                 
                 item.innerHTML = `
                     <div class="layer-info">
-                        <button class="layer-eye-btn ${layer.visible ? '' : 'hidden-layer'}" title="${layer.visible ? 'Masquer' : 'Afficher'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
-                            ${layer.visible ? '👁' : '🙈'}
+                        <button class="icon-btn ${layer.visible ? '' : 'hidden-eye'}" title="${layer.visible ? 'Masquer' : 'Afficher'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </button>
                         <span>${layer.name}</span>
                     </div>
                     <div class="layer-actions">
-                        <button title="Dupliquer" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">⧉</button>
-                        <button title="Monter" onclick="event.stopPropagation(); moveLayerUp('${layer.id}')">▲</button>
-                        <button title="Descendre" onclick="event.stopPropagation(); moveLayerDown('${layer.id}')">▼</button>
-                        <button title="Supprimer" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">🗑</button>
+                        <button class="icon-btn" title="Renommer" onclick="event.stopPropagation(); renameLayer('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                        </button>
+                        <button class="icon-btn" title="Dupliquer" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
+                        <button class="icon-btn" title="Monter" onclick="event.stopPropagation(); moveLayerUp('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                        </button>
+                        <button class="icon-btn" title="Descendre" onclick="event.stopPropagation(); moveLayerDown('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </button>
+                        <button class="icon-btn" title="Supprimer" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
                     </div>
                 `;
                 layersContainer.appendChild(item);
