@@ -147,6 +147,29 @@
     }
     .layer-item.active { border-color: var(--accent-color); background: #2a2a2a; }
     .layer-info { display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    
+    .layer-eye-btn {
+        background: transparent;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 2px 5px;
+        font-size: 11px;
+        border-radius: 4px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .layer-eye-btn:hover {
+        background: var(--accent-color);
+        color: var(--bg-color);
+    }
+    .layer-eye-btn.hidden-layer {
+        opacity: 0.4;
+        border-color: #666;
+        color: #888;
+    }
+
     .layer-actions { display: flex; gap: 4px; }
     .layer-actions button { padding: 2px 6px; font-size: 10px; }
 
@@ -507,7 +530,8 @@
         });
 
         function updateBoundingBoxVisibility() {
-            if (currentTool === 'transform' && activeLayerId) {
+            const active = getActiveLayer();
+            if (currentTool === 'transform' && active && active.visible) {
                 boundingBox.style.display = 'block';
                 updateBoundingBoxPosition();
             } else {
@@ -517,7 +541,7 @@
 
         function updateBoundingBoxPosition() {
             const active = getActiveLayer();
-            if (!active) return;
+            if (!active || !active.visible) return;
             const rect = active.img.getBoundingClientRect();
             const containerRect = imageContainer.getBoundingClientRect();
 
@@ -552,7 +576,8 @@
                 flipX: initialData ? initialData.flipX : 1,
                 flipY: initialData ? initialData.flipY : 1,
                 opacity: initialData ? initialData.opacity : 100,
-                blendMode: initialData ? initialData.blendMode : 'normal'
+                blendMode: initialData ? initialData.blendMode : 'normal',
+                visible: initialData && initialData.visible !== undefined ? initialData.visible : true
             };
 
             let isDraggingLayer = false, startX, startY;
@@ -560,7 +585,7 @@
                 e.preventDefault();
                 e.stopPropagation();
                 setActiveLayer(id);
-                if (currentTool === 'move') {
+                if (currentTool === 'move' && layerObj.visible) {
                     isDraggingLayer = true;
                     startX = e.clientX - layerObj.x;
                     startY = e.clientY - layerObj.y;
@@ -568,7 +593,7 @@
             });
 
             document.addEventListener('mousemove', (e) => {
-                if (!isDraggingLayer || activeLayerId !== id || currentTool !== 'move') return;
+                if (!isDraggingLayer || activeLayerId !== id || currentTool !== 'move' || !layerObj.visible) return;
                 layerObj.x = e.clientX - startX;
                 layerObj.y = e.clientY - startY;
                 applyLayerTransform(layerObj);
@@ -591,6 +616,15 @@
             processImage();
         }
 
+        function toggleLayerVisibility(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer) return;
+            layer.visible = !layer.visible;
+            layer.img.style.display = layer.visible ? 'block' : 'none';
+            updateLayersUI();
+            updateBoundingBoxVisibility();
+        }
+
         function duplicateLayer(id) {
             const source = layers.find(l => l.id === id);
             if (!source) return;
@@ -609,6 +643,7 @@
                 flipY: source.flipY,
                 opacity: source.opacity,
                 blendMode: source.blendMode,
+                visible: source.visible,
                 insertIndex: sourceIdx + 1
             };
 
@@ -626,7 +661,7 @@
                 isTransforming = true;
                 startMouseX = e.clientX;
                 const active = getActiveLayer();
-                if (!active) return;
+                if (!active || !active.visible) return;
                 initialScale = active.scale;
                 initialRotation = active.rotation;
                 transformType = handle.id === 'h_rot' ? 'rotate' : 'scale';
@@ -636,7 +671,7 @@
         document.addEventListener('mousemove', (e) => {
             if (!isTransforming) return;
             const active = getActiveLayer();
-            if (!active) return;
+            if (!active || !active.visible) return;
 
             if (transformType === 'scale') {
                 let dx = e.clientX - startMouseX;
@@ -671,6 +706,7 @@
             layer.img.style.transform = transformStr;
             layer.img.style.opacity = layer.opacity / 100;
             layer.img.style.mixBlendMode = layer.blendMode;
+            layer.img.style.display = layer.visible ? 'block' : 'none';
             updateBoundingBoxPosition();
         }
 
@@ -748,7 +784,9 @@
                 
                 item.innerHTML = `
                     <div class="layer-info">
-                        <span class="layer-eye">👁</span>
+                        <button class="layer-eye-btn ${layer.visible ? '' : 'hidden-layer'}" title="${layer.visible ? 'Masquer' : 'Afficher'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
+                            ${layer.visible ? '👁' : '🙈'}
+                        </button>
                         <span>${layer.name}</span>
                     </div>
                     <div class="layer-actions">
