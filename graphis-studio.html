@@ -241,6 +241,19 @@
         font-size: 11px;
         border-radius: 3px;
         cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+    }
+    .tool-btn svg {
+        width: 13px;
+        height: 13px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.8;
+        stroke-linecap: round;
+        stroke-linejoin: round;
     }
     .tool-btn.active {
         background: var(--accent-color);
@@ -342,9 +355,18 @@
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Pile de Calques</h3>
             
             <div class="tool-select-box">
-                <button class="tool-btn active" id="toolMove">✛ Déplacement</button>
-                <button class="tool-btn" id="toolFreeTransform">⌖ Transform.</button>
-                <button class="tool-btn" id="toolMaskBrush">🖌 Pinceau Masque</button>
+                <button class="tool-btn active" id="toolMove">
+                    <svg viewBox="0 0 24 24"><polyline points="5 9 2 12 5 15"></polyline><polyline points="9 5 12 2 15 5"></polyline><polyline points="15 19 12 22 9 19"></polyline><polyline points="19 9 22 12 19 15"></polyline><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line></svg>
+                    Déplacement
+                </button>
+                <button class="tool-btn" id="toolFreeTransform">
+                    <svg viewBox="0 0 24 24"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
+                    Transform.
+                </button>
+                <button class="tool-btn" id="toolMaskBrush">
+                    <svg viewBox="0 0 24 24"><path d="M18 11l-1.5-1.5s-1.5 1.5-3 0 1.5-3 0-4.5-4.5 1.5-4.5 1.5L3 12.5V18h5.5L18 11z"></path><path d="M14 6l3 3"></path></svg>
+                    Pinceau
+                </button>
             </div>
 
             <!-- Réglages du Pinceau de Masque -->
@@ -646,13 +668,19 @@
 
         function createLayer(imgSrc, name = "Calque", initialData = null) {
             const id = 'layer_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
-            const img = document.createElement('img');
-            img.src = imgSrc;
-            img.className = 'canvas-layer';
-            img.crossOrigin = 'anonymous';
             
+            // On utilise Canvas HTML5 à la place de l'image seule pour la transparence dynamique
+            const canvasLayer = document.createElement('canvas');
+            canvasLayer.className = 'canvas-layer';
+            
+            const rawImg = new Image();
+            rawImg.crossOrigin = 'anonymous';
+            rawImg.src = imgSrc;
+
             const layerObj = {
-                id, name, img,
+                id, name, 
+                img: canvasLayer,
+                rawImg: rawImg,
                 x: initialData ? initialData.x : 0,
                 y: initialData ? initialData.y : 0,
                 scale: initialData ? initialData.scale : 1,
@@ -673,9 +701,15 @@
                 maskDataUrl: null
             };
 
+            rawImg.onload = () => {
+                canvasLayer.width = rawImg.naturalWidth || 800;
+                canvasLayer.height = rawImg.naturalHeight || 600;
+                renderLayerComposite(layerObj);
+            };
+
             let isDraggingLayer = false, startX, startY;
             
-            img.addEventListener('mousedown', (e) => {
+            canvasLayer.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 setActiveLayer(id);
@@ -708,7 +742,7 @@
                 isPaintingMask = false; 
             });
 
-            imageContainer.insertBefore(img, overlay);
+            imageContainer.insertBefore(canvasLayer, overlay);
             
             if (initialData && initialData.insertIndex !== undefined) {
                 layers.splice(initialData.insertIndex, 0, layerObj);
@@ -722,14 +756,39 @@
             processImage();
         }
 
+        function renderLayerComposite(layer) {
+            if (!layer.rawImg.complete || layer.rawImg.naturalWidth === 0) return;
+
+            const ctx = layer.img.getContext('2d');
+            const width = layer.img.width;
+            const height = layer.img.height;
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.drawImage(layer.rawImg, 0, 0, width, height);
+
+            // Traitement du masque de fusion avec le canal Alpha
+            if (layer.hasMask && layer.maskCanvas) {
+                const imgData = ctx.getImageData(0, 0, width, height);
+                const maskCtx = layer.maskCanvas.getContext('2d');
+                const maskData = maskCtx.getImageData(0, 0, width, height);
+
+                for (let i = 0; i < imgData.data.length; i += 4) {
+                    // Calcul de la luminance de la couleur du masque (Noir = 0 Alpha, Blanc = 255 Alpha)
+                    const maskLuminance = (maskData.data[i] + maskData.data[i + 1] + maskData.data[i + 2]) / 3;
+                    imgData.data[i + 3] = Math.round(imgData.data[i + 3] * (maskLuminance / 255));
+                }
+                ctx.putImageData(imgData, 0, 0);
+            }
+        }
+
         function addLayerMask(id) {
             const layer = layers.find(l => l.id === id);
             if (!layer) return;
 
             if (!layer.hasMask) {
                 const canvas = document.createElement('canvas');
-                canvas.width = layer.img.naturalWidth || 800;
-                canvas.height = layer.img.naturalHeight || 600;
+                canvas.width = layer.img.width || 800;
+                canvas.height = layer.img.height || 600;
                 const ctx = canvas.getContext('2d');
                 
                 ctx.fillStyle = '#FFFFFF';
@@ -771,12 +830,9 @@
 
         function updateMaskCSS(layer) {
             if (!layer.hasMask) return;
+            renderLayerComposite(layer);
             const url = layer.maskCanvas.toDataURL();
             layer.maskDataUrl = url;
-            layer.img.style.webkitMaskImage = `url(${url})`;
-            layer.img.style.maskImage = `url(${url})`;
-            layer.img.style.webkitMaskSize = '100% 100%';
-            layer.img.style.maskSize = '100% 100%';
             
             const maskThumb = document.getElementById(`mask_thumb_${layer.id}`);
             if (maskThumb) maskThumb.src = url;
@@ -832,7 +888,7 @@
                 insertIndex: sourceIdx + 1
             };
 
-            createLayer(source.img.src, `${source.name} (copie)`, duplicateData);
+            createLayer(source.rawImg.src, `${source.name} (copie)`, duplicateData);
         }
 
         let isTransforming = false;
@@ -976,7 +1032,7 @@
                         <button class="icon-btn ${layer.visible ? '' : 'hidden-eye'}" title="${layer.visible ? 'Masquer' : 'Afficher'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
                             <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </button>
-                        <img class="layer-thumbnail" src="${layer.img.src}" alt="Vignette">
+                        <img class="layer-thumbnail" src="${layer.rawImg.src}" alt="Vignette">
                         ${maskHTML}
                         <span class="layer-name" title="${layer.name}">${layer.name}</span>
                     </div>
@@ -1007,7 +1063,7 @@
                 
                 const thumbImg = item.querySelector('.layer-thumbnail');
                 thumbImg.addEventListener('mouseenter', (e) => {
-                    previewPopover.src = layer.img.src;
+                    previewPopover.src = layer.rawImg.src;
                     previewPopover.style.display = 'block';
                     positionPopover(e);
                 });
@@ -1216,10 +1272,15 @@
             if(e.target.files[0]) {
                 handleImageFile(e.target.files[0], (url, name) => {
                     if(layers.length > 0) {
-                        layers[0].img.src = url;
+                        layers[0].rawImg.src = url;
                         layers[0].name = name;
-                        updateLayersUI();
-                        processImage();
+                        layers[0].rawImg.onload = () => {
+                            layers[0].img.width = layers[0].rawImg.naturalWidth;
+                            layers[0].img.height = layers[0].rawImg.naturalHeight;
+                            renderLayerComposite(layers[0]);
+                            updateLayersUI();
+                            processImage();
+                        };
                     } else {
                         createLayer(url, name);
                     }
