@@ -161,6 +161,16 @@
         backdrop-filter: blur(10px);
         z-index: 12;
     }
+    
+    .layers-top-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 12px;
+    }
+
     .layer-item {
         background: #222;
         padding: 6px 10px;
@@ -292,7 +302,7 @@
         font-weight: bold;
     }
 
-    .mask-brush-box {
+    .mask-brush-box, .text-options-box {
         display: none;
         background: rgba(255, 215, 0, 0.08);
         border: 1px solid var(--accent-color);
@@ -300,7 +310,7 @@
         padding: 10px;
         margin-bottom: 12px;
     }
-    .mask-brush-box h4 { margin: 0 0 8px 0; font-size: 11px; color: var(--accent-color); text-transform: uppercase; }
+    .mask-brush-box h4, .text-options-box h4 { margin: 0 0 8px 0; font-size: 11px; color: var(--accent-color); text-transform: uppercase; }
 
     .layer-settings-box {
         background: rgba(0, 0, 0, 0.25);
@@ -344,7 +354,8 @@
     
     input[type=range] { width: 100%; accent-color: var(--accent-color); height: 4px; background: #333; outline: none; -webkit-appearance: none; border-radius: 2px; }
     input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent-color); cursor: pointer; }
-    select { width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 4px; border-radius: 4px; font-size: 11px; }
+    select, input[type=color], input[type=text] { width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 4px; border-radius: 4px; font-size: 11px; box-sizing: border-box; }
+    input[type=color] { height: 26px; padding: 0 4px; cursor: pointer; }
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
 </style>
 </head>
@@ -388,6 +399,11 @@
         <div id="layersPanel">
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Calques</h3>
             
+            <div class="layers-top-actions">
+                <button id="globalMaskBtn" style="font-size:11px;" title="Ajouter un masque au calque actif">➕ Masque</button>
+                <button id="globalTextBtn" style="font-size:11px;" title="Créer un calque de texte">✏️ Texte</button>
+            </div>
+
             <div class="tool-select-box">
                 <button class="tool-btn active" id="toolMove">
                     <svg viewBox="0 0 24 24"><polyline points="5 9 2 12 5 15"></polyline><polyline points="9 5 12 2 15 5"></polyline><polyline points="15 19 12 22 9 19"></polyline><polyline points="19 9 22 12 19 15"></polyline><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line></svg>
@@ -429,6 +445,42 @@
                 <button id="deleteMaskBtn" style="width:100%; margin-top:5px; font-size:11px;">Supprimer le Masque</button>
             </div>
 
+            <div class="text-options-box" id="textOptionsBox">
+                <h4>Propriétés du Texte</h4>
+                <div class="control-group">
+                    <label>Texte <input type="text" id="textInputVal" value="Graphis Studio"></label>
+                </div>
+                <div class="control-group">
+                    <label>Police
+                        <select id="textFontSelect">
+                            <option value="sans-serif">Sans-Serif (Standard)</option>
+                            <option value="serif">Serif</option>
+                            <option value="monospace">Monospace</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Georgia">Georgia</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label>Style
+                        <select id="textStyleSelect">
+                            <option value="normal">Normal</option>
+                            <option value="bold">Gras</option>
+                            <option value="italic">Italique</option>
+                            <option value="bold italic">Gras & Italique</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label>Taille <span class="value-display" id="val_textSize">48px</span></label>
+                    <input type="range" id="textSizeRange" min="12" max="150" value="48">
+                </div>
+                <div class="control-group">
+                    <label>Couleur <input type="color" id="textColorPicker" value="#FFD700"></label>
+                </div>
+                <button id="applyTextChangesBtn" style="width:100%; margin-top:5px; font-size:11px;">Mettre à jour le Texte</button>
+            </div>
+
             <div class="layer-settings-box">
                 <h4>Style du Calque Actif</h4>
                 <div class="control-group">
@@ -450,7 +502,7 @@
             </div>
 
             <div id="layersContainer"></div>
-            <button id="addLayerBtn" style="width: 100%; margin-top: 10px; font-size: 11px;">+ Nouveau Calque</button>
+            <button id="addLayerBtn" style="width: 100%; margin-top: 10px; font-size: 11px;">+ Nouveau Calque Image</button>
 
             <div class="transform-box">
                 <h4>Paramètres Précis</h4>
@@ -642,6 +694,7 @@
         const boundingBox = document.getElementById('transform-bounding-box');
         const previewPopover = document.getElementById('thumbnail-preview-popover');
         const maskBrushBox = document.getElementById('maskBrushBox');
+        const textOptionsBox = document.getElementById('textOptionsBox');
         
         const brushCursor = document.getElementById('brush-cursor');
         const brushInnerCircle = brushCursor.querySelector('.brush-inner-circle');
@@ -671,9 +724,10 @@
             btnMove.classList.toggle('active', tool === 'move');
             btnFreeTrans.classList.toggle('active', tool === 'transform');
             btnMaskBrush.classList.toggle('active', tool === 'maskBrush');
+            
             maskBrushBox.style.display = (tool === 'maskBrush') ? 'block' : 'none';
-
             if (tool === 'maskBrush') {
+                textOptionsBox.style.display = 'none';
                 document.body.classList.add('tool-brush');
                 const active = getActiveLayer();
                 if (active && !active.hasMask) {
@@ -750,6 +804,37 @@
             }
         });
 
+        // Global top buttons
+        document.getElementById('globalMaskBtn').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if (active) {
+                if (!active.hasMask) addLayerMask(active.id);
+                setTool('maskBrush');
+            }
+        });
+
+        document.getElementById('globalTextBtn').addEventListener('click', () => {
+            textOptionsBox.style.display = textOptionsBox.style.display === 'block' ? 'none' : 'block';
+            if (textOptionsBox.style.display === 'block') {
+                maskBrushBox.style.display = 'none';
+                if (currentTool === 'maskBrush') setTool('move');
+            }
+        });
+
+        document.getElementById('textSizeRange').addEventListener('input', (e) => {
+            document.getElementById('val_textSize').innerText = e.target.value + 'px';
+        });
+
+        document.getElementById('applyTextChangesBtn').addEventListener('click', () => {
+            const textVal = document.getElementById('textInputVal').value;
+            const fontFam = document.getElementById('textFontSelect').value;
+            const fontStyle = document.getElementById('textStyleSelect').value;
+            const fontSize = document.getElementById('textSizeRange').value;
+            const color = document.getElementById('textColorPicker').value;
+
+            createTextLayer(textVal, `${fontStyle} ${fontSize}px ${fontFam}`, color);
+        });
+
         function updateBoundingBoxVisibility() {
             const active = getActiveLayer();
             if (currentTool === 'transform' && active && active.visible && !active.locked) {
@@ -777,17 +862,17 @@
             return el ? (parseFloat(el.value) || 0) : 0;
         };
 
-        function createTextLayer(textContent = "Graphis Studio") {
+        function createTextLayer(textContent = "Graphis Studio", fontSpec = "bold 48px sans-serif", textColor = "#FFD700") {
             const canvas = document.createElement('canvas');
-            canvas.width = 800;
+            canvas.width = 900;
             canvas.height = 200;
             const ctx = canvas.getContext('2d');
             
-            ctx.font = 'bold 48px sans-serif';
-            ctx.fillStyle = '#FFD700';
+            ctx.font = fontSpec;
+            ctx.fillStyle = textColor;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(textContent, 400, 100);
+            ctx.fillText(textContent, 450, 100);
 
             const dataUrl = canvas.toDataURL();
             createLayer(dataUrl, `Texte: "${textContent}"`);
@@ -978,7 +1063,6 @@
                 updateMaskCSS(layer);
             }
             updateLayersUI();
-            setTool('maskBrush');
         }
 
         function invertLayerMask(id) {
@@ -1330,12 +1414,6 @@
                         <span class="layer-name" title="${layer.name}">${layer.name}</span>
                     </div>
                     <div class="layer-actions">
-                        <button class="icon-btn" title="Masque de fusion" onclick="event.stopPropagation(); addLayerMask('${layer.id}')">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18a9 9 0 0 0 0-18z" fill="var(--accent-color)"></path></svg>
-                        </button>
-                        <button class="icon-btn" title="Ajouter un calque de texte" onclick="event.stopPropagation(); const t = prompt('Entrez votre texte :', 'Graphis Studio'); if(t) createTextLayer(t);">
-                            <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="12" y1="4" x2="12" y2="20"></line><line x1="8" y1="20" x2="16" y2="20"></line></svg>
-                        </button>
                         <button class="icon-btn" title="Renommer" onclick="event.stopPropagation(); renameLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         </button>
