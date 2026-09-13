@@ -12,7 +12,7 @@
         --border-color: #333;
     }
 
-    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; overflow: hidden; }
+    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; overflow: hidden; user-select: none; }
 
     header { padding: 12px 20px; background: #1a1a1a; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
     
@@ -50,11 +50,10 @@
     }
     #zoom-toolbar button { padding: 4px 10px; font-size: 12px; }
 
-    /* Conteneur de la pile de calques visuels */
     #image-container { 
         position: relative; 
-        width: 80%; 
-        height: 80%; 
+        width: 100%; 
+        height: 100%; 
         display: flex; 
         justify-content: center; 
         align-items: center; 
@@ -64,22 +63,23 @@
     .canvas-layer { 
         position: absolute;
         display: block; 
-        max-width: 100%; 
-        max-height: 100%; 
+        max-width: 80%; 
+        max-height: 80%; 
         object-fit: contain; 
-        transition: transform 0.1s ease-out; 
+        cursor: grab;
         transform-origin: center center; 
     }
+    .canvas-layer:active { cursor: grabbing; }
     
     #vignette-overlay { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 99; transition: none; }
 
-    /* Panneau des Calques */
+    /* Panneau des Calques & Transformations */
     #layersPanel {
         display: none;
         position: absolute;
         top: 70px;
         left: 20px;
-        width: 300px;
+        width: 310px;
         background: var(--panel-bg);
         border: 1px solid var(--border-color);
         border-radius: 8px;
@@ -104,6 +104,14 @@
     .layer-info { display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .layer-actions { display: flex; gap: 5px; }
     .layer-actions button { padding: 2px 6px; font-size: 10px; }
+
+    .transform-box {
+        margin-top: 15px;
+        border-top: 1px solid #333;
+        padding-top: 10px;
+    }
+    .transform-box h4 { margin: 0 0 8px 0; font-size: 11px; color: var(--accent-color); text-transform: uppercase; }
+    .transform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
 
     #panel { position: absolute; top: 20px; right: 20px; width: 340px; max-height: 90vh; background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 10; }
     .panel-header { padding: 15px; border-bottom: 1px solid var(--border-color); cursor: move; display: flex; justify-content: space-between; align-items: center; }
@@ -156,7 +164,6 @@
 
         <div class="header-center">
             <input type="file" id="fileInput" accept="image/*, .cr2, .cr3, .nef, .arw, .dng, .raw, .orf, .rw2" style="display: none;">
-            <!-- Input spécifique pour l'ajout de calques -->
             <input type="file" id="layerFileInput" accept="image/*, .cr2, .cr3, .nef, .arw, .dng, .raw, .orf, .rw2" style="display: none;">
             
             <button id="importBtn">Importer</button>
@@ -166,13 +173,28 @@
     </header>
 
     <div id="workspace">
-        <!-- Panneau des Calques interactif -->
+        <!-- Panneau des Calques & Transformations -->
         <div id="layersPanel">
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Pile de Calques</h3>
-            <div id="layersContainer">
-                <!-- Les calques s'inséreront dynamiquement ici -->
+            <div id="layersContainer"></div>
+            <button id="addLayerBtn" style="width: 100%; margin-top: 10px; font-size: 11px;">+ Nouveau Calque</button>
+
+            <!-- Outils de Transformation Manuelle (Style Photoshop) -->
+            <div class="transform-box">
+                <h4>Transformation du calque actif</h4>
+                <div class="control-group">
+                    <label>Échelle (Taille) <span class="value-display" id="val_scale">100%</span></label>
+                    <input type="range" id="tr_scale" min="10" max="300" value="100">
+                </div>
+                <div class="control-group">
+                    <label>Rotation <span class="value-display" id="val_rot">0°</span></label>
+                    <input type="range" id="tr_rot" min="-180" max="180" value="0">
+                </div>
+                <div class="transform-grid">
+                    <button id="tr_flipH" style="font-size:11px;">Miroir H</button>
+                    <button id="tr_flipV" style="font-size:11px;">Miroir V</button>
+                </div>
             </div>
-            <button id="addLayerBtn" style="width: 100%; margin-top: 10px; font-size: 11px;">+ Nouveau Calque (RAW, JPG, PNG)</button>
         </div>
 
         <div id="zoom-toolbar">
@@ -182,7 +204,6 @@
             <button id="zoomInBtn" title="Zoomer">+</button>
         </div>
 
-        <!-- Conteneur multi-calques -->
         <div id="image-container">
             <div id="vignette-overlay"></div>
         </div>
@@ -329,7 +350,7 @@
         </div>
     </div>
 
-    <!-- Moteur de traitement multi-calques -->
+    <!-- Moteur de traitement multi-calques et transformations -->
     <script>
         const imageContainer = document.getElementById('image-container');
         const overlay = document.getElementById('vignette-overlay');
@@ -344,7 +365,7 @@
             return el ? (parseFloat(el.value) || 0) : 0;
         };
 
-        // --- GESTION DES CALQUES ---
+        // --- GESTION DES CALQUES ET TRANSFORMATIONS ---
         function createLayer(imgSrc, name = "Calque") {
             const id = 'layer_' + Date.now();
             const img = document.createElement('img');
@@ -352,31 +373,81 @@
             img.className = 'canvas-layer';
             img.crossOrigin = 'anonymous';
             
-            // Insertion au-dessus des calques existants
-            imageContainer.insertBefore(img, overlay);
+            // Propriétés de transformation initiale (style Photoshop)
+            const layerObj = {
+                id,
+                name,
+                img,
+                x: 0,
+                y: 0,
+                scale: 1,
+                rotation: 0,
+                flipX: 1,
+                flipY: 1
+            };
 
-            const layerObj = { id, name, img, filters: {} };
+            // Gestion du Glisser-Déposer (Drag & Drop à la souris) de l'élément sur le calque
+            let isDraggingLayer = false, startX, startY;
+            img.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+                setActiveLayer(id);
+                isDraggingLayer = true;
+                startX = e.clientX - layerObj.x;
+                startY = e.clientY - layerObj.y;
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDraggingLayer || activeLayerId !== id) return;
+                layerObj.x = e.clientX - startX;
+                layerObj.y = e.clientY - startY;
+                applyLayerTransform(layerObj);
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDraggingLayer = false;
+            });
+
+            imageContainer.insertBefore(img, overlay);
             layers.push(layerObj);
             setActiveLayer(id);
             updateLayersUI();
             processImage();
         }
 
+        function getActiveLayer() {
+            return layers.find(l => l.id === activeLayerId);
+        }
+
+        function applyLayerTransform(layer) {
+            const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
+            layer.img.style.transform = transformStr;
+        }
+
         function setActiveLayer(id) {
             activeLayerId = id;
             layers.forEach(l => {
                 if(l.id === id) {
-                    l.img.style.zIndex = 10; // Le calque actif passe au premier plan visuel de l'édition
+                    l.img.style.zIndex = 10;
                 } else {
                     l.img.style.zIndex = 1;
                 }
             });
             updateLayersUI();
+            syncTransformUI();
+        }
+
+        function syncTransformUI() {
+            const active = getActiveLayer();
+            if(!active) return;
+            document.getElementById('tr_scale').value = Math.round(active.scale * 100);
+            document.getElementById('val_scale').innerText = Math.round(active.scale * 100) + '%';
+            document.getElementById('tr_rot').value = active.rotation;
+            document.getElementById('val_rot').innerText = active.rotation + '°';
         }
 
         function updateLayersUI() {
             layersContainer.innerHTML = '';
-            layers.slice().reverse().forEach((layer, index) => {
+            layers.slice().reverse().forEach((layer) => {
                 const item = document.createElement('div');
                 item.className = `layer-item ${layer.id === activeLayerId ? 'active' : ''}`;
                 item.onclick = () => setActiveLayer(layer.id);
@@ -407,6 +478,37 @@
                 processImage();
             }
         };
+
+        // --- CONTRÔLES DE TRANSFORMATION MANUELLE (Panneau) ---
+        document.getElementById('tr_scale').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.scale = parseFloat(e.target.value) / 100;
+            document.getElementById('val_scale').innerText = e.target.value + '%';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_rot').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.rotation = parseFloat(e.target.value);
+            document.getElementById('val_rot').innerText = e.target.value + '°';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_flipH').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.flipX *= -1;
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_flipV').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.flipY *= -1;
+            applyLayerTransform(active);
+        });
 
         function processImage() {
             try {
@@ -443,17 +545,15 @@
                 let totalBlur = (blur * 0.1) + (noiseLum * 0.05);
 
                 const activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#rawEngine)`;
-                const activeTransformString = `perspective(1000px) rotateX(${gVert * -0.5}deg) rotateY(${gHoriz * -0.5}deg) rotateZ(${gRot}deg) scale(${currentScale})`;
 
-                // Application sur le calque actif, les autres gardent leur état visuel de base
+                // Application des filtres sur le calque actif
                 layers.forEach(layer => {
                     if(layer.id === activeLayerId) {
                         layer.img.style.filter = activeFilterString;
-                        layer.img.style.transform = activeTransformString;
                     } else {
                         layer.img.style.filter = 'none';
-                        layer.img.style.transform = `scale(${currentScale})`;
                     }
+                    applyLayerTransform(layer);
                 });
                 
                 let vigTotal = Math.min(1, Math.abs((v('e_viggain') + v('o_vig')) * -0.01));
@@ -464,7 +564,7 @@
             }
         }
 
-        // --- GESTION DU SYSTÈME DE CALQUES (UI & Boutons) ---
+        // --- GESTION DES CALQUES (UI & Boutons) ---
         const layersBtn = document.getElementById('layersBtn');
         const layersPanel = document.getElementById('layersPanel');
         
@@ -477,7 +577,6 @@
         
         addLayerBtn.addEventListener('click', () => layerFileInput.click());
 
-        // --- PARSEUR RAW / STANDARD PARTAGÉ ---
         async function handleImageFile(file, callback) {
             const fileName = file.name.toLowerCase();
             const isRaw = fileName.match(/\.(cr2|cr3|nef|arw|dng|raw|orf|rw2)$/);
@@ -512,7 +611,6 @@
             }
         }
 
-        // Importation d'un nouveau calque (RAW, JPG, PNG transparent)
         layerFileInput.addEventListener('change', (e) => {
             if(e.target.files[0]) {
                 handleImageFile(e.target.files[0], (url, name) => {
@@ -521,7 +619,6 @@
             }
         });
 
-        // Remplacement de l'image principale (Calque 0 / Arrière-plan)
         const fileInput = document.getElementById('fileInput');
         document.getElementById('importBtn').addEventListener('click', () => fileInput.click());
         fileInput.addEventListener('change', (e) => {
@@ -539,13 +636,12 @@
             }
         });
 
-        // --- GESTION DU ZOOM ---
+        // --- ZOOM ---
         document.getElementById('zoomInBtn').addEventListener('click', () => { currentScale += 0.25; processImage(); });
         document.getElementById('zoomOutBtn').addEventListener('click', () => { currentScale = Math.max(0.2, currentScale - 0.25); processImage(); });
         document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); });
         document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); });
 
-        // --- ÉVÉNEMENTS DES CURSEURS ---
         document.getElementById('controls').addEventListener('input', (e) => {
             if (e.target.type === 'range') {
                 const label = e.target.previousElementSibling;
@@ -560,7 +656,7 @@
             alert("Rendu en cours... (Le bouton exporter nécessitera l'API Canvas drawImage pour fusionner les calques en un JPEG final)");
         });
 
-        // --- DÉPLACEMENT DU PANNEAU FLOTTANT ---
+        // --- DÉPLACEMENT DES PANNEAUX ---
         const panel = document.getElementById('panel');
         const header = document.getElementById('panelHeader');
         let isDragging = false, startX, startY, initX, initY;
@@ -577,7 +673,6 @@
         });
         document.addEventListener('mouseup', () => { isDragging = false; header.style.cursor = 'move'; });
 
-        // Initialisation avec l'image par défaut de démonstration
         window.onload = () => {
             createLayer("https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80", "Arrière-plan");
         };
