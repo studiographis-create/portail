@@ -87,13 +87,11 @@
     }
     .canvas-layer:active { cursor: grabbing; }
 
-    /* Forcer l'absence de pointeur système lors de l'utilisation du pinceau */
     body.tool-brush .canvas-layer,
     body.tool-brush #image-container {
         cursor: none !important;
     }
 
-    /* Curseur Pinceau Interactif Style Lightroom */
     #brush-cursor {
         position: absolute;
         pointer-events: none;
@@ -147,7 +145,6 @@
     
     #vignette-overlay { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 999; transition: none; }
 
-    /* Panneau des Calques & Outils */
     #layersPanel {
         display: none;
         position: absolute;
@@ -389,7 +386,8 @@
         <img id="thumbnail-preview-popover" alt="Agrandissement calque">
 
         <div id="layersPanel">
-            <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Pile de Calques</h3>
+            <!-- Modification du nom du panneau : "Calques" -->
+            <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Calques</h3>
             
             <div class="tool-select-box">
                 <button class="tool-btn active" id="toolMove">
@@ -400,9 +398,10 @@
                     <svg viewBox="0 0 24 24"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
                     Transform.
                 </button>
+                <!-- Modification du nom du bouton : "Masque" -->
                 <button class="tool-btn" id="toolMaskBrush">
                     <svg viewBox="0 0 24 24"><path d="M18 11l-1.5-1.5s-1.5 1.5-3 0 1.5-3 0-4.5-4.5 1.5-4.5 1.5L3 12.5V18h5.5L18 11z"></path><path d="M14 6l3 3"></path></svg>
-                    Pinceau
+                    Masque
                 </button>
             </div>
 
@@ -510,7 +509,6 @@
             </div>
 
             <div class="panel-content" id="controls">
-                <!-- 1. RÉGLAGES DE BASE -->
                 <details open><summary>Réglages de base</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Profil <select id="baseProfile"><option>Adobe Couleur</option><option>Paysage</option></select></label></div>
@@ -534,7 +532,6 @@
                     </div>
                 </details>
 
-                <!-- 2. COURBE DES TONALITÉS -->
                 <details><summary>Courbe des tonalités</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Mode <select id="c_mode"><option>Paramétrique</option></select></label></div>
@@ -545,7 +542,6 @@
                     </div>
                 </details>
 
-                <!-- 3. MÉLANGEUR DE COULEURS -->
                 <details><summary>Mélangeur de couleurs</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Ajuster <select id="m_target"><option>Saturation</option></select></label></div>
@@ -560,7 +556,6 @@
                     </div>
                 </details>
 
-                <!-- 4. COLOR GRADING -->
                 <details><summary>Color Grading</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Cible <select id="cg_target"><option>Global</option></select></label></div>
@@ -573,7 +568,6 @@
                     </div>
                 </details>
 
-                <!-- 5. DÉTAIL -->
                 <details><summary>Détail</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Gain (Netteté) <span class="value-display">40</span></label><input type="range" id="d_gain" min="0" max="150" value="40"></div>
@@ -586,7 +580,6 @@
                     </div>
                 </details>
 
-                <!-- 6. FLOU D'OBJECTIF -->
                 <details><summary>Flou d'objectif</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Intensité du Flou <span class="value-display">0</span></label><input type="range" id="b_int" min="0" max="100" value="0"></div>
@@ -594,7 +587,6 @@
                     </div>
                 </details>
 
-                <!-- 7. OPTIQUE -->
                 <details><summary>Optique</summary>
                     <div class="module-content">
                         <label style="font-size:11px; display:flex; gap:10px;"><input type="checkbox" id="o_ca"> Supprimer l'aberration chromatique</label>
@@ -604,7 +596,6 @@
                     </div>
                 </details>
 
-                <!-- 8. GÉOMÉTRIE -->
                 <details><summary>Géométrie</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Vertical <span class="value-display">0</span></label><input type="range" id="g_vert" min="-100" max="100" value="0"></div>
@@ -613,7 +604,6 @@
                     </div>
                 </details>
 
-                <!-- 9. EFFETS -->
                 <details><summary>Effets</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" id="e_viggain" min="-100" max="100" value="0"></div>
@@ -623,7 +613,6 @@
                     </div>
                 </details>
 
-                <!-- 10. ÉTALONNAGE (Calibration) -->
                 <details><summary>Étalonnage</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Ombres - Teinte <span class="value-display">0</span></label><input type="range" id="cal_shad" min="-100" max="100" value="0"></div>
@@ -682,7 +671,6 @@
 
             if (tool === 'maskBrush') {
                 document.body.classList.add('tool-brush');
-                // S'assurer qu'un masque existe sur le calque actif
                 const active = getActiveLayer();
                 if (active && !active.hasMask) {
                     addLayerMask(active.id);
@@ -954,18 +942,20 @@
             updateLayersUI();
         }
 
+        /* CALCUL ET CORRECTION PRÉCISE DU TRACÉ DU PINCEAU */
         function paintMask(layer, e) {
             if (!layer.hasMask) return;
             const rect = layer.img.getBoundingClientRect();
-            
-            const clickX = e.clientX - rect.left;
-            const clickY = e.clientY - rect.top;
+
+            // Transformation matricielle inverse pour faire correspondre le clic exact au Canvas
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
 
             const scaleX = layer.maskCanvas.width / rect.width;
             const scaleY = layer.maskCanvas.height / rect.height;
 
-            const currX = clickX * scaleX;
-            const currY = clickY * scaleY;
+            const currX = mouseX * scaleX;
+            const currY = mouseY * scaleY;
 
             const brushSize = parseFloat(document.getElementById('brushSize').value) * scaleX;
             const hardness = parseFloat(document.getElementById('brushHardness').value) / 100;
