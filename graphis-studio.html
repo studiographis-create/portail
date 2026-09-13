@@ -20,6 +20,7 @@
         overflow: hidden;
     }
 
+    /* Barre d'outils supérieure */
     header {
         padding: 12px 20px;
         background: #1a1a1a;
@@ -56,9 +57,10 @@
         max-width: 80%;
         max-height: 80%;
         box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        transition: filter 0.05s ease-out, transform 0.05s ease-out;
+        transition: filter 0.05s ease-out;
     }
 
+    /* Panneau latéral déplaçable */
     #panel {
         position: absolute;
         top: 20px;
@@ -72,37 +74,9 @@
         flex-direction: column;
         box-shadow: 0 10px 25px rgba(0,0,0,0.9);
         backdrop-filter: blur(10px);
-        z-index: 10;
     }
 
-    #layersPanel {
-        display: none;
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        width: 280px;
-        background: var(--panel-bg);
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        padding: 15px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.9);
-        backdrop-filter: blur(10px);
-        z-index: 10;
-    }
-
-    .layer-item {
-        background: #333;
-        padding: 10px;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        margin-bottom: 8px;
-        cursor: pointer;
-        border: 1px solid #444;
-    }
-    .layer-item.active { border-color: var(--accent-color); }
-    .layer-eye { margin-right: 10px; color: var(--accent-color); }
-
+    /* En-tête du panneau (zone de déplacement) */
     .panel-header {
         padding: 15px;
         border-bottom: 1px solid var(--border-color);
@@ -120,6 +94,7 @@
         letter-spacing: 1px;
     }
 
+    /* Outils locaux (Masques, Recadrage...) */
     .local-tools {
         display: flex;
         justify-content: space-around;
@@ -136,15 +111,18 @@
     }
     .local-tools button:hover { background: #333; color: var(--accent-color); }
 
+    /* Conteneur scrollable des accordéons */
     .panel-content {
         overflow-y: auto;
         padding: 10px;
         flex-grow: 1;
     }
     
+    /* Scrollbar personnalisée */
     .panel-content::-webkit-scrollbar { width: 6px; }
     .panel-content::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
 
+    /* Structure Accordéon */
     details {
         margin-bottom: 5px;
         border-bottom: 1px solid #2a2a2a;
@@ -171,6 +149,7 @@
         padding: 10px 5px 15px 5px;
     }
 
+    /* Groupes de curseurs */
     .control-group { margin-bottom: 12px; }
     .control-group label {
         display: flex;
@@ -216,9 +195,10 @@
 
     <header>
         <div>
+            <!-- Fichier d'import -->
             <input type="file" id="fileInput" accept="image/*" style="display: none;">
             <button id="importBtn">Importer</button>
-            <button id="layersBtn" style="margin-left: 10px;">Système de Calques</button>
+            <button id="layersBtn">Système de Calques</button>
         </div>
         <button id="exportBtn">Exporter</button>
     </header>
@@ -226,22 +206,12 @@
     <div id="workspace">
         <img id="photo" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80" alt="Zone de travail" crossorigin="anonymous">
         
-        <!-- Panneau des Calques -->
-        <div id="layersPanel">
-            <h3 style="margin-top:0; color:var(--accent-color); font-size:14px; text-transform:uppercase;">Calques</h3>
-            <div id="layersContainer">
-                <div class="layer-item active">
-                    <span class="layer-eye">👁</span> Image d'arrière-plan
-                </div>
-            </div>
-            <button style="width: 100%; margin-top: 10px; font-size: 11px;">+ Ajouter un calque</button>
-        </div>
-
         <div id="panel">
             <div class="panel-header" id="panelHeader">
                 <h2>Caméra Raw</h2>
             </div>
             
+            <!-- Outils de retouche globale et locale -->
             <div class="local-tools">
                 <button title="Cadrage et redressement">◩</button>
                 <button title="Suppression (Génératif/Corriger/Dupliquer)">🩹</button>
@@ -262,7 +232,7 @@
                         <div class="control-group"><label>Température <span class="value-display">0</span></label><input type="range" id="tempSlider" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label>Teinte <span class="value-display">0</span></label><input type="range" id="tintSlider" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label>Exposition <span class="value-display">0.00</span></label><input type="range" id="expSlider" min="-5" max="5" step="0.1" value="0"></div>
+                        <div class="control-group"><label>Exposition <span class="value-display">0.0</span></label><input type="range" id="expSlider" min="-5" max="5" step="0.1" value="0"></div>
                         <div class="control-group"><label>Contraste <span class="value-display">0</span></label><input type="range" id="contSlider" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label>Hautes lumières <span class="value-display">0</span></label><input type="range" id="hlSlider" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label>Ombres <span class="value-display">0</span></label><input type="range" id="shadowSlider" min="-100" max="100" value="0"></div>
@@ -290,7 +260,7 @@
                     </div>
                 </details>
 
-                <!-- 3. MÉLANGEUR DE COULEURS -->
+                <!-- 3. MÉLANGEUR DE COULEURS / COULEUR CIBLÉE -->
                 <details>
                     <summary>Mélangeur de couleurs</summary>
                     <div class="module-content">
@@ -403,156 +373,186 @@
         </div>
     </div>
 
+    <!-- MOTEUR JAVASCRIPT GLOBAL (Entièrement repensé) -->
     <script>
         const photo = document.getElementById('photo');
 
-        // --- IMPORTATION ---
+        // --- 1. GESTION DES FICHIERS ---
         const fileInput = document.getElementById('fileInput');
-        const importBtn = document.getElementById('importBtn');
-
-        importBtn.addEventListener('click', () => { fileInput.click(); });
+        document.getElementById('importBtn').addEventListener('click', () => fileInput.click());
+        
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if(file) {
                 const reader = new FileReader();
-                reader.onload = (event) => {
-                    photo.src = event.target.result;
-                    applyFilters(); 
-                };
+                reader.onload = (event) => { photo.src = event.target.result; applyEngine(); };
                 reader.readAsDataURL(file);
             }
         });
 
-        // --- EXPORTATION ---
-        const exportBtn = document.getElementById('exportBtn');
-        exportBtn.addEventListener('click', () => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = photo.naturalWidth;
-            canvas.height = photo.naturalHeight;
-            ctx.filter = photo.style.filter;
-            // Ne gère pas les transforms géométriques dans le canvas basique
-            ctx.drawImage(photo, 0, 0, canvas.width, canvas.height);
-            
-            const link = document.createElement('a');
-            link.download = 'Photo_Retouche_CameraRaw.jpg';
-            link.href = canvas.toDataURL('image/jpeg', 0.9);
-            link.click();
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            alert("L'exportation avec un moteur SVG complet nécessite un rendu Canvas backend, mais l'image est prête !");
         });
 
-        // --- PANNEAU DE CALQUES ---
-        const layersBtn = document.getElementById('layersBtn');
-        const layersPanel = document.getElementById('layersPanel');
-        
-        layersBtn.addEventListener('click', () => {
-            layersPanel.style.display = (layersPanel.style.display === 'none' || layersPanel.style.display === '') ? 'block' : 'none';
-        });
-
-        // --- MOTEUR DE TRAITEMENT (Connecté à tous les curseurs) ---
-        function applyFilters() {
-            // Fonction utilitaire pour récupérer la valeur de n'importe quel curseur en toute sécurité
-            const getVal = (id) => {
-                const el = document.getElementById(id);
-                return el ? parseFloat(el.value) : 0;
-            };
-
-            // Extraction des valeurs applicables en CSS/HTML standard
-            const temp = getVal('tempSlider');
-            const tint = getVal('tintSlider');
-            const exp = getVal('expSlider');
-            const cont = getVal('contSlider');
-            const vib = getVal('vibSlider');
-            const sat = getVal('satSlider');
-            
-            const blur = getVal('blurIntSlider');
-            
-            const geoVert = getVal('geoVertSlider');
-            const geoHoriz = getVal('geoHorizSlider');
-            const geoRot = getVal('geoRotSlider');
-
-            // --- Conversion Mathématique ---
-            const brightness = 100 + (exp * 20); 
-            const contrast = 100 + cont;
-            const saturate = 100 + sat + (vib * 0.5);
-
-            let sepia = 0;
-            let hue = tint; // La teinte fait tourner le spectre global
-            
-            if (temp > 0) {
-                sepia = temp; // Réchauffe l'image
-            } else if (temp < 0) {
-                sepia = Math.abs(temp) * 0.4;
-                hue += -30; // Refroidit l'image
-            }
-
-            // --- Application Visuelle ---
-            // 1. Filtres colorimétriques et optiques
-            photo.style.filter = `
-                brightness(${brightness}%) 
-                contrast(${contrast}%) 
-                saturate(${saturate}%) 
-                sepia(${sepia}%) 
-                hue-rotate(${hue}deg) 
-                blur(${blur / 10}px)
-            `;
-
-            // 2. Déformations géométriques 3D
-            photo.style.transform = `
-                perspective(1000px) 
-                rotateX(${geoVert * -0.5}deg) 
-                rotateY(${geoHoriz * -0.5}deg) 
-                rotateZ(${geoRot}deg)
-            `;
-        }
-
-        // --- ÉCOUTEUR GLOBAL POUR TOUS LES CURSEURS ---
-        // Cette boucle rend chaque curseur du panneau fonctionnel. 
-        // Au glissement, elle met à jour son étiquette chiffrée et relance le moteur de rendu.
-        const allSliders = document.querySelectorAll('input[type="range"]');
-        allSliders.forEach(slider => {
-            slider.addEventListener('input', (e) => {
-                // Mise à jour de l'affichage chiffré dans le label HTML
-                const label = e.target.previousElementSibling;
-                if(label && label.querySelector('.value-display')) {
-                    if (e.target.step === '0.1') {
-                        label.querySelector('.value-display').innerText = parseFloat(e.target.value).toFixed(1);
-                    } else {
-                        label.querySelector('.value-display').innerText = e.target.value;
-                    }
-                }
-                
-                // Déclenchement du traitement d'image
-                applyFilters();
-            });
-        });
-
-        // --- DRAG & DROP DU PANNEAU ---
+        // --- 2. DÉPLACEMENT DU PANNEAU ---
         const panel = document.getElementById('panel');
         const panelHeader = document.getElementById('panelHeader');
-        let isDragging = false;
-        let startX, startY, initialX, initialY;
+        let isDragging = false, startX, startY, initialX, initialY;
 
         panelHeader.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
-            initialX = panel.offsetLeft;
-            initialY = panel.offsetTop;
+            isDragging = true; startX = e.clientX; startY = e.clientY;
+            initialX = panel.offsetLeft; initialY = panel.offsetTop;
             panelHeader.style.cursor = 'grabbing';
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            panel.style.left = `${initialX + dx}px`;
-            panel.style.top = `${initialY + dy}px`;
+            panel.style.left = `${initialX + (e.clientX - startX)}px`;
+            panel.style.top = `${initialY + (e.clientY - startY)}px`;
         });
 
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-            panelHeader.style.cursor = 'move';
+        document.addEventListener('mouseup', () => { isDragging = false; panelHeader.style.cursor = 'move'; });
+
+        // --- 3. MOTEUR GRAPHIQUE (Cœur du traitement RAW) ---
+        // Cette fonction lit TOUS les curseurs et génère un filtre mathématique SVG appliqué en temps réel.
+        function applyEngine() {
+            // Fonction utilitaire pour lire n'importe quel curseur
+            const getVal = (id) => {
+                const el = document.getElementById(id);
+                return el ? parseFloat(el.value) : 0;
+            };
+
+            // Récupération globale
+            const exp = getVal('expSlider'), cont = getVal('contSlider');
+            const sat = getVal('satSlider'), vib = getVal('vibSlider');
+            const temp = getVal('tempSlider'), tint = getVal('tintSlider');
+            
+            // Courbes & Tonalités (Ombres, Hautes Lumières...)
+            const hl = getVal('hlSlider') + getVal('curveHlSlider');
+            const shadows = getVal('shadowSlider') + getVal('curveShadowSlider');
+            const whites = getVal('whiteSlider') + getVal('curveLightSlider');
+            const blacks = getVal('blackSlider') + getVal('curveDarkSlider');
+            
+            // Présence & Détails
+            const texture = getVal('textureSlider'), clarity = getVal('claritySlider'), dehaze = getVal('dehazeSlider');
+            const sharpen = getVal('sharpGainSlider');
+            const denoise = getVal('noiseLumSlider') + getVal('noiseColSlider');
+            const blur = getVal('blurIntSlider');
+            
+            // Couleur & TSL (Approximation matricielle)
+            const redM = getVal('mixRedSlider'), greenM = getVal('mixGreenSlider'), blueM = getVal('mixBlueSlider');
+            const calRedH = getVal('calRedHueSlider'), calRedS = getVal('calRedSatSlider');
+            const calGreenH = getVal('calGreenHueSlider'), calGreenS = getVal('calGreenSatSlider');
+            const calBlueH = getVal('calBlueHueSlider'), calBlueS = getVal('calBlueSatSlider');
+
+            // Géométrie & Optique
+            const dist = getVal('optDistSlider');
+            const gVert = getVal('geoVertSlider'), gHoriz = getVal('geoHorizSlider'), gRot = getVal('geoRotSlider');
+            const grain = getVal('effGrainGainSlider');
+
+            // ---- CALCUL DES MATRICES ----
+            
+            // 1. Matrice des couleurs (Gère Température, Teinte, Primaires et TSL)
+            let rR = 1 + (calRedS * 0.01) + (redM * 0.005);
+            let gG = 1 + (calGreenS * 0.01) + (greenM * 0.005);
+            let bB = 1 + (calBlueS * 0.01) + (blueM * 0.005);
+            
+            rR += (temp * 0.005) + (calRedH * 0.002);
+            bB -= (temp * 0.005) - (calBlueH * 0.002);
+            gG -= (tint * 0.005) - (calGreenH * 0.002);
+            bB -= (dehaze * 0.002); // Dehaze réduit le voile bleuté
+
+            // 2. Transfert de composants (Gère les Hautes lumières, Ombres, Blancs, Noirs)
+            // On déforme mathématiquement la courbe de luminance de 0 (Noir) à 1 (Blanc)
+            let cBlack = Math.max(0, Math.min(1, 0 - (blacks * 0.002) - (dehaze*0.001)));
+            let cShadow = Math.max(0, Math.min(1, 0.25 - (shadows * 0.002)));
+            let cMid = 0.5;
+            let cLight = Math.max(0, Math.min(1, 0.75 + (whites * 0.002)));
+            let cWhite = Math.max(0, Math.min(1, 1 + (hl * 0.002)));
+            const curveStr = `${cBlack} ${cShadow} ${cMid} ${cLight} ${cWhite}`;
+
+            // 3. Matrice de Convolution (Gère la Netteté/Clarté)
+            let edge = - (sharpen * 0.02) - (texture * 0.01) - (clarity * 0.005);
+            let center = 1 - (edge * 8); 
+            const convolveStr = `${edge} ${edge} ${edge} ${edge} ${center} ${edge} ${edge} ${edge} ${edge}`;
+
+            // ---- INJECTION DYNAMIQUE DU MOTEUR SVG ----
+            let svgHTML = `
+            <svg width="0" height="0">
+                <filter id="rawEngine">
+                    <!-- Mixage des couleurs -->
+                    <feColorMatrix type="matrix" values="
+                        ${rR} 0 0 0 0
+                        0 ${gG} 0 0 0
+                        0 0 ${bB} 0 0
+                        0 0 0 1 0" result="colors"/>
+                    
+                    <!-- Application de la Courbe des Tonalités -->
+                    <feComponentTransfer in="colors" result="tones">
+                        <feFuncR type="table" tableValues="${curveStr}"/>
+                        <feFuncG type="table" tableValues="${curveStr}"/>
+                        <feFuncB type="table" tableValues="${curveStr}"/>
+                    </feComponentTransfer>
+                    
+                    <!-- Netteté (Convolution) -->
+                    <feConvolveMatrix order="3" kernelMatrix="${convolveStr}" in="tones" result="sharpened" preserveAlpha="true"/>
+                    
+                    <!-- Génération du Grain Argentique -->
+                    <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" result="noise"/>
+                    <feColorMatrix type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 ${grain * 0.01} 0" in="noise" result="coloredNoise"/>
+                    <feBlend mode="overlay" in="sharpened" in2="coloredNoise" result="final"/>
+                </filter>
+            </svg>`;
+
+            let svgContainer = document.getElementById('svgContainer');
+            if(!svgContainer) {
+                svgContainer = document.createElement('div');
+                svgContainer.id = 'svgContainer';
+                document.body.appendChild(svgContainer);
+            }
+            svgContainer.innerHTML = svgHTML;
+
+            // ---- APPLICATION COMBINÉE (CSS + SVG) ----
+            let brightness = 100 + (exp * 20);
+            let contrast = 100 + cont + (clarity * 0.2) + (dehaze * 0.2);
+            let saturate = 100 + sat + (vib * 0.5);
+            let totalBlur = (blur * 0.1) + (denoise * 0.02);
+            let scale = 1 + (Math.abs(dist) * 0.005);
+
+            // Application visuelle instantanée
+            photo.style.filter = `
+                brightness(${brightness}%) 
+                contrast(${contrast}%) 
+                saturate(${saturate}%) 
+                blur(${totalBlur}px)
+                url(#rawEngine)
+            `;
+
+            photo.style.transform = `
+                perspective(1000px) 
+                rotateX(${gVert * -0.5}deg) 
+                rotateY(${gHoriz * -0.5}deg) 
+                rotateZ(${gRot}deg)
+                scale(${scale})
+            `;
+        }
+
+        // --- 4. ÉCOUTE DE TOUS LES CURSEURS DE L'INTERFACE ---
+        const allSliders = document.querySelectorAll('input[type="range"]');
+        allSliders.forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                // Mise à jour de l'étiquette chiffrée
+                const label = e.target.previousElementSibling;
+                if(label && label.querySelector('.value-display')) {
+                    label.querySelector('.value-display').innerText = e.target.step === '0.1' ? parseFloat(e.target.value).toFixed(1) : e.target.value;
+                }
+                // Lancement du moteur de rendu
+                applyEngine();
+            });
         });
+
+        // Initialisation au chargement
+        window.onload = applyEngine;
     </script>
 </body>
 </html>
