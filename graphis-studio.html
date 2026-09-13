@@ -1220,7 +1220,6 @@
             renderLayerComposite(layer);
         }
 
-        // CRÉATION D'UN CALQUE AVEC DÉCLARATION NATIVE DES SMART OBJECTS
         function createLayer(imgSrc, name = "Calque", initialData = null) {
             const id = 'layer_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
             const canvasLayer = document.createElement('canvas');
@@ -1256,7 +1255,6 @@
                 maskCtx: null,
                 maskDataUrl: null,
                 
-                // CHAQUE CALQUE DÉTIENT SES PROPRES RÉGLAGES CAMERA RAW NON DESTRUCTIFS
                 settings: initialData?.settings ? JSON.parse(JSON.stringify(initialData.settings)) : getDefaultSettings()
             };
 
@@ -1358,7 +1356,6 @@
             updateBoundingBoxVisibility();
         }
 
-        // RECHARGE LES CURSEURS DE DROITE AVEC LES RÉGLAGES DU CALQUE SÉLECTIONNÉ
         function syncCameraRAWUI() {
             const active = getActiveLayer();
             if (!active) return;
@@ -1375,7 +1372,6 @@
             });
         }
 
-        // CAPTURE LES PARAMÈTRES ET LES ASSIGNE AU CALQUE SELECTIONNÉ AU LIEU D'UNE VARIABLE GLOBALE
         document.getElementById('controls').addEventListener('input', (e) => {
             const active = getActiveLayer();
             if (!active || active.isText || active.isLogo) return;
@@ -1579,6 +1575,7 @@
             document.getElementById('layerBlendMode').value = active.blendMode;
         }
 
+        // AFFICHAGE DES CALQUES ET DE LEURS BOUTONS D'ACTION (AVEC VERROUILLAGE ET RENOMMAGE REINTEGRÉS)
         function updateLayersUI() {
             layersContainer.innerHTML = '';
             layers.slice().reverse().forEach((layer) => {
@@ -1593,7 +1590,7 @@
 
                 item.innerHTML = `
                     <div class="layer-info">
-                        <button class="icon-btn ${layer.visible ? '' : 'hidden-eye'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
+                        <button class="icon-btn ${layer.visible ? '' : 'hidden-eye'}" title="${layer.visible ? 'Masquer' : 'Afficher'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
                             <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </button>
                         <img class="layer-thumbnail" src="${layer.rawImg.src}">
@@ -1602,17 +1599,53 @@
                         <span class="smart-badge">SMART</span>
                     </div>
                     <div class="layer-actions">
-                        <button class="icon-btn" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">
+                        <button class="icon-btn" title="Renommer" onclick="event.stopPropagation(); renameLayer('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                        </button>
+                        <button class="icon-btn" title="Dupliquer" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         </button>
-                        <button class="icon-btn" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">
+                        <button class="icon-btn" title="Supprimer le calque" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                        <button class="icon-btn ${layer.locked ? 'locked-btn' : ''}" title="${layer.locked ? 'Déverrouiller' : 'Verrouiller'}" onclick="event.stopPropagation(); toggleLayerLock('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </button>
                     </div>
                 `;
                 layersContainer.appendChild(item);
             });
         }
+
+        function deleteSelectedLayers() {
+            if (layers.length <= selectedLayerIds.length) {
+                alert("Impossible de supprimer tous les calques. Conservez au moins un calque.");
+                return;
+            }
+
+            const idsToDelete = [...selectedLayerIds];
+            idsToDelete.forEach(id => {
+                const layer = layers.find(l => l.id === id);
+                if (layer && !layer.locked) {
+                    layer.img.remove();
+                    layers = layers.filter(l => l.id !== id);
+                }
+            });
+
+            selectedLayerIds = [];
+            if (layers.length > 0) {
+                handleLayerSelection(layers[layers.length - 1].id);
+            }
+            updateZIndices();
+            processImage();
+        }
+
+        window.deleteLayer = function(id) {
+            if (!selectedLayerIds.includes(id)) {
+                selectedLayerIds = [id];
+            }
+            deleteSelectedLayers();
+        };
 
         // SYNCHRONISATION DES INPUTS GEOMETRIE ET CASE NUMÉRIQUE
         function setupTransformFieldSync(rangeId, numId, layerProp, isScale = false) {
@@ -1647,7 +1680,7 @@
             rangeEl.dispatchEvent(new Event('input'));
         };
 
-        // RENDU VISUEL NON DESTRUCTIF BASÉ SUR L'ÉTAT ESPECIFIQUE DU CALQUE
+        // RENDU VISUEL NON DESTRUCTIF BASÉ SUR L'ÉTAT SPÉCIFIQUE DU CALQUE
         function processImage() {
             layers.forEach((layer) => {
                 if (layer.isText || layer.isLogo) {
