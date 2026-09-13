@@ -72,12 +72,12 @@
     }
     .canvas-layer:active { cursor: grabbing; }
 
-    /* Cadre de Transformation Manuelle (Style Photoshop Bounding Box) */
+    /* Cadre de Transformation Manuelle sans fond bleu */
     #transform-bounding-box {
         position: absolute;
         display: none;
         border: 1px dashed var(--accent-color);
-        background: rgba(255, 215, 0, 0.03);
+        background: transparent;
         pointer-events: none;
         z-index: 100;
         box-sizing: border-box;
@@ -229,16 +229,16 @@
         <div id="layersPanel">
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Pile de Calques</h3>
             
-            <!-- Sélecteur d'Outils (Déplacement vs Transformation Libre) -->
+            <!-- Sélecteur d'Outils -->
             <div class="tool-select-box">
-                <button class="tool-btn active" id="toolMove">✛ Dé déplacement</button>
+                <button class="tool-btn active" id="toolMove">✛ Déplacement</button>
                 <button class="tool-btn" id="toolFreeTransform">⌖ Transformation Libre</button>
             </div>
 
             <div id="layersContainer"></div>
             <button id="addLayerBtn" style="width: 100%; margin-top: 10px; font-size: 11px;">+ Nouveau Calque</button>
 
-            <!-- Contrôles numériques additionnels -->
+            <!-- Contrôles numériques et de transformation avancés -->
             <div class="transform-box">
                 <h4>Paramètres Précis</h4>
                 <div class="control-group">
@@ -248,6 +248,22 @@
                 <div class="control-group">
                     <label>Rotation <span class="value-display" id="val_rot">0°</span></label>
                     <input type="range" id="tr_rot" min="-180" max="180" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Inclinaison X (Skew X) <span class="value-display" id="val_skewX">0°</span></label>
+                    <input type="range" id="tr_skewX" min="-60" max="60" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Inclinaison Y (Skew Y) <span class="value-display" id="val_skewY">0°</span></label>
+                    <input type="range" id="tr_skewY" min="-60" max="60" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Perspective Horiz. <span class="value-display" id="val_perspX">0°</span></label>
+                    <input type="range" id="tr_perspX" min="-75" max="75" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Perspective Vert. <span class="value-display" id="val_perspY">0°</span></label>
+                    <input type="range" id="tr_perspY" min="-75" max="75" value="0">
                 </div>
                 <div class="transform-grid">
                     <button id="tr_flipH" style="font-size:11px;">Miroir H</button>
@@ -264,7 +280,6 @@
         </div>
 
         <div id="image-container">
-            <!-- Cadre de transformation interactive style Photoshop -->
             <div id="transform-bounding-box">
                 <div class="t-handle" id="h_tl"></div>
                 <div class="t-handle" id="h_tr"></div>
@@ -427,9 +442,8 @@
         let layers = [];
         let activeLayerId = null;
         let currentScale = 1;
-        let currentTool = 'move'; // 'move' ou 'transform'
+        let currentTool = 'move';
 
-        // Gestion des boutons d'outils (Déplacement vs Transformation)
         const btnMove = document.getElementById('toolMove');
         const btnFreeTrans = document.getElementById('toolFreeTransform');
 
@@ -484,10 +498,11 @@
                 id, name, img,
                 x: 0, y: 0,
                 scale: 1, rotation: 0,
+                skewX: 0, skewY: 0,
+                perspX: 0, perspY: 0,
                 flipX: 1, flipY: 1
             };
 
-            // Interactions de déplacement à la souris
             let isDraggingLayer = false, startX, startY;
             img.addEventListener('mousedown', (e) => {
                 e.stopPropagation();
@@ -516,17 +531,15 @@
             processImage();
         }
 
-        // Interaction avec les poignées de redimensionnement et rotation (Style Photoshop)
         let isTransforming = false;
-        let transformType = null; // 'scale' ou 'rotate'
-        let startMouseX, startMouseY, initialScale, initialRotation;
+        let transformType = null;
+        let startMouseX, initialScale, initialRotation;
 
         document.querySelectorAll('.t-handle').forEach(handle => {
             handle.addEventListener('mousedown', (e) => {
                 e.stopPropagation();
                 isTransforming = true;
                 startMouseX = e.clientX;
-                startMouseY = e.clientY;
                 const active = getActiveLayer();
                 if (!active) return;
                 initialScale = active.scale;
@@ -563,7 +576,7 @@
         }
 
         function applyLayerTransform(layer) {
-            const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
+            const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) skew(${layer.skewX}deg, ${layer.skewY}deg) rotateX(${layer.perspY}deg) rotateY(${layer.perspX}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
             layer.img.style.transform = transformStr;
             updateBoundingBoxPosition();
         }
@@ -585,6 +598,14 @@
             document.getElementById('val_scale').innerText = Math.round(active.scale * 100) + '%';
             document.getElementById('tr_rot').value = active.rotation;
             document.getElementById('val_rot').innerText = active.rotation + '°';
+            document.getElementById('tr_skewX').value = active.skewX;
+            document.getElementById('val_skewX').innerText = active.skewX + '°';
+            document.getElementById('tr_skewY').value = active.skewY;
+            document.getElementById('val_skewY').innerText = active.skewY + '°';
+            document.getElementById('tr_perspX').value = active.perspX;
+            document.getElementById('val_perspX').innerText = active.perspX + '°';
+            document.getElementById('tr_perspY').value = active.perspY;
+            document.getElementById('val_perspY').innerText = active.perspY + '°';
         }
 
         function updateLayersUI() {
@@ -621,7 +642,6 @@
             }
         };
 
-        // Contrôles numériques du panneau
         document.getElementById('tr_scale').addEventListener('input', (e) => {
             const active = getActiveLayer();
             if(!active) return;
@@ -635,6 +655,38 @@
             if(!active) return;
             active.rotation = parseFloat(e.target.value);
             document.getElementById('val_rot').innerText = e.target.value + '°';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_skewX').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.skewX = parseFloat(e.target.value);
+            document.getElementById('val_skewX').innerText = e.target.value + '°';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_skewY').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.skewY = parseFloat(e.target.value);
+            document.getElementById('val_skewY').innerText = e.target.value + '°';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_perspX').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.perspX = parseFloat(e.target.value);
+            document.getElementById('val_perspX').innerText = e.target.value + '°';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_perspY').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.perspY = parseFloat(e.target.value);
+            document.getElementById('val_perspY').innerText = e.target.value + '°';
             applyLayerTransform(active);
         });
 
@@ -701,7 +753,6 @@
             }
         }
 
-        // --- GESTION CALQUES & IMPORTATION ---
         const layersBtn = document.getElementById('layersBtn');
         const layersPanel = document.getElementById('layersPanel');
         
