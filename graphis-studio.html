@@ -87,7 +87,7 @@
     }
     .canvas-layer:active { cursor: grabbing; }
 
-    /* Curseur de Pinceau Style Lightroom (Taille & Dureté) */
+    /* Curseur Pinceau Interactif Style Lightroom */
     #brush-cursor {
         position: absolute;
         pointer-events: none;
@@ -166,12 +166,15 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 6px;
-        cursor: pointer;
+        cursor: grab;
         border: 1px solid #444;
         font-size: 12px;
         gap: 8px;
+        transition: background 0.15s, border-color 0.15s, transform 0.1s;
     }
     .layer-item.active { border-color: var(--accent-color); background: #2a2a2a; }
+    .layer-item.dragging { opacity: 0.4; border-style: dashed; }
+    .layer-item.drag-over { border-top: 2px solid var(--accent-color); }
     
     .layer-info { 
         display: flex; 
@@ -372,16 +375,13 @@
     </header>
 
     <div id="workspace">
-        <!-- Curseur Pinceau Interactif Style Lightroom -->
         <div id="brush-cursor">
             <div class="brush-outer-circle"></div>
             <div class="brush-inner-circle"></div>
         </div>
 
-        <!-- Aperçu Flottant pour Survol de Miniature -->
         <img id="thumbnail-preview-popover" alt="Agrandissement calque">
 
-        <!-- Panneau des Calques & Outils -->
         <div id="layersPanel">
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Pile de Calques</h3>
             
@@ -400,7 +400,6 @@
                 </button>
             </div>
 
-            <!-- Réglages du Pinceau de Masque -->
             <div class="mask-brush-box" id="maskBrushBox">
                 <h4>Option du Pinceau de Masque</h4>
                 <div class="control-group">
@@ -421,7 +420,6 @@
                 </div>
             </div>
 
-            <!-- Options de fusion et d'opacité -->
             <div class="layer-settings-box">
                 <h4>Style du Calque Actif</h4>
                 <div class="control-group">
@@ -445,7 +443,6 @@
             <div id="layersContainer"></div>
             <button id="addLayerBtn" style="width: 100%; margin-top: 10px; font-size: 11px;">+ Nouveau Calque</button>
 
-            <!-- Contrôles numériques et de transformation avancés -->
             <div class="transform-box">
                 <h4>Paramètres Précis</h4>
                 <div class="control-group">
@@ -652,11 +649,15 @@
 
         let layers = [];
         let activeLayerId = null;
+        let selectedLayerIds = []; // Gestion de la sélection multiple
+        let lastSelectedLayerId = null;
+
         let currentScale = 1;
         let currentTool = 'move';
         
         let isPaintingMask = false;
         let lastMaskPos = null;
+        let draggedLayerId = null; // Pour le Drag and Drop HTML5
 
         const btnMove = document.getElementById('toolMove');
         const btnFreeTrans = document.getElementById('toolFreeTransform');
@@ -673,7 +674,6 @@
             btnMaskBrush.classList.toggle('active', tool === 'maskBrush');
             maskBrushBox.style.display = (tool === 'maskBrush') ? 'block' : 'none';
 
-            // Masquer ou afficher la main/curseur standard sur les calques
             layers.forEach(l => {
                 l.img.style.cursor = (tool === 'maskBrush') ? 'none' : 'grab';
             });
@@ -802,7 +802,7 @@
             canvasLayer.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                setActiveLayer(id);
+                handleLayerSelection(id, e);
                 
                 if (currentTool === 'move' && layerObj.visible && !layerObj.locked) {
                     isDraggingLayer = true;
@@ -816,14 +816,26 @@
             });
 
             document.addEventListener('mousemove', (e) => {
-                if (activeLayerId !== id || !layerObj.visible || layerObj.locked) return;
+                if (!layerObj.visible || layerObj.locked) return;
                 
                 if (isDraggingLayer && currentTool === 'move') {
-                    layerObj.x = e.clientX - startX;
-                    layerObj.y = e.clientY - startY;
-                    applyLayerTransform(layerObj);
+                    // Déplacement simultané de tous les calques sélectionnés
+                    const dx = e.clientX - startX - layerObj.x;
+                    const dy = e.clientY - startY - layerObj.y;
+
+                    selectedLayerIds.forEach(selectedId => {
+                        const l = layers.find(item => item.id === selectedId);
+                        if (l && !l.locked && l.visible) {
+                            l.x += dx;
+                            l.y += dy;
+                            applyLayerTransform(l);
+                        }
+                    });
+
+                    startX = e.clientX - layerObj.x;
+                    startY = e.clientY - layerObj.y;
                     updateBoundingBoxPosition();
-                } else if (isPaintingMask && currentTool === 'maskBrush' && layerObj.hasMask) {
+                } else if (isPaintingMask && currentTool === 'maskBrush' && layerObj.hasMask && activeLayerId === id) {
                     paintMask(layerObj, e);
                 }
             });
@@ -842,10 +854,48 @@
                 layers.push(layerObj);
             }
 
-            setActiveLayer(id);
+            handleLayerSelection(id);
             updateZIndices();
             updateLayersUI();
             processImage();
+        }
+
+        // Gestion de la sélection multiple (Click, Ctrl+Click, Shift+Click)
+        function handleLayerSelection(id, event = null) {
+            if (!event) {
+                activeLayerId = id;
+                selectedLayerIds = [id];
+                lastSelectedLayerId = id;
+            } else if (event.ctrlKey || event.metaKey) {
+                activeLayerId = id;
+                if (selectedLayerIds.includes(id)) {
+                    if (selectedLayerIds.length > 1) {
+                        selectedLayerIds = selectedLayerIds.filter(item => item !== id);
+                        activeLayerId = selectedLayerIds[selectedLayerIds.length - 1];
+                    }
+                } else {
+                    selectedLayerIds.push(id);
+                }
+                lastSelectedLayerId = id;
+            } else if (event.shiftKey && lastSelectedLayerId) {
+                const reversedLayers = layers.slice().reverse();
+                const idx1 = reversedLayers.findIndex(l => l.id === lastSelectedLayerId);
+                const idx2 = reversedLayers.findIndex(l => l.id === id);
+                
+                const start = Math.min(idx1, idx2);
+                const end = Math.max(idx1, idx2);
+                
+                selectedLayerIds = reversedLayers.slice(start, end + 1).map(l => l.id);
+                activeLayerId = id;
+            } else {
+                activeLayerId = id;
+                selectedLayerIds = [id];
+                lastSelectedLayerId = id;
+            }
+            
+            updateLayersUI();
+            syncTransformUI();
+            updateBoundingBoxVisibility();
         }
 
         function renderLayerComposite(layer) {
@@ -1074,13 +1124,6 @@
             updateBoundingBoxPosition();
         }
 
-        function setActiveLayer(id) {
-            activeLayerId = id;
-            updateLayersUI();
-            syncTransformUI();
-            updateBoundingBoxVisibility();
-        }
-
         function syncTransformUI() {
             const active = getActiveLayer();
             if(!active) return;
@@ -1103,48 +1146,77 @@
         }
 
         document.getElementById('layerOpacity').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active || active.locked) return;
-            active.opacity = parseFloat(e.target.value);
-            document.getElementById('val_opacity').innerText = active.opacity + '%';
-            applyLayerTransform(active);
+            selectedLayerIds.forEach(id => {
+                const layer = layers.find(l => l.id === id);
+                if (layer && !layer.locked) {
+                    layer.opacity = parseFloat(e.target.value);
+                    applyLayerTransform(layer);
+                }
+            });
+            document.getElementById('val_opacity').innerText = e.target.value + '%';
         });
 
         document.getElementById('layerBlendMode').addEventListener('change', (e) => {
-            const active = getActiveLayer();
-            if(!active || active.locked) return;
-            active.blendMode = e.target.value;
-            applyLayerTransform(active);
+            selectedLayerIds.forEach(id => {
+                const layer = layers.find(l => l.id === id);
+                if (layer && !layer.locked) {
+                    layer.blendMode = e.target.value;
+                    applyLayerTransform(layer);
+                }
+            });
         });
 
-        function moveLayerUp(id) {
-            const idx = layers.findIndex(l => l.id === id);
-            if (idx < layers.length - 1) {
-                const temp = layers[idx];
-                layers[idx] = layers[idx + 1];
-                layers[idx + 1] = temp;
-                updateZIndices();
-                updateLayersUI();
-            }
-        }
-
-        function moveLayerDown(id) {
-            const idx = layers.findIndex(l => l.id === id);
-            if (idx > 0) {
-                const temp = layers[idx];
-                layers[idx] = layers[idx - 1];
-                layers[idx - 1] = temp;
-                updateZIndices();
-                updateLayersUI();
-            }
-        }
-
+        // Mise à jour de l'UI des calques avec Drag and Drop & Sélection multiple
         function updateLayersUI() {
             layersContainer.innerHTML = '';
             layers.slice().reverse().forEach((layer) => {
                 const item = document.createElement('div');
-                item.className = `layer-item ${layer.id === activeLayerId ? 'active' : ''}`;
-                item.onclick = () => setActiveLayer(layer.id);
+                const isSelected = selectedLayerIds.includes(layer.id);
+                
+                item.className = `layer-item ${isSelected ? 'active' : ''}`;
+                item.setAttribute('draggable', 'true');
+                item.dataset.id = layer.id;
+                
+                item.onclick = (e) => {
+                    handleLayerSelection(layer.id, e);
+                };
+
+                // --- GESTION DU DRAG & DROP HTML5 ---
+                item.ondragstart = (e) => {
+                    draggedLayerId = layer.id;
+                    item.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                };
+
+                item.ondragend = () => {
+                    item.classList.remove('dragging');
+                    document.querySelectorAll('.layer-item').forEach(el => el.classList.remove('drag-over'));
+                };
+
+                item.ondragover = (e) => {
+                    e.preventDefault();
+                    item.classList.add('drag-over');
+                };
+
+                item.ondragleave = () => {
+                    item.classList.remove('drag-over');
+                };
+
+                item.ondrop = (e) => {
+                    e.preventDefault();
+                    item.classList.remove('drag-over');
+                    if (!draggedLayerId || draggedLayerId === layer.id) return;
+
+                    const fromIndex = layers.findIndex(l => l.id === draggedLayerId);
+                    const toIndex = layers.findIndex(l => l.id === layer.id);
+
+                    if (fromIndex !== -1 && toIndex !== -1) {
+                        const [movedLayer] = layers.splice(fromIndex, 1);
+                        layers.splice(toIndex, 0, movedLayer);
+                        updateZIndices();
+                        updateLayersUI();
+                    }
+                };
                 
                 let maskHTML = layer.hasMask 
                     ? `<img id="mask_thumb_${layer.id}" class="layer-mask-thumbnail ${currentTool === 'maskBrush' ? 'active-target' : ''}" src="${layer.maskDataUrl}" title="Masque de fusion N&B" onclick="event.stopPropagation(); setTool('maskBrush');">`
@@ -1166,16 +1238,10 @@
                         <button class="icon-btn" title="Renommer" onclick="event.stopPropagation(); renameLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         </button>
-                        <button class="icon-btn" title="Dupliquer" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">
+                        <button class="icon-btn" title="Dupliquer (Ctrl+J)" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                         </button>
-                        <button class="icon-btn" title="Monter" onclick="event.stopPropagation(); moveLayerUp('${layer.id}')">
-                            <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"></polyline></svg>
-                        </button>
-                        <button class="icon-btn" title="Descendre" onclick="event.stopPropagation(); moveLayerDown('${layer.id}')">
-                            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                        </button>
-                        <button class="icon-btn" title="Supprimer" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">
+                        <button class="icon-btn" title="Supprimer (Suppr / Backspace)" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                         </button>
                         <button class="icon-btn ${layer.locked ? 'locked-btn' : ''}" title="${layer.locked ? 'Déverrouiller' : 'Verrouiller'}" onclick="event.stopPropagation(); toggleLayerLock('${layer.id}')">
@@ -1197,6 +1263,49 @@
             });
         }
 
+        // --- GESTION DES RACCOURCIS CLAVIER ---
+        document.addEventListener('keydown', (e) => {
+            // Ignorer si l'utilisateur saisit du texte dans un prompt ou un champ input
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+
+            // Touche Suppr / Backspace -> Supprimer la sélection
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                e.preventDefault();
+                deleteSelectedLayers();
+            }
+
+            // Ctrl + J ou Cmd + J -> Dupliquer le calque actif
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'j' || e.key === 'J')) {
+                e.preventDefault();
+                if (activeLayerId) {
+                    duplicateLayer(activeLayerId);
+                }
+            }
+        });
+
+        function deleteSelectedLayers() {
+            if (layers.length <= selectedLayerIds.length) {
+                alert("Impossible de supprimer tous les calques. Conservez au moins un calque.");
+                return;
+            }
+
+            const idsToDelete = [...selectedLayerIds];
+            idsToDelete.forEach(id => {
+                const layer = layers.find(l => l.id === id);
+                if (layer && !layer.locked) {
+                    layer.img.remove();
+                    layers = layers.filter(l => l.id !== id);
+                }
+            });
+
+            selectedLayerIds = [];
+            if (layers.length > 0) {
+                handleLayerSelection(layers[layers.length - 1].id);
+            }
+            updateZIndices();
+            processImage();
+        }
+
         function positionPopover(e) {
             const offset = 15;
             let left = e.clientX + offset;
@@ -1208,21 +1317,10 @@
         }
 
         window.deleteLayer = function(id) {
-            const layer = layers.find(l => l.id === id);
-            if (layer && layer.locked) return;
-            
-            if(layers.length <= 1) {
-                alert("Impossible de supprimer le dernier calque.");
-                return;
+            if (!selectedLayerIds.includes(id)) {
+                selectedLayerIds = [id];
             }
-            const idx = layers.findIndex(l => l.id === id);
-            if(idx !== -1) {
-                layers[idx].img.remove();
-                layers.splice(idx, 1);
-                updateZIndices();
-                setActiveLayer(layers[layers.length - 1].id);
-                processImage();
-            }
+            deleteSelectedLayers();
         };
 
         document.getElementById('tr_scale').addEventListener('input', (e) => {
@@ -1451,4 +1549,4 @@
         };
     </script>
 </body>
-</html
+</html>
