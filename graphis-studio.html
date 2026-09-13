@@ -58,6 +58,7 @@
         justify-content: center; 
         align-items: center; 
         overflow: hidden;
+        perspective: 1000px; /* Nécessaire pour les effets de perspective 3D */
     }
     
     .canvas-layer { 
@@ -80,6 +81,8 @@
         top: 70px;
         left: 20px;
         width: 310px;
+        max-height: 80vh;
+        overflow-y: auto;
         background: var(--panel-bg);
         border: 1px solid var(--border-color);
         border-radius: 8px;
@@ -173,7 +176,7 @@
     </header>
 
     <div id="workspace">
-        <!-- Panneau des Calques & Transformations -->
+        <!-- Panneau des Calques & Transformations Avancées -->
         <div id="layersPanel">
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Pile de Calques</h3>
             <div id="layersContainer"></div>
@@ -189,6 +192,22 @@
                 <div class="control-group">
                     <label>Rotation <span class="value-display" id="val_rot">0°</span></label>
                     <input type="range" id="tr_rot" min="-180" max="180" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Inclinaison X (Skew X) <span class="value-display" id="val_skewX">0°</span></label>
+                    <input type="range" id="tr_skewX" min="-60" max="60" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Inclinaison Y (Skew Y) <span class="value-display" id="val_skewY">0°</span></label>
+                    <input type="range" id="tr_skewY" min="-60" max="60" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Perspective Horiz. (Tilt Y) <span class="value-display" id="val_perspX">0°</span></label>
+                    <input type="range" id="tr_perspX" min="-75" max="75" value="0">
+                </div>
+                <div class="control-group">
+                    <label>Perspective Vert. (Tilt X) <span class="value-display" id="val_perspY">0°</span></label>
+                    <input type="range" id="tr_perspY" min="-75" max="75" value="0">
                 </div>
                 <div class="transform-grid">
                     <button id="tr_flipH" style="font-size:11px;">Miroir H</button>
@@ -350,7 +369,7 @@
         </div>
     </div>
 
-    <!-- Moteur de traitement multi-calques et transformations -->
+    <!-- Moteur de traitement multi-calques et transformations avancées -->
     <script>
         const imageContainer = document.getElementById('image-container');
         const overlay = document.getElementById('vignette-overlay');
@@ -365,7 +384,7 @@
             return el ? (parseFloat(el.value) || 0) : 0;
         };
 
-        // --- GESTION DES CALQUES ET TRANSFORMATIONS ---
+        // --- GESTION DES CALQUES ET TRANSFORMATIONS (Perspective & Inclinaison) ---
         function createLayer(imgSrc, name = "Calque") {
             const id = 'layer_' + Date.now();
             const img = document.createElement('img');
@@ -373,7 +392,6 @@
             img.className = 'canvas-layer';
             img.crossOrigin = 'anonymous';
             
-            // Propriétés de transformation initiale (style Photoshop)
             const layerObj = {
                 id,
                 name,
@@ -382,11 +400,14 @@
                 y: 0,
                 scale: 1,
                 rotation: 0,
+                skewX: 0,
+                skewY: 0,
+                perspX: 0,
+                perspY: 0,
                 flipX: 1,
                 flipY: 1
             };
 
-            // Gestion du Glisser-Déposer (Drag & Drop à la souris) de l'élément sur le calque
             let isDraggingLayer = false, startX, startY;
             img.addEventListener('mousedown', (e) => {
                 e.stopPropagation();
@@ -419,7 +440,7 @@
         }
 
         function applyLayerTransform(layer) {
-            const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
+            const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) skew(${layer.skewX}deg, ${layer.skewY}deg) rotateX(${layer.perspY}deg) rotateY(${layer.perspX}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
             layer.img.style.transform = transformStr;
         }
 
@@ -443,6 +464,14 @@
             document.getElementById('val_scale').innerText = Math.round(active.scale * 100) + '%';
             document.getElementById('tr_rot').value = active.rotation;
             document.getElementById('val_rot').innerText = active.rotation + '°';
+            document.getElementById('tr_skewX').value = active.skewX;
+            document.getElementById('val_skewX').innerText = active.skewX + '°';
+            document.getElementById('tr_skewY').value = active.skewY;
+            document.getElementById('val_skewY').innerText = active.skewY + '°';
+            document.getElementById('tr_perspX').value = active.perspX;
+            document.getElementById('val_perspX').innerText = active.perspX + '°';
+            document.getElementById('tr_perspY').value = active.perspY;
+            document.getElementById('val_perspY').innerText = active.perspY + '°';
         }
 
         function updateLayersUI() {
@@ -479,7 +508,7 @@
             }
         };
 
-        // --- CONTRÔLES DE TRANSFORMATION MANUELLE (Panneau) ---
+        // --- CONTRÔLES DE TRANSFORMATION MANUELLE & PERSPECTIVE ---
         document.getElementById('tr_scale').addEventListener('input', (e) => {
             const active = getActiveLayer();
             if(!active) return;
@@ -493,6 +522,38 @@
             if(!active) return;
             active.rotation = parseFloat(e.target.value);
             document.getElementById('val_rot').innerText = e.target.value + '°';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_skewX').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.skewX = parseFloat(e.target.value);
+            document.getElementById('val_skewX').innerText = e.target.value + '°';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_skewY').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.skewY = parseFloat(e.target.value);
+            document.getElementById('val_skewY').innerText = e.target.value + '°';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_perspX').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.perspX = parseFloat(e.target.value);
+            document.getElementById('val_perspX').innerText = e.target.value + '°';
+            applyLayerTransform(active);
+        });
+
+        document.getElementById('tr_perspY').addEventListener('input', (e) => {
+            const active = getActiveLayer();
+            if(!active) return;
+            active.perspY = parseFloat(e.target.value);
+            document.getElementById('val_perspY').innerText = e.target.value + '°';
             applyLayerTransform(active);
         });
 
@@ -546,7 +607,6 @@
 
                 const activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#rawEngine)`;
 
-                // Application des filtres sur le calque actif
                 layers.forEach(layer => {
                     if(layer.id === activeLayerId) {
                         layer.img.style.filter = activeFilterString;
@@ -564,7 +624,7 @@
             }
         }
 
-        // --- GESTION DES CALQUES (UI & Boutons) ---
+        // --- GESTION DES CALQUES ---
         const layersBtn = document.getElementById('layersBtn');
         const layersPanel = document.getElementById('layersPanel');
         
