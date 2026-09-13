@@ -418,8 +418,8 @@
                     <input type="range" id="brushSize" min="5" max="150" value="30">
                 </div>
                 <div class="control-group">
-                    <label>Dureté <span class="value-display" id="val_brushHardness">50%</span></label>
-                    <input type="range" id="brushHardness" min="0" max="100" value="50">
+                    <label>Dureté <span class="value-display" id="val_brushHardness">0%</span></label>
+                    <input type="range" id="brushHardness" min="0" max="100" value="0">
                 </div>
             </div>
 
@@ -911,7 +911,7 @@
                 const maskData = maskCtx.getImageData(0, 0, width, height);
 
                 for (let i = 0; i < imgData.data.length; i += 4) {
-                    const maskAlpha = maskData.data[i + 3]; // On s'appuie directement sur le canal Alpha du masque
+                    const maskAlpha = maskData.data[i + 3];
                     imgData.data[i + 3] = Math.round(imgData.data[i + 3] * (maskAlpha / 255));
                 }
                 ctx.putImageData(imgData, 0, 0);
@@ -940,45 +940,46 @@
             updateLayersUI();
         }
 
-        /* CORRECTION RIGOUREUSE DE LA DURETÉ ET POSITION 1:1 DU PINCEAU */
+        /* RECALCUL DE PRÉCISION ET FONDU ULTRA-DOUX À 0% DE DURETÉ */
         function paintMask(layer, e) {
             if (!layer.hasMask) return;
             const rect = layer.img.getBoundingClientRect();
 
-            // Projection exacte du pointeur dans le canvas réel
+            // Projection ultra-précise 1:1 entre le pointeur écran et la taille brute de l'image
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
 
-            const scaleX = layer.maskCanvas.width / rect.width;
-            const scaleY = layer.maskCanvas.height / rect.height;
+            const ratioX = layer.maskCanvas.width / rect.width;
+            const ratioY = layer.maskCanvas.height / rect.height;
 
-            const currX = mouseX * scaleX;
-            const currY = mouseY * scaleY;
+            const currX = mouseX * ratioX;
+            const currY = mouseY * ratioY;
 
-            const brushSize = parseFloat(document.getElementById('brushSize').value) * scaleX;
-            const hardness = parseFloat(document.getElementById('brushHardness').value) / 100;
+            const sizeSetting = parseFloat(document.getElementById('brushSize').value);
+            const hardnessSetting = parseFloat(document.getElementById('brushHardness').value) / 100;
             const isBlack = document.getElementById('brushColorSelect').value === 'black';
 
-            const radius = brushSize / 2;
-            const innerRadius = Math.max(0, radius * hardness);
+            // Adaptation du rayon à la résolution natif du canvas
+            const radius = (sizeSetting / 2) * ratioX;
+            // Coeur du pinceau ultra-souple si dureté basse
+            const innerRadius = radius * Math.pow(hardnessSetting, 2);
 
             const drawBrushSpot = (x, y) => {
                 layer.maskCtx.save();
                 
                 if (isBlack) {
-                    // Mode Effacement : On détruit l'alpha
                     layer.maskCtx.globalCompositeOperation = 'destination-out';
                     
-                    if (hardness >= 0.98) {
-                        // Cercle parfaitement net
+                    if (hardnessSetting >= 0.99) {
                         layer.maskCtx.fillStyle = 'rgba(0,0,0,1)';
                         layer.maskCtx.beginPath();
                         layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
                         layer.maskCtx.fill();
                     } else {
-                        // Dégradé radial progressif avec gestion du coeur dur et du fondu
                         const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
+                        // Adoucissement progressif pour éviter l'effet "net"
                         grad.addColorStop(0, 'rgba(0, 0, 0, 1)');
+                        grad.addColorStop(0.5, `rgba(0, 0, 0, ${0.4 + 0.6 * hardnessSetting})`);
                         grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
                         layer.maskCtx.fillStyle = grad;
@@ -987,10 +988,9 @@
                         layer.maskCtx.fill();
                     }
                 } else {
-                    // Mode Révélation (Blanc)
                     layer.maskCtx.globalCompositeOperation = 'source-over';
                     
-                    if (hardness >= 0.98) {
+                    if (hardnessSetting >= 0.99) {
                         layer.maskCtx.fillStyle = 'rgba(255, 255, 255, 1)';
                         layer.maskCtx.beginPath();
                         layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
@@ -998,6 +998,7 @@
                     } else {
                         const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
                         grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+                        grad.addColorStop(0.5, `rgba(255, 255, 255, ${0.4 + 0.6 * hardnessSetting})`);
                         grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
                         layer.maskCtx.fillStyle = grad;
