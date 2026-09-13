@@ -59,6 +59,7 @@
         align-items: center; 
         overflow: hidden;
         perspective: 1000px;
+        background-color: var(--bg-color);
     }
     
     .canvas-layer { 
@@ -72,15 +73,17 @@
     }
     .canvas-layer:active { cursor: grabbing; }
 
-    /* Cadre de Transformation Manuelle rigoureusement transparent */
+    /* Neutralisation totale de la teinte sur le cadre de transformation */
     #transform-bounding-box {
         position: absolute;
         display: none;
         border: 1px dashed var(--accent-color);
-        background: transparent !important;
+        background: none !important;
+        background-color: transparent !important;
         pointer-events: none;
         z-index: 100;
         box-sizing: border-box;
+        filter: none !important;
     }
     .t-handle {
         position: absolute;
@@ -229,7 +232,6 @@
         <div id="layersPanel">
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Pile de Calques</h3>
             
-            <!-- Sélecteur d'Outils -->
             <div class="tool-select-box">
                 <button class="tool-btn active" id="toolMove">✛ Déplacement</button>
                 <button class="tool-btn" id="toolFreeTransform">⌖ Transformation Libre</button>
@@ -432,7 +434,6 @@
         </div>
     </div>
 
-    <!-- Moteur complet -->
     <script>
         const imageContainer = document.getElementById('image-container');
         const overlay = document.getElementById('vignette-overlay');
@@ -710,8 +711,7 @@
                 const temp = v('t_temp'), tint = v('t_tint'), dehaze = v('t_dehaze'), clar = v('t_clar');
                 const hl = v('t_hl') + v('c_hl'), shad = v('t_shad') + v('c_shad');
                 const whites = v('t_white') + v('c_light'), blacks = v('t_black') + v('c_dark');
-                const blur = v('b_int'), noiseLum = v('d_nlum'), dist = v('o_dist');
-                const gVert = v('g_vert'), gHoriz = v('g_horiz'), gRot = v('g_rot');
+                const blur = v('b_int'), noiseLum = v('d_nlum');
                 const cgHue = v('cg_hue'), cgSat = v('cg_sat'), cgLum = v('cg_lum');
 
                 let rR = 1 + (v('cal_rs')*0.01) + (v('m_red')*0.01) + (v('m_org')*0.005) + (v('m_mag')*0.005) + (temp * 0.005) + (v('cal_rh') * 0.002) - (v('cal_shad') * 0.005);
@@ -738,10 +738,13 @@
                 let saturate = 100 + sat + (vib * 0.5) + (cgSat * 0.2);
                 let totalBlur = (blur * 0.1) + (noiseLum * 0.05);
 
-                const activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#rawEngine)`;
+                // Application du filtre CSS uniquement si un paramètre est altéré pour isoler totalement les calques bruts
+                let activeFilterString = 'none';
+                if (exp !== 0 || cont !== 0 || sat !== 0 || vib !== 0 || temp !== 0 || tint !== 0 || cgHue !== 0 || blur !== 0) {
+                    activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#rawEngine)`;
+                }
 
-                layers.forEach((layer, idx) => {
-                    // Si ce n'est pas le calque d'arrière-plan (idx > 0), on peut appliquer un effet si nécessaire, mais ici on garde les filtres RAW actifs uniquement sur l'actif
+                layers.forEach((layer) => {
                     layer.img.style.filter = (layer.id === activeLayerId) ? activeFilterString : 'none';
                     applyLayerTransform(layer);
                 });
@@ -750,7 +753,7 @@
                 overlay.style.boxShadow = `inset 0 0 ${100 - v('e_vigmid')}vmin rgba(0,0,0,${vigTotal})`;
 
             } catch (error) {
-                console.error("Erreur critique dans le moteur de rendu : ", error);
+                console.error("Erreur dans le moteur de rendu : ", error);
             }
         }
 
