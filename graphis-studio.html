@@ -418,9 +418,14 @@
                     <input type="range" id="brushSize" min="5" max="150" value="30">
                 </div>
                 <div class="control-group">
+                    <label>Opacité du pinceau <span class="value-display" id="val_brushOpacity">100%</span></label>
+                    <input type="range" id="brushOpacity" min="1" max="100" value="100">
+                </div>
+                <div class="control-group">
                     <label>Dureté <span class="value-display" id="val_brushHardness">0%</span></label>
                     <input type="range" id="brushHardness" min="0" max="100" value="0">
                 </div>
+                <button id="invertMaskBtn" style="width:100%; margin-top:5px; font-size:11px;">Inverser le Masque (Ctrl+I)</button>
             </div>
 
             <div class="layer-settings-box">
@@ -721,9 +726,20 @@
             updateBrushCursorDimensions();
         });
 
+        document.getElementById('brushOpacity').addEventListener('input', (e) => {
+            document.getElementById('val_brushOpacity').innerText = e.target.value + '%';
+        });
+
         document.getElementById('brushHardness').addEventListener('input', (e) => {
             document.getElementById('val_brushHardness').innerText = e.target.value + '%';
             updateBrushCursorDimensions();
+        });
+
+        document.getElementById('invertMaskBtn').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if (active && active.hasMask) {
+                invertLayerMask(active.id);
+            }
         });
 
         function updateBoundingBoxVisibility() {
@@ -940,12 +956,29 @@
             updateLayersUI();
         }
 
-        /* RECALCUL DE PRÉCISION ET FONDU ULTRA-DOUX À 0% DE DURETÉ */
+        function invertLayerMask(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer || !layer.hasMask) return;
+
+            const width = layer.maskCanvas.width;
+            const height = layer.maskCanvas.height;
+            const imgData = layer.maskCtx.getImageData(0, 0, width, height);
+            const data = imgData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                // Inversion sur la composante Alpha du masque
+                data[i + 3] = 255 - data[i + 3];
+            }
+
+            layer.maskCtx.putImageData(imgData, 0, 0);
+            updateMaskCSS(layer);
+        }
+
+        /* APPLICATION AVEC DOSAGE DE L'OPACITÉ DU PINCEAU ET RECALCUL ULTRA-PRÉCIS */
         function paintMask(layer, e) {
             if (!layer.hasMask) return;
             const rect = layer.img.getBoundingClientRect();
 
-            // Projection ultra-précise 1:1 entre le pointeur écran et la taille brute de l'image
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
 
@@ -956,12 +989,11 @@
             const currY = mouseY * ratioY;
 
             const sizeSetting = parseFloat(document.getElementById('brushSize').value);
+            const opacitySetting = parseFloat(document.getElementById('brushOpacity').value) / 100;
             const hardnessSetting = parseFloat(document.getElementById('brushHardness').value) / 100;
             const isBlack = document.getElementById('brushColorSelect').value === 'black';
 
-            // Adaptation du rayon à la résolution natif du canvas
             const radius = (sizeSetting / 2) * ratioX;
-            // Coeur du pinceau ultra-souple si dureté basse
             const innerRadius = radius * Math.pow(hardnessSetting, 2);
 
             const drawBrushSpot = (x, y) => {
@@ -971,15 +1003,14 @@
                     layer.maskCtx.globalCompositeOperation = 'destination-out';
                     
                     if (hardnessSetting >= 0.99) {
-                        layer.maskCtx.fillStyle = 'rgba(0,0,0,1)';
+                        layer.maskCtx.fillStyle = `rgba(0,0,0,${opacitySetting})`;
                         layer.maskCtx.beginPath();
                         layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
                         layer.maskCtx.fill();
                     } else {
                         const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
-                        // Adoucissement progressif pour éviter l'effet "net"
-                        grad.addColorStop(0, 'rgba(0, 0, 0, 1)');
-                        grad.addColorStop(0.5, `rgba(0, 0, 0, ${0.4 + 0.6 * hardnessSetting})`);
+                        grad.addColorStop(0, `rgba(0, 0, 0, ${opacitySetting})`);
+                        grad.addColorStop(0.5, `rgba(0, 0, 0, ${opacitySetting * (0.4 + 0.6 * hardnessSetting)})`);
                         grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
                         layer.maskCtx.fillStyle = grad;
@@ -991,14 +1022,14 @@
                     layer.maskCtx.globalCompositeOperation = 'source-over';
                     
                     if (hardnessSetting >= 0.99) {
-                        layer.maskCtx.fillStyle = 'rgba(255, 255, 255, 1)';
+                        layer.maskCtx.fillStyle = `rgba(255, 255, 255, ${opacitySetting})`;
                         layer.maskCtx.beginPath();
                         layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
                         layer.maskCtx.fill();
                     } else {
                         const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
-                        grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
-                        grad.addColorStop(0.5, `rgba(255, 255, 255, ${0.4 + 0.6 * hardnessSetting})`);
+                        grad.addColorStop(0, `rgba(255, 255, 255, ${opacitySetting})`);
+                        grad.addColorStop(0.5, `rgba(255, 255, 255, ${opacitySetting * (0.4 + 0.6 * hardnessSetting)})`);
                         grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
                         layer.maskCtx.fillStyle = grad;
@@ -1263,6 +1294,9 @@
                         <button class="icon-btn" title="Masque de fusion" onclick="event.stopPropagation(); addLayerMask('${layer.id}')">
                             <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18a9 9 0 0 0 0-18z" fill="var(--accent-color)"></path></svg>
                         </button>
+                        ${layer.hasMask ? `<button class="icon-btn" title="Inverser le masque (Ctrl+I)" onclick="event.stopPropagation(); invertLayerMask('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path></svg>
+                        </button>` : ''}
                         <button class="icon-btn" title="Renommer" onclick="event.stopPropagation(); renameLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         </button>
@@ -1303,6 +1337,14 @@
                 e.preventDefault();
                 if (activeLayerId) {
                     duplicateLayer(activeLayerId);
+                }
+            }
+
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'i' || e.key === 'I')) {
+                e.preventDefault();
+                const active = getActiveLayer();
+                if (active && active.hasMask) {
+                    invertLayerMask(active.id);
                 }
             }
         });
