@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Éditeur RAW Web - Graphis Studio</title>
+<!-- Chargement des polices manuscrites Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Allura&family=Caveat:wght@400..700&family=Dancing+Script:wght@400..700&family=Great+Vibes&family=Pacifico&family=Pinyon+Script&family=Sacramento&family=Satisfy&display=swap" rel="stylesheet">
+
 <style>
     :root {
         --bg-color: #121212;
@@ -321,7 +326,7 @@
         padding-top: 10px;
     }
     .transform-box h4, .layer-settings-box h4 { margin: 0 0 8px 0; font-size: 11px; color: var(--accent-color); text-transform: uppercase; }
-    .transform-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; margin-bottom: 8px; }
+    .transform-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 8px; }
     .transform-grid button { padding: 6px; display: flex; align-items: center; justify-content: center; }
     .transform-grid button svg { width: 14px; height: 14px; stroke: var(--accent-color); fill: none; stroke-width: 1.8; }
     .transform-grid button:hover svg { stroke: var(--bg-color); }
@@ -401,6 +406,7 @@
         <div class="header-center">
             <input type="file" id="fileInput" accept="image/*, .cr2, .cr3, .nef, .arw, .dng, .raw, .orf, .rw2" style="display: none;">
             <input type="file" id="layerFileInput" accept="image/*, .cr2, .cr3, .nef, .arw, .dng, .raw, .orf, .rw2" style="display: none;">
+            <input type="file" id="logoFileInput" accept="image/png, image/svg+xml, image/webp" style="display: none;">
             
             <button id="importBtn">Importer</button>
             <button id="layersBtn" style="margin-left: 10px;">Système de Calques</button>
@@ -467,13 +473,32 @@
             <div class="text-options-box" id="textOptionsBox">
                 <h4 id="textPanelTitle">Propriétés du Texte / Signature</h4>
                 <span id="signatureStatus" class="signature-badge" style="display:none;">Signature active enregistrée</span>
+                
+                <button id="importLogoBtn" style="width:100%; margin-bottom:10px; font-size:11px; display:flex; align-items:center; justify-content:center; gap:6px; background: rgba(255, 215, 0, 0.2);">
+                    <svg viewBox="0 0 24 24" style="width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    Charger un Logo PNG (Signature)
+                </button>
+
                 <div class="control-group">
                     <label>Texte / Signature <input type="text" id="textInputVal" value="Graphis Studio"></label>
                 </div>
                 <div class="control-group">
-                    <label>Police Système
+                    <label>Police Signature / Système
                         <select id="textFontSelect">
-                            <option value="sans-serif">Chargement des polices...</option>
+                            <optgroup label=" Polices Manuscrites / Signature">
+                                <option value="Dancing Script" style="font-family: 'Dancing Script', cursive;">Dancing Script</option>
+                                <option value="Great Vibes" style="font-family: 'Great Vibes', cursive;">Great Vibes</option>
+                                <option value="Pacifico" style="font-family: 'Pacifico', cursive;">Pacifico</option>
+                                <option value="Caveat" style="font-family: 'Caveat', cursive;">Caveat</option>
+                                <option value="Alex Brush" style="font-family: 'Alex Brush', cursive;">Alex Brush</option>
+                                <option value="Satisfy" style="font-family: 'Satisfy', cursive;">Satisfy</option>
+                                <option value="Sacramento" style="font-family: 'Sacramento', cursive;">Sacramento</option>
+                                <option value="Allura" style="font-family: 'Allura', cursive;">Allura</option>
+                                <option value="Pinyon Script" style="font-family: 'Pinyon Script', cursive;">Pinyon Script</option>
+                            </optgroup>
+                            <optgroup label=" Polices Système" id="systemFontsOptGroup">
+                                <option value="sans-serif">Sans-Serif Standard</option>
+                            </optgroup>
                         </select>
                     </label>
                 </div>
@@ -497,10 +522,11 @@
                 <hr class="divider">
                 <div style="font-size:10px; color:#aaa; margin-bottom:4px;">Positionnement rapide :</div>
                 <div class="transform-grid">
-                    <button id="posTopLeft" title="Coin Haut-Gauche"><svg viewBox="0 0 24 24"><path d="M19 15V7H11"></path><line x1="19" y1="7" x2="5" y2="21"></line></svg></button>
-                    <button id="posTopRight" title="Coin Haut-Droit"><svg viewBox="0 0 24 24"><path d="M5 15V7h8"></path><line x1="5" y1="7" x2="19" y2="21"></line></svg></button>
-                    <button id="posBottomLeft" title="Coin Bas-Gauche"><svg viewBox="0 0 24 24"><path d="M19 9v8h-8"></path><line x1="19" y1="17" x2="5" y2="3"></line></svg></button>
-                    <button id="posBottomRight" title="Coin Bas-Droit"><svg viewBox="0 0 24 24"><path d="M5 9v8h8"></path><line x1="5" y1="17" x2="19" y2="3"></line></svg></button>
+                    <button id="posTopLeft" title="Haut-Gauche"><svg viewBox="0 0 24 24"><path d="M19 15V7H11"></path><line x1="19" y1="7" x2="5" y2="21"></line></svg></button>
+                    <button id="posTopRight" title="Haut-Droit"><svg viewBox="0 0 24 24"><path d="M5 15V7h8"></path><line x1="5" y1="7" x2="19" y2="21"></line></svg></button>
+                    <button id="posBottomLeft" title="Bas-Gauche"><svg viewBox="0 0 24 24"><path d="M19 9v8h-8"></path><line x1="19" y1="17" x2="5" y2="3"></line></svg></button>
+                    <button id="posBottomCenter" title="Bas-Centre"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg></button>
+                    <button id="posBottomRight" title="Bas-Droit"><svg viewBox="0 0 24 24"><path d="M5 9v8h8"></path><line x1="5" y1="17" x2="19" y2="3"></line></svg></button>
                 </div>
                 <button id="saveAsSignatureBtn" style="width:100%; margin-top:4px; font-size:11px; display:flex; align-items:center; justify-content:center; gap:6px;">
                     <svg viewBox="0 0 24 24" style="width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
@@ -557,7 +583,7 @@
                     <label>Perspective Vert. <span class="value-display" id="val_perspY">0°</span></label>
                     <input type="range" id="tr_perspY" min="-75" max="75" value="0">
                 </div>
-                <div class="transform-grid">
+                <div class="transform-grid" style="grid-template-columns: repeat(2, 1fr);">
                     <button id="tr_flipH" style="font-size:11px;">Miroir H</button>
                     <button id="tr_flipV" style="font-size:11px;">Miroir V</button>
                 </div>
@@ -760,7 +786,7 @@
         });
 
         async function loadSystemFonts() {
-            const fontSelect = document.getElementById('textFontSelect');
+            const optGroup = document.getElementById('systemFontsOptGroup');
             let fontSet = new Set(['sans-serif', 'serif', 'monospace', 'Arial', 'Georgia', 'Impact', 'Times New Roman', 'Verdana', 'Courier New']);
             
             if ('queryLocalFonts' in window) {
@@ -774,12 +800,12 @@
                 }
             }
 
-            fontSelect.innerHTML = '';
+            optGroup.innerHTML = '';
             Array.from(fontSet).sort().forEach(font => {
                 const opt = document.createElement('option');
                 opt.value = font;
                 opt.textContent = font;
-                fontSelect.appendChild(opt);
+                optGroup.appendChild(opt);
             });
         }
         loadSystemFonts();
@@ -820,9 +846,28 @@
                 createTextLayer(savedSignatureConfig.text, savedSignatureConfig.fontFamily, savedSignatureConfig.style, savedSignatureConfig.size, savedSignatureConfig.color);
             } else {
                 titleEl.textContent = "Propriétés du Texte / Signature";
-                createTextLayer("Graphis Studio", "sans-serif", "normal", 48, "#FFD700");
+                createTextLayer("Graphis Studio", "Dancing Script", "normal", 54, "#FFD700");
             }
         }
+
+        // BOUTON DE CHARGEMENT DE LOGO PNG
+        const importLogoBtn = document.getElementById('importLogoBtn');
+        const logoFileInput = document.getElementById('logoFileInput');
+        
+        importLogoBtn.addEventListener('click', () => logoFileInput.click());
+        logoFileInput.addEventListener('change', (e) => {
+            if (e.target.files[0]) {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                    createLayer(evt.target.result, `Logo: ${file.name}`, {
+                        scale: 0.3 // Taille initiale adaptée pour un logo
+                    });
+                    setTool('move');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
         document.getElementById('saveAsSignatureBtn').addEventListener('click', () => {
             const active = getActiveLayer();
@@ -835,7 +880,7 @@
             }
         });
 
-        // NOUVEAU CALCUL D'ANCRAGE RECTIFIÉ
+        // POSITIONNEMENT AVEC BAS-CENTRE
         function positionActiveLayer(corner) {
             const active = getActiveLayer();
             const baseLayer = layers[0];
@@ -844,9 +889,8 @@
             const baseRect = baseLayer.img.getBoundingClientRect();
             const activeRect = active.img.getBoundingClientRect();
 
-            const margin = 20; // Marge fixe en pixels par rapport aux bords de la photo
+            const margin = 20;
 
-            // Calcul du décalage nécessaire pour aligner le bord de la signature avec celui de la photo
             let deltaX = 0;
             let deltaY = 0;
 
@@ -856,6 +900,11 @@
             } else if (corner === 'bottom-left') {
                 deltaX = (baseRect.left + margin) - activeRect.left;
                 deltaY = (baseRect.bottom - margin) - activeRect.bottom;
+            } else if (corner === 'bottom-center') {
+                const baseCenterX = baseRect.left + (baseRect.width / 2);
+                const activeCenterX = activeRect.left + (activeRect.width / 2);
+                deltaX = baseCenterX - activeCenterX;
+                deltaY = (baseRect.bottom - margin) - activeRect.bottom;
             } else if (corner === 'top-right') {
                 deltaX = (baseRect.right - margin) - activeRect.right;
                 deltaY = (baseRect.top + margin) - activeRect.top;
@@ -864,7 +913,6 @@
                 deltaY = (baseRect.top + margin) - activeRect.top;
             }
 
-            // On convertit le delta écran en coordonnées internes compensées par le zoom
             active.x += (deltaX / currentScale);
             active.y += (deltaY / currentScale);
 
@@ -875,6 +923,7 @@
         document.getElementById('posTopLeft').addEventListener('click', () => positionActiveLayer('top-left'));
         document.getElementById('posTopRight').addEventListener('click', () => positionActiveLayer('top-right'));
         document.getElementById('posBottomLeft').addEventListener('click', () => positionActiveLayer('bottom-left'));
+        document.getElementById('posBottomCenter').addEventListener('click', () => positionActiveLayer('bottom-center'));
         document.getElementById('posBottomRight').addEventListener('click', () => positionActiveLayer('bottom-right'));
 
         function handleTextParamChange() {
@@ -994,17 +1043,16 @@
             return el ? (parseFloat(el.value) || 0) : 0;
         };
 
-        // AJUSTEMENT DYNAMIQUE DU CANVAS DU TEXTE À SA TAILLE EXACTE
-        function createTextLayer(text = "Graphis Studio", fontFamily = "sans-serif", style = "normal", size = 48, color = "#FFD700") {
+        function createTextLayer(text = "Graphis Studio", fontFamily = "Dancing Script", style = "normal", size = 54, color = "#FFD700") {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
-            const fontSpec = `${style === 'normal' ? '' : style} ${size}px "${fontFamily}"`;
+            const fontSpec = `${style === 'normal' ? '' : style} ${size}px "${fontFamily}", cursive`;
             ctx.font = fontSpec;
             
             const metrics = ctx.measureText(text);
-            const textWidth = Math.ceil(metrics.width) + 20;
-            const textHeight = Math.ceil(size * 1.3);
+            const textWidth = Math.ceil(metrics.width) + 30;
+            const textHeight = Math.ceil(size * 1.5);
 
             canvas.width = textWidth;
             canvas.height = textHeight;
@@ -1027,12 +1075,12 @@
             const ctx = canvas.getContext('2d');
             const cfg = layer.textConfig;
             
-            const fontSpec = `${cfg.style === 'normal' ? '' : cfg.style} ${cfg.size}px "${cfg.fontFamily}"`;
+            const fontSpec = `${cfg.style === 'normal' ? '' : cfg.style} ${cfg.size}px "${cfg.fontFamily}", cursive`;
             ctx.font = fontSpec;
             
             const metrics = ctx.measureText(cfg.text);
-            const textWidth = Math.ceil(metrics.width) + 20;
-            const textHeight = Math.ceil(cfg.size * 1.3);
+            const textWidth = Math.ceil(metrics.width) + 30;
+            const textHeight = Math.ceil(cfg.size * 1.5);
 
             canvas.width = textWidth;
             canvas.height = textHeight;
@@ -1085,13 +1133,8 @@
             };
 
             rawImg.onload = () => {
-                if (!layerObj.isText) {
-                    canvasLayer.width = rawImg.naturalWidth || 800;
-                    canvasLayer.height = rawImg.naturalHeight || 600;
-                } else {
-                    canvasLayer.width = rawImg.naturalWidth;
-                    canvasLayer.height = rawImg.naturalHeight;
-                }
+                canvasLayer.width = rawImg.naturalWidth || 800;
+                canvasLayer.height = rawImg.naturalHeight || 600;
                 renderLayerComposite(layerObj);
             };
 
