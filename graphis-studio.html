@@ -161,15 +161,6 @@
         backdrop-filter: blur(10px);
         z-index: 12;
     }
-    
-    .layers-top-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        margin-bottom: 12px;
-        border-bottom: 1px solid #333;
-        padding-bottom: 12px;
-    }
 
     .layer-item {
         background: #222;
@@ -265,8 +256,9 @@
     .layer-actions { display: flex; gap: 4px; flex-shrink: 0; }
 
     .tool-select-box {
-        display: flex;
-        gap: 5px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
         margin-bottom: 12px;
         background: #1a1a1a;
         padding: 4px;
@@ -274,22 +266,22 @@
         border: 1px solid #333;
     }
     .tool-btn {
-        flex: 1;
         background: transparent;
         color: #aaa;
         border: none;
-        padding: 6px;
-        font-size: 11px;
+        padding: 6px 2px;
+        font-size: 10px;
         border-radius: 3px;
         cursor: pointer;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 6px;
+        gap: 4px;
     }
     .tool-btn svg {
-        width: 13px;
-        height: 13px;
+        width: 14px;
+        height: 14px;
         stroke: currentColor;
         fill: none;
         stroke-width: 1.8;
@@ -300,6 +292,9 @@
         background: var(--accent-color);
         color: #121212;
         font-weight: bold;
+    }
+    .tool-btn.active svg {
+        stroke: #121212;
     }
 
     .mask-brush-box, .text-options-box {
@@ -399,23 +394,22 @@
         <div id="layersPanel">
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Calques</h3>
             
-            <div class="layers-top-actions">
-                <button id="globalMaskBtn" style="font-size:11px;" title="Ajouter un masque au calque actif">➕ Masque</button>
-                <button id="globalTextBtn" style="font-size:11px;" title="Créer un calque de texte">✏️ Texte</button>
-            </div>
-
             <div class="tool-select-box">
-                <button class="tool-btn active" id="toolMove">
+                <button class="tool-btn active" id="toolMove" title="Déplacement">
                     <svg viewBox="0 0 24 24"><polyline points="5 9 2 12 5 15"></polyline><polyline points="9 5 12 2 15 5"></polyline><polyline points="15 19 12 22 9 19"></polyline><polyline points="19 9 22 12 19 15"></polyline><line x1="2" y1="12" x2="22" y2="12"></line><line x1="12" y1="2" x2="12" y2="22"></line></svg>
-                    Déplacement
+                    <span>Déplac.</span>
                 </button>
-                <button class="tool-btn" id="toolFreeTransform">
+                <button class="tool-btn" id="toolFreeTransform" title="Transformation">
                     <svg viewBox="0 0 24 24"><path d="M15 3h6v6"></path><path d="M9 21H3v-6"></path><path d="M21 3l-7 7"></path><path d="M3 21l7-7"></path></svg>
-                    Transform.
+                    <span>Transf.</span>
                 </button>
-                <button class="tool-btn" id="toolMaskBrush">
+                <button class="tool-btn" id="toolMaskBrush" title="Masque">
                     <svg viewBox="0 0 24 24"><path d="M18 11l-1.5-1.5s-1.5 1.5-3 0 1.5-3 0-4.5-4.5 1.5-4.5 1.5L3 12.5V18h5.5L18 11z"></path><path d="M14 6l3 3"></path></svg>
-                    Masque
+                    <span>Masque</span>
+                </button>
+                <button class="tool-btn" id="toolText" title="Texte">
+                    <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="12" y1="4" x2="12" y2="20"></line><line x1="8" y1="20" x2="16" y2="20"></line></svg>
+                    <span>Texte</span>
                 </button>
             </div>
 
@@ -478,7 +472,7 @@
                 <div class="control-group">
                     <label>Couleur <input type="color" id="textColorPicker" value="#FFD700"></label>
                 </div>
-                <button id="applyTextChangesBtn" style="width:100%; margin-top:5px; font-size:11px;">Mettre à jour le Texte</button>
+                <button id="applyTextChangesBtn" style="width:100%; margin-top:5px; font-size:11px;">Créer le Calque Texte</button>
             </div>
 
             <div class="layer-settings-box">
@@ -714,25 +708,31 @@
         const btnMove = document.getElementById('toolMove');
         const btnFreeTrans = document.getElementById('toolFreeTransform');
         const btnMaskBrush = document.getElementById('toolMaskBrush');
+        const btnText = document.getElementById('toolText');
 
         btnMove.addEventListener('click', () => { setTool('move'); });
         btnFreeTrans.addEventListener('click', () => { setTool('transform'); });
-        btnMaskBrush.addEventListener('click', () => { setTool('maskBrush'); });
+        btnMaskBrush.addEventListener('click', () => { 
+            setTool('maskBrush'); 
+            const active = getActiveLayer();
+            if (active && !active.hasMask) {
+                addLayerMask(active.id);
+            }
+        });
+        btnText.addEventListener('click', () => { setTool('text'); });
 
         function setTool(tool) {
             currentTool = tool;
             btnMove.classList.toggle('active', tool === 'move');
             btnFreeTrans.classList.toggle('active', tool === 'transform');
             btnMaskBrush.classList.toggle('active', tool === 'maskBrush');
+            btnText.classList.toggle('active', tool === 'text');
             
             maskBrushBox.style.display = (tool === 'maskBrush') ? 'block' : 'none';
+            textOptionsBox.style.display = (tool === 'text') ? 'block' : 'none';
+
             if (tool === 'maskBrush') {
-                textOptionsBox.style.display = 'none';
                 document.body.classList.add('tool-brush');
-                const active = getActiveLayer();
-                if (active && !active.hasMask) {
-                    addLayerMask(active.id);
-                }
             } else {
                 document.body.classList.remove('tool-brush');
                 brushCursor.style.display = 'none';
@@ -801,23 +801,6 @@
             const active = getActiveLayer();
             if (active && active.hasMask) {
                 deleteLayerMask(active.id);
-            }
-        });
-
-        // Global top buttons
-        document.getElementById('globalMaskBtn').addEventListener('click', () => {
-            const active = getActiveLayer();
-            if (active) {
-                if (!active.hasMask) addLayerMask(active.id);
-                setTool('maskBrush');
-            }
-        });
-
-        document.getElementById('globalTextBtn').addEventListener('click', () => {
-            textOptionsBox.style.display = textOptionsBox.style.display === 'block' ? 'none' : 'block';
-            if (textOptionsBox.style.display === 'block') {
-                maskBrushBox.style.display = 'none';
-                if (currentTool === 'maskBrush') setTool('move');
             }
         });
 
