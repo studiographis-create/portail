@@ -344,13 +344,25 @@
 
     .module-content { padding: 10px 5px 15px 5px; }
     .control-group { margin-bottom: 12px; }
-    .control-group label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 11px; color: #bbb; }
+    .control-group label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 11px; color: #bbb; align-items: center; }
     .value-display { color: var(--accent-color); font-variant-numeric: tabular-nums; }
     
     input[type=range] { width: 100%; accent-color: var(--accent-color); height: 4px; background: #333; outline: none; -webkit-appearance: none; border-radius: 2px; }
     input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent-color); cursor: pointer; }
-    select, input[type=color], input[type=text] { width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 4px; border-radius: 4px; font-size: 11px; box-sizing: border-box; }
-    input[type=color] { height: 26px; padding: 0 4px; cursor: pointer; }
+    select, input[type=text] { width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 4px; border-radius: 4px; font-size: 11px; box-sizing: border-box; }
+    
+    /* Case couleur réduite et élégante */
+    input[type=color] { 
+        width: 40px; 
+        height: 22px; 
+        background: #222; 
+        color: #fff; 
+        border: 1px solid #444; 
+        padding: 1px; 
+        border-radius: 4px; 
+        cursor: pointer; 
+    }
+
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
 </style>
 </head>
@@ -779,12 +791,10 @@
                 document.getElementById('textColorPicker').value = active.textConfig.color;
             } else {
                 titleEl.textContent = "Propriétés du Texte";
-                // Si aucun calque texte n'est sélectionné, on en crée un nouveau automatiquement
                 createTextLayer("Graphis Studio", "sans-serif", "normal", 48, "#FFD700");
             }
         }
 
-        // Modification automatique en direct lors de la modification des champs de texte
         function handleTextParamChange() {
             const active = getActiveLayer();
             const textVal = document.getElementById('textInputVal').value;
