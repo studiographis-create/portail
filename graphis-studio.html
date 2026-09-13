@@ -16,7 +16,6 @@
 
     header { padding: 12px 20px; background: #1a1a1a; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
     
-    /* Style du logo Graphis Studio en haut à gauche */
     .brand-logo {
         font-weight: 800;
         font-size: 16px;
@@ -41,7 +40,6 @@
     button { background: transparent; color: var(--accent-color); border: 1px solid var(--accent-color); padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold; transition: all 0.2s; }
     button:hover { background: var(--accent-color); color: var(--bg-color); }
 
-    /* Espace de travail central avec barre de zoom intégrée */
     #workspace { display: flex; flex-direction: column; justify-content: center; align-items: center; height: calc(100vh - 57px); position: relative; overflow: hidden; }
     
     #zoom-toolbar {
@@ -78,6 +76,35 @@
     }
     
     #vignette-overlay { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 5; transition: none; }
+
+    /* Panneau des Calques */
+    #layersPanel {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 20px;
+        width: 280px;
+        background: var(--panel-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.9);
+        backdrop-filter: blur(10px);
+        z-index: 12;
+    }
+    .layer-item {
+        background: #333;
+        padding: 10px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+        cursor: pointer;
+        border: 1px solid #444;
+        font-size: 12px;
+    }
+    .layer-item.active { border-color: var(--accent-color); }
+    .layer-eye { margin-right: 10px; color: var(--accent-color); }
 
     #panel { position: absolute; top: 20px; right: 20px; width: 340px; max-height: 90vh; background: var(--panel-bg); border: 1px solid var(--border-color); border-radius: 8px; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 10; }
     .panel-header { padding: 15px; border-bottom: 1px solid var(--border-color); cursor: move; display: flex; justify-content: space-between; align-items: center; }
@@ -126,7 +153,6 @@
     </svg>
 
     <header>
-        <!-- Logo en haut à gauche -->
         <div class="brand-logo">
             Graphis<span>Studio</span>
         </div>
@@ -140,6 +166,17 @@
     </header>
 
     <div id="workspace">
+        <!-- Panneau de Calques Flottant -->
+        <div id="layersPanel">
+            <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Pile de Calques</h3>
+            <div id="layersContainer">
+                <div class="layer-item active">
+                    <span class="layer-eye">👁</span> Calque Arrière-plan (RAW)
+                </div>
+            </div>
+            <button style="width: 100%; margin-top: 10px; font-size: 11px;">+ Nouveau Calque</button>
+        </div>
+
         <div id="zoom-toolbar">
             <button id="zoomOutBtn" title="Dézoomer">-</button>
             <button id="fitScreenBtn" title="Taille écran">Ajuster</button>
@@ -162,7 +199,6 @@
             </div>
 
             <div class="panel-content" id="controls">
-                
                 <!-- 1. RÉGLAGES DE BASE -->
                 <details open><summary>Réglages de base</summary>
                     <div class="module-content">
@@ -351,6 +387,14 @@
             }
         }
 
+        // --- GESTION DU SYSTÈME DE CALQUES ---
+        const layersBtn = document.getElementById('layersBtn');
+        const layersPanel = document.getElementById('layersPanel');
+        
+        layersBtn.addEventListener('click', () => {
+            layersPanel.style.display = (layersPanel.style.display === 'none' || layersPanel.style.display === '') ? 'block' : 'none';
+        });
+
         // --- GESTION DU ZOOM ---
         document.getElementById('zoomInBtn').addEventListener('click', () => { currentScale += 0.25; processImage(); });
         document.getElementById('zoomOutBtn').addEventListener('click', () => { currentScale = Math.max(0.2, currentScale - 0.25); processImage(); });
@@ -430,7 +474,7 @@
             alert("Rendu en cours... (Le bouton exporter nécessitera l'API Canvas drawImage pour générer le JPEG final)");
         });
 
-        // --- DÉPLACEMENT DU PANNEAU FLOTTANT ---
+        // --- DÉPLACEMENT DU PANNEAU FLOTTANT (Réglages) ---
         const panel = document.getElementById('panel');
         const header = document.getElementById('panelHeader');
         let isDragging = false, startX, startY, initX, initY;
