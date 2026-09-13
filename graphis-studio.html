@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Éditeur RAW Web - Interface Fonctionnelle</title>
+<title>Éditeur RAW Web - Interface Complète et Fonctionnelle</title>
 <style>
     :root {
         --bg-color: #121212;
@@ -20,6 +20,7 @@
         overflow: hidden;
     }
 
+    /* Barre d'outils supérieure */
     header {
         padding: 12px 20px;
         background: #1a1a1a;
@@ -56,10 +57,10 @@
         max-width: 80%;
         max-height: 80%;
         box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        /* Retrait de la transition pour plus de réactivité sur les gros fichiers */
+        transition: filter 0.05s ease-out;
     }
 
-    /* Panneau latéral des réglages */
+    /* Panneau latéral déplaçable */
     #panel {
         position: absolute;
         top: 20px;
@@ -78,7 +79,7 @@
 
     /* Panneau de Calques */
     #layersPanel {
-        display: none; /* Masqué par défaut */
+        display: none;
         position: absolute;
         top: 20px;
         left: 20px;
@@ -105,6 +106,7 @@
     .layer-item.active { border-color: var(--accent-color); }
     .layer-eye { margin-right: 10px; color: var(--accent-color); }
 
+    /* En-tête du panneau (zone de déplacement) */
     .panel-header {
         padding: 15px;
         border-bottom: 1px solid var(--border-color);
@@ -114,34 +116,106 @@
         align-items: center;
     }
 
-    .panel-header h2 { margin: 0; font-size: 14px; color: var(--accent-color); text-transform: uppercase; }
+    .panel-header h2 {
+        margin: 0;
+        font-size: 14px;
+        color: var(--accent-color);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-    .panel-content { overflow-y: auto; padding: 10px; flex-grow: 1; }
+    /* Outils locaux (Masques, Recadrage...) */
+    .local-tools {
+        display: flex;
+        justify-content: space-around;
+        padding: 10px;
+        border-bottom: 1px solid var(--border-color);
+        background: rgba(0,0,0,0.2);
+    }
+
+    .local-tools button {
+        border: none;
+        font-size: 18px;
+        padding: 8px;
+        border-radius: 4px;
+    }
+    .local-tools button:hover { background: #333; color: var(--accent-color); }
+
+    /* Conteneur scrollable des accordéons */
+    .panel-content {
+        overflow-y: auto;
+        padding: 10px;
+        flex-grow: 1;
+    }
+    
+    /* Scrollbar personnalisée */
     .panel-content::-webkit-scrollbar { width: 6px; }
     .panel-content::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
 
-    details { margin-bottom: 5px; border-bottom: 1px solid #2a2a2a; }
-    summary {
-        padding: 10px 5px; cursor: pointer; font-size: 13px; font-weight: 600;
-        display: flex; justify-content: space-between;
+    /* Structure Accordéon */
+    details {
+        margin-bottom: 5px;
+        border-bottom: 1px solid #2a2a2a;
     }
+
+    summary {
+        padding: 10px 5px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-color);
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        transition: color 0.2s;
+    }
+
     summary::-webkit-details-marker { display: none; }
     summary:after { content: "▼"; font-size: 10px; color: #666; }
     details[open] summary:after { content: "▲"; color: var(--accent-color); }
     details[open] summary { color: var(--accent-color); }
 
-    .module-content { padding: 10px 5px 15px 5px; }
+    .module-content {
+        padding: 10px 5px 15px 5px;
+    }
+
+    /* Groupes de curseurs */
     .control-group { margin-bottom: 12px; }
-    .control-group label { display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 11px; color: #bbb; }
+    .control-group label {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 11px;
+        color: #bbb;
+    }
     .value-display { color: var(--accent-color); font-variant-numeric: tabular-nums; }
     
     input[type=range] {
-        width: 100%; accent-color: var(--accent-color); height: 4px;
-        background: #333; outline: none; -webkit-appearance: none; border-radius: 2px;
+        width: 100%;
+        accent-color: var(--accent-color);
+        height: 4px;
+        background: #333;
+        outline: none;
+        -webkit-appearance: none;
+        border-radius: 2px;
     }
     input[type=range]::-webkit-slider-thumb {
-        -webkit-appearance: none; width: 12px; height: 12px;
-        border-radius: 50%; background: var(--accent-color); cursor: pointer;
+        -webkit-appearance: none;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--accent-color);
+        cursor: pointer;
+    }
+
+    select {
+        width: 100%;
+        background: #222;
+        color: #fff;
+        border: 1px solid #444;
+        padding: 4px;
+        border-radius: 4px;
+        font-size: 11px;
     }
     
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
@@ -151,10 +225,9 @@
 
     <header>
         <div>
-            <!-- Champ fichier caché lié au bouton Importer -->
             <input type="file" id="fileInput" accept="image/*" style="display: none;">
-            <button id="importBtn">Importer (JPG/PNG)</button>
-            <button id="layersBtn" style="margin-left:10px;">Système de Calques</button>
+            <button id="importBtn">Importer</button>
+            <button id="layersBtn" style="margin-left: 10px;">Système de Calques</button>
         </div>
         <button id="exportBtn">Exporter</button>
     </header>
@@ -170,63 +243,185 @@
                     <span class="layer-eye">👁</span> Image d'arrière-plan
                 </div>
             </div>
-            <button style="width: 100%; margin-top: 10px; font-size: 11px;">+ Ajouter un calque de réglage</button>
+            <button style="width: 100%; margin-top: 10px; font-size: 11px;">+ Ajouter un calque</button>
         </div>
 
-        <!-- Panneau des Réglages -->
         <div id="panel">
             <div class="panel-header" id="panelHeader">
                 <h2>Caméra Raw</h2>
             </div>
+            
+            <!-- Outils de retouche globale et locale -->
+            <div class="local-tools">
+                <button title="Cadrage et redressement">◩</button>
+                <button title="Suppression (Génératif/Corriger/Dupliquer)">🩹</button>
+                <button title="Masquage (Sujet, Ciel, Plages...)">◐</button>
+                <button title="Correction des yeux rouges">👁</button>
+            </div>
 
             <div class="panel-content">
+                
                 <!-- 1. RÉGLAGES DE BASE -->
                 <details open>
                     <summary>Réglages de base</summary>
                     <div class="module-content">
-                        <!-- Remarquez les attributs ID ajoutés ici pour le ciblage JS -->
                         <div class="control-group">
-                            <label>Température <span class="value-display">0</span></label>
-                            <input type="range" id="tempSlider" min="-100" max="100" value="0">
+                            <label>Profil <select><option>Adobe Couleur</option><option>Paysage</option><option>Portrait</option></select></label>
                         </div>
                         <hr class="divider">
-                        <div class="control-group">
-                            <label>Exposition <span class="value-display">0.0</span></label>
-                            <input type="range" id="expSlider" min="-5" max="5" step="0.1" value="0">
-                        </div>
-                        <div class="control-group">
-                            <label>Contraste <span class="value-display">0</span></label>
-                            <input type="range" id="contSlider" min="-100" max="100" value="0">
-                        </div>
+                        <div class="control-group"><label>Température <span class="value-display">0</span></label><input type="range" id="tempSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Teinte <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group">
-                            <label>Saturation <span class="value-display">0</span></label>
-                            <input type="range" id="satSlider" min="-100" max="100" value="0">
-                        </div>
+                        <div class="control-group"><label>Exposition <span class="value-display">0.00</span></label><input type="range" id="expSlider" min="-5" max="5" step="0.1" value="0"></div>
+                        <div class="control-group"><label>Contraste <span class="value-display">0</span></label><input type="range" id="contSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Hautes lumières <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Ombres <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Blancs <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Noirs <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <hr class="divider">
+                        <div class="control-group"><label>Texture <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Clarté <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Correction du voile <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <hr class="divider">
+                        <div class="control-group"><label>Vibration <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Saturation <span class="value-display">0</span></label><input type="range" id="satSlider" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
-                
-                <!-- D'autres panneaux visuels peuvent être réintégrés ici -->
+
+                <!-- 2. COURBE DES TONALITÉS -->
                 <details>
-                    <summary>Courbe & Détails (Structure)</summary>
+                    <summary>Courbe des tonalités</summary>
                     <div class="module-content">
-                        <p style="font-size:11px; color:#888;">Utilisez la même logique d'ID JS pour animer les curseurs suivants.</p>
+                        <div class="control-group"><label>Mode <select><option>Paramétrique</option><option>Points (RVB)</option></select></label></div>
+                        <div class="control-group"><label>Hautes lumières <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Tons clairs <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Tons sombres <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Ombres <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
+
+                <!-- 3. MÉLANGEUR DE COULEURS / COULEUR CIBLÉE -->
+                <details>
+                    <summary>Mélangeur de couleurs</summary>
+                    <div class="module-content">
+                        <div class="control-group"><label>Ajuster <select><option>Teinte</option><option>Saturation</option><option>Luminance</option></select></label></div>
+                        <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ffa500">Orange <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ffff00">Jaune <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#00ff00">Vert <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#00ffff">Aqua <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#4a4aff">Bleu <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ff00ff">Violet <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ff00a5">Magenta <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                    </div>
+                </details>
+
+                <!-- 4. COLOR GRADING -->
+                <details>
+                    <summary>Color Grading</summary>
+                    <div class="module-content">
+                        <p style="font-size:11px; color:#888; margin-top:0;">(Remplacement des roues par curseurs pour l'UI web standard)</p>
+                        <div class="control-group"><label>Cible <select><option>Ombres</option><option>Tons moyens</option><option>Hautes lumières</option><option>Global</option></select></label></div>
+                        <div class="control-group"><label>Teinte <span class="value-display">0</span></label><input type="range" min="0" max="360" value="0"></div>
+                        <div class="control-group"><label>Saturation <span class="value-display">0</span></label><input type="range" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Luminance <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <hr class="divider">
+                        <div class="control-group"><label>Fusionnement <span class="value-display">50</span></label><input type="range" min="0" max="100" value="50"></div>
+                        <div class="control-group"><label>Balance <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                    </div>
+                </details>
+
+                <!-- 5. DÉTAIL -->
+                <details>
+                    <summary>Détail</summary>
+                    <div class="module-content">
+                        <div class="control-group"><label>Gain (Netteté) <span class="value-display">40</span></label><input type="range" min="0" max="150" value="40"></div>
+                        <div class="control-group"><label>Rayon <span class="value-display">1.0</span></label><input type="range" min="0.5" max="3" step="0.1" value="1.0"></div>
+                        <div class="control-group"><label>Détail <span class="value-display">25</span></label><input type="range" min="0" max="100" value="25"></div>
+                        <div class="control-group"><label>Masquage <span class="value-display">0</span></label><input type="range" min="0" max="100" value="0"></div>
+                        <hr class="divider">
+                        <button style="width:100%; margin-bottom:15px;">Denoise AI (Réduction bruit)</button>
+                        <div class="control-group"><label>Bruit Luminance <span class="value-display">0</span></label><input type="range" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Bruit Couleur <span class="value-display">25</span></label><input type="range" min="0" max="100" value="25"></div>
+                    </div>
+                </details>
+
+                <!-- 6. FLOU D'OBJECTIF -->
+                <details>
+                    <summary>Flou d'objectif</summary>
+                    <div class="module-content">
+                        <div class="control-group"><label>Intensité du Flou <span class="value-display">0</span></label><input type="range" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Forme Bokeh <select><option>Cercle</option><option>Bulle</option><option>5 Lames</option><option>Anneau</option></select></label></div>
+                        <button style="width:100%; margin-top:5px;">Afficher Carte de profondeur</button>
+                    </div>
+                </details>
+
+                <!-- 7. OPTIQUE -->
+                <details>
+                    <summary>Optique</summary>
+                    <div class="module-content">
+                        <label style="font-size:11px; display:flex; gap:10px;"><input type="checkbox"> Supprimer l'aberration chromatique</label>
+                        <label style="font-size:11px; display:flex; gap:10px; margin-top:8px;"><input type="checkbox"> Activer le profil d'objectif</label>
+                        <hr class="divider">
+                        <div class="control-group"><label>Distorsion <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Vignettage <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                    </div>
+                </details>
+
+                <!-- 8. GÉOMÉTRIE -->
+                <details>
+                    <summary>Géométrie</summary>
+                    <div class="module-content">
+                        <div class="control-group"><label>Upright <select><option>Désactivé</option><option>Auto</option><option>Niveau</option><option>Vertical</option><option>Complet</option></select></label></div>
+                        <div class="control-group"><label>Vertical <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Horizontal <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Rotation <span class="value-display">0</span></label><input type="range" min="-10" max="10" step="0.1" value="0"></div>
+                    </div>
+                </details>
+
+                <!-- 9. EFFETS -->
+                <details>
+                    <summary>Effets</summary>
+                    <div class="module-content">
+                        <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Milieu <span class="value-display">50</span></label><input type="range" min="0" max="100" value="50"></div>
+                        <div class="control-group"><label>Grain Gain <span class="value-display">0</span></label><input type="range" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Taille <span class="value-display">25</span></label><input type="range" min="0" max="100" value="25"></div>
+                    </div>
+                </details>
+
+                <!-- 10. ÉTALONNAGE (Calibration) -->
+                <details>
+                    <summary>Étalonnage</summary>
+                    <div class="module-content">
+                        <div class="control-group"><label>Processus <select><option>Version 6 (Actuelle)</option><option>Version 5</option></select></label></div>
+                        <hr class="divider">
+                        <div class="control-group"><label>Ombres - Teinte <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <hr class="divider">
+                        <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Teinte <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Saturation <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <hr class="divider">
+                        <div class="control-group"><label style="color:#00ff00">Primaire Vert - Teinte <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#00ff00">Primaire Vert - Saturation <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <hr class="divider">
+                        <div class="control-group"><label style="color:#4a4aff">Primaire Bleu - Teinte <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#4a4aff">Primaire Bleu - Saturation <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                    </div>
+                </details>
+
             </div>
         </div>
     </div>
 
     <script>
-        // --- VARIABLES GLOBALES ---
         const photo = document.getElementById('photo');
-        
+
         // --- 1. IMPORTATION ---
         const fileInput = document.getElementById('fileInput');
         const importBtn = document.getElementById('importBtn');
 
         importBtn.addEventListener('click', () => {
-            fileInput.click(); // Déclenche le clic sur l'input invisible
+            fileInput.click();
         });
 
         fileInput.addEventListener('change', (e) => {
@@ -235,8 +430,12 @@
                 const reader = new FileReader();
                 reader.onload = (event) => {
                     photo.src = event.target.result;
-                    // Réinitialisation des réglages à l'import
-                    resetSliders(); 
+                    // Réinitialisation optionnelle des curseurs
+                    if(document.getElementById('tempSlider')) document.getElementById('tempSlider').value = 0;
+                    if(document.getElementById('expSlider')) document.getElementById('expSlider').value = 0;
+                    if(document.getElementById('contSlider')) document.getElementById('contSlider').value = 0;
+                    if(document.getElementById('satSlider')) document.getElementById('satSlider').value = 0;
+                    applyFilters(); 
                 };
                 reader.readAsDataURL(file);
             }
@@ -245,26 +444,22 @@
         // --- 2. EXPORTATION ---
         const exportBtn = document.getElementById('exportBtn');
         exportBtn.addEventListener('click', () => {
-            // Création d'un canvas invisible
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             
-            // On lui donne la vraie taille de l'image
             canvas.width = photo.naturalWidth;
             canvas.height = photo.naturalHeight;
             
-            // On applique les filtres CSS actuels au contexte du canvas
             ctx.filter = photo.style.filter;
             ctx.drawImage(photo, 0, 0, canvas.width, canvas.height);
             
-            // Création d'un lien de téléchargement
             const link = document.createElement('a');
             link.download = 'Photo_Retouche_CameraRaw.jpg';
-            link.href = canvas.toDataURL('image/jpeg', 0.9); // Qualité JPEG 90%
+            link.href = canvas.toDataURL('image/jpeg', 0.9);
             link.click();
         });
 
-        // --- 3. PANNEAU DE CALQUES (Affichage/Masquage) ---
+        // --- 3. PANNEAU DE CALQUES ---
         const layersBtn = document.getElementById('layersBtn');
         const layersPanel = document.getElementById('layersPanel');
         
@@ -272,67 +467,42 @@
             layersPanel.style.display = (layersPanel.style.display === 'none' || layersPanel.style.display === '') ? 'block' : 'none';
         });
 
-        // --- 4. LOGIQUE DE TRAITEMENT D'IMAGE (Impact des curseurs) ---
+        // --- 4. LOGIQUE DE TRAITEMENT D'IMAGE (Filtres en temps réel) ---
         const tempSlider = document.getElementById('tempSlider');
         const expSlider = document.getElementById('expSlider');
         const contSlider = document.getElementById('contSlider');
         const satSlider = document.getElementById('satSlider');
 
         function applyFilters() {
-            // Lecture des valeurs mathématiques
+            if (!tempSlider || !expSlider || !contSlider || !satSlider) return;
+
             const tempVal = parseInt(tempSlider.value);
             const expVal = parseFloat(expSlider.value);
             const contVal = parseInt(contSlider.value);
             const satVal = parseInt(satSlider.value);
 
-            // Mise à jour de l'affichage chiffré dans l'UI
-            tempSlider.previousElementSibling.querySelector('.value-display').innerText = tempVal;
-            expSlider.previousElementSibling.querySelector('.value-display').innerText = expVal.toFixed(1);
-            contSlider.previousElementSibling.querySelector('.value-display').innerText = contVal;
-            satSlider.previousElementSibling.querySelector('.value-display').innerText = satVal;
-
-            // Conversion des valeurs pour les filtres CSS
-            
-            // Exposition: de -5 à +5 -> Luminosité de 0% à 200% (100% = normal)
             const brightness = 100 + (expVal * 20); 
-            
-            // Contraste: de -100 à +100 -> 0% à 200%
             const contrast = 100 + contVal;
-            
-            // Saturation: de -100 à +100 -> 0% à 200%
             const saturate = 100 + satVal;
 
-            // Chaleur (Température)
             let sepia = 0;
             let hue = 0;
             if (tempVal > 0) {
-                // Réchauffer (Jaune/Orange)
                 sepia = tempVal; 
             } else if (tempVal < 0) {
-                // Refroidir (Bleu) - Approximation via sepia inversé et rotation de teinte
                 sepia = Math.abs(tempVal) * 0.4;
                 hue = -30; 
             }
 
-            // Construction de la chaîne de filtres et application directe sur la balise <img>
             photo.style.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) sepia(${sepia}%) hue-rotate(${hue}deg)`;
         }
 
-        function resetSliders() {
-            tempSlider.value = 0;
-            expSlider.value = 0;
-            contSlider.value = 0;
-            satSlider.value = 0;
-            applyFilters();
-        }
+        if (tempSlider) tempSlider.addEventListener('input', applyFilters);
+        if (expSlider) expSlider.addEventListener('input', applyFilters);
+        if (contSlider) contSlider.addEventListener('input', applyFilters);
+        if (satSlider) satSlider.addEventListener('input', applyFilters);
 
-        // Écouteurs d'événements sur les curseurs ("input" s'active pendant le glissement)
-        tempSlider.addEventListener('input', applyFilters);
-        expSlider.addEventListener('input', applyFilters);
-        contSlider.addEventListener('input', applyFilters);
-        satSlider.addEventListener('input', applyFilters);
-
-        // --- 5. DRAG & DROP DU PANNEAU (identique à précédemment) ---
+        // --- 5. DRAG & DROP ET AFFICHAGE DES VALEURS ---
         const panel = document.getElementById('panel');
         const panelHeader = document.getElementById('panelHeader');
         let isDragging = false;
@@ -340,20 +510,39 @@
 
         panelHeader.addEventListener('mousedown', (e) => {
             isDragging = true;
-            startX = e.clientX; startY = e.clientY;
-            initialX = panel.offsetLeft; initialY = panel.offsetTop;
+            startX = e.clientX;
+            startY = e.clientY;
+            initialX = panel.offsetLeft;
+            initialY = panel.offsetTop;
             panelHeader.style.cursor = 'grabbing';
         });
 
         document.addEventListener('mousemove', (e) => {
             if (!isDragging) return;
-            panel.style.left = `${initialX + (e.clientX - startX)}px`;
-            panel.style.top = `${initialY + (e.clientY - startY)}px`;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            panel.style.left = `${initialX + dx}px`;
+            panel.style.top = `${initialY + dy}px`;
         });
 
         document.addEventListener('mouseup', () => {
             isDragging = false;
             panelHeader.style.cursor = 'move';
+        });
+
+        const inputs = document.querySelectorAll('input[type="range"]');
+        inputs.forEach(input => {
+            input.addEventListener('input', (e) => {
+                const label = e.target.previousElementSibling;
+                if(label && label.querySelector('.value-display')) {
+                    // Force l'affichage d'une décimale pour l'exposition
+                    if(e.target.id === 'expSlider') {
+                        label.querySelector('.value-display').innerText = parseFloat(e.target.value).toFixed(1);
+                    } else {
+                        label.querySelector('.value-display').innerText = e.target.value;
+                    }
+                }
+            });
         });
     </script>
 </body>
