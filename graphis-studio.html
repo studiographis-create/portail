@@ -162,6 +162,23 @@
         flex-shrink: 0;
     }
 
+    /* Miniature d'Agrandissement au Survol */
+    #thumbnail-preview-popover {
+        position: fixed;
+        display: none;
+        width: 180px;
+        height: 180px;
+        object-fit: contain;
+        background-color: #181818;
+        background-image: linear-gradient(45deg, #2b2b2b 25%, transparent 25%), linear-gradient(-45deg, #2b2b2b 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #2b2b2b 75%), linear-gradient(-45deg, transparent 75%, #2b2b2b 75%);
+        background-size: 12px 12px;
+        border: 2px solid var(--accent-color);
+        border-radius: 6px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.85);
+        z-index: 9999;
+        pointer-events: none;
+    }
+
     /* Style des Boutons d'Action Vectoriels */
     .icon-btn {
         background: transparent;
@@ -297,6 +314,9 @@
     </header>
 
     <div id="workspace">
+        <!-- Aperçu Flottant pour Survol de Miniature -->
+        <img id="thumbnail-preview-popover" alt="Agrandissement calque">
+
         <!-- Panneau des Calques & Outils -->
         <div id="layersPanel">
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Pile de Calques</h3>
@@ -529,6 +549,7 @@
         const overlay = document.getElementById('vignette-overlay');
         const layersContainer = document.getElementById('layersContainer');
         const boundingBox = document.getElementById('transform-bounding-box');
+        const previewPopover = document.getElementById('thumbnail-preview-popover');
         
         let layers = [];
         let activeLayerId = null;
@@ -841,8 +862,32 @@
                         </button>
                     </div>
                 `;
+                
+                const thumbImg = item.querySelector('.layer-thumbnail');
+                thumbImg.addEventListener('mouseenter', (e) => {
+                    previewPopover.src = layer.img.src;
+                    previewPopover.style.display = 'block';
+                    positionPopover(e);
+                });
+                thumbImg.addEventListener('mousemove', (e) => {
+                    positionPopover(e);
+                });
+                thumbImg.addEventListener('mouseleave', () => {
+                    previewPopover.style.display = 'none';
+                });
+
                 layersContainer.appendChild(item);
             });
+        }
+
+        function positionPopover(e) {
+            const offset = 15;
+            let left = e.clientX + offset;
+            let top = e.clientY + offset;
+            if (left + 180 > window.innerWidth) left = e.clientX - 180 - offset;
+            if (top + 180 > window.innerHeight) top = e.clientY - 180 - offset;
+            previewPopover.style.left = `${left}px`;
+            previewPopover.style.top = `${top}px`;
         }
 
         window.deleteLayer = function(id) {
