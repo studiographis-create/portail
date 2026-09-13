@@ -473,11 +473,6 @@
             <div class="text-options-box" id="textOptionsBox">
                 <h4 id="textPanelTitle">Propriétés du Texte / Signature</h4>
                 <span id="signatureStatus" class="signature-badge" style="display:none;">Signature active enregistrée</span>
-                
-                <button id="importLogoBtn" style="width:100%; margin-bottom:10px; font-size:11px; display:flex; align-items:center; justify-content:center; gap:6px; background: rgba(255, 215, 0, 0.2);">
-                    <svg viewBox="0 0 24 24" style="width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                    Charger un Logo PNG (Signature)
-                </button>
 
                 <div class="control-group">
                     <label>Texte / Signature <input type="text" id="textInputVal" value="Graphis Studio"></label>
@@ -520,6 +515,13 @@
                     <label>Couleur <input type="color" id="textColorPicker" value="#FFD700"></label>
                 </div>
                 <hr class="divider">
+                
+                <!-- BOUTON IMPORTER UN LOGO REPOSITIONNÉ ET ADAPTÉ EN STYLE -->
+                <button id="importLogoBtn" style="width:100%; margin-bottom:10px; font-size:11px; display:flex; align-items:center; justify-content:center; gap:6px;">
+                    <svg viewBox="0 0 24 24" style="width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                    Charger un Logo PNG (Signature)
+                </button>
+
                 <div style="font-size:10px; color:#aaa; margin-bottom:4px;">Positionnement rapide :</div>
                 <div class="transform-grid">
                     <button id="posTopLeft" title="Haut-Gauche"><svg viewBox="0 0 24 24"><path d="M19 15V7H11"></path><line x1="19" y1="7" x2="5" y2="21"></line></svg></button>
@@ -830,6 +832,22 @@
             updateBoundingBoxVisibility();
         }
 
+        // SUPPRESSION DES CALQUES DE SIGNATURE / LOGO INUTILES POUR GARANTIR L'EXCLUSIVITÉ
+        function removeExistingSignatureLayers(typeToRemove = 'all') {
+            const toDelete = layers.filter(l => {
+                if (typeToRemove === 'text' && l.isText) return true;
+                if (typeToRemove === 'logo' && l.isLogo) return true;
+                if (typeToRemove === 'all' && (l.isText || l.isLogo)) return true;
+                return false;
+            });
+
+            toDelete.forEach(l => {
+                l.img.remove();
+                layers = layers.filter(item => item.id !== l.id);
+            });
+            updateZIndices();
+        }
+
         function handleTextToolActivation() {
             const active = getActiveLayer();
             const titleEl = document.getElementById('textPanelTitle');
@@ -843,14 +861,16 @@
                 document.getElementById('val_textSize').innerText = active.textConfig.size + 'px';
                 document.getElementById('textColorPicker').value = active.textConfig.color;
             } else if (savedSignatureConfig) {
+                removeExistingSignatureLayers('logo'); // Supprime le logo s'il existe
                 createTextLayer(savedSignatureConfig.text, savedSignatureConfig.fontFamily, savedSignatureConfig.style, savedSignatureConfig.size, savedSignatureConfig.color);
             } else {
+                removeExistingSignatureLayers('logo'); // Supprime le logo s'il existe
                 titleEl.textContent = "Propriétés du Texte / Signature";
                 createTextLayer("Graphis Studio", "Dancing Script", "normal", 54, "#FFD700");
             }
         }
 
-        // BOUTON DE CHARGEMENT DE LOGO PNG
+        // CHARGEMENT DE LOGO EN SUPPRIMANT LE TEXTE DE SIGNATURE
         const importLogoBtn = document.getElementById('importLogoBtn');
         const logoFileInput = document.getElementById('logoFileInput');
         
@@ -860,8 +880,10 @@
                 const file = e.target.files[0];
                 const reader = new FileReader();
                 reader.onload = (evt) => {
-                    createLayer(evt.target.result, `Logo: ${file.name}`, {
-                        scale: 0.3 // Taille initiale adaptée pour un logo
+                    removeExistingSignatureLayers('text'); // Supprime le texte s'il existe
+                    createLayer(evt.target.result, `Logo Signature: ${file.name}`, {
+                        isLogo: true,
+                        scale: 0.3
                     });
                     setTool('move');
                 };
@@ -871,16 +893,15 @@
 
         document.getElementById('saveAsSignatureBtn').addEventListener('click', () => {
             const active = getActiveLayer();
-            if (active && active.isText) {
-                savedSignatureConfig = JSON.parse(JSON.stringify(active.textConfig));
+            if (active && (active.isText || active.isLogo)) {
+                savedSignatureConfig = active.isText ? JSON.parse(JSON.stringify(active.textConfig)) : { isLogo: true, src: active.rawImg.src };
                 document.getElementById('signatureStatus').style.display = 'block';
                 alert("Signature enregistrée avec succès !");
             } else {
-                alert("Veuillez sélectionner ou créer un calque de texte à définir comme signature.");
+                alert("Veuillez sélectionner un calque de texte ou un logo à définir comme signature.");
             }
         });
 
-        // POSITIONNEMENT AVEC BAS-CENTRE
         function positionActiveLayer(corner) {
             const active = getActiveLayer();
             const baseLayer = layers[0];
@@ -940,6 +961,7 @@
                 redrawTextLayer(active);
                 updateLayersUI();
             } else if (currentTool === 'text') {
+                removeExistingSignatureLayers('logo');
                 createTextLayer(textVal, fontFam, fontStyle, fontSize, color);
             }
         }
@@ -1125,6 +1147,7 @@
                 visible: initialData && initialData.visible !== undefined ? initialData.visible : true,
                 locked: initialData && initialData.locked !== undefined ? initialData.locked : false,
                 isText: initialData && initialData.isText ? true : false,
+                isLogo: initialData && initialData.isLogo ? true : false,
                 textConfig: initialData && initialData.textConfig ? initialData.textConfig : null,
                 hasMask: false,
                 maskCanvas: null,
@@ -1467,6 +1490,7 @@
                 visible: source.visible,
                 locked: false,
                 isText: source.isText,
+                isLogo: source.isLogo,
                 textConfig: source.textConfig ? JSON.parse(JSON.stringify(source.textConfig)) : null,
                 insertIndex: sourceIdx + 1
             };
