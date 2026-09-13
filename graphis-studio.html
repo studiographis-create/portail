@@ -87,6 +87,31 @@
     }
     .canvas-layer:active { cursor: grabbing; }
 
+    /* Curseur de Pinceau Style Lightroom (Taille & Dureté) */
+    #brush-cursor {
+        position: absolute;
+        pointer-events: none;
+        display: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+    }
+    .brush-outer-circle {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        border: 1px solid rgba(255, 255, 255, 0.85);
+        border-radius: 50%;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.8), inset 0 0 2px rgba(0, 0, 0, 0.8);
+    }
+    .brush-inner-circle {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        border: 1px dashed rgba(255, 215, 0, 0.9);
+        border-radius: 50%;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+    }
+
     #transform-bounding-box {
         position: absolute;
         display: none;
@@ -347,6 +372,12 @@
     </header>
 
     <div id="workspace">
+        <!-- Curseur Pinceau Interactif Style Lightroom -->
+        <div id="brush-cursor">
+            <div class="brush-outer-circle"></div>
+            <div class="brush-inner-circle"></div>
+        </div>
+
         <!-- Aperçu Flottant pour Survol de Miniature -->
         <img id="thumbnail-preview-popover" alt="Agrandissement calque">
 
@@ -369,7 +400,7 @@
                 </button>
             </div>
 
-            <!-- Réglages du Pinceau de Masque (Taille & Dureté) -->
+            <!-- Réglages du Pinceau de Masque -->
             <div class="mask-brush-box" id="maskBrushBox">
                 <h4>Option du Pinceau de Masque</h4>
                 <div class="control-group">
@@ -616,13 +647,16 @@
         const previewPopover = document.getElementById('thumbnail-preview-popover');
         const maskBrushBox = document.getElementById('maskBrushBox');
         
+        const brushCursor = document.getElementById('brush-cursor');
+        const brushInnerCircle = brushCursor.querySelector('.brush-inner-circle');
+
         let layers = [];
         let activeLayerId = null;
         let currentScale = 1;
         let currentTool = 'move';
         
         let isPaintingMask = false;
-        let lastMaskPos = null; // Stocke la dernière position pour l'interpolation lissée
+        let lastMaskPos = null;
 
         const btnMove = document.getElementById('toolMove');
         const btnFreeTrans = document.getElementById('toolFreeTransform');
@@ -638,15 +672,62 @@
             btnFreeTrans.classList.toggle('active', tool === 'transform');
             btnMaskBrush.classList.toggle('active', tool === 'maskBrush');
             maskBrushBox.style.display = (tool === 'maskBrush') ? 'block' : 'none';
+
+            // Masquer ou afficher la main/curseur standard sur les calques
+            layers.forEach(l => {
+                l.img.style.cursor = (tool === 'maskBrush') ? 'none' : 'grab';
+            });
+
+            if (tool !== 'maskBrush') {
+                brushCursor.style.display = 'none';
+            }
+
             updateBoundingBoxVisibility();
         }
 
+        function updateBrushCursorDimensions() {
+            const active = getActiveLayer();
+            if (!active) return;
+
+            const rect = active.img.getBoundingClientRect();
+            const scaleX = rect.width / (active.img.width || 800);
+
+            const size = parseFloat(document.getElementById('brushSize').value);
+            const hardness = parseFloat(document.getElementById('brushHardness').value) / 100;
+
+            const displayOuterSize = size * scaleX;
+            const displayInnerSize = displayOuterSize * hardness;
+
+            brushCursor.style.width = displayOuterSize + 'px';
+            brushCursor.style.height = displayOuterSize + 'px';
+
+            brushInnerCircle.style.width = displayInnerSize + 'px';
+            brushInnerCircle.style.height = displayInnerSize + 'px';
+        }
+
+        imageContainer.addEventListener('mousemove', (e) => {
+            if (currentTool === 'maskBrush') {
+                brushCursor.style.display = 'block';
+                brushCursor.style.left = e.clientX + 'px';
+                brushCursor.style.top = e.clientY + 'px';
+                updateBrushCursorDimensions();
+            } else {
+                brushCursor.style.display = 'none';
+            }
+        });
+
+        imageContainer.addEventListener('mouseleave', () => {
+            brushCursor.style.display = 'none';
+        });
+
         document.getElementById('brushSize').addEventListener('input', (e) => {
             document.getElementById('val_brushSize').innerText = e.target.value + 'px';
+            updateBrushCursorDimensions();
         });
 
         document.getElementById('brushHardness').addEventListener('input', (e) => {
             document.getElementById('val_brushHardness').innerText = e.target.value + '%';
+            updateBrushCursorDimensions();
         });
 
         function updateBoundingBoxVisibility() {
@@ -813,7 +894,6 @@
             updateLayersUI();
         }
 
-        // Peinture fluide avec lissage (pas rapproché) et dureté personnalisée
         function paintMask(layer, e) {
             if (!layer.hasMask) return;
             const rect = layer.img.getBoundingClientRect();
@@ -834,7 +914,6 @@
             const radius = brushSize / 2;
             const innerRadius = radius * hardness;
 
-            // Fonction pour dessiner un point unique avec dureté radiale
             const drawBrushSpot = (x, y) => {
                 const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
                 
@@ -852,14 +931,13 @@
                 layer.maskCtx.fill();
             };
 
-            // Interpolation continue pour éliminer les paquets / taches
             if (!lastMaskPos) {
                 drawBrushSpot(currX, currY);
             } else {
                 const dx = currX - lastMaskPos.x;
                 const dy = currY - lastMaskPos.y;
                 const dist = Math.hypot(dx, dy);
-                const step = Math.max(1, radius * 0.1); // Pas très resserré
+                const step = Math.max(1, radius * 0.1);
 
                 for (let i = 0; i < dist; i += step) {
                     const interX = lastMaskPos.x + (dx * (i / dist));
@@ -1333,10 +1411,10 @@
             }
         });
 
-        document.getElementById('zoomInBtn').addEventListener('click', () => { currentScale += 0.25; processImage(); updateBoundingBoxPosition(); });
-        document.getElementById('zoomOutBtn').addEventListener('click', () => { currentScale = Math.max(0.2, currentScale - 0.25); processImage(); updateBoundingBoxPosition(); });
-        document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); });
-        document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); });
+        document.getElementById('zoomInBtn').addEventListener('click', () => { currentScale += 0.25; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+        document.getElementById('zoomOutBtn').addEventListener('click', () => { currentScale = Math.max(0.2, currentScale - 0.25); processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+        document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+        document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
 
         document.getElementById('controls').addEventListener('input', (e) => {
             if (e.target.type === 'range') {
@@ -1373,4 +1451,4 @@
         };
     </script>
 </body>
-</html>
+</html
