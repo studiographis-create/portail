@@ -406,8 +406,6 @@
         <div class="header-center">
             <input type="file" id="fileInput" accept="image/*, .cr2, .cr3, .nef, .arw, .dng, .raw, .orf, .rw2" style="display: none;">
             <input type="file" id="layerFileInput" accept="image/*, .cr2, .cr3, .nef, .arw, .dng, .raw, .orf, .rw2" style="display: none;">
-            <!-- Input file ajusté pour accepter tout type d'image -->
-            <input type="file" id="logoFileInput" accept="image/*" style="display: none;">
             
             <button id="importBtn">Importer</button>
             <button id="layersBtn" style="margin-left: 10px;">Système de Calques</button>
@@ -517,7 +515,8 @@
                 </div>
                 <hr class="divider">
                 
-                <!-- BOUTON CHARGER LOGO AVEC GESTION DE CLIC SÉCURISÉE -->
+                <!-- INPUT FICHIER LOGO DIRÈKTEMENT DANS LE BLOC -->
+                <input type="file" id="logoFileInput" accept="image/*" style="display: none;">
                 <button id="importLogoBtn" style="width:100%; margin-bottom:10px; font-size:11px; display:flex; align-items:center; justify-content:center; gap:6px;">
                     <svg viewBox="0 0 24 24" style="width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2;"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                     Charger un Logo PNG (Signature)
@@ -833,7 +832,6 @@
             updateBoundingBoxVisibility();
         }
 
-        // SUPPRESSION DES CALQUES DE SIGNATURE / LOGO INUTILES
         function removeExistingSignatureLayers(typeToRemove = 'all') {
             const toDelete = layers.filter(l => {
                 if (typeToRemove === 'text' && l.isText) return true;
@@ -862,7 +860,7 @@
                 document.getElementById('val_textSize').innerText = active.textConfig.size + 'px';
                 document.getElementById('textColorPicker').value = active.textConfig.color;
             } else if (savedSignatureConfig) {
-                removeExistingSignatureLayers('logo');
+                removeExistingSignatureLayers('all');
                 createTextLayer(savedSignatureConfig.text, savedSignatureConfig.fontFamily, savedSignatureConfig.style, savedSignatureConfig.size, savedSignatureConfig.color);
             } else {
                 removeExistingSignatureLayers('logo');
@@ -871,27 +869,26 @@
             }
         }
 
-        // DEKLENCHEMENT ET CHARGEMENT DU LOGO
+        // CHARGEMENT DIRECT DU LOGO PNG AVEC SUPPRESSION DE TEXTE DUPLIQUÉ
         const importLogoBtn = document.getElementById('importLogoBtn');
         const logoFileInput = document.getElementById('logoFileInput');
         
-        importLogoBtn.addEventListener('click', (e) => {
-            e.preventDefault();
+        importLogoBtn.addEventListener('click', () => {
             logoFileInput.click();
         });
 
         logoFileInput.addEventListener('change', (e) => {
-            if (e.target.files && e.target.files[0]) {
-                const file = e.target.files[0];
+            const file = e.target.files[0];
+            if (file) {
                 const reader = new FileReader();
                 reader.onload = (evt) => {
-                    removeExistingSignatureLayers('text'); // Supprime le texte s'il existe
+                    removeExistingSignatureLayers('all'); // Supprime TOUT calque de texte ou ancien logo
                     createLayer(evt.target.result, `Logo Signature: ${file.name}`, {
                         isLogo: true,
                         scale: 0.3
                     });
                     setTool('move');
-                    logoFileInput.value = ''; // Réinitialisation de la valeur
+                    logoFileInput.value = '';
                 };
                 reader.readAsDataURL(file);
             }
