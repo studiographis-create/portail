@@ -597,7 +597,7 @@
             
             const sourceIdx = layers.findIndex(l => l.id === id);
             const duplicateData = {
-                x: source.x + 20, // décalage de 20px pour visibilité immédiate
+                x: source.x + 20,
                 y: source.y + 20,
                 scale: source.scale,
                 rotation: source.rotation,
@@ -755,7 +755,7 @@
                         <button title="Dupliquer" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">⧉</button>
                         <button title="Monter" onclick="event.stopPropagation(); moveLayerUp('${layer.id}')">▲</button>
                         <button title="Descendre" onclick="event.stopPropagation(); moveLayerDown('${layer.id}')">▼</button>
-                        <button title="Supprimer" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">Suppr</button>
+                        <button title="Supprimer" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">🗑</button>
                     </div>
                 `;
                 layersContainer.appendChild(item);
