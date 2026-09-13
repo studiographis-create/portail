@@ -72,12 +72,13 @@
     }
     .canvas-layer:active { cursor: grabbing; }
 
-    /* Cadre de Transformation Manuelle sans fond bleu */
+    /* Correction définitive : fond strictement transparent et sans coloration résiduelle */
     #transform-bounding-box {
         position: absolute;
         display: none;
         border: 1px dashed var(--accent-color);
-        background: transparent;
+        background: transparent !important;
+        background-color: transparent !important;
         pointer-events: none;
         z-index: 100;
         box-sizing: border-box;
