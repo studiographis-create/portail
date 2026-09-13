@@ -87,6 +87,12 @@
     }
     .canvas-layer:active { cursor: grabbing; }
 
+    /* Forcer l'absence de pointeur système lors de l'utilisation du pinceau */
+    body.tool-brush .canvas-layer,
+    body.tool-brush #image-container {
+        cursor: none !important;
+    }
+
     /* Curseur Pinceau Interactif Style Lightroom */
     #brush-cursor {
         position: absolute;
@@ -649,7 +655,7 @@
 
         let layers = [];
         let activeLayerId = null;
-        let selectedLayerIds = []; // Gestion de la sélection multiple
+        let selectedLayerIds = [];
         let lastSelectedLayerId = null;
 
         let currentScale = 1;
@@ -657,7 +663,7 @@
         
         let isPaintingMask = false;
         let lastMaskPos = null;
-        let draggedLayerId = null; // Pour le Drag and Drop HTML5
+        let draggedLayerId = null;
 
         const btnMove = document.getElementById('toolMove');
         const btnFreeTrans = document.getElementById('toolFreeTransform');
@@ -674,11 +680,15 @@
             btnMaskBrush.classList.toggle('active', tool === 'maskBrush');
             maskBrushBox.style.display = (tool === 'maskBrush') ? 'block' : 'none';
 
-            layers.forEach(l => {
-                l.img.style.cursor = (tool === 'maskBrush') ? 'none' : 'grab';
-            });
-
-            if (tool !== 'maskBrush') {
+            if (tool === 'maskBrush') {
+                document.body.classList.add('tool-brush');
+                // S'assurer qu'un masque existe sur le calque actif
+                const active = getActiveLayer();
+                if (active && !active.hasMask) {
+                    addLayerMask(active.id);
+                }
+            } else {
+                document.body.classList.remove('tool-brush');
                 brushCursor.style.display = 'none';
             }
 
@@ -808,7 +818,10 @@
                     isDraggingLayer = true;
                     startX = e.clientX - layerObj.x;
                     startY = e.clientY - layerObj.y;
-                } else if (currentTool === 'maskBrush' && layerObj.hasMask && !layerObj.locked) {
+                } else if (currentTool === 'maskBrush' && !layerObj.locked) {
+                    if (!layerObj.hasMask) {
+                        addLayerMask(layerObj.id);
+                    }
                     isPaintingMask = true;
                     lastMaskPos = null;
                     paintMask(layerObj, e);
@@ -819,7 +832,6 @@
                 if (!layerObj.visible || layerObj.locked) return;
                 
                 if (isDraggingLayer && currentTool === 'move') {
-                    // Déplacement simultané de tous les calques sélectionnés
                     const dx = e.clientX - startX - layerObj.x;
                     const dy = e.clientY - startY - layerObj.y;
 
@@ -860,7 +872,6 @@
             processImage();
         }
 
-        // Gestion de la sélection multiple (Click, Ctrl+Click, Shift+Click)
         function handleLayerSelection(id, event = null) {
             if (!event) {
                 activeLayerId = id;
@@ -939,7 +950,6 @@
                 layer.maskCtx = ctx;
                 
                 updateMaskCSS(layer);
-                setTool('maskBrush');
             }
             updateLayersUI();
         }
@@ -965,6 +975,9 @@
             const innerRadius = radius * hardness;
 
             const drawBrushSpot = (x, y) => {
+                layer.maskCtx.save();
+                layer.maskCtx.globalCompositeOperation = isBlack ? 'destination-out' : 'source-over';
+                
                 const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
                 
                 if (isBlack) {
@@ -979,6 +992,7 @@
                 layer.maskCtx.beginPath();
                 layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
                 layer.maskCtx.fill();
+                layer.maskCtx.restore();
             };
 
             if (!lastMaskPos) {
@@ -1166,7 +1180,6 @@
             });
         });
 
-        // Mise à jour de l'UI des calques avec Drag and Drop & Sélection multiple
         function updateLayersUI() {
             layersContainer.innerHTML = '';
             layers.slice().reverse().forEach((layer) => {
@@ -1181,7 +1194,6 @@
                     handleLayerSelection(layer.id, e);
                 };
 
-                // --- GESTION DU DRAG & DROP HTML5 ---
                 item.ondragstart = (e) => {
                     draggedLayerId = layer.id;
                     item.classList.add('dragging');
@@ -1263,18 +1275,14 @@
             });
         }
 
-        // --- GESTION DES RACCOURCIS CLAVIER ---
         document.addEventListener('keydown', (e) => {
-            // Ignorer si l'utilisateur saisit du texte dans un prompt ou un champ input
             if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
 
-            // Touche Suppr / Backspace -> Supprimer la sélection
             if (e.key === 'Delete' || e.key === 'Backspace') {
                 e.preventDefault();
                 deleteSelectedLayers();
             }
 
-            // Ctrl + J ou Cmd + J -> Dupliquer le calque actif
             if ((e.ctrlKey || e.metaKey) && (e.key === 'j' || e.key === 'J')) {
                 e.preventDefault();
                 if (activeLayerId) {
