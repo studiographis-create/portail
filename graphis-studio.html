@@ -468,7 +468,6 @@
                 <div class="control-group">
                     <label>Couleur <input type="color" id="textColorPicker" value="#FFD700"></label>
                 </div>
-                <button id="applyTextChangesBtn" style="width:100%; margin-top:5px; font-size:11px;">Créer / Mettre à jour le Texte</button>
             </div>
 
             <div class="layer-settings-box">
@@ -717,10 +716,10 @@
         });
         btnText.addEventListener('click', () => { 
             setTool('text'); 
-            prepareTextToolForActiveOrNew();
+            handleTextToolActivation();
         });
 
-        // Chargement dynamique des polices système
+        // Chargement des polices système
         async function loadSystemFonts() {
             const fontSelect = document.getElementById('textFontSelect');
             let fontSet = new Set(['sans-serif', 'serif', 'monospace', 'Arial', 'Georgia', 'Impact', 'Times New Roman', 'Verdana', 'Courier New']);
@@ -766,14 +765,12 @@
             updateBoundingBoxVisibility();
         }
 
-        function prepareTextToolForActiveOrNew() {
+        function handleTextToolActivation() {
             const active = getActiveLayer();
-            const btnAction = document.getElementById('applyTextChangesBtn');
             const titleEl = document.getElementById('textPanelTitle');
 
             if (active && active.isText) {
                 titleEl.textContent = "Modifier le Calque Texte";
-                btnAction.textContent = "Mettre à jour le Texte";
                 document.getElementById('textInputVal').value = active.textConfig.text;
                 document.getElementById('textFontSelect').value = active.textConfig.fontFamily;
                 document.getElementById('textStyleSelect').value = active.textConfig.style;
@@ -782,9 +779,38 @@
                 document.getElementById('textColorPicker').value = active.textConfig.color;
             } else {
                 titleEl.textContent = "Propriétés du Texte";
-                btnAction.textContent = "Créer un Calque Texte";
+                // Si aucun calque texte n'est sélectionné, on en crée un nouveau automatiquement
+                createTextLayer("Graphis Studio", "sans-serif", "normal", 48, "#FFD700");
             }
         }
+
+        // Modification automatique en direct lors de la modification des champs de texte
+        function handleTextParamChange() {
+            const active = getActiveLayer();
+            const textVal = document.getElementById('textInputVal').value;
+            const fontFam = document.getElementById('textFontSelect').value;
+            const fontStyle = document.getElementById('textStyleSelect').value;
+            const fontSize = document.getElementById('textSizeRange').value;
+            const color = document.getElementById('textColorPicker').value;
+
+            if (active && active.isText) {
+                active.textConfig = { text: textVal, fontFamily: fontFam, style: fontStyle, size: fontSize, color: color };
+                active.name = `Texte: "${textVal}"`;
+                redrawTextLayer(active);
+                updateLayersUI();
+            } else if (currentTool === 'text') {
+                createTextLayer(textVal, fontFam, fontStyle, fontSize, color);
+            }
+        }
+
+        document.getElementById('textInputVal').addEventListener('input', handleTextParamChange);
+        document.getElementById('textFontSelect').addEventListener('change', handleTextParamChange);
+        document.getElementById('textStyleSelect').addEventListener('change', handleTextParamChange);
+        document.getElementById('textSizeRange').addEventListener('input', (e) => {
+            document.getElementById('val_textSize').innerText = e.target.value + 'px';
+            handleTextParamChange();
+        });
+        document.getElementById('textColorPicker').addEventListener('input', handleTextParamChange);
 
         function updateBrushCursorDimensions() {
             const active = getActiveLayer();
@@ -847,30 +873,6 @@
             if (active && active.hasMask) {
                 deleteLayerMask(active.id);
             }
-        });
-
-        document.getElementById('textSizeRange').addEventListener('input', (e) => {
-            document.getElementById('val_textSize').innerText = e.target.value + 'px';
-        });
-
-        document.getElementById('applyTextChangesBtn').addEventListener('click', () => {
-            const textVal = document.getElementById('textInputVal').value;
-            const fontFam = document.getElementById('textFontSelect').value;
-            const fontStyle = document.getElementById('textStyleSelect').value;
-            const fontSize = document.getElementById('textSizeRange').value;
-            const color = document.getElementById('textColorPicker').value;
-
-            const active = getActiveLayer();
-            if (currentTool === 'text' && active && active.isText) {
-                // Mise à jour du calque texte existant
-                active.textConfig = { text: textVal, fontFamily: fontFam, style: fontStyle, size: fontSize, color: color };
-                active.name = `Texte: "${textVal}"`;
-                redrawTextLayer(active);
-            } else {
-                // Création d'un nouveau calque texte
-                createTextLayer(textVal, fontFam, fontStyle, fontSize, color);
-            }
-            updateLayersUI();
         });
 
         function updateBoundingBoxVisibility() {
@@ -1086,7 +1088,7 @@
             updateBoundingBoxVisibility();
 
             if (currentTool === 'text') {
-                prepareTextToolForActiveOrNew();
+                handleTextToolActivation();
             }
         }
 
