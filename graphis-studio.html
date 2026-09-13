@@ -122,7 +122,7 @@
         position: absolute;
         top: 70px;
         left: 20px;
-        width: 330px;
+        width: 350px;
         max-height: 80vh;
         overflow-y: auto;
         background: var(--panel-bg);
@@ -148,11 +148,10 @@
     }
     .layer-item.active { border-color: var(--accent-color); background: #2a2a2a; }
     
-    /* Troncature automatique du nom du calque (...) */
     .layer-info { 
         display: flex; 
         align-items: center; 
-        gap: 8px; 
+        gap: 6px; 
         flex: 1; 
         min-width: 0; 
     }
@@ -164,21 +163,23 @@
         min-width: 0;
     }
     
-    /* Style de la miniature (Thumbnail) */
-    .layer-thumbnail {
+    .layer-thumbnail, .layer-mask-thumbnail {
         width: 28px;
         height: 28px;
         object-fit: cover;
         border-radius: 3px;
         border: 1px solid #555;
         background-color: #1a1a1a;
-        background-image: linear-gradient(45deg, #2b2b2b 25%, transparent 25%), linear-gradient(-45deg, #2b2b2b 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #2b2b2b 75%), linear-gradient(-45deg, transparent 75%, #2b2b2b 75%);
-        background-size: 8px 8px;
-        background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
         flex-shrink: 0;
     }
+    .layer-mask-thumbnail {
+        border-color: #fff;
+        background: #fff;
+    }
+    .layer-mask-thumbnail.active-target {
+        border: 2px solid var(--accent-color);
+    }
 
-    /* Miniature d'Agrandissement au Survol */
     #thumbnail-preview-popover {
         position: fixed;
         display: none;
@@ -186,8 +187,6 @@
         height: 180px;
         object-fit: contain;
         background-color: #181818;
-        background-image: linear-gradient(45deg, #2b2b2b 25%, transparent 25%), linear-gradient(-45deg, #2b2b2b 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #2b2b2b 75%), linear-gradient(-45deg, transparent 75%, #2b2b2b 75%);
-        background-size: 12px 12px;
         border: 2px solid var(--accent-color);
         border-radius: 6px;
         box-shadow: 0 10px 30px rgba(0,0,0,0.85);
@@ -195,7 +194,6 @@
         pointer-events: none;
     }
 
-    /* Style des Boutons d'Action Vectoriels */
     .icon-btn {
         background: transparent;
         border: 1px solid var(--accent-color);
@@ -217,23 +215,11 @@
         stroke-linecap: round;
         stroke-linejoin: round;
     }
-    .icon-btn:hover {
-        background: var(--accent-color);
-    }
-    .icon-btn:hover svg {
-        stroke: var(--bg-color);
-    }
-    .icon-btn.hidden-eye {
-        opacity: 0.35;
-        border-style: dashed;
-    }
-    .icon-btn.locked-btn {
-        background: var(--accent-color);
-    }
-    .icon-btn.locked-btn svg {
-        stroke: var(--bg-color);
-        fill: var(--bg-color);
-    }
+    .icon-btn:hover { background: var(--accent-color); }
+    .icon-btn:hover svg { stroke: var(--bg-color); }
+    .icon-btn.hidden-eye { opacity: 0.35; border-style: dashed; }
+    .icon-btn.locked-btn { background: var(--accent-color); }
+    .icon-btn.locked-btn svg { stroke: var(--bg-color); fill: var(--bg-color); }
 
     .layer-actions { display: flex; gap: 4px; flex-shrink: 0; }
 
@@ -261,6 +247,16 @@
         color: #121212;
         font-weight: bold;
     }
+
+    .mask-brush-box {
+        display: none;
+        background: rgba(255, 215, 0, 0.08);
+        border: 1px solid var(--accent-color);
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 12px;
+    }
+    .mask-brush-box h4 { margin: 0 0 8px 0; font-size: 11px; color: var(--accent-color); text-transform: uppercase; }
 
     .layer-settings-box {
         background: rgba(0, 0, 0, 0.25);
@@ -347,7 +343,25 @@
             
             <div class="tool-select-box">
                 <button class="tool-btn active" id="toolMove">✛ Déplacement</button>
-                <button class="tool-btn" id="toolFreeTransform">⌖ Transformation Libre</button>
+                <button class="tool-btn" id="toolFreeTransform">⌖ Transform.</button>
+                <button class="tool-btn" id="toolMaskBrush">🖌 Pinceau Masque</button>
+            </div>
+
+            <!-- Réglages du Pinceau de Masque -->
+            <div class="mask-brush-box" id="maskBrushBox">
+                <h4>Option du Pinceau de Masque</h4>
+                <div class="control-group">
+                    <label>Couleur du pinceau
+                        <select id="brushColorSelect">
+                            <option value="black">Noir (Masquer / Effacer)</option>
+                            <option value="white">Blanc (Révéler)</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label>Taille du pinceau <span class="value-display" id="val_brushSize">30px</span></label>
+                    <input type="range" id="brushSize" min="5" max="150" value="30">
+                </div>
             </div>
 
             <!-- Options de fusion et d'opacité -->
@@ -574,27 +588,33 @@
         const layersContainer = document.getElementById('layersContainer');
         const boundingBox = document.getElementById('transform-bounding-box');
         const previewPopover = document.getElementById('thumbnail-preview-popover');
+        const maskBrushBox = document.getElementById('maskBrushBox');
         
         let layers = [];
         let activeLayerId = null;
         let currentScale = 1;
         let currentTool = 'move';
+        let isPaintingMask = false;
 
         const btnMove = document.getElementById('toolMove');
         const btnFreeTrans = document.getElementById('toolFreeTransform');
+        const btnMaskBrush = document.getElementById('toolMaskBrush');
 
-        btnMove.addEventListener('click', () => {
-            currentTool = 'move';
-            btnMove.classList.add('active');
-            btnFreeTrans.classList.remove('active');
-            updateBoundingBoxVisibility();
-        });
+        btnMove.addEventListener('click', () => { setTool('move'); });
+        btnFreeTrans.addEventListener('click', () => { setTool('transform'); });
+        btnMaskBrush.addEventListener('click', () => { setTool('maskBrush'); });
 
-        btnFreeTrans.addEventListener('click', () => {
-            currentTool = 'transform';
-            btnFreeTrans.classList.add('active');
-            btnMove.classList.remove('active');
+        function setTool(tool) {
+            currentTool = tool;
+            btnMove.classList.toggle('active', tool === 'move');
+            btnFreeTrans.classList.toggle('active', tool === 'transform');
+            btnMaskBrush.classList.toggle('active', tool === 'maskBrush');
+            maskBrushBox.style.display = (tool === 'maskBrush') ? 'block' : 'none';
             updateBoundingBoxVisibility();
+        }
+
+        document.getElementById('brushSize').addEventListener('input', (e) => {
+            document.getElementById('val_brushSize').innerText = e.target.value + 'px';
         });
 
         function updateBoundingBoxVisibility() {
@@ -646,30 +666,47 @@
                 opacity: initialData ? initialData.opacity : 100,
                 blendMode: initialData ? initialData.blendMode : 'normal',
                 visible: initialData && initialData.visible !== undefined ? initialData.visible : true,
-                locked: initialData && initialData.locked !== undefined ? initialData.locked : false
+                locked: initialData && initialData.locked !== undefined ? initialData.locked : false,
+                hasMask: false,
+                maskCanvas: null,
+                maskCtx: null,
+                maskDataUrl: null
             };
 
             let isDraggingLayer = false, startX, startY;
+            
             img.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
                 setActiveLayer(id);
+                
                 if (currentTool === 'move' && layerObj.visible && !layerObj.locked) {
                     isDraggingLayer = true;
                     startX = e.clientX - layerObj.x;
                     startY = e.clientY - layerObj.y;
+                } else if (currentTool === 'maskBrush' && layerObj.hasMask && !layerObj.locked) {
+                    isPaintingMask = true;
+                    paintMask(layerObj, e);
                 }
             });
 
             document.addEventListener('mousemove', (e) => {
-                if (!isDraggingLayer || activeLayerId !== id || currentTool !== 'move' || !layerObj.visible || layerObj.locked) return;
-                layerObj.x = e.clientX - startX;
-                layerObj.y = e.clientY - startY;
-                applyLayerTransform(layerObj);
-                updateBoundingBoxPosition();
+                if (activeLayerId !== id || !layerObj.visible || layerObj.locked) return;
+                
+                if (isDraggingLayer && currentTool === 'move') {
+                    layerObj.x = e.clientX - startX;
+                    layerObj.y = e.clientY - startY;
+                    applyLayerTransform(layerObj);
+                    updateBoundingBoxPosition();
+                } else if (isPaintingMask && currentTool === 'maskBrush' && layerObj.hasMask) {
+                    paintMask(layerObj, e);
+                }
             });
 
-            document.addEventListener('mouseup', () => { isDraggingLayer = false; });
+            document.addEventListener('mouseup', () => { 
+                isDraggingLayer = false; 
+                isPaintingMask = false; 
+            });
 
             imageContainer.insertBefore(img, overlay);
             
@@ -683,6 +720,66 @@
             updateZIndices();
             updateLayersUI();
             processImage();
+        }
+
+        function addLayerMask(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer) return;
+
+            if (!layer.hasMask) {
+                const canvas = document.createElement('canvas');
+                canvas.width = layer.img.naturalWidth || 800;
+                canvas.height = layer.img.naturalHeight || 600;
+                const ctx = canvas.getContext('2d');
+                
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                layer.hasMask = true;
+                layer.maskCanvas = canvas;
+                layer.maskCtx = ctx;
+                
+                updateMaskCSS(layer);
+                setTool('maskBrush');
+            }
+            updateLayersUI();
+        }
+
+        function paintMask(layer, e) {
+            if (!layer.hasMask) return;
+            const rect = layer.img.getBoundingClientRect();
+            
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+
+            const scaleX = layer.maskCanvas.width / rect.width;
+            const scaleY = layer.maskCanvas.height / rect.height;
+
+            const canvasX = clickX * scaleX;
+            const canvasY = clickY * scaleY;
+
+            const brushSize = parseFloat(document.getElementById('brushSize').value) * scaleX;
+            const brushColor = document.getElementById('brushColorSelect').value === 'black' ? '#000000' : '#FFFFFF';
+
+            layer.maskCtx.fillStyle = brushColor;
+            layer.maskCtx.beginPath();
+            layer.maskCtx.arc(canvasX, canvasY, brushSize / 2, 0, Math.PI * 2);
+            layer.maskCtx.fill();
+
+            updateMaskCSS(layer);
+        }
+
+        function updateMaskCSS(layer) {
+            if (!layer.hasMask) return;
+            const url = layer.maskCanvas.toDataURL();
+            layer.maskDataUrl = url;
+            layer.img.style.webkitMaskImage = `url(${url})`;
+            layer.img.style.maskImage = `url(${url})`;
+            layer.img.style.webkitMaskSize = '100% 100%';
+            layer.img.style.maskSize = '100% 100%';
+            
+            const maskThumb = document.getElementById(`mask_thumb_${layer.id}`);
+            if (maskThumb) maskThumb.src = url;
         }
 
         function toggleLayerVisibility(id) {
@@ -870,15 +967,23 @@
                 item.className = `layer-item ${layer.id === activeLayerId ? 'active' : ''}`;
                 item.onclick = () => setActiveLayer(layer.id);
                 
+                let maskHTML = layer.hasMask 
+                    ? `<img id="mask_thumb_${layer.id}" class="layer-mask-thumbnail ${currentTool === 'maskBrush' ? 'active-target' : ''}" src="${layer.maskDataUrl}" title="Masque de fusion N&B" onclick="event.stopPropagation(); setTool('maskBrush');">`
+                    : '';
+
                 item.innerHTML = `
                     <div class="layer-info">
                         <button class="icon-btn ${layer.visible ? '' : 'hidden-eye'}" title="${layer.visible ? 'Masquer' : 'Afficher'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
                             <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </button>
                         <img class="layer-thumbnail" src="${layer.img.src}" alt="Vignette">
+                        ${maskHTML}
                         <span class="layer-name" title="${layer.name}">${layer.name}</span>
                     </div>
                     <div class="layer-actions">
+                        <button class="icon-btn" title="Masque de fusion" onclick="event.stopPropagation(); addLayerMask('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 3v18a9 9 0 0 0 0-18z" fill="var(--accent-color)"></path></svg>
+                        </button>
                         <button class="icon-btn" title="Renommer" onclick="event.stopPropagation(); renameLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         </button>
@@ -906,12 +1011,8 @@
                     previewPopover.style.display = 'block';
                     positionPopover(e);
                 });
-                thumbImg.addEventListener('mousemove', (e) => {
-                    positionPopover(e);
-                });
-                thumbImg.addEventListener('mouseleave', () => {
-                    previewPopover.style.display = 'none';
-                });
+                thumbImg.addEventListener('mousemove', (e) => { positionPopover(e); });
+                thumbImg.addEventListener('mouseleave', () => { previewPopover.style.display = 'none'; });
 
                 layersContainer.appendChild(item);
             });
@@ -1162,7 +1263,7 @@
         document.addEventListener('mouseup', () => { isDragging = false; header.style.cursor = 'move'; });
 
         window.onload = () => {
-            createLayer("https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80", "Arrière-plan principal avec un nom très long");
+            createLayer("https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80", "Arrière-plan principal");
         };
     </script>
 </body>
