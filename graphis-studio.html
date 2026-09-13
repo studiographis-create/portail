@@ -144,9 +144,25 @@
         cursor: pointer;
         border: 1px solid #444;
         font-size: 12px;
+        gap: 8px;
     }
     .layer-item.active { border-color: var(--accent-color); background: #2a2a2a; }
-    .layer-info { display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    
+    /* Troncature automatique du nom du calque (...) */
+    .layer-info { 
+        display: flex; 
+        align-items: center; 
+        gap: 8px; 
+        flex: 1; 
+        min-width: 0; 
+    }
+    .layer-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex: 1;
+        min-width: 0;
+    }
     
     /* Style de la miniature (Thumbnail) */
     .layer-thumbnail {
@@ -190,6 +206,7 @@
         align-items: center;
         justify-content: center;
         transition: all 0.2s;
+        flex-shrink: 0;
     }
     .icon-btn svg {
         width: 12px;
@@ -210,8 +227,15 @@
         opacity: 0.35;
         border-style: dashed;
     }
+    .icon-btn.locked-btn {
+        background: var(--accent-color);
+    }
+    .icon-btn.locked-btn svg {
+        stroke: var(--bg-color);
+        fill: var(--bg-color);
+    }
 
-    .layer-actions { display: flex; gap: 4px; }
+    .layer-actions { display: flex; gap: 4px; flex-shrink: 0; }
 
     .tool-select-box {
         display: flex;
@@ -575,7 +599,7 @@
 
         function updateBoundingBoxVisibility() {
             const active = getActiveLayer();
-            if (currentTool === 'transform' && active && active.visible) {
+            if (currentTool === 'transform' && active && active.visible && !active.locked) {
                 boundingBox.style.display = 'block';
                 updateBoundingBoxPosition();
             } else {
@@ -585,7 +609,7 @@
 
         function updateBoundingBoxPosition() {
             const active = getActiveLayer();
-            if (!active || !active.visible) return;
+            if (!active || !active.visible || active.locked) return;
             const rect = active.img.getBoundingClientRect();
             const containerRect = imageContainer.getBoundingClientRect();
 
@@ -621,7 +645,8 @@
                 flipY: initialData ? initialData.flipY : 1,
                 opacity: initialData ? initialData.opacity : 100,
                 blendMode: initialData ? initialData.blendMode : 'normal',
-                visible: initialData && initialData.visible !== undefined ? initialData.visible : true
+                visible: initialData && initialData.visible !== undefined ? initialData.visible : true,
+                locked: initialData && initialData.locked !== undefined ? initialData.locked : false
             };
 
             let isDraggingLayer = false, startX, startY;
@@ -629,7 +654,7 @@
                 e.preventDefault();
                 e.stopPropagation();
                 setActiveLayer(id);
-                if (currentTool === 'move' && layerObj.visible) {
+                if (currentTool === 'move' && layerObj.visible && !layerObj.locked) {
                     isDraggingLayer = true;
                     startX = e.clientX - layerObj.x;
                     startY = e.clientY - layerObj.y;
@@ -637,7 +662,7 @@
             });
 
             document.addEventListener('mousemove', (e) => {
-                if (!isDraggingLayer || activeLayerId !== id || currentTool !== 'move' || !layerObj.visible) return;
+                if (!isDraggingLayer || activeLayerId !== id || currentTool !== 'move' || !layerObj.visible || layerObj.locked) return;
                 layerObj.x = e.clientX - startX;
                 layerObj.y = e.clientY - startY;
                 applyLayerTransform(layerObj);
@@ -669,9 +694,17 @@
             updateBoundingBoxVisibility();
         }
 
-        function renameLayer(id) {
+        function toggleLayerLock(id) {
             const layer = layers.find(l => l.id === id);
             if (!layer) return;
+            layer.locked = !layer.locked;
+            updateLayersUI();
+            updateBoundingBoxVisibility();
+        }
+
+        function renameLayer(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer || layer.locked) return;
             const newName = prompt("Nouveau nom du calque :", layer.name);
             if (newName && newName.trim() !== "") {
                 layer.name = newName.trim();
@@ -698,6 +731,7 @@
                 opacity: source.opacity,
                 blendMode: source.blendMode,
                 visible: source.visible,
+                locked: false,
                 insertIndex: sourceIdx + 1
             };
 
@@ -712,10 +746,10 @@
             handle.addEventListener('mousedown', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                const active = getActiveLayer();
+                if (!active || !active.visible || active.locked) return;
                 isTransforming = true;
                 startMouseX = e.clientX;
-                const active = getActiveLayer();
-                if (!active || !active.visible) return;
                 initialScale = active.scale;
                 initialRotation = active.rotation;
                 transformType = handle.id === 'h_rot' ? 'rotate' : 'scale';
@@ -725,7 +759,7 @@
         document.addEventListener('mousemove', (e) => {
             if (!isTransforming) return;
             const active = getActiveLayer();
-            if (!active || !active.visible) return;
+            if (!active || !active.visible || active.locked) return;
 
             if (transformType === 'scale') {
                 let dx = e.clientX - startMouseX;
@@ -794,7 +828,7 @@
 
         document.getElementById('layerOpacity').addEventListener('input', (e) => {
             const active = getActiveLayer();
-            if(!active) return;
+            if(!active || active.locked) return;
             active.opacity = parseFloat(e.target.value);
             document.getElementById('val_opacity').innerText = active.opacity + '%';
             applyLayerTransform(active);
@@ -802,7 +836,7 @@
 
         document.getElementById('layerBlendMode').addEventListener('change', (e) => {
             const active = getActiveLayer();
-            if(!active) return;
+            if(!active || active.locked) return;
             active.blendMode = e.target.value;
             applyLayerTransform(active);
         });
@@ -842,7 +876,7 @@
                             <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </button>
                         <img class="layer-thumbnail" src="${layer.img.src}" alt="Vignette">
-                        <span>${layer.name}</span>
+                        <span class="layer-name" title="${layer.name}">${layer.name}</span>
                     </div>
                     <div class="layer-actions">
                         <button class="icon-btn" title="Renommer" onclick="event.stopPropagation(); renameLayer('${layer.id}')">
@@ -859,6 +893,9 @@
                         </button>
                         <button class="icon-btn" title="Supprimer" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">
                             <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                        <button class="icon-btn ${layer.locked ? 'locked-btn' : ''}" title="${layer.locked ? 'Déverrouiller' : 'Verrouiller'}" onclick="event.stopPropagation(); toggleLayerLock('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                         </button>
                     </div>
                 `;
@@ -891,6 +928,9 @@
         }
 
         window.deleteLayer = function(id) {
+            const layer = layers.find(l => l.id === id);
+            if (layer && layer.locked) return;
+            
             if(layers.length <= 1) {
                 alert("Impossible de supprimer le dernier calque.");
                 return;
@@ -907,7 +947,7 @@
 
         document.getElementById('tr_scale').addEventListener('input', (e) => {
             const active = getActiveLayer();
-            if(!active) return;
+            if(!active || active.locked) return;
             active.scale = parseFloat(e.target.value) / 100;
             document.getElementById('val_scale').innerText = e.target.value + '%';
             applyLayerTransform(active);
@@ -915,7 +955,7 @@
 
         document.getElementById('tr_rot').addEventListener('input', (e) => {
             const active = getActiveLayer();
-            if(!active) return;
+            if(!active || active.locked) return;
             active.rotation = parseFloat(e.target.value);
             document.getElementById('val_rot').innerText = e.target.value + '°';
             applyLayerTransform(active);
@@ -923,7 +963,7 @@
 
         document.getElementById('tr_skewX').addEventListener('input', (e) => {
             const active = getActiveLayer();
-            if(!active) return;
+            if(!active || active.locked) return;
             active.skewX = parseFloat(e.target.value);
             document.getElementById('val_skewX').innerText = e.target.value + '°';
             applyLayerTransform(active);
@@ -931,7 +971,7 @@
 
         document.getElementById('tr_skewY').addEventListener('input', (e) => {
             const active = getActiveLayer();
-            if(!active) return;
+            if(!active || active.locked) return;
             active.skewY = parseFloat(e.target.value);
             document.getElementById('val_skewY').innerText = e.target.value + '°';
             applyLayerTransform(active);
@@ -939,7 +979,7 @@
 
         document.getElementById('tr_perspX').addEventListener('input', (e) => {
             const active = getActiveLayer();
-            if(!active) return;
+            if(!active || active.locked) return;
             active.perspX = parseFloat(e.target.value);
             document.getElementById('val_perspX').innerText = e.target.value + '°';
             applyLayerTransform(active);
@@ -947,7 +987,7 @@
 
         document.getElementById('tr_perspY').addEventListener('input', (e) => {
             const active = getActiveLayer();
-            if(!active) return;
+            if(!active || active.locked) return;
             active.perspY = parseFloat(e.target.value);
             document.getElementById('val_perspY').innerText = e.target.value + '°';
             applyLayerTransform(active);
@@ -955,14 +995,14 @@
 
         document.getElementById('tr_flipH').addEventListener('click', () => {
             const active = getActiveLayer();
-            if(!active) return;
+            if(!active || active.locked) return;
             active.flipX *= -1;
             applyLayerTransform(active);
         });
 
         document.getElementById('tr_flipV').addEventListener('click', () => {
             const active = getActiveLayer();
-            if(!active) return;
+            if(!active || active.locked) return;
             active.flipY *= -1;
             applyLayerTransform(active);
         });
@@ -1122,7 +1162,7 @@
         document.addEventListener('mouseup', () => { isDragging = false; header.style.cursor = 'move'; });
 
         window.onload = () => {
-            createLayer("https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80", "Arrière-plan");
+            createLayer("https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1200&q=80", "Arrière-plan principal avec un nom très long");
         };
     </script>
 </body>
