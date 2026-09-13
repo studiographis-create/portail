@@ -835,7 +835,7 @@
             }
         });
 
-        // Calcul corrigé : alignement précis sur les bords visibles calculés de l'arrière-plan
+        // NOUVEAU CALCUL D'ANCRAGE RECTIFIÉ
         function positionActiveLayer(corner) {
             const active = getActiveLayer();
             const baseLayer = layers[0];
@@ -844,29 +844,29 @@
             const baseRect = baseLayer.img.getBoundingClientRect();
             const activeRect = active.img.getBoundingClientRect();
 
-            const margin = 20;
+            const margin = 20; // Marge fixe en pixels par rapport aux bords de la photo
 
-            const unscaledBaseW = baseRect.width / currentScale;
-            const unscaledBaseH = baseRect.height / currentScale;
-            const unscaledActiveW = activeRect.width / currentScale;
-            const unscaledActiveH = activeRect.height / currentScale;
-
-            const maxOffsetX = (unscaledBaseW / 2) - (unscaledActiveW / 2) - (margin / currentScale);
-            const maxOffsetY = (unscaledBaseH / 2) - (unscaledActiveH / 2) - (margin / currentScale);
+            // Calcul du décalage nécessaire pour aligner le bord de la signature avec celui de la photo
+            let deltaX = 0;
+            let deltaY = 0;
 
             if (corner === 'bottom-right') {
-                active.x = maxOffsetX;
-                active.y = maxOffsetY;
+                deltaX = (baseRect.right - margin) - activeRect.right;
+                deltaY = (baseRect.bottom - margin) - activeRect.bottom;
             } else if (corner === 'bottom-left') {
-                active.x = -maxOffsetX;
-                active.y = maxOffsetY;
+                deltaX = (baseRect.left + margin) - activeRect.left;
+                deltaY = (baseRect.bottom - margin) - activeRect.bottom;
             } else if (corner === 'top-right') {
-                active.x = maxOffsetX;
-                active.y = -maxOffsetY;
+                deltaX = (baseRect.right - margin) - activeRect.right;
+                deltaY = (baseRect.top + margin) - activeRect.top;
             } else if (corner === 'top-left') {
-                active.x = -maxOffsetX;
-                active.y = -maxOffsetY;
+                deltaX = (baseRect.left + margin) - activeRect.left;
+                deltaY = (baseRect.top + margin) - activeRect.top;
             }
+
+            // On convertit le delta écran en coordonnées internes compensées par le zoom
+            active.x += (deltaX / currentScale);
+            active.y += (deltaY / currentScale);
 
             applyLayerTransform(active);
             updateBoundingBoxPosition();
@@ -994,18 +994,26 @@
             return el ? (parseFloat(el.value) || 0) : 0;
         };
 
+        // AJUSTEMENT DYNAMIQUE DU CANVAS DU TEXTE À SA TAILLE EXACTE
         function createTextLayer(text = "Graphis Studio", fontFamily = "sans-serif", style = "normal", size = 48, color = "#FFD700") {
             const canvas = document.createElement('canvas');
-            canvas.width = 1200;
-            canvas.height = 300;
             const ctx = canvas.getContext('2d');
             
             const fontSpec = `${style === 'normal' ? '' : style} ${size}px "${fontFamily}"`;
             ctx.font = fontSpec;
+            
+            const metrics = ctx.measureText(text);
+            const textWidth = Math.ceil(metrics.width) + 20;
+            const textHeight = Math.ceil(size * 1.3);
+
+            canvas.width = textWidth;
+            canvas.height = textHeight;
+            
+            ctx.font = fontSpec;
             ctx.fillStyle = color;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(text, 600, 150);
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
 
             const dataUrl = canvas.toDataURL();
             createLayer(dataUrl, `Signature: "${text}"`, {
@@ -1019,8 +1027,17 @@
             const ctx = canvas.getContext('2d');
             const cfg = layer.textConfig;
             
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
             const fontSpec = `${cfg.style === 'normal' ? '' : cfg.style} ${cfg.size}px "${cfg.fontFamily}"`;
+            ctx.font = fontSpec;
+            
+            const metrics = ctx.measureText(cfg.text);
+            const textWidth = Math.ceil(metrics.width) + 20;
+            const textHeight = Math.ceil(cfg.size * 1.3);
+
+            canvas.width = textWidth;
+            canvas.height = textHeight;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.font = fontSpec;
             ctx.fillStyle = cfg.color;
             ctx.textAlign = 'center';
@@ -1072,8 +1089,8 @@
                     canvasLayer.width = rawImg.naturalWidth || 800;
                     canvasLayer.height = rawImg.naturalHeight || 600;
                 } else {
-                    canvasLayer.width = 1200;
-                    canvasLayer.height = 300;
+                    canvasLayer.width = rawImg.naturalWidth;
+                    canvasLayer.height = rawImg.naturalHeight;
                 }
                 renderLayerComposite(layerObj);
             };
