@@ -351,7 +351,6 @@
     input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: var(--accent-color); cursor: pointer; }
     select, input[type=text] { width: 100%; background: #222; color: #fff; border: 1px solid #444; padding: 4px; border-radius: 4px; font-size: 11px; box-sizing: border-box; }
     
-    /* Case couleur réduite et élégante */
     input[type=color] { 
         width: 40px; 
         height: 22px; 
@@ -361,6 +360,17 @@
         padding: 1px; 
         border-radius: 4px; 
         cursor: pointer; 
+    }
+
+    .signature-badge {
+        font-size: 10px;
+        background: rgba(255, 215, 0, 0.15);
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        padding: 2px 6px;
+        border-radius: 3px;
+        display: inline-block;
+        margin-bottom: 8px;
     }
 
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
@@ -419,7 +429,7 @@
                     <svg viewBox="0 0 24 24"><path d="M18 11l-1.5-1.5s-1.5 1.5-3 0 1.5-3 0-4.5-4.5 1.5-4.5 1.5L3 12.5V18h5.5L18 11z"></path><path d="M14 6l3 3"></path></svg>
                     <span>Masque</span>
                 </button>
-                <button class="tool-btn" id="toolText" title="Texte">
+                <button class="tool-btn" id="toolText" title="Texte / Signature">
                     <svg viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="12" y1="4" x2="12" y2="20"></line><line x1="8" y1="20" x2="16" y2="20"></line></svg>
                     <span>Texte</span>
                 </button>
@@ -452,9 +462,10 @@
             </div>
 
             <div class="text-options-box" id="textOptionsBox">
-                <h4 id="textPanelTitle">Propriétés du Texte</h4>
+                <h4 id="textPanelTitle">Propriétés du Texte / Signature</h4>
+                <span id="signatureStatus" class="signature-badge" style="display:none;">Signature active enregistrée</span>
                 <div class="control-group">
-                    <label>Texte <input type="text" id="textInputVal" value="Graphis Studio"></label>
+                    <label>Texte / Signature <input type="text" id="textInputVal" value="Graphis Studio"></label>
                 </div>
                 <div class="control-group">
                     <label>Police Système
@@ -479,6 +490,15 @@
                 </div>
                 <div class="control-group">
                     <label>Couleur <input type="color" id="textColorPicker" value="#FFD700"></label>
+                </div>
+                <hr class="divider">
+                <button id="saveAsSignatureBtn" style="width:100%; margin-bottom:8px; font-size:11px;">💾 Définir comme Signature par défaut</button>
+                <div style="font-size:10px; color:#aaa; margin-bottom:4px;">Positionnement rapide sur la photo :</div>
+                <div class="transform-grid">
+                    <button id="posBottomRight" style="font-size:10px;">Coin Bas-Droit</button>
+                    <button id="posBottomLeft" style="font-size:10px;">Coin Bas-Gauche</button>
+                    <button id="posTopRight" style="font-size:10px;">Coin Haut-Droit</button>
+                    <button id="posTopLeft" style="font-size:10px;">Coin Haut-Gauche</button>
                 </div>
             </div>
 
@@ -711,6 +731,9 @@
         let isPaintingMask = false;
         let lastMaskPos = null;
         let draggedLayerId = null;
+        
+        // Stockage de la signature par défaut mémorisée
+        let savedSignatureConfig = null;
 
         const btnMove = document.getElementById('toolMove');
         const btnFreeTrans = document.getElementById('toolFreeTransform');
@@ -782,18 +805,68 @@
             const titleEl = document.getElementById('textPanelTitle');
 
             if (active && active.isText) {
-                titleEl.textContent = "Modifier le Calque Texte";
+                titleEl.textContent = "Modifier le Calque Texte / Signature";
                 document.getElementById('textInputVal').value = active.textConfig.text;
                 document.getElementById('textFontSelect').value = active.textConfig.fontFamily;
                 document.getElementById('textStyleSelect').value = active.textConfig.style;
                 document.getElementById('textSizeRange').value = active.textConfig.size;
                 document.getElementById('val_textSize').innerText = active.textConfig.size + 'px';
                 document.getElementById('textColorPicker').value = active.textConfig.color;
+            } else if (savedSignatureConfig) {
+                // Si une signature est en mémoire, on la recrée automatiquement lors de l'activation
+                createTextLayer(savedSignatureConfig.text, savedSignatureConfig.fontFamily, savedSignatureConfig.style, savedSignatureConfig.size, savedSignatureConfig.color);
             } else {
-                titleEl.textContent = "Propriétés du Texte";
+                titleEl.textContent = "Propriétés du Texte / Signature";
                 createTextLayer("Graphis Studio", "sans-serif", "normal", 48, "#FFD700");
             }
         }
+
+        // Mémorisation de la signature
+        document.getElementById('saveAsSignatureBtn').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if (active && active.isText) {
+                savedSignatureConfig = JSON.parse(JSON.stringify(active.textConfig));
+                document.getElementById('signatureStatus').style.display = 'block';
+                alert("Signature enregistrée avec succès ! Elle pourra être réutilisée sur vos prochaines photos.");
+            } else {
+                alert("Veuillez sélectionner ou créer un calque de texte à définir comme signature.");
+            }
+        });
+
+        // Boutons de placement rapide de la signature (coins de la photo)
+        function positionActiveLayer(corner) {
+            const active = getActiveLayer();
+            const baseLayer = layers[0]; // Calque de fond principal
+            if (!active || !baseLayer) return;
+
+            const baseRect = baseLayer.img.getBoundingClientRect();
+            const activeRect = active.img.getBoundingClientRect();
+
+            const margin = 30; // Marge par rapport aux bords
+            
+            // Calcul approximatif basé sur la position centrale (0,0)
+            if (corner === 'bottom-right') {
+                active.x = (baseRect.width / 2) - (activeRect.width / 2) - margin;
+                active.y = (baseRect.height / 2) - (activeRect.height / 2) - margin;
+            } else if (corner === 'bottom-left') {
+                active.x = -(baseRect.width / 2) + (activeRect.width / 2) + margin;
+                active.y = (baseRect.height / 2) - (activeRect.height / 2) - margin;
+            } else if (corner === 'top-right') {
+                active.x = (baseRect.width / 2) - (activeRect.width / 2) - margin;
+                active.y = -(baseRect.height / 2) + (activeRect.height / 2) + margin;
+            } else if (corner === 'top-left') {
+                active.x = -(baseRect.width / 2) + (activeRect.width / 2) + margin;
+                active.y = -(baseRect.height / 2) + (activeRect.height / 2) + margin;
+            }
+
+            applyLayerTransform(active);
+            updateBoundingBoxPosition();
+        }
+
+        document.getElementById('posBottomRight').addEventListener('click', () => positionActiveLayer('bottom-right'));
+        document.getElementById('posBottomLeft').addEventListener('click', () => positionActiveLayer('bottom-left'));
+        document.getElementById('posTopRight').addEventListener('click', () => positionActiveLayer('top-right'));
+        document.getElementById('posTopLeft').addEventListener('click', () => positionActiveLayer('top-left'));
 
         function handleTextParamChange() {
             const active = getActiveLayer();
@@ -805,7 +878,7 @@
 
             if (active && active.isText) {
                 active.textConfig = { text: textVal, fontFamily: fontFam, style: fontStyle, size: fontSize, color: color };
-                active.name = `Texte: "${textVal}"`;
+                active.name = `Signature: "${textVal}"`;
                 redrawTextLayer(active);
                 updateLayersUI();
             } else if (currentTool === 'text') {
@@ -926,7 +999,7 @@
             ctx.fillText(text, 600, 150);
 
             const dataUrl = canvas.toDataURL();
-            createLayer(dataUrl, `Texte: "${text}"`, {
+            createLayer(dataUrl, `Signature: "${text}"`, {
                 isText: true,
                 textConfig: { text, fontFamily, style, size, color }
             });
