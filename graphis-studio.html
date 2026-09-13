@@ -72,13 +72,12 @@
     }
     .canvas-layer:active { cursor: grabbing; }
 
-    /* Correction définitive : fond strictement transparent et sans coloration résiduelle */
+    /* Cadre de Transformation Manuelle rigoureusement transparent */
     #transform-bounding-box {
         position: absolute;
         display: none;
         border: 1px dashed var(--accent-color);
         background: transparent !important;
-        background-color: transparent !important;
         pointer-events: none;
         z-index: 100;
         box-sizing: border-box;
@@ -741,7 +740,8 @@
 
                 const activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#rawEngine)`;
 
-                layers.forEach(layer => {
+                layers.forEach((layer, idx) => {
+                    // Si ce n'est pas le calque d'arrière-plan (idx > 0), on peut appliquer un effet si nécessaire, mais ici on garde les filtres RAW actifs uniquement sur l'actif
                     layer.img.style.filter = (layer.id === activeLayerId) ? activeFilterString : 'none';
                     applyLayerTransform(layer);
                 });
