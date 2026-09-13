@@ -12,7 +12,20 @@
         --border-color: #333;
     }
 
-    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; overflow: hidden; user-select: none; }
+    * {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    *::selection {
+        background: transparent;
+        color: inherit;
+    }
+
+    body { margin: 0; background-color: var(--bg-color); color: var(--text-color); font-family: -apple-system, sans-serif; overflow: hidden; }
 
     header { padding: 12px 20px; background: #1a1a1a; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
     
@@ -70,20 +83,24 @@
         object-fit: contain; 
         cursor: grab;
         transform-origin: center center; 
+        background: transparent !important;
+        mix-blend-mode: normal;
     }
     .canvas-layer:active { cursor: grabbing; }
 
-    /* Neutralisation totale de la teinte sur le cadre de transformation */
+    /* Neutralisation absolue de tout fond ou reflet bleu */
     #transform-bounding-box {
         position: absolute;
         display: none;
         border: 1px dashed var(--accent-color);
-        background: none !important;
+        background: transparent !important;
         background-color: transparent !important;
         pointer-events: none;
         z-index: 100;
         box-sizing: border-box;
         filter: none !important;
+        box-shadow: none !important;
+        outline: none !important;
     }
     .t-handle {
         position: absolute;
@@ -506,6 +523,7 @@
 
             let isDraggingLayer = false, startX, startY;
             img.addEventListener('mousedown', (e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 setActiveLayer(id);
                 if (currentTool === 'move') {
@@ -538,6 +556,7 @@
 
         document.querySelectorAll('.t-handle').forEach(handle => {
             handle.addEventListener('mousedown', (e) => {
+                e.preventDefault();
                 e.stopPropagation();
                 isTransforming = true;
                 startMouseX = e.clientX;
@@ -738,7 +757,6 @@
                 let saturate = 100 + sat + (vib * 0.5) + (cgSat * 0.2);
                 let totalBlur = (blur * 0.1) + (noiseLum * 0.05);
 
-                // Application du filtre CSS uniquement si un paramètre est altéré pour isoler totalement les calques bruts
                 let activeFilterString = 'none';
                 if (exp !== 0 || cont !== 0 || sat !== 0 || vib !== 0 || temp !== 0 || tint !== 0 || cgHue !== 0 || blur !== 0) {
                     activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#rawEngine)`;
