@@ -122,7 +122,7 @@
         position: absolute;
         top: 70px;
         left: 20px;
-        width: 320px;
+        width: 330px;
         max-height: 80vh;
         overflow-y: auto;
         background: var(--panel-bg);
@@ -532,8 +532,8 @@
             return el ? (parseFloat(el.value) || 0) : 0;
         };
 
-        function createLayer(imgSrc, name = "Calque") {
-            const id = 'layer_' + Date.now();
+        function createLayer(imgSrc, name = "Calque", initialData = null) {
+            const id = 'layer_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
             const img = document.createElement('img');
             img.src = imgSrc;
             img.className = 'canvas-layer';
@@ -541,13 +541,18 @@
             
             const layerObj = {
                 id, name, img,
-                x: 0, y: 0,
-                scale: 1, rotation: 0,
-                skewX: 0, skewY: 0,
-                perspX: 0, perspY: 0,
-                flipX: 1, flipY: 1,
-                opacity: 100,
-                blendMode: 'normal'
+                x: initialData ? initialData.x : 0,
+                y: initialData ? initialData.y : 0,
+                scale: initialData ? initialData.scale : 1,
+                rotation: initialData ? initialData.rotation : 0,
+                skewX: initialData ? initialData.skewX : 0,
+                skewY: initialData ? initialData.skewY : 0,
+                perspX: initialData ? initialData.perspX : 0,
+                perspY: initialData ? initialData.perspY : 0,
+                flipX: initialData ? initialData.flipX : 1,
+                flipY: initialData ? initialData.flipY : 1,
+                opacity: initialData ? initialData.opacity : 100,
+                blendMode: initialData ? initialData.blendMode : 'normal'
             };
 
             let isDraggingLayer = false, startX, startY;
@@ -573,11 +578,41 @@
             document.addEventListener('mouseup', () => { isDraggingLayer = false; });
 
             imageContainer.insertBefore(img, overlay);
-            layers.push(layerObj);
+            
+            if (initialData && initialData.insertIndex !== undefined) {
+                layers.splice(initialData.insertIndex, 0, layerObj);
+            } else {
+                layers.push(layerObj);
+            }
+
             setActiveLayer(id);
             updateZIndices();
             updateLayersUI();
             processImage();
+        }
+
+        function duplicateLayer(id) {
+            const source = layers.find(l => l.id === id);
+            if (!source) return;
+            
+            const sourceIdx = layers.findIndex(l => l.id === id);
+            const duplicateData = {
+                x: source.x + 20, // décalage de 20px pour visibilité immédiate
+                y: source.y + 20,
+                scale: source.scale,
+                rotation: source.rotation,
+                skewX: source.skewX,
+                skewY: source.skewY,
+                perspX: source.perspX,
+                perspY: source.perspY,
+                flipX: source.flipX,
+                flipY: source.flipY,
+                opacity: source.opacity,
+                blendMode: source.blendMode,
+                insertIndex: sourceIdx + 1
+            };
+
+            createLayer(source.img.src, `${source.name} (copie)`, duplicateData);
         }
 
         let isTransforming = false;
@@ -706,7 +741,6 @@
 
         function updateLayersUI() {
             layersContainer.innerHTML = '';
-            // Affichage dans le panneau : du calque du haut vers le bas
             layers.slice().reverse().forEach((layer) => {
                 const item = document.createElement('div');
                 item.className = `layer-item ${layer.id === activeLayerId ? 'active' : ''}`;
@@ -718,6 +752,7 @@
                         <span>${layer.name}</span>
                     </div>
                     <div class="layer-actions">
+                        <button title="Dupliquer" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">⧉</button>
                         <button title="Monter" onclick="event.stopPropagation(); moveLayerUp('${layer.id}')">▲</button>
                         <button title="Descendre" onclick="event.stopPropagation(); moveLayerDown('${layer.id}')">▼</button>
                         <button title="Supprimer" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">Suppr</button>
