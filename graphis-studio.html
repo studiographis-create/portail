@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Éditeur RAW Web - Interface Complète et Fonctionnelle</title>
+<title>Éditeur RAW Web - Interface Complète</title>
 <style>
     :root {
         --bg-color: #121212;
@@ -20,7 +20,6 @@
         overflow: hidden;
     }
 
-    /* Barre d'outils supérieure */
     header {
         padding: 12px 20px;
         background: #1a1a1a;
@@ -57,10 +56,9 @@
         max-width: 80%;
         max-height: 80%;
         box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        transition: filter 0.05s ease-out;
+        transition: filter 0.05s ease-out, transform 0.05s ease-out;
     }
 
-    /* Panneau latéral déplaçable */
     #panel {
         position: absolute;
         top: 20px;
@@ -77,7 +75,6 @@
         z-index: 10;
     }
 
-    /* Panneau de Calques */
     #layersPanel {
         display: none;
         position: absolute;
@@ -106,7 +103,6 @@
     .layer-item.active { border-color: var(--accent-color); }
     .layer-eye { margin-right: 10px; color: var(--accent-color); }
 
-    /* En-tête du panneau (zone de déplacement) */
     .panel-header {
         padding: 15px;
         border-bottom: 1px solid var(--border-color);
@@ -124,7 +120,6 @@
         letter-spacing: 1px;
     }
 
-    /* Outils locaux (Masques, Recadrage...) */
     .local-tools {
         display: flex;
         justify-content: space-around;
@@ -141,18 +136,15 @@
     }
     .local-tools button:hover { background: #333; color: var(--accent-color); }
 
-    /* Conteneur scrollable des accordéons */
     .panel-content {
         overflow-y: auto;
         padding: 10px;
         flex-grow: 1;
     }
     
-    /* Scrollbar personnalisée */
     .panel-content::-webkit-scrollbar { width: 6px; }
     .panel-content::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
 
-    /* Structure Accordéon */
     details {
         margin-bottom: 5px;
         border-bottom: 1px solid #2a2a2a;
@@ -179,7 +171,6 @@
         padding: 10px 5px 15px 5px;
     }
 
-    /* Groupes de curseurs */
     .control-group { margin-bottom: 12px; }
     .control-group label {
         display: flex;
@@ -251,7 +242,6 @@
                 <h2>Caméra Raw</h2>
             </div>
             
-            <!-- Outils de retouche globale et locale -->
             <div class="local-tools">
                 <button title="Cadrage et redressement">◩</button>
                 <button title="Suppression (Génératif/Corriger/Dupliquer)">🩹</button>
@@ -270,20 +260,20 @@
                         </div>
                         <hr class="divider">
                         <div class="control-group"><label>Température <span class="value-display">0</span></label><input type="range" id="tempSlider" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Teinte <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Teinte <span class="value-display">0</span></label><input type="range" id="tintSlider" min="-100" max="100" value="0"></div>
                         <hr class="divider">
                         <div class="control-group"><label>Exposition <span class="value-display">0.00</span></label><input type="range" id="expSlider" min="-5" max="5" step="0.1" value="0"></div>
                         <div class="control-group"><label>Contraste <span class="value-display">0</span></label><input type="range" id="contSlider" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Hautes lumières <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Ombres <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Blancs <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Noirs <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Hautes lumières <span class="value-display">0</span></label><input type="range" id="hlSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Ombres <span class="value-display">0</span></label><input type="range" id="shadowSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Blancs <span class="value-display">0</span></label><input type="range" id="whiteSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Noirs <span class="value-display">0</span></label><input type="range" id="blackSlider" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label>Texture <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Clarté <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Correction du voile <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Texture <span class="value-display">0</span></label><input type="range" id="textureSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Clarté <span class="value-display">0</span></label><input type="range" id="claritySlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Correction du voile <span class="value-display">0</span></label><input type="range" id="dehazeSlider" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label>Vibration <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Vibration <span class="value-display">0</span></label><input type="range" id="vibSlider" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label>Saturation <span class="value-display">0</span></label><input type="range" id="satSlider" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
@@ -293,26 +283,26 @@
                     <summary>Courbe des tonalités</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Mode <select><option>Paramétrique</option><option>Points (RVB)</option></select></label></div>
-                        <div class="control-group"><label>Hautes lumières <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Tons clairs <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Tons sombres <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Ombres <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Hautes lumières <span class="value-display">0</span></label><input type="range" id="curveHlSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Tons clairs <span class="value-display">0</span></label><input type="range" id="curveLightSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Tons sombres <span class="value-display">0</span></label><input type="range" id="curveDarkSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Ombres <span class="value-display">0</span></label><input type="range" id="curveShadowSlider" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
 
-                <!-- 3. MÉLANGEUR DE COULEURS / COULEUR CIBLÉE -->
+                <!-- 3. MÉLANGEUR DE COULEURS -->
                 <details>
                     <summary>Mélangeur de couleurs</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Ajuster <select><option>Teinte</option><option>Saturation</option><option>Luminance</option></select></label></div>
-                        <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#ffa500">Orange <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#ffff00">Jaune <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#00ff00">Vert <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#00ffff">Aqua <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#4a4aff">Bleu <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#ff00ff">Violet <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#ff00a5">Magenta <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display">0</span></label><input type="range" id="mixRedSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ffa500">Orange <span class="value-display">0</span></label><input type="range" id="mixOrangeSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ffff00">Jaune <span class="value-display">0</span></label><input type="range" id="mixYellowSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#00ff00">Vert <span class="value-display">0</span></label><input type="range" id="mixGreenSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#00ffff">Aqua <span class="value-display">0</span></label><input type="range" id="mixAquaSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#4a4aff">Bleu <span class="value-display">0</span></label><input type="range" id="mixBlueSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ff00ff">Violet <span class="value-display">0</span></label><input type="range" id="mixVioletSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ff00a5">Magenta <span class="value-display">0</span></label><input type="range" id="mixMagentaSlider" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
 
@@ -322,12 +312,12 @@
                     <div class="module-content">
                         <p style="font-size:11px; color:#888; margin-top:0;">(Remplacement des roues par curseurs pour l'UI web standard)</p>
                         <div class="control-group"><label>Cible <select><option>Ombres</option><option>Tons moyens</option><option>Hautes lumières</option><option>Global</option></select></label></div>
-                        <div class="control-group"><label>Teinte <span class="value-display">0</span></label><input type="range" min="0" max="360" value="0"></div>
-                        <div class="control-group"><label>Saturation <span class="value-display">0</span></label><input type="range" min="0" max="100" value="0"></div>
-                        <div class="control-group"><label>Luminance <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Teinte <span class="value-display">0</span></label><input type="range" id="cgHueSlider" min="0" max="360" value="0"></div>
+                        <div class="control-group"><label>Saturation <span class="value-display">0</span></label><input type="range" id="cgSatSlider" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Luminance <span class="value-display">0</span></label><input type="range" id="cgLumSlider" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label>Fusionnement <span class="value-display">50</span></label><input type="range" min="0" max="100" value="50"></div>
-                        <div class="control-group"><label>Balance <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Fusionnement <span class="value-display">50</span></label><input type="range" id="cgBlendSlider" min="0" max="100" value="50"></div>
+                        <div class="control-group"><label>Balance <span class="value-display">0</span></label><input type="range" id="cgBalanceSlider" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
 
@@ -335,14 +325,14 @@
                 <details>
                     <summary>Détail</summary>
                     <div class="module-content">
-                        <div class="control-group"><label>Gain (Netteté) <span class="value-display">40</span></label><input type="range" min="0" max="150" value="40"></div>
-                        <div class="control-group"><label>Rayon <span class="value-display">1.0</span></label><input type="range" min="0.5" max="3" step="0.1" value="1.0"></div>
-                        <div class="control-group"><label>Détail <span class="value-display">25</span></label><input type="range" min="0" max="100" value="25"></div>
-                        <div class="control-group"><label>Masquage <span class="value-display">0</span></label><input type="range" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Gain (Netteté) <span class="value-display">40</span></label><input type="range" id="sharpGainSlider" min="0" max="150" value="40"></div>
+                        <div class="control-group"><label>Rayon <span class="value-display">1.0</span></label><input type="range" id="sharpRadSlider" min="0.5" max="3" step="0.1" value="1.0"></div>
+                        <div class="control-group"><label>Détail <span class="value-display">25</span></label><input type="range" id="sharpDetSlider" min="0" max="100" value="25"></div>
+                        <div class="control-group"><label>Masquage <span class="value-display">0</span></label><input type="range" id="sharpMaskSlider" min="0" max="100" value="0"></div>
                         <hr class="divider">
                         <button style="width:100%; margin-bottom:15px;">Denoise AI (Réduction bruit)</button>
-                        <div class="control-group"><label>Bruit Luminance <span class="value-display">0</span></label><input type="range" min="0" max="100" value="0"></div>
-                        <div class="control-group"><label>Bruit Couleur <span class="value-display">25</span></label><input type="range" min="0" max="100" value="25"></div>
+                        <div class="control-group"><label>Bruit Luminance <span class="value-display">0</span></label><input type="range" id="noiseLumSlider" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Bruit Couleur <span class="value-display">25</span></label><input type="range" id="noiseColSlider" min="0" max="100" value="25"></div>
                     </div>
                 </details>
 
@@ -350,7 +340,7 @@
                 <details>
                     <summary>Flou d'objectif</summary>
                     <div class="module-content">
-                        <div class="control-group"><label>Intensité du Flou <span class="value-display">0</span></label><input type="range" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Intensité du Flou <span class="value-display">0</span></label><input type="range" id="blurIntSlider" min="0" max="100" value="0"></div>
                         <div class="control-group"><label>Forme Bokeh <select><option>Cercle</option><option>Bulle</option><option>5 Lames</option><option>Anneau</option></select></label></div>
                         <button style="width:100%; margin-top:5px;">Afficher Carte de profondeur</button>
                     </div>
@@ -363,8 +353,8 @@
                         <label style="font-size:11px; display:flex; gap:10px;"><input type="checkbox"> Supprimer l'aberration chromatique</label>
                         <label style="font-size:11px; display:flex; gap:10px; margin-top:8px;"><input type="checkbox"> Activer le profil d'objectif</label>
                         <hr class="divider">
-                        <div class="control-group"><label>Distorsion <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Vignettage <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Distorsion <span class="value-display">0</span></label><input type="range" id="optDistSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Vignettage <span class="value-display">0</span></label><input type="range" id="optVigSlider" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
 
@@ -373,9 +363,9 @@
                     <summary>Géométrie</summary>
                     <div class="module-content">
                         <div class="control-group"><label>Upright <select><option>Désactivé</option><option>Auto</option><option>Niveau</option><option>Vertical</option><option>Complet</option></select></label></div>
-                        <div class="control-group"><label>Vertical <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Horizontal <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Rotation <span class="value-display">0</span></label><input type="range" min="-10" max="10" step="0.1" value="0"></div>
+                        <div class="control-group"><label>Vertical <span class="value-display">0</span></label><input type="range" id="geoVertSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Horizontal <span class="value-display">0</span></label><input type="range" id="geoHorizSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Rotation <span class="value-display">0</span></label><input type="range" id="geoRotSlider" min="-10" max="10" step="0.1" value="0"></div>
                     </div>
                 </details>
 
@@ -383,10 +373,10 @@
                 <details>
                     <summary>Effets</summary>
                     <div class="module-content">
-                        <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Milieu <span class="value-display">50</span></label><input type="range" min="0" max="100" value="50"></div>
-                        <div class="control-group"><label>Grain Gain <span class="value-display">0</span></label><input type="range" min="0" max="100" value="0"></div>
-                        <div class="control-group"><label>Taille <span class="value-display">25</span></label><input type="range" min="0" max="100" value="25"></div>
+                        <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" id="effVigGainSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Milieu <span class="value-display">50</span></label><input type="range" id="effVigMidSlider" min="0" max="100" value="50"></div>
+                        <div class="control-group"><label>Grain Gain <span class="value-display">0</span></label><input type="range" id="effGrainGainSlider" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Taille <span class="value-display">25</span></label><input type="range" id="effGrainSizeSlider" min="0" max="100" value="25"></div>
                     </div>
                 </details>
 
@@ -396,16 +386,16 @@
                     <div class="module-content">
                         <div class="control-group"><label>Processus <select><option>Version 6 (Actuelle)</option><option>Version 5</option></select></label></div>
                         <hr class="divider">
-                        <div class="control-group"><label>Ombres - Teinte <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Ombres - Teinte <span class="value-display">0</span></label><input type="range" id="calShadowTintSlider" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Teinte <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Saturation <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Teinte <span class="value-display">0</span></label><input type="range" id="calRedHueSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Saturation <span class="value-display">0</span></label><input type="range" id="calRedSatSlider" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label style="color:#00ff00">Primaire Vert - Teinte <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#00ff00">Primaire Vert - Saturation <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#00ff00">Primaire Vert - Teinte <span class="value-display">0</span></label><input type="range" id="calGreenHueSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#00ff00">Primaire Vert - Saturation <span class="value-display">0</span></label><input type="range" id="calGreenSatSlider" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label style="color:#4a4aff">Primaire Bleu - Teinte <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#4a4aff">Primaire Bleu - Saturation <span class="value-display">0</span></label><input type="range" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#4a4aff">Primaire Bleu - Teinte <span class="value-display">0</span></label><input type="range" id="calBlueHueSlider" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#4a4aff">Primaire Bleu - Saturation <span class="value-display">0</span></label><input type="range" id="calBlueSatSlider" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
 
@@ -416,41 +406,32 @@
     <script>
         const photo = document.getElementById('photo');
 
-        // --- 1. IMPORTATION ---
+        // --- IMPORTATION ---
         const fileInput = document.getElementById('fileInput');
         const importBtn = document.getElementById('importBtn');
 
-        importBtn.addEventListener('click', () => {
-            fileInput.click();
-        });
-
+        importBtn.addEventListener('click', () => { fileInput.click(); });
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if(file) {
                 const reader = new FileReader();
                 reader.onload = (event) => {
                     photo.src = event.target.result;
-                    // Réinitialisation optionnelle des curseurs
-                    if(document.getElementById('tempSlider')) document.getElementById('tempSlider').value = 0;
-                    if(document.getElementById('expSlider')) document.getElementById('expSlider').value = 0;
-                    if(document.getElementById('contSlider')) document.getElementById('contSlider').value = 0;
-                    if(document.getElementById('satSlider')) document.getElementById('satSlider').value = 0;
                     applyFilters(); 
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        // --- 2. EXPORTATION ---
+        // --- EXPORTATION ---
         const exportBtn = document.getElementById('exportBtn');
         exportBtn.addEventListener('click', () => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            
             canvas.width = photo.naturalWidth;
             canvas.height = photo.naturalHeight;
-            
             ctx.filter = photo.style.filter;
+            // Ne gère pas les transforms géométriques dans le canvas basique
             ctx.drawImage(photo, 0, 0, canvas.width, canvas.height);
             
             const link = document.createElement('a');
@@ -459,7 +440,7 @@
             link.click();
         });
 
-        // --- 3. PANNEAU DE CALQUES ---
+        // --- PANNEAU DE CALQUES ---
         const layersBtn = document.getElementById('layersBtn');
         const layersPanel = document.getElementById('layersPanel');
         
@@ -467,42 +448,85 @@
             layersPanel.style.display = (layersPanel.style.display === 'none' || layersPanel.style.display === '') ? 'block' : 'none';
         });
 
-        // --- 4. LOGIQUE DE TRAITEMENT D'IMAGE (Filtres en temps réel) ---
-        const tempSlider = document.getElementById('tempSlider');
-        const expSlider = document.getElementById('expSlider');
-        const contSlider = document.getElementById('contSlider');
-        const satSlider = document.getElementById('satSlider');
-
+        // --- MOTEUR DE TRAITEMENT (Connecté à tous les curseurs) ---
         function applyFilters() {
-            if (!tempSlider || !expSlider || !contSlider || !satSlider) return;
+            // Fonction utilitaire pour récupérer la valeur de n'importe quel curseur en toute sécurité
+            const getVal = (id) => {
+                const el = document.getElementById(id);
+                return el ? parseFloat(el.value) : 0;
+            };
 
-            const tempVal = parseInt(tempSlider.value);
-            const expVal = parseFloat(expSlider.value);
-            const contVal = parseInt(contSlider.value);
-            const satVal = parseInt(satSlider.value);
+            // Extraction des valeurs applicables en CSS/HTML standard
+            const temp = getVal('tempSlider');
+            const tint = getVal('tintSlider');
+            const exp = getVal('expSlider');
+            const cont = getVal('contSlider');
+            const vib = getVal('vibSlider');
+            const sat = getVal('satSlider');
+            
+            const blur = getVal('blurIntSlider');
+            
+            const geoVert = getVal('geoVertSlider');
+            const geoHoriz = getVal('geoHorizSlider');
+            const geoRot = getVal('geoRotSlider');
 
-            const brightness = 100 + (expVal * 20); 
-            const contrast = 100 + contVal;
-            const saturate = 100 + satVal;
+            // --- Conversion Mathématique ---
+            const brightness = 100 + (exp * 20); 
+            const contrast = 100 + cont;
+            const saturate = 100 + sat + (vib * 0.5);
 
             let sepia = 0;
-            let hue = 0;
-            if (tempVal > 0) {
-                sepia = tempVal; 
-            } else if (tempVal < 0) {
-                sepia = Math.abs(tempVal) * 0.4;
-                hue = -30; 
+            let hue = tint; // La teinte fait tourner le spectre global
+            
+            if (temp > 0) {
+                sepia = temp; // Réchauffe l'image
+            } else if (temp < 0) {
+                sepia = Math.abs(temp) * 0.4;
+                hue += -30; // Refroidit l'image
             }
 
-            photo.style.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) sepia(${sepia}%) hue-rotate(${hue}deg)`;
+            // --- Application Visuelle ---
+            // 1. Filtres colorimétriques et optiques
+            photo.style.filter = `
+                brightness(${brightness}%) 
+                contrast(${contrast}%) 
+                saturate(${saturate}%) 
+                sepia(${sepia}%) 
+                hue-rotate(${hue}deg) 
+                blur(${blur / 10}px)
+            `;
+
+            // 2. Déformations géométriques 3D
+            photo.style.transform = `
+                perspective(1000px) 
+                rotateX(${geoVert * -0.5}deg) 
+                rotateY(${geoHoriz * -0.5}deg) 
+                rotateZ(${geoRot}deg)
+            `;
         }
 
-        if (tempSlider) tempSlider.addEventListener('input', applyFilters);
-        if (expSlider) expSlider.addEventListener('input', applyFilters);
-        if (contSlider) contSlider.addEventListener('input', applyFilters);
-        if (satSlider) satSlider.addEventListener('input', applyFilters);
+        // --- ÉCOUTEUR GLOBAL POUR TOUS LES CURSEURS ---
+        // Cette boucle rend chaque curseur du panneau fonctionnel. 
+        // Au glissement, elle met à jour son étiquette chiffrée et relance le moteur de rendu.
+        const allSliders = document.querySelectorAll('input[type="range"]');
+        allSliders.forEach(slider => {
+            slider.addEventListener('input', (e) => {
+                // Mise à jour de l'affichage chiffré dans le label HTML
+                const label = e.target.previousElementSibling;
+                if(label && label.querySelector('.value-display')) {
+                    if (e.target.step === '0.1') {
+                        label.querySelector('.value-display').innerText = parseFloat(e.target.value).toFixed(1);
+                    } else {
+                        label.querySelector('.value-display').innerText = e.target.value;
+                    }
+                }
+                
+                // Déclenchement du traitement d'image
+                applyFilters();
+            });
+        });
 
-        // --- 5. DRAG & DROP ET AFFICHAGE DES VALEURS ---
+        // --- DRAG & DROP DU PANNEAU ---
         const panel = document.getElementById('panel');
         const panelHeader = document.getElementById('panelHeader');
         let isDragging = false;
@@ -528,21 +552,6 @@
         document.addEventListener('mouseup', () => {
             isDragging = false;
             panelHeader.style.cursor = 'move';
-        });
-
-        const inputs = document.querySelectorAll('input[type="range"]');
-        inputs.forEach(input => {
-            input.addEventListener('input', (e) => {
-                const label = e.target.previousElementSibling;
-                if(label && label.querySelector('.value-display')) {
-                    // Force l'affichage d'une décimale pour l'exposition
-                    if(e.target.id === 'expSlider') {
-                        label.querySelector('.value-display').innerText = parseFloat(e.target.value).toFixed(1);
-                    } else {
-                        label.querySelector('.value-display').innerText = e.target.value;
-                    }
-                }
-            });
         });
     </script>
 </body>
