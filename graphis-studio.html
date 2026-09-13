@@ -962,6 +962,7 @@
                 updateMaskCSS(layer);
             }
             updateLayersUI();
+            setTool('maskBrush'); // Ouvre automatiquement le panneau/outil du masque
         }
 
         function invertLayerMask(id) {
@@ -994,7 +995,7 @@
             if (currentTool === 'maskBrush') {
                 setTool('move');
             }
-            updateLayersUI(); // Met à jour l'interface pour retirer immédiatement la vignette du masque
+            updateLayersUI();
         }
 
         function paintMask(layer, e) {
