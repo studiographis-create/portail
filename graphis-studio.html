@@ -58,7 +58,7 @@
         justify-content: center; 
         align-items: center; 
         overflow: hidden;
-        perspective: 1000px; /* Nécessaire pour les effets de perspective 3D */
+        perspective: 1000px;
     }
     
     .canvas-layer { 
@@ -71,10 +71,34 @@
         transform-origin: center center; 
     }
     .canvas-layer:active { cursor: grabbing; }
+
+    /* Cadre de Transformation Manuelle (Style Photoshop Bounding Box) */
+    #transform-bounding-box {
+        position: absolute;
+        display: none;
+        border: 1px dashed var(--accent-color);
+        background: rgba(255, 215, 0, 0.03);
+        pointer-events: none;
+        z-index: 100;
+        box-sizing: border-box;
+    }
+    .t-handle {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #fff;
+        border: 1px solid var(--accent-color);
+        pointer-events: auto;
+    }
+    #h_tl { top: -5px; left: -5px; cursor: nwse-resize; }
+    #h_tr { top: -5px; right: -5px; cursor: nesw-resize; }
+    #h_bl { bottom: -5px; left: -5px; cursor: nesw-resize; }
+    #h_br { bottom: -5px; right: -5px; cursor: nwse-resize; }
+    #h_rot { top: -25px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; border-radius: 50%; background: var(--accent-color); cursor: grab; }
     
     #vignette-overlay { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 99; transition: none; }
 
-    /* Panneau des Calques & Transformations */
+    /* Panneau des Calques & Outils */
     #layersPanel {
         display: none;
         position: absolute;
@@ -107,6 +131,31 @@
     .layer-info { display: flex; align-items: center; gap: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .layer-actions { display: flex; gap: 5px; }
     .layer-actions button { padding: 2px 6px; font-size: 10px; }
+
+    .tool-select-box {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 12px;
+        background: #1a1a1a;
+        padding: 4px;
+        border-radius: 4px;
+        border: 1px solid #333;
+    }
+    .tool-btn {
+        flex: 1;
+        background: transparent;
+        color: #aaa;
+        border: none;
+        padding: 6px;
+        font-size: 11px;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    .tool-btn.active {
+        background: var(--accent-color);
+        color: #121212;
+        font-weight: bold;
+    }
 
     .transform-box {
         margin-top: 15px;
@@ -176,38 +225,29 @@
     </header>
 
     <div id="workspace">
-        <!-- Panneau des Calques & Transformations Avancées -->
+        <!-- Panneau des Calques & Outils -->
         <div id="layersPanel">
             <h3 style="margin-top:0; color:var(--accent-color); font-size:13px; text-transform:uppercase; border-bottom:1px solid #333; padding-bottom:8px;">Pile de Calques</h3>
+            
+            <!-- Sélecteur d'Outils (Déplacement vs Transformation Libre) -->
+            <div class="tool-select-box">
+                <button class="tool-btn active" id="toolMove">✛ Dé déplacement</button>
+                <button class="tool-btn" id="toolFreeTransform">⌖ Transformation Libre</button>
+            </div>
+
             <div id="layersContainer"></div>
             <button id="addLayerBtn" style="width: 100%; margin-top: 10px; font-size: 11px;">+ Nouveau Calque</button>
 
-            <!-- Outils de Transformation Manuelle (Style Photoshop) -->
+            <!-- Contrôles numériques additionnels -->
             <div class="transform-box">
-                <h4>Transformation du calque actif</h4>
+                <h4>Paramètres Précis</h4>
                 <div class="control-group">
-                    <label>Échelle (Taille) <span class="value-display" id="val_scale">100%</span></label>
+                    <label>Échelle <span class="value-display" id="val_scale">100%</span></label>
                     <input type="range" id="tr_scale" min="10" max="300" value="100">
                 </div>
                 <div class="control-group">
                     <label>Rotation <span class="value-display" id="val_rot">0°</span></label>
                     <input type="range" id="tr_rot" min="-180" max="180" value="0">
-                </div>
-                <div class="control-group">
-                    <label>Inclinaison X (Skew X) <span class="value-display" id="val_skewX">0°</span></label>
-                    <input type="range" id="tr_skewX" min="-60" max="60" value="0">
-                </div>
-                <div class="control-group">
-                    <label>Inclinaison Y (Skew Y) <span class="value-display" id="val_skewY">0°</span></label>
-                    <input type="range" id="tr_skewY" min="-60" max="60" value="0">
-                </div>
-                <div class="control-group">
-                    <label>Perspective Horiz. (Tilt Y) <span class="value-display" id="val_perspX">0°</span></label>
-                    <input type="range" id="tr_perspX" min="-75" max="75" value="0">
-                </div>
-                <div class="control-group">
-                    <label>Perspective Vert. (Tilt X) <span class="value-display" id="val_perspY">0°</span></label>
-                    <input type="range" id="tr_perspY" min="-75" max="75" value="0">
                 </div>
                 <div class="transform-grid">
                     <button id="tr_flipH" style="font-size:11px;">Miroir H</button>
@@ -224,6 +264,14 @@
         </div>
 
         <div id="image-container">
+            <!-- Cadre de transformation interactive style Photoshop -->
+            <div id="transform-bounding-box">
+                <div class="t-handle" id="h_tl"></div>
+                <div class="t-handle" id="h_tr"></div>
+                <div class="t-handle" id="h_bl"></div>
+                <div class="t-handle" id="h_br"></div>
+                <div class="t-handle" id="h_rot" title="Faire pivoter"></div>
+            </div>
             <div id="vignette-overlay"></div>
         </div>
         
@@ -345,7 +393,7 @@
                     <div class="module-content">
                         <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" id="e_viggain" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label>Milieu <span class="value-display">50</span></label><input type="range" id="e_vigmid" min="0" max="100" value="50"></div>
-                        <div class="control-group"><label>Grain Gain <span class="value-display">0</span></label><input type="range" id="e_grngain" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Grain Gain <span class="value-display">0</span></label><input type="range" id="e_grngain" min="0" max="100" value="0"></div>
                         <div class="control-group"><label>Taille <span class="value-display">25</span></label><input type="range" id="e_grnsize" min="0" max="100" value="25"></div>
                     </div>
                 </details>
@@ -369,22 +417,62 @@
         </div>
     </div>
 
-    <!-- Moteur de traitement multi-calques et transformations avancées -->
+    <!-- Moteur complet -->
     <script>
         const imageContainer = document.getElementById('image-container');
         const overlay = document.getElementById('vignette-overlay');
         const layersContainer = document.getElementById('layersContainer');
+        const boundingBox = document.getElementById('transform-bounding-box');
         
         let layers = [];
         let activeLayerId = null;
         let currentScale = 1;
+        let currentTool = 'move'; // 'move' ou 'transform'
+
+        // Gestion des boutons d'outils (Déplacement vs Transformation)
+        const btnMove = document.getElementById('toolMove');
+        const btnFreeTrans = document.getElementById('toolFreeTransform');
+
+        btnMove.addEventListener('click', () => {
+            currentTool = 'move';
+            btnMove.classList.add('active');
+            btnFreeTrans.classList.remove('active');
+            updateBoundingBoxVisibility();
+        });
+
+        btnFreeTrans.addEventListener('click', () => {
+            currentTool = 'transform';
+            btnFreeTrans.classList.add('active');
+            btnMove.classList.remove('active');
+            updateBoundingBoxVisibility();
+        });
+
+        function updateBoundingBoxVisibility() {
+            if (currentTool === 'transform' && activeLayerId) {
+                boundingBox.style.display = 'block';
+                updateBoundingBoxPosition();
+            } else {
+                boundingBox.style.display = 'none';
+            }
+        }
+
+        function updateBoundingBoxPosition() {
+            const active = getActiveLayer();
+            if (!active) return;
+            const rect = active.img.getBoundingClientRect();
+            const containerRect = imageContainer.getBoundingClientRect();
+
+            boundingBox.style.left = (rect.left - containerRect.left) + 'px';
+            boundingBox.style.top = (rect.top - containerRect.top) + 'px';
+            boundingBox.style.width = rect.width + 'px';
+            boundingBox.style.height = rect.height + 'px';
+        }
 
         const v = (id) => {
             const el = document.getElementById(id);
             return el ? (parseFloat(el.value) || 0) : 0;
         };
 
-        // --- GESTION DES CALQUES ET TRANSFORMATIONS (Perspective & Inclinaison) ---
         function createLayer(imgSrc, name = "Calque") {
             const id = 'layer_' + Date.now();
             const img = document.createElement('img');
@@ -393,40 +481,33 @@
             img.crossOrigin = 'anonymous';
             
             const layerObj = {
-                id,
-                name,
-                img,
-                x: 0,
-                y: 0,
-                scale: 1,
-                rotation: 0,
-                skewX: 0,
-                skewY: 0,
-                perspX: 0,
-                perspY: 0,
-                flipX: 1,
-                flipY: 1
+                id, name, img,
+                x: 0, y: 0,
+                scale: 1, rotation: 0,
+                flipX: 1, flipY: 1
             };
 
+            // Interactions de déplacement à la souris
             let isDraggingLayer = false, startX, startY;
             img.addEventListener('mousedown', (e) => {
                 e.stopPropagation();
                 setActiveLayer(id);
-                isDraggingLayer = true;
-                startX = e.clientX - layerObj.x;
-                startY = e.clientY - layerObj.y;
+                if (currentTool === 'move') {
+                    isDraggingLayer = true;
+                    startX = e.clientX - layerObj.x;
+                    startY = e.clientY - layerObj.y;
+                }
             });
 
             document.addEventListener('mousemove', (e) => {
-                if (!isDraggingLayer || activeLayerId !== id) return;
+                if (!isDraggingLayer || activeLayerId !== id || currentTool !== 'move') return;
                 layerObj.x = e.clientX - startX;
                 layerObj.y = e.clientY - startY;
                 applyLayerTransform(layerObj);
+                updateBoundingBoxPosition();
             });
 
-            document.addEventListener('mouseup', () => {
-                isDraggingLayer = false;
-            });
+            document.addEventListener('mouseup', () => { isDraggingLayer = false; });
 
             imageContainer.insertBefore(img, overlay);
             layers.push(layerObj);
@@ -435,26 +516,66 @@
             processImage();
         }
 
+        // Interaction avec les poignées de redimensionnement et rotation (Style Photoshop)
+        let isTransforming = false;
+        let transformType = null; // 'scale' ou 'rotate'
+        let startMouseX, startMouseY, initialScale, initialRotation;
+
+        document.querySelectorAll('.t-handle').forEach(handle => {
+            handle.addEventListener('mousedown', (e) => {
+                e.stopPropagation();
+                isTransforming = true;
+                startMouseX = e.clientX;
+                startMouseY = e.clientY;
+                const active = getActiveLayer();
+                if (!active) return;
+                initialScale = active.scale;
+                initialRotation = active.rotation;
+                transformType = handle.id === 'h_rot' ? 'rotate' : 'scale';
+            });
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isTransforming) return;
+            const active = getActiveLayer();
+            if (!active) return;
+
+            if (transformType === 'scale') {
+                let dx = e.clientX - startMouseX;
+                let newScale = Math.max(0.1, initialScale + (dx * 0.005));
+                active.scale = newScale;
+                document.getElementById('tr_scale').value = Math.round(active.scale * 100);
+                document.getElementById('val_scale').innerText = Math.round(active.scale * 100) + '%';
+            } else if (transformType === 'rotate') {
+                let dx = e.clientX - startMouseX;
+                active.rotation = Math.round((initialRotation + dx * 0.5) % 360);
+                document.getElementById('tr_rot').value = active.rotation;
+                document.getElementById('val_rot').innerText = active.rotation + '°';
+            }
+            applyLayerTransform(active);
+            updateBoundingBoxPosition();
+        });
+
+        document.addEventListener('mouseup', () => { isTransforming = false; });
+
         function getActiveLayer() {
             return layers.find(l => l.id === activeLayerId);
         }
 
         function applyLayerTransform(layer) {
-            const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) skew(${layer.skewX}deg, ${layer.skewY}deg) rotateX(${layer.perspY}deg) rotateY(${layer.perspX}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
+            const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
             layer.img.style.transform = transformStr;
+            updateBoundingBoxPosition();
         }
 
         function setActiveLayer(id) {
             activeLayerId = id;
             layers.forEach(l => {
-                if(l.id === id) {
-                    l.img.style.zIndex = 10;
-                } else {
-                    l.img.style.zIndex = 1;
-                }
+                l.img.style.zIndex = (l.id === id) ? 10 : 1;
             });
             updateLayersUI();
             syncTransformUI();
+            updateBoundingBoxVisibility();
         }
 
         function syncTransformUI() {
@@ -464,14 +585,6 @@
             document.getElementById('val_scale').innerText = Math.round(active.scale * 100) + '%';
             document.getElementById('tr_rot').value = active.rotation;
             document.getElementById('val_rot').innerText = active.rotation + '°';
-            document.getElementById('tr_skewX').value = active.skewX;
-            document.getElementById('val_skewX').innerText = active.skewX + '°';
-            document.getElementById('tr_skewY').value = active.skewY;
-            document.getElementById('val_skewY').innerText = active.skewY + '°';
-            document.getElementById('tr_perspX').value = active.perspX;
-            document.getElementById('val_perspX').innerText = active.perspX + '°';
-            document.getElementById('tr_perspY').value = active.perspY;
-            document.getElementById('val_perspY').innerText = active.perspY + '°';
         }
 
         function updateLayersUI() {
@@ -508,7 +621,7 @@
             }
         };
 
-        // --- CONTRÔLES DE TRANSFORMATION MANUELLE & PERSPECTIVE ---
+        // Contrôles numériques du panneau
         document.getElementById('tr_scale').addEventListener('input', (e) => {
             const active = getActiveLayer();
             if(!active) return;
@@ -522,38 +635,6 @@
             if(!active) return;
             active.rotation = parseFloat(e.target.value);
             document.getElementById('val_rot').innerText = e.target.value + '°';
-            applyLayerTransform(active);
-        });
-
-        document.getElementById('tr_skewX').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active) return;
-            active.skewX = parseFloat(e.target.value);
-            document.getElementById('val_skewX').innerText = e.target.value + '°';
-            applyLayerTransform(active);
-        });
-
-        document.getElementById('tr_skewY').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active) return;
-            active.skewY = parseFloat(e.target.value);
-            document.getElementById('val_skewY').innerText = e.target.value + '°';
-            applyLayerTransform(active);
-        });
-
-        document.getElementById('tr_perspX').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active) return;
-            active.perspX = parseFloat(e.target.value);
-            document.getElementById('val_perspX').innerText = e.target.value + '°';
-            applyLayerTransform(active);
-        });
-
-        document.getElementById('tr_perspY').addEventListener('input', (e) => {
-            const active = getActiveLayer();
-            if(!active) return;
-            active.perspY = parseFloat(e.target.value);
-            document.getElementById('val_perspY').innerText = e.target.value + '°';
             applyLayerTransform(active);
         });
 
@@ -608,11 +689,7 @@
                 const activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#rawEngine)`;
 
                 layers.forEach(layer => {
-                    if(layer.id === activeLayerId) {
-                        layer.img.style.filter = activeFilterString;
-                    } else {
-                        layer.img.style.filter = 'none';
-                    }
+                    layer.img.style.filter = (layer.id === activeLayerId) ? activeFilterString : 'none';
                     applyLayerTransform(layer);
                 });
                 
@@ -624,7 +701,7 @@
             }
         }
 
-        // --- GESTION DES CALQUES ---
+        // --- GESTION CALQUES & IMPORTATION ---
         const layersBtn = document.getElementById('layersBtn');
         const layersPanel = document.getElementById('layersPanel');
         
@@ -634,7 +711,6 @@
 
         const addLayerBtn = document.getElementById('addLayerBtn');
         const layerFileInput = document.getElementById('layerFileInput');
-        
         addLayerBtn.addEventListener('click', () => layerFileInput.click());
 
         async function handleImageFile(file, callback) {
@@ -673,9 +749,7 @@
 
         layerFileInput.addEventListener('change', (e) => {
             if(e.target.files[0]) {
-                handleImageFile(e.target.files[0], (url, name) => {
-                    createLayer(url, name);
-                });
+                handleImageFile(e.target.files[0], (url, name) => { createLayer(url, name); });
             }
         });
 
@@ -696,11 +770,10 @@
             }
         });
 
-        // --- ZOOM ---
-        document.getElementById('zoomInBtn').addEventListener('click', () => { currentScale += 0.25; processImage(); });
-        document.getElementById('zoomOutBtn').addEventListener('click', () => { currentScale = Math.max(0.2, currentScale - 0.25); processImage(); });
-        document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); });
-        document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); });
+        document.getElementById('zoomInBtn').addEventListener('click', () => { currentScale += 0.25; processImage(); updateBoundingBoxPosition(); });
+        document.getElementById('zoomOutBtn').addEventListener('click', () => { currentScale = Math.max(0.2, currentScale - 0.25); processImage(); updateBoundingBoxPosition(); });
+        document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); });
+        document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); });
 
         document.getElementById('controls').addEventListener('input', (e) => {
             if (e.target.type === 'range') {
@@ -713,10 +786,9 @@
         });
 
         document.getElementById('exportBtn').addEventListener('click', () => {
-            alert("Rendu en cours... (Le bouton exporter nécessitera l'API Canvas drawImage pour fusionner les calques en un JPEG final)");
+            alert("Rendu en cours...");
         });
 
-        // --- DÉPLACEMENT DES PANNEAUX ---
         const panel = document.getElementById('panel');
         const header = document.getElementById('panelHeader');
         let isDragging = false, startX, startY, initX, initY;
