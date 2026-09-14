@@ -729,7 +729,8 @@
         </div>
         
         <div id="panel">
-            <div class="panel-header" id="panelHeader"><h2>Caméra Raw</h2></div>
+            <!-- TITRE RENOMMÉ EN DÉVELOPPEMENT -->
+            <div class="panel-header" id="panelHeader"><h2>Développement</h2></div>
             <div class="local-tools">
                 <button title="Cadrage et redressement">◩</button>
                 <button title="Suppression">🩹</button>
@@ -740,10 +741,21 @@
             <div class="panel-content" id="controls">
                 <details open><summary>Réglages de base</summary>
                     <div class="module-content">
-                        <div class="control-group"><label>Profil <select id="baseProfile"><option>Adobe Couleur</option><option>Paysage</option></select></label></div>
+                        <!-- PROFILS D'IMAGE ENRICHIS -->
+                        <div class="control-group">
+                            <label>Profil 
+                                <select id="baseProfile">
+                                    <option value="adobe_color">Adobe Couleur</option>
+                                    <option value="adobe_standard">Adobe Standard</option>
+                                    <option value="landscape">Paysage</option>
+                                    <option value="portrait">Portrait</option>
+                                    <option value="monochrome">Noir et blanc</option>
+                                    <option value="neutral">Neutre</option>
+                                </select>
+                            </label>
+                        </div>
                         <hr class="divider">
                         
-                        <!-- AJOUT DES CHAMPS ET BOUTONS REINITIALISER DANS LES RÉGLAGES DE BASE -->
                         <div class="control-group">
                             <label>Température 
                                 <div class="transform-input-wrapper">
@@ -1024,8 +1036,9 @@
         let selectedLayerIds = [];
         let lastSelectedLayerId = null;
 
-        // VALEURS PAR DÉFAUT CAMERA RAW POUR UN NOUVEAU CALQUE
+        // VALEURS PAR DÉFAUT DES RÉGLAGES POUR UN NOUVEAU CALQUE
         const DEFAULT_RAW_SETTINGS = {
+            baseProfile: 'adobe_color',
             t_temp: 0, t_tint: 0, t_exp: 0, t_cont: 0, t_hl: 0, t_shad: 0, t_white: 0, t_black: 0,
             t_text: 0, t_clar: 0, t_dehaze: 0, t_vib: 0, t_sat: 0, c_hl: 0, c_light: 0, c_dark: 0,
             c_shad: 0, m_red: 0, m_org: 0, m_yel: 0, m_grn: 0, m_aqu: 0, m_blu: 0, m_vio: 0,
@@ -1673,18 +1686,25 @@
             processImage();
         }
 
-        // SYNCHRONISE LE PANNEAU CAMERA RAW AVEC LE CALQUE ACTIF SELECTIONNE
+        // SYNCHRONISE LE PANNEAU DE DÉVELOPPEMENT AVEC LE CALQUE ACTIF SELECTIONNE
         function syncRawPanelUI() {
             const active = getActiveLayer();
             if (!active || !active.rawSettings) return;
 
             const settings = active.rawSettings;
+
+            const profileSelect = document.getElementById('baseProfile');
+            if (profileSelect && settings.baseProfile) {
+                profileSelect.value = settings.baseProfile;
+            }
+
             Object.keys(settings).forEach(key => {
+                if (key === 'baseProfile') return;
+
                 const el = document.getElementById(key);
                 if (el) {
                     el.value = settings[key];
                     
-                    // Mettre à jour également l'entrée numérique num_* correspondant à la clé du filtre
                     const numEl = document.getElementById(`num_${key}`);
                     if (numEl) {
                         numEl.value = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
@@ -2353,6 +2373,16 @@
             }
         };
 
+        // GESTION DU PROFIL D'IMAGE
+        document.getElementById('baseProfile').addEventListener('change', (e) => {
+            const active = getActiveLayer();
+            if (active && active.rawSettings) {
+                active.rawSettings.baseProfile = e.target.value;
+                processImage();
+                saveHistoryState();
+            }
+        });
+
         document.getElementById('tr_flipH').addEventListener('click', () => {
             const active = getActiveLayer();
             if(!active || active.locked) return;
@@ -2369,7 +2399,7 @@
             saveHistoryState();
         });
 
-        // CALCUL DU RENDU CAMERA RAW INDEPENDANT POUR CHAQUE CALQUE
+        // CALCUL DU RENDU DU DEVELOPPEMENT INDEPENDANT POUR CHAQUE CALQUE
         function processImage() {
             try {
                 layers.forEach((layer) => {
@@ -2383,9 +2413,42 @@
                     const blur = s.b_int || 0, noiseLum = s.d_nlum || 0;
                     const cgHue = s.cg_hue || 0, cgSat = s.cg_sat || 0, cgLum = s.cg_lum || 0;
 
-                    let rR = 1 + ((s.cal_rs || 0)*0.01) + ((s.m_red || 0)*0.01) + ((s.m_org || 0)*0.005) + ((s.m_mag || 0)*0.005) + (temp * 0.005) + ((s.cal_rh || 0) * 0.002) - ((s.cal_shad || 0) * 0.005);
-                    let gG = 1 + ((s.cal_gs || 0)*0.01) + ((s.m_grn || 0)*0.01) + ((s.m_yel || 0)*0.005) + ((s.m_aqu || 0)*0.005) - (tint * 0.005) - ((s.cal_gh || 0) * 0.002) + ((s.cal_shad || 0) * 0.005);
-                    let bB = 1 + ((s.cal_bs || 0)*0.01) + ((s.m_blu || 0)*0.01) + ((s.m_aqu || 0)*0.005) + ((s.m_vio || 0)*0.005) - (temp * 0.005) - ((s.cal_bh || 0) * 0.002);
+                    // PRÉSETS DE RENDU PAR PROFIL D'IMAGE
+                    let profileCont = 0, profileSat = 0, profileGrayscale = 0;
+                    let profileR = 1, profileG = 1, profileB = 1;
+
+                    switch (s.baseProfile) {
+                        case 'adobe_standard':
+                            profileCont = -5;
+                            profileSat = -5;
+                            break;
+                        case 'landscape':
+                            profileCont = 15;
+                            profileSat = 20;
+                            profileG = 1.08;
+                            profileB = 1.05;
+                            break;
+                        case 'portrait':
+                            profileCont = -10;
+                            profileSat = -5;
+                            profileR = 1.06;
+                            break;
+                        case 'monochrome':
+                            profileGrayscale = 100;
+                            profileCont = 10;
+                            break;
+                        case 'neutral':
+                            profileCont = -15;
+                            profileSat = -10;
+                            break;
+                        case 'adobe_color':
+                        default:
+                            break;
+                    }
+
+                    let rR = (1 + ((s.cal_rs || 0)*0.01) + ((s.m_red || 0)*0.01) + ((s.m_org || 0)*0.005) + ((s.m_mag || 0)*0.005) + (temp * 0.005) + ((s.cal_rh || 0) * 0.002) - ((s.cal_shad || 0) * 0.005)) * profileR;
+                    let gG = (1 + ((s.cal_gs || 0)*0.01) + ((s.m_grn || 0)*0.01) + ((s.m_yel || 0)*0.005) + ((s.m_aqu || 0)*0.005) - (tint * 0.005) - ((s.cal_gh || 0) * 0.002) + ((s.cal_shad || 0) * 0.005)) * profileG;
+                    let bB = (1 + ((s.cal_bs || 0)*0.01) + ((s.m_blu || 0)*0.01) + ((s.m_aqu || 0)*0.005) + ((s.m_vio || 0)*0.005) - (temp * 0.005) - ((s.cal_bh || 0) * 0.002)) * profileB;
 
                     const colorMatrixEl = document.getElementById(`svg_color_${layer.id}`);
                     if (colorMatrixEl) {
@@ -2415,14 +2478,11 @@
                     }
 
                     let brightness = 100 + (exp * 20) + (cgLum * 0.2);
-                    let contrast = 100 + cont + (clar * 0.2) + (dehaze * 0.2) + ((s.t_text || 0) * 0.1);
-                    let saturate = 100 + sat + (vib * 0.5) + (cgSat * 0.2);
+                    let contrast = 100 + cont + profileCont + (clar * 0.2) + (dehaze * 0.2) + ((s.t_text || 0) * 0.1);
+                    let saturate = 100 + sat + profileSat + (vib * 0.5) + (cgSat * 0.2);
                     let totalBlur = (blur * 0.1) + (noiseLum * 0.05);
 
-                    let activeFilterString = 'none';
-                    if (exp !== 0 || cont !== 0 || sat !== 0 || vib !== 0 || temp !== 0 || tint !== 0 || cgHue !== 0 || blur !== 0) {
-                        activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#filter_${layer.id})`;
-                    }
+                    let activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) grayscale(${profileGrayscale}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#filter_${layer.id})`;
 
                     layer.img.style.filter = activeFilterString;
                     applyLayerTransform(layer);
@@ -2520,7 +2580,7 @@
         document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
         document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
 
-        // ECOUTEUR DE CHANGEMENT SUR LES AUTRES CURSEURS CAMERA RAW (POUR CEUX EN DEHORS DE LA LISTE DES REGLAGES DE BASE)
+        // ECOUTEUR DE CHANGEMENT SUR LES AUTRES CURSEURS (POUR CEUX EN DEHORS DE LA LISTE DES REGLAGES DE BASE)
         document.getElementById('controls').addEventListener('input', (e) => {
             if (e.target.type === 'range' && !rawFieldsList.includes(e.target.id)) {
                 const active = getActiveLayer();
