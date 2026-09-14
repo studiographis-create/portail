@@ -1150,38 +1150,230 @@
 
                         <!-- TEINTE -->
                         <div class="hsl-tab-content" id="hsl-tab-hue">
-                            <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display" id="val_mh_red">0</span></label><input type="range" id="mh_red" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ffa500">Orange <span class="value-display" id="val_mh_org">0</span></label><input type="range" id="mh_org" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ffff00">Jaune <span class="value-display" id="val_mh_yel">0</span></label><input type="range" id="mh_yel" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#00ff00">Vert <span class="value-display" id="val_mh_grn">0</span></label><input type="range" id="mh_grn" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#00ffff">Aqua <span class="value-display" id="val_mh_aqu">0</span></label><input type="range" id="mh_aqu" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#4a4aff">Bleu <span class="value-display" id="val_mh_blu">0</span></label><input type="range" id="mh_blu" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ff00ff">Violet <span class="value-display" id="val_mh_vio">0</span></label><input type="range" id="mh_vio" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ff00a5">Magenta <span class="value-display" id="val_mh_mag">0</span></label><input type="range" id="mh_mag" min="-100" max="100" value="0"></div>
+                            <div class="control-group">
+                                <label style="color:#ff4a4a">Rouge
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('mh_red', 0)" title="Réinitialiser Rouge"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_mh_red" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="mh_red" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ffa500">Orange
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('mh_org', 0)" title="Réinitialiser Orange"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_mh_org" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="mh_org" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ffff00">Jaune
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('mh_yel', 0)" title="Réinitialiser Jaune"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_mh_yel" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="mh_yel" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#00ff00">Vert
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('mh_grn', 0)" title="Réinitialiser Vert"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_mh_grn" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="mh_grn" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#00ffff">Aqua
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('mh_aqu', 0)" title="Réinitialiser Aqua"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_mh_aqu" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="mh_aqu" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#4a4aff">Bleu
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('mh_blu', 0)" title="Réinitialiser Bleu"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_mh_blu" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="mh_blu" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ff00ff">Violet
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('mh_vio', 0)" title="Réinitialiser Violet"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_mh_vio" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="mh_vio" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ff00a5">Magenta
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('mh_mag', 0)" title="Réinitialiser Magenta"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_mh_mag" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="mh_mag" min="-100" max="100" value="0">
+                            </div>
                         </div>
 
                         <!-- SATURATION -->
                         <div class="hsl-tab-content active" id="hsl-tab-sat">
-                            <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display" id="val_m_red">0</span></label><input type="range" id="m_red" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ffa500">Orange <span class="value-display" id="val_m_org">0</span></label><input type="range" id="m_org" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ffff00">Jaune <span class="value-display" id="val_m_yel">0</span></label><input type="range" id="m_yel" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#00ff00">Vert <span class="value-display" id="val_m_grn">0</span></label><input type="range" id="m_grn" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#00ffff">Aqua <span class="value-display" id="val_m_aqu">0</span></label><input type="range" id="m_aqu" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#4a4aff">Bleu <span class="value-display" id="val_m_blu">0</span></label><input type="range" id="m_blu" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ff00ff">Violet <span class="value-display" id="val_m_vio">0</span></label><input type="range" id="m_vio" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ff00a5">Magenta <span class="value-display" id="val_m_mag">0</span></label><input type="range" id="m_mag" min="-100" max="100" value="0"></div>
+                            <div class="control-group">
+                                <label style="color:#ff4a4a">Rouge
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('m_red', 0)" title="Réinitialiser Rouge"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_m_red" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="m_red" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ffa500">Orange
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('m_org', 0)" title="Réinitialiser Orange"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_m_org" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="m_org" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ffff00">Jaune
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('m_yel', 0)" title="Réinitialiser Jaune"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_m_yel" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="m_yel" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#00ff00">Vert
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('m_grn', 0)" title="Réinitialiser Vert"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_m_grn" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="m_grn" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#00ffff">Aqua
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('m_aqu', 0)" title="Réinitialiser Aqua"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_m_aqu" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="m_aqu" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#4a4aff">Bleu
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('m_blu', 0)" title="Réinitialiser Bleu"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_m_blu" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="m_blu" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ff00ff">Violet
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('m_vio', 0)" title="Réinitialiser Violet"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_m_vio" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="m_vio" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ff00a5">Magenta
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('m_mag', 0)" title="Réinitialiser Magenta"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_m_mag" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="m_mag" min="-100" max="100" value="0">
+                            </div>
                         </div>
 
                         <!-- LUMINANCE -->
                         <div class="hsl-tab-content" id="hsl-tab-lum">
-                            <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display" id="val_ml_red">0</span></label><input type="range" id="ml_red" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ffa500">Orange <span class="value-display" id="val_ml_org">0</span></label><input type="range" id="ml_org" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ffff00">Jaune <span class="value-display" id="val_ml_yel">0</span></label><input type="range" id="ml_yel" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#00ff00">Vert <span class="value-display" id="val_ml_grn">0</span></label><input type="range" id="ml_grn" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#00ffff">Aqua <span class="value-display" id="val_ml_aqu">0</span></label><input type="range" id="ml_aqu" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#4a4aff">Bleu <span class="value-display" id="val_ml_blu">0</span></label><input type="range" id="ml_blu" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ff00ff">Violet <span class="value-display" id="val_ml_vio">0</span></label><input type="range" id="ml_vio" min="-100" max="100" value="0"></div>
-                            <div class="control-group"><label style="color:#ff00a5">Magenta <span class="value-display" id="val_ml_mag">0</span></label><input type="range" id="ml_mag" min="-100" max="100" value="0"></div>
+                            <div class="control-group">
+                                <label style="color:#ff4a4a">Rouge
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('ml_red', 0)" title="Réinitialiser Rouge"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_ml_red" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="ml_red" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ffa500">Orange
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('ml_org', 0)" title="Réinitialiser Orange"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_ml_org" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="ml_org" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ffff00">Jaune
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('ml_yel', 0)" title="Réinitialiser Jaune"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_ml_yel" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="ml_yel" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#00ff00">Vert
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('ml_grn', 0)" title="Réinitialiser Vert"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_ml_grn" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="ml_grn" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#00ffff">Aqua
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('ml_aqu', 0)" title="Réinitialiser Aqua"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_ml_aqu" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="ml_aqu" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#4a4aff">Bleu
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('ml_blu', 0)" title="Réinitialiser Bleu"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_ml_blu" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="ml_blu" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ff00ff">Violet
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('ml_vio', 0)" title="Réinitialiser Violet"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_ml_vio" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="ml_vio" min="-100" max="100" value="0">
+                            </div>
+                            <div class="control-group">
+                                <label style="color:#ff00a5">Magenta
+                                    <div class="transform-input-wrapper">
+                                        <button class="reset-btn" onclick="resetRawField('ml_mag', 0)" title="Réinitialiser Magenta"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                        <input type="number" id="num_ml_mag" class="number-input" value="0" min="-100" max="100">
+                                    </div>
+                                </label>
+                                <input type="range" id="ml_mag" min="-100" max="100" value="0">
+                            </div>
                         </div>
                     </div>
                 </details>
@@ -3240,31 +3432,17 @@
             numEl.addEventListener('change', () => saveHistoryState());
         }
 
-        const rawFieldsList = ['t_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat'];
-        rawFieldsList.forEach(id => setupRawFieldSync(id, `num_${id}`));
-
-        // ÉCOUTEURS POUR TOUS LES CURSEURS DE DÉVELOPPEMENT (Y COMPRIS HSL MÉLANGEUR)
         const mixerSliderIds = [
             'mh_red', 'mh_org', 'mh_yel', 'mh_grn', 'mh_aqu', 'mh_blu', 'mh_vio', 'mh_mag',
             'm_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag',
             'ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag'
         ];
 
-        mixerSliderIds.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) {
-                el.addEventListener('input', (e) => {
-                    const active = getActiveLayer();
-                    if (active && active.rawSettings) {
-                        active.rawSettings[id] = parseFloat(e.target.value);
-                    }
-                    const valDisplay = document.getElementById(`val_${id}`);
-                    if (valDisplay) valDisplay.innerText = e.target.value;
-                    processImage();
-                });
-                el.addEventListener('change', () => saveHistoryState());
-            }
-        });
+        const rawFieldsList = [
+            't_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat',
+            ...mixerSliderIds
+        ];
+        rawFieldsList.forEach(id => setupRawFieldSync(id, `num_${id}`));
 
         window.resetRawField = function(rangeId, defaultValue) {
             const rangeEl = document.getElementById(rangeId);
@@ -3547,7 +3725,7 @@
         document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
 
         document.getElementById('controls').addEventListener('input', (e) => {
-            if (e.target.type === 'range' && !rawFieldsList.includes(e.target.id) && !['c_hl', 'c_light', 'c_dark', 'c_shad'].includes(e.target.id) && !mixerSliderIds.includes(e.target.id)) {
+            if (e.target.type === 'range' && !rawFieldsList.includes(e.target.id) && !['c_hl', 'c_light', 'c_dark', 'c_shad'].includes(e.target.id)) {
                 const active = getActiveLayer();
                 if (active && active.rawSettings) {
                     active.rawSettings[e.target.id] = parseFloat(e.target.value);
