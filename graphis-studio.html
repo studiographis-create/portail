@@ -398,11 +398,19 @@
     .panel-content::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
 
     details { margin-bottom: 5px; border-bottom: 1px solid #2a2a2a; }
-    summary { padding: 10px 5px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-color); display: flex; justify-content: space-between; list-style: none; }
+    summary { padding: 10px 5px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-color); display: flex; justify-content: space-between; align-items: center; list-style: none; }
     summary::-webkit-details-marker { display: none; }
-    summary:after { content: "▼"; font-size: 10px; color: #666; }
+    summary:after { content: "▼"; font-size: 10px; color: #666; margin-left: auto; }
     details[open] summary:after { content: "▲"; color: var(--accent-color); }
     details[open] summary { color: var(--accent-color); }
+
+    .summary-controls {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: auto;
+        margin-right: 10px;
+    }
 
     .module-content { padding: 10px 5px 15px 5px; }
     .control-group { margin-bottom: 12px; }
@@ -437,7 +445,7 @@
 
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
 
-    /* STYLES INTERFACE COURBE DES TONALITÉS AVEC HISTOGRAMME REEL EN ARRIÈRE PLAN */
+    /* COURBE DES TONALITÉS */
     .curve-container {
         display: flex;
         flex-direction: column;
@@ -801,7 +809,19 @@
             </div>
 
             <div class="panel-content" id="controls">
-                <details open><summary>Réglages de base</summary>
+                <!-- RÉGLAGES DE BASE AVEC EYE TOGGLE & RESET -->
+                <details open>
+                    <summary>
+                        <span>Réglages de base</span>
+                        <div class="summary-controls">
+                            <button class="reset-btn" id="toggleBaseModuleBtn" title="Afficher/Masquer les réglages de base">
+                                <svg id="baseEyeIcon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                            <button class="reset-btn" id="resetBaseModuleBtn" title="Réinitialiser tous les réglages de base">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
+                        </div>
+                    </summary>
                     <div class="module-content">
                         <div class="control-group">
                             <label>Profil 
@@ -987,22 +1007,26 @@
                             <label>Paramètres prédéfinis 
                                 <select id="curvePresetSelect">
                                     <option value="linear">Lineaire (Par défaut)</option>
-                                    <option value="strong_contrast">Plus de contraste</option>
+                                    <option value="soft_contrast">Contraste doux</option>
+                                    <option value="medium_contrast">Contraste moyen</option>
+                                    <option value="strong_contrast">Plus de contraste (Fort)</option>
+                                    <option value="s_curve">Courbe en S accentuée</option>
                                     <option value="matte">Effet mat (Fade)</option>
+                                    <option value="film_look">Film Vaste</option>
+                                    <option value="shadow_lift">Ombres Réhaussées</option>
                                     <option value="high_key">High Key</option>
                                     <option value="low_key">Low Key</option>
+                                    <option value="invert">Inversé</option>
                                 </select>
                             </label>
                         </div>
 
-                        <!-- MODULE COURBE AVEC HISTOGRAMME EN ARRIÈRE-PLAN -->
+                        <!-- MODULE COURBE AVEC HISTOGRAMME -->
                         <div class="curve-container">
                             <div class="curve-svg-wrapper" id="toneCurveWrapper">
                                 <svg id="toneCurveSVG" viewBox="0 0 200 200">
-                                    <!-- Silhouette Histogramme en arrière-plan -->
                                     <path id="histogramPath" class="histogram-path" d="M 0 200 L 200 200 Z"/>
                                     
-                                    <!-- Grille de référence -->
                                     <line x1="50" y1="0" x2="50" y2="200" class="curve-grid"/>
                                     <line x1="100" y1="0" x2="100" y2="200" class="curve-grid"/>
                                     <line x1="150" y1="0" x2="150" y2="200" class="curve-grid"/>
@@ -1010,7 +1034,6 @@
                                     <line x1="0" y1="100" x2="200" y2="100" class="curve-grid"/>
                                     <line x1="0" y1="150" x2="200" y2="150" class="curve-grid"/>
                                     
-                                    <!-- Tracé de la courbe -->
                                     <path id="toneCurvePath" class="curve-path" d="M 0 200 L 200 0"/>
                                     <g id="toneCurvePoints"></g>
                                 </svg>
@@ -1134,6 +1157,8 @@
         let selectedLayerIds = [];
         let lastSelectedLayerId = null;
 
+        let baseModuleEnabled = true;
+
         const DEFAULT_RAW_SETTINGS = {
             baseProfile: 'adobe_color',
             t_temp: 0, t_tint: 0, t_exp: 0, t_cont: 0, t_hl: 0, t_shad: 0, t_white: 0, t_black: 0,
@@ -1164,7 +1189,6 @@
         
         let savedSignatureConfig = null;
 
-        // CALCUL DE SPLINE MONOTONE POUR RENDER FLUIDE DE LA COURBE
         function calculateSplinePoints(points) {
             const sorted = [...points].sort((a, b) => a.x - b.x);
             const n = sorted.length;
@@ -1182,7 +1206,7 @@
                     const t3 = t2 * t;
 
                     const x = 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3);
-                    const y = 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.y + 3 * p1.y - 3 * p2.y + p3.y) * t3);
+                    const y = 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3);
 
                     const clampedY = Math.max(0, Math.min(200, y));
                     res.push({ x: Math.max(0, Math.min(200, x)), y: clampedY });
@@ -1191,7 +1215,6 @@
             return res;
         }
 
-        // GENERATION DU TABLEAU LUT (LOOK-UP TABLE 0-255) POUR LE CANVAS
         function buildLutFromPoints(points) {
             const spline = calculateSplinePoints(points);
             const lut = new Uint8Array(256);
@@ -1213,7 +1236,6 @@
             return lut;
         }
 
-        // HISTOGRAMME EN TEMPS REEL POUR L'ARRIÈRE PLAN DE LA COURBE
         function computeAndRenderHistogram(layer) {
             if (!layer || !layer.rawImg.complete || layer.rawImg.naturalWidth === 0) return;
 
@@ -1253,7 +1275,6 @@
             document.getElementById('histogramPath').setAttribute('d', pathD);
         }
 
-        // GESTIONNAIRE SVG COURBE DES TONALITÉS INTERACTIVE
         let selectedCurvePointIndex = null;
         let isDraggingCurvePoint = false;
 
@@ -1295,7 +1316,6 @@
                     renderToneCurveGUI();
                 });
 
-                // DOUBLE CLIC POUR SUPPRIMER UN POINT
                 circle.addEventListener('dblclick', (e) => {
                     e.stopPropagation();
                     deleteCurvePoint(index);
@@ -1325,7 +1345,6 @@
             }
         });
 
-        // IMPACT DYNAMIQUE DES CURSEURS DE TONALITÉS SUR LES POINTS DE LA COURBE
         function updateCurveFromSliders() {
             const active = getActiveLayer();
             if (!active || !active.rawSettings || !active.rawSettings.curvePoints) return;
@@ -1333,7 +1352,6 @@
             const s = active.rawSettings;
             const pts = s.curvePoints;
 
-            // ASSURES QUE LA COURBE POSSÈDE LES 5 POINTS D'ANCRAGE DE BASE POUR L'IMPACT DES CURSEURS
             if (pts.length === 5) {
                 const offsetShad = (s.c_shad || 0) * 0.4;
                 const offsetDark = (s.c_dark || 0) * 0.4;
@@ -1365,7 +1383,7 @@
             }
         });
 
-        // APPLICATEUR DE PRESETS DE COURBE
+        // PRESETS ENRICHIS POUR LA COURBE DES TONALITÉS
         curvePresetSelect.addEventListener('change', (e) => {
             const active = getActiveLayer();
             if (!active || !active.rawSettings) return;
@@ -1374,17 +1392,35 @@
             let newPts = [];
 
             switch(mode) {
+                case 'soft_contrast':
+                    newPts = [{x: 0, y: 0}, {x: 50, y: 42}, {x: 100, y: 100}, {x: 150, y: 158}, {x: 200, y: 200}];
+                    break;
+                case 'medium_contrast':
+                    newPts = [{x: 0, y: 0}, {x: 50, y: 35}, {x: 100, y: 100}, {x: 150, y: 165}, {x: 200, y: 200}];
+                    break;
                 case 'strong_contrast':
-                    newPts = [{x: 0, y: 0}, {x: 50, y: 30}, {x: 100, y: 100}, {x: 150, y: 170}, {x: 200, y: 200}];
+                    newPts = [{x: 0, y: 0}, {x: 50, y: 25}, {x: 100, y: 100}, {x: 150, y: 175}, {x: 200, y: 200}];
+                    break;
+                case 's_curve':
+                    newPts = [{x: 0, y: 0}, {x: 40, y: 20}, {x: 100, y: 100}, {x: 160, y: 180}, {x: 200, y: 200}];
                     break;
                 case 'matte':
-                    newPts = [{x: 0, y: 25}, {x: 50, y: 55}, {x: 100, y: 100}, {x: 150, y: 150}, {x: 200, y: 185}];
+                    newPts = [{x: 0, y: 30}, {x: 50, y: 55}, {x: 100, y: 100}, {x: 150, y: 150}, {x: 200, y: 180}];
+                    break;
+                case 'film_look':
+                    newPts = [{x: 0, y: 20}, {x: 45, y: 40}, {x: 100, y: 105}, {x: 155, y: 165}, {x: 200, y: 190}];
+                    break;
+                case 'shadow_lift':
+                    newPts = [{x: 0, y: 40}, {x: 50, y: 70}, {x: 100, y: 110}, {x: 150, y: 155}, {x: 200, y: 200}];
                     break;
                 case 'high_key':
                     newPts = [{x: 0, y: 0}, {x: 50, y: 75}, {x: 100, y: 135}, {x: 150, y: 175}, {x: 200, y: 200}];
                     break;
                 case 'low_key':
                     newPts = [{x: 0, y: 0}, {x: 50, y: 25}, {x: 100, y: 65}, {x: 150, y: 125}, {x: 200, y: 200}];
+                    break;
+                case 'invert':
+                    newPts = [{x: 0, y: 200}, {x: 50, y: 150}, {x: 100, y: 100}, {x: 150, y: 50}, {x: 200, y: 0}];
                     break;
                 case 'linear':
                 default:
@@ -1476,6 +1512,40 @@
                 processImage();
                 saveHistoryState();
             }
+        });
+
+        // MASQUAGE / RÉINITIALISATION RÉGLAGES DE BASE
+        const toggleBaseBtn = document.getElementById('toggleBaseModuleBtn');
+        const resetBaseBtn = document.getElementById('resetBaseModuleBtn');
+        const baseEyeIcon = document.getElementById('baseEyeIcon');
+
+        toggleBaseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            baseModuleEnabled = !baseModuleEnabled;
+            if (baseModuleEnabled) {
+                baseEyeIcon.setAttribute('d', 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z');
+                toggleBaseBtn.style.opacity = '1';
+            } else {
+                baseEyeIcon.setAttribute('d', 'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22');
+                toggleBaseBtn.style.opacity = '0.4';
+            }
+            processImage();
+        });
+
+        resetBaseBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const active = getActiveLayer();
+            if (!active || !active.rawSettings) return;
+
+            const baseKeys = ['t_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat'];
+            baseKeys.forEach(k => {
+                active.rawSettings[k] = DEFAULT_RAW_SETTINGS[k];
+            });
+            active.rawSettings.baseProfile = 'adobe_color';
+
+            syncRawPanelUI();
+            processImage();
+            saveHistoryState();
         });
 
         function saveHistoryState() {
@@ -2784,7 +2854,7 @@
             saveHistoryState();
         });
 
-        // NOUVEAU MOTEUR DE RENDU DIRECT CANVAS HTML5 SANS SVG QUANTIZÉ
+        // NOUVEAU TRAITEMENT AVEC PRISE EN CHARGE COMPLETE DU PROFIL
         function processImage() {
             try {
                 layers.forEach((layer) => {
@@ -2795,22 +2865,22 @@
                     const height = layer.img.height;
                     const ctx = layer.img.getContext('2d');
 
-                    // RENDU DE L'IMAGE DE BASE
                     ctx.clearRect(0, 0, width, height);
                     ctx.drawImage(layer.rawImg, 0, 0, width, height);
 
-                    // APPLICATION DU TRAITEMENT PIXEL SUR CANVAS EN HAUTE FIDÉLITÉ
                     const imgData = ctx.getImageData(0, 0, width, height);
                     const data = imgData.data;
 
                     const lutCurve = buildLutFromPoints(s.curvePoints || DEFAULT_RAW_SETTINGS.curvePoints);
 
-                    const expMult = Math.pow(2, (s.t_exp || 0));
-                    const temp = s.t_temp || 0;
-                    const tint = s.t_tint || 0;
-                    const sat = 1 + ((s.t_sat || 0) * 0.01);
-                    const vib = (s.t_vib || 0) * 0.01;
-                    const cont = (s.t_cont || 0) * 0.01;
+                    // APPLICATION CONDITIONNELLE DU MODULE DE BASE (OEIL)
+                    const expMult = baseModuleEnabled ? Math.pow(2, (s.t_exp || 0)) : 1.0;
+                    const temp = baseModuleEnabled ? (s.t_temp || 0) : 0;
+                    const tint = baseModuleEnabled ? (s.t_tint || 0) : 0;
+                    const sat = baseModuleEnabled ? (1 + ((s.t_sat || 0) * 0.01)) : 1.0;
+                    const vib = baseModuleEnabled ? ((s.t_vib || 0) * 0.01) : 0;
+                    const cont = baseModuleEnabled ? ((s.t_cont || 0) * 0.01) : 0;
+                    const profile = baseModuleEnabled ? (s.baseProfile || 'adobe_color') : 'adobe_color';
 
                     const rFactor = 1 + (temp * 0.003);
                     const bFactor = 1 - (temp * 0.003);
@@ -2820,6 +2890,22 @@
                         let r = data[i];
                         let g = data[i+1];
                         let b = data[i+2];
+
+                        // APPLIQUER LE PROFIL DE COULEUR
+                        if (profile === 'landscape') {
+                            r *= 1.05; g *= 1.08; b *= 0.95;
+                        } else if (profile === 'portrait') {
+                            r *= 1.08; g *= 0.98; b *= 0.96;
+                        } else if (profile === 'monochrome') {
+                            const monoLum = 0.299 * r + 0.587 * g + 0.114 * b;
+                            r = monoLum; g = monoLum; b = monoLum;
+                        } else if (profile === 'neutral') {
+                            r = ((r / 255 - 0.5) * 0.85 + 0.5) * 255;
+                            g = ((g / 255 - 0.5) * 0.85 + 0.5) * 255;
+                            b = ((b / 255 - 0.5) * 0.85 + 0.5) * 255;
+                        } else if (profile === 'adobe_standard') {
+                            r *= 0.98; g *= 0.98; b *= 0.98;
+                        }
 
                         // 1. BALANCE DES BLANCS ET EXPOSITION
                         r *= expMult * rFactor;
@@ -2831,7 +2917,7 @@
                         g = lutCurve[Math.max(0, Math.min(255, Math.round(g)))];
                         b = lutCurve[Math.max(0, Math.min(255, Math.round(b)))];
 
-                        // 3. CONTRASTE PURE SANS DEGRADATION
+                        // 3. CONTRASTE
                         if (cont !== 0) {
                             r = ((r / 255 - 0.5) * (1 + cont) + 0.5) * 255;
                             g = ((g / 255 - 0.5) * (1 + cont) + 0.5) * 255;
@@ -2839,15 +2925,17 @@
                         }
 
                         // 4. SATURATION ET VIBRANCE
-                        const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-                        if (sat !== 1 || vib !== 0) {
-                            const maxColor = Math.max(r, g, b);
-                            const currentSat = (maxColor - lum) / (maxColor || 1);
-                            const finalSat = sat + (1 - currentSat) * vib;
+                        if (profile !== 'monochrome') {
+                            const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+                            if (sat !== 1 || vib !== 0) {
+                                const maxColor = Math.max(r, g, b);
+                                const currentSat = (maxColor - lum) / (maxColor || 1);
+                                const finalSat = sat + (1 - currentSat) * vib;
 
-                            r = lum + (r - lum) * finalSat;
-                            g = lum + (g - lum) * finalSat;
-                            b = lum + (b - lum) * finalSat;
+                                r = lum + (r - lum) * finalSat;
+                                g = lum + (g - lum) * finalSat;
+                                b = lum + (b - lum) * finalSat;
+                            }
                         }
 
                         data[i] = Math.max(0, Math.min(255, r));
@@ -2857,7 +2945,7 @@
 
                     ctx.putImageData(imgData, 0, 0);
 
-                    // APPLICATION DE LA MASK LAYER SI APPLICABLE
+                    // APPLICATION DE LA MASK LAYER
                     if (layer.hasMask && layer.maskCanvas) {
                         const maskCtx = layer.maskCanvas.getContext('2d');
                         const maskData = maskCtx.getImageData(0, 0, width, height);
