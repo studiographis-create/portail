@@ -742,22 +742,169 @@
                     <div class="module-content">
                         <div class="control-group"><label>Profil <select id="baseProfile"><option>Adobe Couleur</option><option>Paysage</option></select></label></div>
                         <hr class="divider">
-                        <div class="control-group"><label>Température <span class="value-display">0</span></label><input type="range" id="t_temp" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Teinte <span class="value-display">0</span></label><input type="range" id="t_tint" min="-100" max="100" value="0"></div>
+                        
+                        <!-- AJOUT DES CHAMPS ET BOUTONS REINITIALISER DANS LES RÉGLAGES DE BASE -->
+                        <div class="control-group">
+                            <label>Température 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_temp', 0)" title="Réinitialiser la Température">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_temp" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_temp" min="-100" max="100" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Teinte 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_tint', 0)" title="Réinitialiser la Teinte">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_tint" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_tint" min="-100" max="100" value="0">
+                        </div>
+
                         <hr class="divider">
-                        <div class="control-group"><label>Exposition <span class="value-display">0.0</span></label><input type="range" id="t_exp" min="-5" max="5" step="0.1" value="0"></div>
-                        <div class="control-group"><label>Contraste <span class="value-display">0</span></label><input type="range" id="t_cont" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Hautes lumières <span class="value-display">0</span></label><input type="range" id="t_hl" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Ombres <span class="value-display">0</span></label><input type="range" id="t_shad" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Blancs <span class="value-display">0</span></label><input type="range" id="t_white" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Noirs <span class="value-display">0</span></label><input type="range" id="t_black" min="-100" max="100" value="0"></div>
+
+                        <div class="control-group">
+                            <label>Exposition 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_exp', 0)" title="Réinitialiser l'Exposition">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_exp" class="number-input" value="0.0" min="-5" max="5" step="0.1">
+                                </div>
+                            </label>
+                            <input type="range" id="t_exp" min="-5" max="5" step="0.1" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Contraste 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_cont', 0)" title="Réinitialiser le Contraste">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_cont" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_cont" min="-100" max="100" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Hautes lumières 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_hl', 0)" title="Réinitialiser les Hautes lumières">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_hl" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_hl" min="-100" max="100" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Ombres 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_shad', 0)" title="Réinitialiser les Ombres">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_shad" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_shad" min="-100" max="100" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Blancs 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_white', 0)" title="Réinitialiser les Blancs">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_white" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_white" min="-100" max="100" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Noirs 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_black', 0)" title="Réinitialiser les Noirs">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_black" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_black" min="-100" max="100" value="0">
+                        </div>
+
                         <hr class="divider">
-                        <div class="control-group"><label>Texture <span class="value-display">0</span></label><input type="range" id="t_text" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Clarté <span class="value-display">0</span></label><input type="range" id="t_clar" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Correction du voile <span class="value-display">0</span></label><input type="range" id="t_dehaze" min="-100" max="100" value="0"></div>
+
+                        <div class="control-group">
+                            <label>Texture 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_text', 0)" title="Réinitialiser la Texture">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_text" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_text" min="-100" max="100" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Clarté 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_clar', 0)" title="Réinitialiser la Clarté">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_clar" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_clar" min="-100" max="100" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Correction du voile 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_dehaze', 0)" title="Réinitialiser le Voile">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_dehaze" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_dehaze" min="-100" max="100" value="0">
+                        </div>
+
                         <hr class="divider">
-                        <div class="control-group"><label>Vibration <span class="value-display">0</span></label><input type="range" id="t_vib" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Saturation <span class="value-display">0</span></label><input type="range" id="t_sat" min="-100" max="100" value="0"></div>
+
+                        <div class="control-group">
+                            <label>Vibration 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_vib', 0)" title="Réinitialiser la Vibration">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_vib" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_vib" min="-100" max="100" value="0">
+                        </div>
+
+                        <div class="control-group">
+                            <label>Saturation 
+                                <div class="transform-input-wrapper">
+                                    <button class="reset-btn" onclick="resetRawField('t_sat', 0)" title="Réinitialiser la Saturation">
+                                        <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                                    </button>
+                                    <input type="number" id="num_t_sat" class="number-input" value="0" min="-100" max="100">
+                                </div>
+                            </label>
+                            <input type="range" id="t_sat" min="-100" max="100" value="0">
+                        </div>
                     </div>
                 </details>
 
@@ -1536,6 +1683,13 @@
                 const el = document.getElementById(key);
                 if (el) {
                     el.value = settings[key];
+                    
+                    // Mettre à jour également l'entrée numérique num_* correspondant à la clé du filtre
+                    const numEl = document.getElementById(`num_${key}`);
+                    if (numEl) {
+                        numEl.value = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
+                    }
+
                     const label = el.previousElementSibling;
                     if (label && label.querySelector('.value-display')) {
                         label.querySelector('.value-display').innerText = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
@@ -2154,6 +2308,51 @@
             rangeEl.dispatchEvent(new Event('change'));
         };
 
+        // GESTION ET SYNCHRONISATION DES NOUVEAUX CHAMPS DANS LES RÉGLAGES DE BASE CAMERA RAW
+        function setupRawFieldSync(rangeId, numId) {
+            const rangeEl = document.getElementById(rangeId);
+            const numEl = document.getElementById(numId);
+
+            if (!rangeEl || !numEl) return;
+
+            const updateValue = (val) => {
+                const active = getActiveLayer();
+                if (!active || !active.rawSettings) return;
+
+                let numVal = parseFloat(val);
+                if (isNaN(numVal)) numVal = 0;
+
+                rangeEl.value = numVal;
+                numEl.value = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
+
+                active.rawSettings[rangeId] = numVal;
+
+                const label = rangeEl.previousElementSibling;
+                if (label && label.querySelector('.value-display')) {
+                    label.querySelector('.value-display').innerText = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
+                }
+                processImage();
+            };
+
+            rangeEl.addEventListener('input', (e) => updateValue(e.target.value));
+            numEl.addEventListener('input', (e) => updateValue(e.target.value));
+
+            rangeEl.addEventListener('change', () => saveHistoryState());
+            numEl.addEventListener('change', () => saveHistoryState());
+        }
+
+        const rawFieldsList = ['t_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat'];
+        rawFieldsList.forEach(id => setupRawFieldSync(id, `num_${id}`));
+
+        window.resetRawField = function(rangeId, defaultValue) {
+            const rangeEl = document.getElementById(rangeId);
+            if (rangeEl) {
+                rangeEl.value = defaultValue;
+                rangeEl.dispatchEvent(new Event('input'));
+                rangeEl.dispatchEvent(new Event('change'));
+            }
+        };
+
         document.getElementById('tr_flipH').addEventListener('click', () => {
             const active = getActiveLayer();
             if(!active || active.locked) return;
@@ -2321,9 +2520,9 @@
         document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
         document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
 
-        // ECOUTEUR DE CHANGEMENT SUR LES CURSEURS CAMERA RAW POUR LE CALQUE ACTIF
+        // ECOUTEUR DE CHANGEMENT SUR LES AUTRES CURSEURS CAMERA RAW (POUR CEUX EN DEHORS DE LA LISTE DES REGLAGES DE BASE)
         document.getElementById('controls').addEventListener('input', (e) => {
-            if (e.target.type === 'range') {
+            if (e.target.type === 'range' && !rawFieldsList.includes(e.target.id)) {
                 const active = getActiveLayer();
                 if (active && active.rawSettings) {
                     active.rawSettings[e.target.id] = parseFloat(e.target.value);
