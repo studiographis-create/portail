@@ -729,7 +729,6 @@
         </div>
         
         <div id="panel">
-            <!-- TITRE RENOMMÉ EN DÉVELOPPEMENT -->
             <div class="panel-header" id="panelHeader"><h2>Développement</h2></div>
             <div class="local-tools">
                 <button title="Cadrage et redressement">◩</button>
@@ -741,7 +740,6 @@
             <div class="panel-content" id="controls">
                 <details open><summary>Réglages de base</summary>
                     <div class="module-content">
-                        <!-- PROFILS D'IMAGE ENRICHIS -->
                         <div class="control-group">
                             <label>Profil 
                                 <select id="baseProfile">
@@ -2328,7 +2326,7 @@
             rangeEl.dispatchEvent(new Event('change'));
         };
 
-        // GESTION ET SYNCHRONISATION DES NOUVEAUX CHAMPS DANS LES RÉGLAGES DE BASE CAMERA RAW
+        // GESTION ET SYNCHRONISATION DES CHAMPS DANS LES RÉGLAGES DE BASE
         function setupRawFieldSync(rangeId, numId) {
             const rangeEl = document.getElementById(rangeId);
             const numEl = document.getElementById(numId);
@@ -2413,7 +2411,6 @@
                     const blur = s.b_int || 0, noiseLum = s.d_nlum || 0;
                     const cgHue = s.cg_hue || 0, cgSat = s.cg_sat || 0, cgLum = s.cg_lum || 0;
 
-                    // PRÉSETS DE RENDU PAR PROFIL D'IMAGE
                     let profileCont = 0, profileSat = 0, profileGrayscale = 0;
                     let profileR = 1, profileG = 1, profileB = 1;
 
@@ -2560,11 +2557,16 @@
                     if(layers.length > 0) {
                         layers[0].rawImg.src = url;
                         layers[0].name = name;
+                        
+                        // RÉINITIALISATION DES RÉGLAGES DE DÉVELOPPEMENT À ZÉRO LORS DU REMPLACEMENT D'IMAGE
+                        layers[0].rawSettings = JSON.parse(JSON.stringify(DEFAULT_RAW_SETTINGS));
+                        
                         layers[0].rawImg.onload = () => {
                             layers[0].img.width = layers[0].rawImg.naturalWidth;
                             layers[0].img.height = layers[0].rawImg.naturalHeight;
                             renderLayerComposite(layers[0]);
                             updateLayersUI();
+                            syncRawPanelUI();
                             processImage();
                             saveHistoryState();
                         };
