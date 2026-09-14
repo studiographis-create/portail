@@ -475,6 +475,41 @@
 
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
 
+    /* STYLES ONGLETS HSL MÉLANGEUR */
+    .hsl-subnav {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 12px;
+        background: #181818;
+        padding: 3px;
+        border-radius: 4px;
+        border: 1px solid #333;
+    }
+    .hsl-subnav-btn {
+        flex: 1;
+        background: transparent;
+        color: #aaa;
+        border: none;
+        padding: 5px 0;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 3px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s;
+    }
+    .hsl-subnav-btn.active {
+        background: var(--accent-color);
+        color: #121212;
+    }
+
+    .hsl-tab-content {
+        display: none;
+    }
+    .hsl-tab-content.active {
+        display: block;
+    }
+
     /* COURBE DES TONALITÉS */
     .curve-container {
         display: flex;
@@ -1106,15 +1141,48 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <div class="control-group"><label>Ajuster <select id="m_target"><option>Saturation</option></select></label></div>
-                        <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display">0</span></label><input type="range" id="m_red" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#ffa500">Orange <span class="value-display">0</span></label><input type="range" id="m_org" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#ffff00">Jaune <span class="value-display">0</span></label><input type="range" id="m_yel" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#00ff00">Vert <span class="value-display">0</span></label><input type="range" id="m_grn" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#00ffff">Aqua <span class="value-display">0</span></label><input type="range" id="m_aqu" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#4a4aff">Bleu <span class="value-display">0</span></label><input type="range" id="m_blu" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#ff00ff">Violet <span class="value-display">0</span></label><input type="range" id="m_vio" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#ff00a5">Magenta <span class="value-display">0</span></label><input type="range" id="m_mag" min="-100" max="100" value="0"></div>
+                        <!-- SOUS-ONGLETS TEINTE / SATURATION / LUMINANCE -->
+                        <div class="hsl-subnav">
+                            <button class="hsl-subnav-btn" data-hsl="hue">Teinte</button>
+                            <button class="hsl-subnav-btn active" data-hsl="sat">Saturation</button>
+                            <button class="hsl-subnav-btn" data-hsl="lum">Luminance</button>
+                        </div>
+
+                        <!-- TEINTE -->
+                        <div class="hsl-tab-content" id="hsl-tab-hue">
+                            <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display" id="val_mh_red">0</span></label><input type="range" id="mh_red" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ffa500">Orange <span class="value-display" id="val_mh_org">0</span></label><input type="range" id="mh_org" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ffff00">Jaune <span class="value-display" id="val_mh_yel">0</span></label><input type="range" id="mh_yel" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#00ff00">Vert <span class="value-display" id="val_mh_grn">0</span></label><input type="range" id="mh_grn" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#00ffff">Aqua <span class="value-display" id="val_mh_aqu">0</span></label><input type="range" id="mh_aqu" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#4a4aff">Bleu <span class="value-display" id="val_mh_blu">0</span></label><input type="range" id="mh_blu" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ff00ff">Violet <span class="value-display" id="val_mh_vio">0</span></label><input type="range" id="mh_vio" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ff00a5">Magenta <span class="value-display" id="val_mh_mag">0</span></label><input type="range" id="mh_mag" min="-100" max="100" value="0"></div>
+                        </div>
+
+                        <!-- SATURATION -->
+                        <div class="hsl-tab-content active" id="hsl-tab-sat">
+                            <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display" id="val_m_red">0</span></label><input type="range" id="m_red" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ffa500">Orange <span class="value-display" id="val_m_org">0</span></label><input type="range" id="m_org" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ffff00">Jaune <span class="value-display" id="val_m_yel">0</span></label><input type="range" id="m_yel" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#00ff00">Vert <span class="value-display" id="val_m_grn">0</span></label><input type="range" id="m_grn" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#00ffff">Aqua <span class="value-display" id="val_m_aqu">0</span></label><input type="range" id="m_aqu" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#4a4aff">Bleu <span class="value-display" id="val_m_blu">0</span></label><input type="range" id="m_blu" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ff00ff">Violet <span class="value-display" id="val_m_vio">0</span></label><input type="range" id="m_vio" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ff00a5">Magenta <span class="value-display" id="val_m_mag">0</span></label><input type="range" id="m_mag" min="-100" max="100" value="0"></div>
+                        </div>
+
+                        <!-- LUMINANCE -->
+                        <div class="hsl-tab-content" id="hsl-tab-lum">
+                            <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display" id="val_ml_red">0</span></label><input type="range" id="ml_red" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ffa500">Orange <span class="value-display" id="val_ml_org">0</span></label><input type="range" id="ml_org" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ffff00">Jaune <span class="value-display" id="val_ml_yel">0</span></label><input type="range" id="ml_yel" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#00ff00">Vert <span class="value-display" id="val_ml_grn">0</span></label><input type="range" id="ml_grn" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#00ffff">Aqua <span class="value-display" id="val_ml_aqu">0</span></label><input type="range" id="ml_aqu" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#4a4aff">Bleu <span class="value-display" id="val_ml_blu">0</span></label><input type="range" id="ml_blu" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ff00ff">Violet <span class="value-display" id="val_ml_vio">0</span></label><input type="range" id="ml_vio" min="-100" max="100" value="0"></div>
+                            <div class="control-group"><label style="color:#ff00a5">Magenta <span class="value-display" id="val_ml_mag">0</span></label><input type="range" id="ml_mag" min="-100" max="100" value="0"></div>
+                        </div>
                     </div>
                 </details>
 
@@ -1292,6 +1360,85 @@
             });
         });
 
+        // GESTION DES SOUS-ONGLETS HSL (TEINTE / SATURATION / LUMINANCE)
+        const hslSubnavBtns = document.querySelectorAll('.hsl-subnav-btn');
+        const hslTabContents = document.querySelectorAll('.hsl-tab-content');
+
+        hslSubnavBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetTab = btn.dataset.hsl;
+                hslSubnavBtns.forEach(b => b.classList.remove('active'));
+                hslTabContents.forEach(c => c.classList.remove('active'));
+
+                btn.classList.add('active');
+                const contentEl = document.getElementById(`hsl-tab-${targetTab}`);
+                if (contentEl) contentEl.classList.add('active');
+            });
+        });
+
+        // CONVERSIONS COLORIMÉTRIQUES RVB <-> HSL
+        function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h = 0, s = 0, l = (max + min) / 2;
+
+            if (max !== min) {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            return [h * 360, s, l];
+        }
+
+        function hslToRgb(h, s, l) {
+            h /= 360;
+            let r, g, b;
+
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+
+        // CALCUL DU WEIGHT PAR CANAL COLORIMÉTRIQUE (ANGLE DE TEINTE H: 0-360)
+        function getColorWeights(h) {
+            const getWeight = (centerHue) => {
+                let diff = Math.abs(h - centerHue);
+                if (diff > 180) diff = 360 - diff;
+                return Math.max(0, 1 - (diff / 30));
+            };
+
+            return {
+                red: Math.max(getWeight(0), getWeight(360)),
+                org: getWeight(30),
+                yel: getWeight(60),
+                grn: getWeight(120),
+                aqu: getWeight(180),
+                blu: getWeight(240),
+                vio: getWeight(270),
+                mag: getWeight(300)
+            };
+        }
+
         const imageContainer = document.getElementById('image-container');
         const overlay = document.getElementById('vignette-overlay');
         const layersContainer = document.getElementById('layersContainer');
@@ -1325,8 +1472,15 @@
             baseProfile: 'adobe_color',
             t_temp: 0, t_tint: 0, t_exp: 0, t_cont: 0, t_hl: 0, t_shad: 0, t_white: 0, t_black: 0,
             t_text: 0, t_clar: 0, t_dehaze: 0, t_vib: 0, t_sat: 0, c_hl: 0, c_light: 0, c_dark: 0,
-            c_shad: 0, m_red: 0, m_org: 0, m_yel: 0, m_grn: 0, m_aqu: 0, m_blu: 0, m_vio: 0,
-            m_mag: 0, cg_hue: 0, cg_sat: 0, cg_lum: 0, cg_blend: 50, cg_bal: 0, d_gain: 40,
+            c_shad: 0,
+            // HUE
+            mh_red: 0, mh_org: 0, mh_yel: 0, mh_grn: 0, mh_aqu: 0, mh_blu: 0, mh_vio: 0, mh_mag: 0,
+            // SATURATION
+            m_red: 0, m_org: 0, m_yel: 0, m_grn: 0, m_aqu: 0, m_blu: 0, m_vio: 0, m_mag: 0,
+            // LUMINANCE
+            ml_red: 0, ml_org: 0, ml_yel: 0, ml_grn: 0, ml_aqu: 0, ml_blu: 0, ml_vio: 0, ml_mag: 0,
+            
+            cg_hue: 0, cg_sat: 0, cg_lum: 0, cg_blend: 50, cg_bal: 0, d_gain: 40,
             d_rad: 1.0, d_det: 25, d_mask: 0, d_nlum: 0, d_ncol: 25, b_int: 0, o_dist: 0,
             o_vig: 0, g_vert: 0, g_horiz: 0, g_rot: 0, e_viggain: 0, e_vigmid: 50, e_grngain: 0,
             e_grnsize: 25, cal_shad: 0, cal_rh: 0, cal_rs: 0, cal_gh: 0, cal_gs: 0, cal_bh: 0, cal_bs: 0,
@@ -1764,10 +1918,14 @@
             resetCurveBtn.click();
         });
 
-        // RESET MÉLANGEUR
+        // RESET MÉLANGEUR (TEINTE + SATURATION + LUMINANCE)
         document.getElementById('resetMixerModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
-            resetModuleKeys(['m_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag']);
+            resetModuleKeys([
+                'mh_red', 'mh_org', 'mh_yel', 'mh_grn', 'mh_aqu', 'mh_blu', 'mh_vio', 'mh_mag',
+                'm_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag',
+                'ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag'
+            ]);
         });
 
         // RESET COLOR GRADING
@@ -3085,6 +3243,29 @@
         const rawFieldsList = ['t_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat'];
         rawFieldsList.forEach(id => setupRawFieldSync(id, `num_${id}`));
 
+        // ÉCOUTEURS POUR TOUS LES CURSEURS DE DÉVELOPPEMENT (Y COMPRIS HSL MÉLANGEUR)
+        const mixerSliderIds = [
+            'mh_red', 'mh_org', 'mh_yel', 'mh_grn', 'mh_aqu', 'mh_blu', 'mh_vio', 'mh_mag',
+            'm_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag',
+            'ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag'
+        ];
+
+        mixerSliderIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('input', (e) => {
+                    const active = getActiveLayer();
+                    if (active && active.rawSettings) {
+                        active.rawSettings[id] = parseFloat(e.target.value);
+                    }
+                    const valDisplay = document.getElementById(`val_${id}`);
+                    if (valDisplay) valDisplay.innerText = e.target.value;
+                    processImage();
+                });
+                el.addEventListener('change', () => saveHistoryState());
+            }
+        });
+
         window.resetRawField = function(rangeId, defaultValue) {
             const rangeEl = document.getElementById(rangeId);
             if (rangeEl) {
@@ -3119,6 +3300,7 @@
             saveHistoryState();
         });
 
+        // MOTEUR DE RENDU DU TRAITEMENT D'IMAGE (INCLUANT LE MÉLANGEUR HSL COMPLET)
         function processImage() {
             try {
                 layers.forEach((layer) => {
@@ -3172,6 +3354,54 @@
                         r *= expMult * rFactor;
                         g *= expMult * gFactor;
                         b *= expMult * bFactor;
+
+                        // TRAITEMENT HSL MÉLANGEUR DE COULEURS
+                        if (modulesState.mixer && profile !== 'monochrome') {
+                            let [h, sVal, lVal] = rgbToHsl(r, g, b);
+                            const w = getColorWeights(h);
+
+                            // TEINTE (HUE SHIFT -100 à +100 MAPPER SUR -30° à +30°)
+                            const hueShift = 
+                                (s.mh_red || 0) * w.red +
+                                (s.mh_org || 0) * w.org +
+                                (s.mh_yel || 0) * w.yel +
+                                (s.mh_grn || 0) * w.grn +
+                                (s.mh_aqu || 0) * w.aqu +
+                                (s.mh_blu || 0) * w.blu +
+                                (s.mh_vio || 0) * w.vio +
+                                (s.mh_mag || 0) * w.mag;
+
+                            h = (h + (hueShift * 0.3) + 360) % 360;
+
+                            // SATURATION (-100 à +100)
+                            const satShift = 
+                                (s.m_red || 0) * w.red +
+                                (s.m_org || 0) * w.org +
+                                (s.m_yel || 0) * w.yel +
+                                (s.m_grn || 0) * w.grn +
+                                (s.m_aqu || 0) * w.aqu +
+                                (s.m_blu || 0) * w.blu +
+                                (s.m_vio || 0) * w.vio +
+                                (s.m_mag || 0) * w.mag;
+
+                            sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
+
+                            // LUMINANCE (-100 à +100)
+                            const lumShift = 
+                                (s.ml_red || 0) * w.red +
+                                (s.ml_org || 0) * w.org +
+                                (s.ml_yel || 0) * w.yel +
+                                (s.ml_grn || 0) * w.grn +
+                                (s.ml_aqu || 0) * w.aqu +
+                                (s.ml_blu || 0) * w.blu +
+                                (s.ml_vio || 0) * w.vio +
+                                (s.ml_mag || 0) * w.mag;
+
+                            lVal = Math.max(0, Math.min(1, lVal * (1 + (lumShift * 0.005))));
+
+                            const [newR, newG, newB] = hslToRgb(h, sVal, lVal);
+                            r = newR; g = newG; b = newB;
+                        }
 
                         if (modulesState.curve) {
                             r = lutCurve[Math.max(0, Math.min(255, Math.round(r)))];
@@ -3317,7 +3547,7 @@
         document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
 
         document.getElementById('controls').addEventListener('input', (e) => {
-            if (e.target.type === 'range' && !rawFieldsList.includes(e.target.id) && !['c_hl', 'c_light', 'c_dark', 'c_shad'].includes(e.target.id)) {
+            if (e.target.type === 'range' && !rawFieldsList.includes(e.target.id) && !['c_hl', 'c_light', 'c_dark', 'c_shad'].includes(e.target.id) && !mixerSliderIds.includes(e.target.id)) {
                 const active = getActiveLayer();
                 if (active && active.rawSettings) {
                     active.rawSettings[e.target.id] = parseFloat(e.target.value);
