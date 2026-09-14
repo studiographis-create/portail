@@ -441,18 +441,9 @@
 </head>
 <body>
 
+    <!-- GÉNÉRATEUR SVG POUR CHAQUE CALQUE -->
     <svg width="0" height="0" style="position:absolute; z-index:-1; pointer-events:none;">
-        <filter id="rawEngine" color-interpolation-filters="sRGB">
-            <feColorMatrix id="svg_color" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" result="colors"/>
-            <feComponentTransfer id="svg_curves" in="colors" result="tones">
-                <feFuncR id="svg_r" type="table" tableValues="0 0.25 0.5 0.75 1"/>
-                <feFuncG id="svg_g" type="table" tableValues="0 0.25 0.5 0.75 1"/>
-                <feFuncB id="svg_b" type="table" tableValues="0 0.25 0.5 0.75 1"/>
-            </feComponentTransfer>
-            <feTurbulence id="svg_turb" type="fractalNoise" baseFrequency="0.5" numOctaves="3" result="noise"/>
-            <feColorMatrix id="svg_noise" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 0" in="noise" result="coloredNoise"/>
-            <feBlend mode="overlay" in="tones" in2="coloredNoise"/>
-        </filter>
+        <defs id="svg_defs_container"></defs>
     </svg>
 
     <header>
@@ -640,7 +631,6 @@
                     <input type="range" id="tr_rot" min="-180" max="180" value="0">
                 </div>
 
-                <!-- NOUVEAUX CURSEURS DE DEPLACEMENT POSITION X ET POSITION Y -->
                 <div class="control-group">
                     <label>Position X (Horiz.)
                         <div class="transform-input-wrapper">
@@ -887,6 +877,17 @@
         let selectedLayerIds = [];
         let lastSelectedLayerId = null;
 
+        // VALEURS PAR DÉFAUT CAMERA RAW POUR UN NOUVEAU CALQUE
+        const DEFAULT_RAW_SETTINGS = {
+            t_temp: 0, t_tint: 0, t_exp: 0, t_cont: 0, t_hl: 0, t_shad: 0, t_white: 0, t_black: 0,
+            t_text: 0, t_clar: 0, t_dehaze: 0, t_vib: 0, t_sat: 0, c_hl: 0, c_light: 0, c_dark: 0,
+            c_shad: 0, m_red: 0, m_org: 0, m_yel: 0, m_grn: 0, m_aqu: 0, m_blu: 0, m_vio: 0,
+            m_mag: 0, cg_hue: 0, cg_sat: 0, cg_lum: 0, cg_blend: 50, cg_bal: 0, d_gain: 40,
+            d_rad: 1.0, d_det: 25, d_mask: 0, d_nlum: 0, d_ncol: 25, b_int: 0, o_dist: 0,
+            o_vig: 0, g_vert: 0, g_horiz: 0, g_rot: 0, e_viggain: 0, e_vigmid: 50, e_grngain: 0,
+            e_grnsize: 25, cal_shad: 0, cal_rh: 0, cal_rs: 0, cal_gh: 0, cal_gs: 0, cal_bh: 0, cal_bs: 0
+        };
+
         // HISTORIQUE ANNULATION (CTRL+Z / CMD+Z)
         let historyStack = [];
         const MAX_HISTORY_STEPS = 20;
@@ -922,6 +923,7 @@
                 isText: layer.isText,
                 isLogo: layer.isLogo,
                 isSmartObject: layer.isSmartObject,
+                rawSettings: JSON.parse(JSON.stringify(layer.rawSettings)),
                 textConfig: layer.textConfig ? JSON.parse(JSON.stringify(layer.textConfig)) : null,
                 hasMask: layer.hasMask,
                 maskDataUrl: layer.hasMask && layer.maskCanvas ? layer.maskCanvas.toDataURL() : null
@@ -939,7 +941,11 @@
         }
 
         function restoreState(state) {
-            layers.forEach(l => { if (l.img && l.img.parentNode) l.img.remove(); });
+            layers.forEach(l => { 
+                if (l.img && l.img.parentNode) l.img.remove();
+                const filterEl = document.getElementById(`filter_${l.id}`);
+                if(filterEl) filterEl.remove();
+            });
             layers = [];
 
             state.forEach((item, index) => {
@@ -970,12 +976,15 @@
                     locked: item.locked,
                     isText: item.isText,
                     isLogo: item.isLogo,
+                    rawSettings: JSON.parse(JSON.stringify(item.rawSettings)),
                     textConfig: item.textConfig,
                     hasMask: item.hasMask,
                     maskCanvas: null,
                     maskCtx: null,
                     maskDataUrl: item.maskDataUrl
                 };
+
+                createSVGFilterForLayer(layerObj.id);
 
                 rawImg.onload = () => {
                     canvasLayer.width = rawImg.naturalWidth || 800;
@@ -1098,6 +1107,8 @@
             const signatureLayers = layers.filter(l => l.isText || l.isLogo);
             signatureLayers.forEach(l => {
                 if (l.img && l.img.parentNode) l.img.remove();
+                const filterEl = document.getElementById(`filter_${l.id}`);
+                if(filterEl) filterEl.remove();
             });
             layers = layers.filter(l => !l.isText && !l.isLogo);
             updateZIndices();
@@ -1319,11 +1330,6 @@
             boundingBox.style.height = rect.height + 'px';
         }
 
-        const v = (id) => {
-            const el = document.getElementById(id);
-            return el ? (parseFloat(el.value) || 0) : 0;
-        };
-
         function createTextLayer(text = "Graphis Studio", fontFamily = "Dancing Script", style = "normal", size = 54, color = "#FFD700") {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
@@ -1377,6 +1383,28 @@
             renderLayerComposite(layer);
         }
 
+        function createSVGFilterForLayer(layerId) {
+            const container = document.getElementById('svg_defs_container');
+            if (document.getElementById(`filter_${layerId}`)) return;
+
+            const filter = document.createElementNS("http://www.w3.org/2000/svg", "filter");
+            filter.setAttribute("id", `filter_${layerId}`);
+            filter.setAttribute("color-interpolation-filters", "sRGB");
+
+            filter.innerHTML = `
+                <feColorMatrix id="svg_color_${layerId}" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" result="colors"/>
+                <feComponentTransfer id="svg_curves_${layerId}" in="colors" result="tones">
+                    <feFuncR id="svg_r_${layerId}" type="table" tableValues="0 0.25 0.5 0.75 1"/>
+                    <feFuncG id="svg_g_${layerId}" type="table" tableValues="0 0.25 0.5 0.75 1"/>
+                    <feFuncB id="svg_b_${layerId}" type="table" tableValues="0 0.25 0.5 0.75 1"/>
+                </feComponentTransfer>
+                <feTurbulence id="svg_turb_${layerId}" type="fractalNoise" baseFrequency="0.5" numOctaves="3" result="noise"/>
+                <feColorMatrix id="svg_noise_${layerId}" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 0" in="noise" result="coloredNoise"/>
+                <feBlend mode="overlay" in="tones" in2="coloredNoise"/>
+            `;
+            container.appendChild(filter);
+        }
+
         function createLayer(imgSrc, name = "Calque", initialData = null) {
             const id = 'layer_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
             
@@ -1385,6 +1413,8 @@
             
             const rawImg = new Image();
             rawImg.crossOrigin = 'anonymous';
+
+            createSVGFilterForLayer(id);
 
             const layerObj = {
                 id, name, 
@@ -1408,6 +1438,7 @@
                 isText: initialData && initialData.isText ? true : false,
                 isLogo: initialData && initialData.isLogo ? true : false,
                 textConfig: initialData && initialData.textConfig ? initialData.textConfig : null,
+                rawSettings: initialData && initialData.rawSettings ? JSON.parse(JSON.stringify(initialData.rawSettings)) : JSON.parse(JSON.stringify(DEFAULT_RAW_SETTINGS)),
                 hasMask: false,
                 maskCanvas: null,
                 maskCtx: null,
@@ -1495,6 +1526,24 @@
             processImage();
         }
 
+        // SYNCHRONISE LE PANNEAU CAMERA RAW AVEC LE CALQUE ACTIF SELECTIONNE
+        function syncRawPanelUI() {
+            const active = getActiveLayer();
+            if (!active || !active.rawSettings) return;
+
+            const settings = active.rawSettings;
+            Object.keys(settings).forEach(key => {
+                const el = document.getElementById(key);
+                if (el) {
+                    el.value = settings[key];
+                    const label = el.previousElementSibling;
+                    if (label && label.querySelector('.value-display')) {
+                        label.querySelector('.value-display').innerText = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
+                    }
+                }
+            });
+        }
+
         function handleLayerSelection(id, event = null) {
             if (!event) {
                 activeLayerId = id;
@@ -1529,6 +1578,7 @@
             
             updateLayersUI();
             syncTransformUI();
+            syncRawPanelUI();
             updateBoundingBoxVisibility();
         }
 
@@ -1756,6 +1806,7 @@
                 locked: false,
                 isText: source.isText,
                 isLogo: source.isLogo,
+                rawSettings: JSON.parse(JSON.stringify(source.rawSettings)),
                 textConfig: source.textConfig ? JSON.parse(JSON.stringify(source.textConfig)) : null,
                 insertIndex: sourceIdx + 1
             };
@@ -2026,6 +2077,8 @@
                 const layer = layers.find(l => l.id === id);
                 if (layer && !layer.locked) {
                     layer.img.remove();
+                    const filterEl = document.getElementById(`filter_${id}`);
+                    if(filterEl) filterEl.remove();
                     layers = layers.filter(l => l.id !== id);
                 }
             });
@@ -2117,51 +2170,72 @@
             saveHistoryState();
         });
 
+        // CALCUL DU RENDU CAMERA RAW INDEPENDANT POUR CHAQUE CALQUE
         function processImage() {
             try {
-                const exp = v('t_exp'), cont = v('t_cont'), sat = v('t_sat'), vib = v('t_vib');
-                const temp = v('t_temp'), tint = v('t_tint'), dehaze = v('t_dehaze'), clar = v('t_clar');
-                const hl = v('t_hl') + v('c_hl'), shad = v('t_shad') + v('c_shad');
-                const whites = v('t_white') + v('c_light'), blacks = v('t_black') + v('c_dark');
-                const blur = v('b_int'), noiseLum = v('d_nlum');
-                const cgHue = v('cg_hue'), cgSat = v('cg_sat'), cgLum = v('cg_lum');
-
-                let rR = 1 + (v('cal_rs')*0.01) + (v('m_red')*0.01) + (v('m_org')*0.005) + (v('m_mag')*0.005) + (temp * 0.005) + (v('cal_rh') * 0.002) - (v('cal_shad') * 0.005);
-                let gG = 1 + (v('cal_gs')*0.01) + (v('m_grn')*0.01) + (v('m_yel')*0.005) + (v('m_aqu')*0.005) - (tint * 0.005) - (v('cal_gh') * 0.002) + (v('cal_shad') * 0.005);
-                let bB = 1 + (v('cal_bs')*0.01) + (v('m_blu')*0.01) + (v('m_aqu')*0.005) + (v('m_vio')*0.005) - (temp * 0.005) - (v('cal_bh') * 0.002);
-                
-                document.getElementById('svg_color').setAttribute('values', `${rR} 0 0 0 0  0 ${gG} 0 0 0  0 0 ${bB} 0 0  0 0 0 1 0`);
-
-                let pB = Math.max(0, Math.min(1, 0 - (blacks * 0.002)));
-                let pS = Math.max(0, Math.min(1, 0.25 - (shad * 0.002)));
-                let pL = Math.max(0, Math.min(1, 0.75 + (whites * 0.002)));
-                let pW = Math.max(0, Math.min(1, 1 + (hl * 0.002)));
-                let curveStr = `${pB} ${pS} 0.5 ${pL} ${pW}`;
-                
-                document.getElementById('svg_r').setAttribute('tableValues', curveStr);
-                document.getElementById('svg_g').setAttribute('tableValues', curveStr);
-                document.getElementById('svg_b').setAttribute('tableValues', curveStr);
-
-                document.getElementById('svg_turb').setAttribute('baseFrequency', 0.5 + (v('e_grnsize') * 0.01));
-                document.getElementById('svg_noise').setAttribute('values', `1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 ${v('e_grngain') * 0.01} 0`);
-
-                let brightness = 100 + (exp * 20) + (cgLum * 0.2);
-                let contrast = 100 + cont + (clar * 0.2) + (dehaze * 0.2) + (v('t_text') * 0.1);
-                let saturate = 100 + sat + (vib * 0.5) + (cgSat * 0.2);
-                let totalBlur = (blur * 0.1) + (noiseLum * 0.05);
-
-                let activeFilterString = 'none';
-                if (exp !== 0 || cont !== 0 || sat !== 0 || vib !== 0 || temp !== 0 || tint !== 0 || cgHue !== 0 || blur !== 0) {
-                    activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#rawEngine)`;
-                }
-
                 layers.forEach((layer) => {
-                    layer.img.style.filter = (layer.id === activeLayerId) ? activeFilterString : 'none';
+                    const s = layer.rawSettings;
+                    if (!s) return;
+
+                    const exp = s.t_exp || 0, cont = s.t_cont || 0, sat = s.t_sat || 0, vib = s.t_vib || 0;
+                    const temp = s.t_temp || 0, tint = s.t_tint || 0, dehaze = s.t_dehaze || 0, clar = s.t_clar || 0;
+                    const hl = (s.t_hl || 0) + (s.c_hl || 0), shad = (s.t_shad || 0) + (s.c_shad || 0);
+                    const whites = (s.t_white || 0) + (s.c_light || 0), blacks = (s.t_black || 0) + (s.c_dark || 0);
+                    const blur = s.b_int || 0, noiseLum = s.d_nlum || 0;
+                    const cgHue = s.cg_hue || 0, cgSat = s.cg_sat || 0, cgLum = s.cg_lum || 0;
+
+                    let rR = 1 + ((s.cal_rs || 0)*0.01) + ((s.m_red || 0)*0.01) + ((s.m_org || 0)*0.005) + ((s.m_mag || 0)*0.005) + (temp * 0.005) + ((s.cal_rh || 0) * 0.002) - ((s.cal_shad || 0) * 0.005);
+                    let gG = 1 + ((s.cal_gs || 0)*0.01) + ((s.m_grn || 0)*0.01) + ((s.m_yel || 0)*0.005) + ((s.m_aqu || 0)*0.005) - (tint * 0.005) - ((s.cal_gh || 0) * 0.002) + ((s.cal_shad || 0) * 0.005);
+                    let bB = 1 + ((s.cal_bs || 0)*0.01) + ((s.m_blu || 0)*0.01) + ((s.m_aqu || 0)*0.005) + ((s.m_vio || 0)*0.005) - (temp * 0.005) - ((s.cal_bh || 0) * 0.002);
+
+                    const colorMatrixEl = document.getElementById(`svg_color_${layer.id}`);
+                    if (colorMatrixEl) {
+                        colorMatrixEl.setAttribute('values', `${rR} 0 0 0 0  0 ${gG} 0 0 0  0 0 ${bB} 0 0  0 0 0 1 0`);
+                    }
+
+                    let pB = Math.max(0, Math.min(1, 0 - (blacks * 0.002)));
+                    let pS = Math.max(0, Math.min(1, 0.25 - (shad * 0.002)));
+                    let pL = Math.max(0, Math.min(1, 0.75 + (whites * 0.002)));
+                    let pW = Math.max(0, Math.min(1, 1 + (hl * 0.002)));
+                    let curveStr = `${pB} ${pS} 0.5 ${pL} ${pW}`;
+                    
+                    const svgR = document.getElementById(`svg_r_${layer.id}`);
+                    const svgG = document.getElementById(`svg_g_${layer.id}`);
+                    const svgB = document.getElementById(`svg_b_${layer.id}`);
+                    if (svgR && svgG && svgB) {
+                        svgR.setAttribute('tableValues', curveStr);
+                        svgG.setAttribute('tableValues', curveStr);
+                        svgB.setAttribute('tableValues', curveStr);
+                    }
+
+                    const svgTurb = document.getElementById(`svg_turb_${layer.id}`);
+                    const svgNoise = document.getElementById(`svg_noise_${layer.id}`);
+                    if (svgTurb && svgNoise) {
+                        svgTurb.setAttribute('baseFrequency', 0.5 + ((s.e_grnsize || 0) * 0.01));
+                        svgNoise.setAttribute('values', `1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 ${(s.e_grngain || 0) * 0.01} 0`);
+                    }
+
+                    let brightness = 100 + (exp * 20) + (cgLum * 0.2);
+                    let contrast = 100 + cont + (clar * 0.2) + (dehaze * 0.2) + ((s.t_text || 0) * 0.1);
+                    let saturate = 100 + sat + (vib * 0.5) + (cgSat * 0.2);
+                    let totalBlur = (blur * 0.1) + (noiseLum * 0.05);
+
+                    let activeFilterString = 'none';
+                    if (exp !== 0 || cont !== 0 || sat !== 0 || vib !== 0 || temp !== 0 || tint !== 0 || cgHue !== 0 || blur !== 0) {
+                        activeFilterString = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturate}%) blur(${totalBlur}px) hue-rotate(${cgHue}deg) url(#filter_${layer.id})`;
+                    }
+
+                    layer.img.style.filter = activeFilterString;
                     applyLayerTransform(layer);
                 });
-                
-                let vigTotal = Math.min(1, Math.abs((v('e_viggain') + v('o_vig')) * -0.01));
-                overlay.style.boxShadow = `inset 0 0 ${100 - v('e_vigmid')}vmin rgba(0,0,0,${vigTotal})`;
+
+                const active = getActiveLayer();
+                if (active && active.rawSettings) {
+                    let vigTotal = Math.min(1, Math.abs(((active.rawSettings.e_viggain || 0) + (active.rawSettings.o_vig || 0)) * -0.01));
+                    overlay.style.boxShadow = `inset 0 0 ${100 - (active.rawSettings.e_vigmid || 50)}vmin rgba(0,0,0,${vigTotal})`;
+                } else {
+                    overlay.style.boxShadow = 'none';
+                }
 
             } catch (error) {
                 console.error("Erreur dans le rendu : ", error);
@@ -2247,13 +2321,25 @@
         document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
         document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
 
+        // ECOUTEUR DE CHANGEMENT SUR LES CURSEURS CAMERA RAW POUR LE CALQUE ACTIF
         document.getElementById('controls').addEventListener('input', (e) => {
             if (e.target.type === 'range') {
+                const active = getActiveLayer();
+                if (active && active.rawSettings) {
+                    active.rawSettings[e.target.id] = parseFloat(e.target.value);
+                }
+
                 const label = e.target.previousElementSibling;
                 if(label && label.querySelector('.value-display')) {
                     label.querySelector('.value-display').innerText = e.target.step === '0.1' ? parseFloat(e.target.value).toFixed(1) : e.target.value;
                 }
                 processImage();
+            }
+        });
+
+        document.getElementById('controls').addEventListener('change', (e) => {
+            if (e.target.type === 'range') {
+                saveHistoryState();
             }
         });
 
