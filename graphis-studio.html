@@ -359,13 +359,41 @@
         background: rgba(255, 255, 255, 0.05);
     }
     .reset-btn svg {
-        width: 12px;
-        height: 12px;
+        width: 13px;
+        height: 13px;
         stroke: currentColor;
         fill: none;
         stroke-width: 2;
         stroke-linecap: round;
         stroke-linejoin: round;
+    }
+
+    .module-eye-btn {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 2px 4px;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+    .module-eye-btn svg {
+        width: 14px;
+        height: 14px;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+    .module-eye-btn.active svg {
+        stroke: var(--accent-color);
+        fill: rgba(255, 215, 0, 0.2);
+    }
+    .module-eye-btn.disabled svg {
+        stroke: #666666;
+        fill: none;
+        opacity: 0.5;
     }
 
     .number-input {
@@ -809,13 +837,13 @@
             </div>
 
             <div class="panel-content" id="controls">
-                <!-- RÉGLAGES DE BASE AVEC EYE TOGGLE & RESET -->
+                <!-- PANNEAU RÉGLAGES DE BASE -->
                 <details open>
                     <summary>
                         <span>Réglages de base</span>
                         <div class="summary-controls">
-                            <button class="reset-btn" id="toggleBaseModuleBtn" title="Afficher/Masquer les réglages de base">
-                                <svg id="baseEyeIcon" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            <button class="module-eye-btn active" data-module="base" title="Afficher/Masquer le panneau Réglages de base">
+                                <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </button>
                             <button class="reset-btn" id="resetBaseModuleBtn" title="Réinitialiser tous les réglages de base">
                                 <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
@@ -1001,7 +1029,16 @@
                     </div>
                 </details>
 
-                <details open><summary>Courbe des tonalités</summary>
+                <!-- PANNEAU COURBE DES TONALITÉS -->
+                <details open>
+                    <summary>
+                        <span>Courbe des tonalités</span>
+                        <div class="summary-controls">
+                            <button class="module-eye-btn active" data-module="curve" title="Afficher/Masquer la courbe">
+                                <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </summary>
                     <div class="module-content">
                         <div class="control-group">
                             <label>Paramètres prédéfinis 
@@ -1021,7 +1058,6 @@
                             </label>
                         </div>
 
-                        <!-- MODULE COURBE AVEC HISTOGRAMME -->
                         <div class="curve-container">
                             <div class="curve-svg-wrapper" id="toneCurveWrapper">
                                 <svg id="toneCurveSVG" viewBox="0 0 200 200">
@@ -1051,7 +1087,16 @@
                     </div>
                 </details>
 
-                <details><summary>Mélangeur de couleurs</summary>
+                <!-- PANNEAU MÉLANGEUR DE COULEURS -->
+                <details>
+                    <summary>
+                        <span>Mélangeur de couleurs</span>
+                        <div class="summary-controls">
+                            <button class="module-eye-btn active" data-module="mixer" title="Afficher/Masquer le mélangeur de couleurs">
+                                <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </summary>
                     <div class="module-content">
                         <div class="control-group"><label>Ajuster <select id="m_target"><option>Saturation</option></select></label></div>
                         <div class="control-group"><label style="color:#ff4a4a">Rouge <span class="value-display">0</span></label><input type="range" id="m_red" min="-100" max="100" value="0"></div>
@@ -1065,7 +1110,16 @@
                     </div>
                 </details>
 
-                <details><summary>Color Grading</summary>
+                <!-- PANNEAU COLOR GRADING -->
+                <details>
+                    <summary>
+                        <span>Color Grading</span>
+                        <div class="summary-controls">
+                            <button class="module-eye-btn active" data-module="colorGrading" title="Afficher/Masquer le color grading">
+                                <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </summary>
                     <div class="module-content">
                         <div class="control-group"><label>Cible <select id="cg_target"><option>Global</option></select></label></div>
                         <div class="control-group"><label>Teinte <span class="value-display">0</span></label><input type="range" id="cg_hue" min="0" max="360" value="0"></div>
@@ -1077,7 +1131,16 @@
                     </div>
                 </details>
 
-                <details><summary>Détail</summary>
+                <!-- PANNEAU DÉTAIL -->
+                <details>
+                    <summary>
+                        <span>Détail</span>
+                        <div class="summary-controls">
+                            <button class="module-eye-btn active" data-module="detail" title="Afficher/Masquer le détail">
+                                <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </summary>
                     <div class="module-content">
                         <div class="control-group"><label>Gain (Netteté) <span class="value-display">40</span></label><input type="range" id="d_gain" min="0" max="150" value="40"></div>
                         <div class="control-group"><label>Rayon <span class="value-display">1.0</span></label><input type="range" id="d_rad" min="0.5" max="3" step="0.1" value="1.0"></div>
@@ -1089,14 +1152,32 @@
                     </div>
                 </details>
 
-                <details><summary>Flou d'objectif</summary>
+                <!-- PANNEAU FLOU D'OBJECTIF -->
+                <details>
+                    <summary>
+                        <span>Flou d'objectif</span>
+                        <div class="summary-controls">
+                            <button class="module-eye-btn active" data-module="blur" title="Afficher/Masquer le flou d'objectif">
+                                <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </summary>
                     <div class="module-content">
                         <div class="control-group"><label>Intensité du Flou <span class="value-display">0</span></label><input type="range" id="b_int" min="0" max="100" value="0"></div>
                         <div class="control-group"><label>Forme Bokeh <select id="b_shape"><option>Cercle</option></select></label></div>
                     </div>
                 </details>
 
-                <details><summary>Optique</summary>
+                <!-- PANNEAU OPTIQUE -->
+                <details>
+                    <summary>
+                        <span>Optique</span>
+                        <div class="summary-controls">
+                            <button class="module-eye-btn active" data-module="optics" title="Afficher/Masquer l'optique">
+                                <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </summary>
                     <div class="module-content">
                         <label style="font-size:11px; display:flex; gap:10px;"><input type="checkbox" id="o_ca"> Supprimer l'aberration chromatique</label>
                         <hr class="divider">
@@ -1105,7 +1186,16 @@
                     </div>
                 </details>
 
-                <details><summary>Géométrie</summary>
+                <!-- PANNEAU GÉOMÉTRIE -->
+                <details>
+                    <summary>
+                        <span>Géométrie</span>
+                        <div class="summary-controls">
+                            <button class="module-eye-btn active" data-module="geometry" title="Afficher/Masquer la géométrie">
+                                <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </summary>
                     <div class="module-content">
                         <div class="control-group"><label>Vertical <span class="value-display">0</span></label><input type="range" id="g_vert" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label>Horizontal <span class="value-display">0</span></label><input type="range" id="g_horiz" min="-100" max="100" value="0"></div>
@@ -1113,7 +1203,16 @@
                     </div>
                 </details>
 
-                <details><summary>Effets</summary>
+                <!-- PANNEAU EFFETS -->
+                <details>
+                    <summary>
+                        <span>Effets</span>
+                        <div class="summary-controls">
+                            <button class="module-eye-btn active" data-module="effects" title="Afficher/Masquer les effets">
+                                <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </summary>
                     <div class="module-content">
                         <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" id="e_viggain" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label>Milieu <span class="value-display">50</span></label><input type="range" id="e_vigmid" min="0" max="100" value="50"></div>
@@ -1122,7 +1221,16 @@
                     </div>
                 </details>
 
-                <details><summary>Étalonnage</summary>
+                <!-- PANNEAU ÉTALONNAGE -->
+                <details>
+                    <summary>
+                        <span>Étalonnage</span>
+                        <div class="summary-controls">
+                            <button class="module-eye-btn active" data-module="calibration" title="Afficher/Masquer l'étalonnage">
+                                <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </summary>
                     <div class="module-content">
                         <div class="control-group"><label>Ombres - Teinte <span class="value-display">0</span></label><input type="range" id="cal_shad" min="-100" max="100" value="0"></div>
                         <hr class="divider">
@@ -1157,7 +1265,19 @@
         let selectedLayerIds = [];
         let lastSelectedLayerId = null;
 
-        let baseModuleEnabled = true;
+        // ÉTATS DES PANNEAUX (TOGGLE EYE)
+        const modulesState = {
+            base: true,
+            curve: true,
+            mixer: true,
+            colorGrading: true,
+            detail: true,
+            blur: true,
+            optics: true,
+            geometry: true,
+            effects: true,
+            calibration: true
+        };
 
         const DEFAULT_RAW_SETTINGS = {
             baseProfile: 'adobe_color',
@@ -1189,27 +1309,63 @@
         
         let savedSignatureConfig = null;
 
+        // ALGORITHME D'INTERPOLATION CUBIQUE MONOTONE (FRITSCH-CARLSON) POUR DES COURBES DOUCES ET SANS CASSURES
         function calculateSplinePoints(points) {
             const sorted = [...points].sort((a, b) => a.x - b.x);
             const n = sorted.length;
             if (n < 2) return sorted;
 
+            const x = sorted.map(p => p.x);
+            const y = sorted.map(p => p.y);
+
+            const dx = [];
+            const dy = [];
+            const ms = [];
+
+            for (let i = 0; i < n - 1; i++) {
+                dx[i] = x[i + 1] - x[i];
+                dy[i] = y[i + 1] - y[i];
+                ms[i] = dx[i] === 0 ? 0 : dy[i] / dx[i];
+            }
+
+            const c1s = [ms[0]];
+            for (let i = 0; i < n - 2; i++) {
+                const m = ms[i];
+                const mNext = ms[i + 1];
+                if (m * mNext <= 0) {
+                    c1s.push(0);
+                } else {
+                    const dx_i = dx[i];
+                    const dx_next = dx[i + 1];
+                    const common = dx_i + dx_next;
+                    c1s.push((3 * common) / ((common + dx_next) / m + (common + dx_i) / mNext));
+                }
+            }
+            c1s.push(ms[ms.length - 1]);
+
+            const c2s = [];
+            const c3s = [];
+            for (let i = 0; i < n - 1; i++) {
+                const c1 = c1s[i];
+                const m_i = ms[i];
+                const invDx = 1 / dx[i];
+                const common_val = c1 + c1s[i + 1] - 2 * m_i;
+                c2s.push((m_i - c1 - common_val) * invDx);
+                c3s.push(common_val * invDx * invDx);
+            }
+
             const res = [];
             for (let i = 0; i < n - 1; i++) {
-                const p0 = sorted[Math.max(0, i - 1)];
-                const p1 = sorted[i];
-                const p2 = sorted[i + 1];
-                const p3 = sorted[Math.min(n - 1, i + 2)];
-
-                for (let t = 0; t <= 1; t += 0.05) {
-                    const t2 = t * t;
-                    const t3 = t2 * t;
-
-                    const x = 0.5 * ((2 * p1.x) + (-p0.x + p2.x) * t + (2 * p0.x - 5 * p1.x + 4 * p2.x - p3.x) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3);
-                    const y = 0.5 * ((2 * p1.y) + (-p0.y + p2.y) * t + (2 * p0.y - 5 * p1.y + 4 * p2.y - p3.y) * t2 + (-p0.x + 3 * p1.x - 3 * p2.x + p3.x) * t3);
-
-                    const clampedY = Math.max(0, Math.min(200, y));
-                    res.push({ x: Math.max(0, Math.min(200, x)), y: clampedY });
+                const x0 = x[i];
+                const x1 = x[i + 1];
+                const step = (x1 - x0) / 15;
+                for (let px = x0; px <= x1; px += (step || 1)) {
+                    const diff = px - x0;
+                    const py = y[i] + c1s[i] * diff + c2s[i] * diff * diff + c3s[i] * diff * diff * diff;
+                    res.push({
+                        x: Math.max(0, Math.min(200, px)),
+                        y: Math.max(0, Math.min(200, py))
+                    });
                 }
             }
             return res;
@@ -1383,7 +1539,6 @@
             }
         });
 
-        // PRESETS ENRICHIS POUR LA COURBE DES TONALITÉS
         curvePresetSelect.addEventListener('change', (e) => {
             const active = getActiveLayer();
             if (!active || !active.rawSettings) return;
@@ -1514,24 +1669,31 @@
             }
         });
 
-        // MASQUAGE / RÉINITIALISATION RÉGLAGES DE BASE
-        const toggleBaseBtn = document.getElementById('toggleBaseModuleBtn');
-        const resetBaseBtn = document.getElementById('resetBaseModuleBtn');
-        const baseEyeIcon = document.getElementById('baseEyeIcon');
+        // GESTIONNAIRE D'ICÔNE OEIL (TOGGLE) POUR TOUS LES PANNEAUX
+        document.querySelectorAll('.module-eye-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const modName = btn.dataset.module;
+                if (!modName) return;
 
-        toggleBaseBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            baseModuleEnabled = !baseModuleEnabled;
-            if (baseModuleEnabled) {
-                baseEyeIcon.setAttribute('d', 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z');
-                toggleBaseBtn.style.opacity = '1';
-            } else {
-                baseEyeIcon.setAttribute('d', 'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22');
-                toggleBaseBtn.style.opacity = '0.4';
-            }
-            processImage();
+                modulesState[modName] = !modulesState[modName];
+
+                const eyePath = btn.querySelector('.eye-path');
+                if (modulesState[modName]) {
+                    btn.classList.remove('disabled');
+                    btn.classList.add('active');
+                    if (eyePath) eyePath.setAttribute('d', 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z');
+                } else {
+                    btn.classList.remove('active');
+                    btn.classList.add('disabled');
+                    if (eyePath) eyePath.setAttribute('d', 'M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24M1 1l22 22');
+                }
+
+                processImage();
+            });
         });
 
+        const resetBaseBtn = document.getElementById('resetBaseModuleBtn');
         resetBaseBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             const active = getActiveLayer();
@@ -2854,7 +3016,7 @@
             saveHistoryState();
         });
 
-        // NOUVEAU TRAITEMENT AVEC PRISE EN CHARGE COMPLETE DU PROFIL
+        // TRAITEMENT PIXEL EN TEMPS RÉEL SUR CANVAS
         function processImage() {
             try {
                 layers.forEach((layer) => {
@@ -2871,16 +3033,15 @@
                     const imgData = ctx.getImageData(0, 0, width, height);
                     const data = imgData.data;
 
-                    const lutCurve = buildLutFromPoints(s.curvePoints || DEFAULT_RAW_SETTINGS.curvePoints);
+                    const lutCurve = buildLutFromPoints((modulesState.curve && s.curvePoints) ? s.curvePoints : DEFAULT_RAW_SETTINGS.curvePoints);
 
-                    // APPLICATION CONDITIONNELLE DU MODULE DE BASE (OEIL)
-                    const expMult = baseModuleEnabled ? Math.pow(2, (s.t_exp || 0)) : 1.0;
-                    const temp = baseModuleEnabled ? (s.t_temp || 0) : 0;
-                    const tint = baseModuleEnabled ? (s.t_tint || 0) : 0;
-                    const sat = baseModuleEnabled ? (1 + ((s.t_sat || 0) * 0.01)) : 1.0;
-                    const vib = baseModuleEnabled ? ((s.t_vib || 0) * 0.01) : 0;
-                    const cont = baseModuleEnabled ? ((s.t_cont || 0) * 0.01) : 0;
-                    const profile = baseModuleEnabled ? (s.baseProfile || 'adobe_color') : 'adobe_color';
+                    const expMult = modulesState.base ? Math.pow(2, (s.t_exp || 0)) : 1.0;
+                    const temp = modulesState.base ? (s.t_temp || 0) : 0;
+                    const tint = modulesState.base ? (s.t_tint || 0) : 0;
+                    const sat = modulesState.base ? (1 + ((s.t_sat || 0) * 0.01)) : 1.0;
+                    const vib = modulesState.base ? ((s.t_vib || 0) * 0.01) : 0;
+                    const cont = modulesState.base ? ((s.t_cont || 0) * 0.01) : 0;
+                    const profile = modulesState.base ? (s.baseProfile || 'adobe_color') : 'adobe_color';
 
                     const rFactor = 1 + (temp * 0.003);
                     const bFactor = 1 - (temp * 0.003);
@@ -2891,7 +3052,6 @@
                         let g = data[i+1];
                         let b = data[i+2];
 
-                        // APPLIQUER LE PROFIL DE COULEUR
                         if (profile === 'landscape') {
                             r *= 1.05; g *= 1.08; b *= 0.95;
                         } else if (profile === 'portrait') {
@@ -2913,9 +3073,11 @@
                         b *= expMult * bFactor;
 
                         // 2. COURBE DES TONALITÉS INTERACTIVE
-                        r = lutCurve[Math.max(0, Math.min(255, Math.round(r)))];
-                        g = lutCurve[Math.max(0, Math.min(255, Math.round(g)))];
-                        b = lutCurve[Math.max(0, Math.min(255, Math.round(b)))];
+                        if (modulesState.curve) {
+                            r = lutCurve[Math.max(0, Math.min(255, Math.round(r)))];
+                            g = lutCurve[Math.max(0, Math.min(255, Math.round(g)))];
+                            b = lutCurve[Math.max(0, Math.min(255, Math.round(b)))];
+                        }
 
                         // 3. CONTRASTE
                         if (cont !== 0) {
@@ -2945,7 +3107,6 @@
 
                     ctx.putImageData(imgData, 0, 0);
 
-                    // APPLICATION DE LA MASK LAYER
                     if (layer.hasMask && layer.maskCanvas) {
                         const maskCtx = layer.maskCanvas.getContext('2d');
                         const maskData = maskCtx.getImageData(0, 0, width, height);
@@ -2962,7 +3123,7 @@
                 });
 
                 const active = getActiveLayer();
-                if (active && active.rawSettings) {
+                if (active && active.rawSettings && modulesState.effects) {
                     let vigTotal = Math.min(1, Math.abs(((active.rawSettings.e_viggain || 0) + (active.rawSettings.o_vig || 0)) * -0.01));
                     overlay.style.boxShadow = `inset 0 0 ${100 - (active.rawSettings.e_vigmid || 50)}vmin rgba(0,0,0,${vigTotal})`;
                 } else {
