@@ -428,16 +428,19 @@
     details { margin-bottom: 5px; border-bottom: 1px solid #2a2a2a; }
     summary { padding: 10px 5px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-color); display: flex; justify-content: space-between; align-items: center; list-style: none; }
     summary::-webkit-details-marker { display: none; }
-    summary:after { content: "▼"; font-size: 10px; color: #666; margin-left: auto; }
+    summary:after { content: "▼"; font-size: 10px; color: #666; margin-left: 8px; }
     details[open] summary:after { content: "▲"; color: var(--accent-color); }
     details[open] summary { color: var(--accent-color); }
 
+    /* CONTENEUR FIXE À 48PX POUR ALIGNER LES YEUX D'UN PANNEAU À L'AUTRE */
     .summary-controls {
         display: flex;
         align-items: center;
-        gap: 6px;
+        justify-content: flex-end;
+        gap: 4px;
         margin-left: auto;
-        margin-right: 10px;
+        width: 48px;
+        flex-shrink: 0;
     }
 
     .module-content { padding: 10px 5px 15px 5px; }
@@ -1037,6 +1040,9 @@
                             <button class="module-eye-btn active" data-module="curve" title="Afficher/Masquer la courbe">
                                 <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </button>
+                            <button class="reset-btn" id="resetCurveModuleBtn" title="Réinitialiser le panneau Courbe">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
                         </div>
                     </summary>
                     <div class="module-content">
@@ -1095,6 +1101,9 @@
                             <button class="module-eye-btn active" data-module="mixer" title="Afficher/Masquer le mélangeur de couleurs">
                                 <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </button>
+                            <button class="reset-btn" id="resetMixerModuleBtn" title="Réinitialiser le mélangeur de couleurs">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
                         </div>
                     </summary>
                     <div class="module-content">
@@ -1118,6 +1127,9 @@
                             <button class="module-eye-btn active" data-module="colorGrading" title="Afficher/Masquer le color grading">
                                 <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </button>
+                            <button class="reset-btn" id="resetColorGradingModuleBtn" title="Réinitialiser le color grading">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
                         </div>
                     </summary>
                     <div class="module-content">
@@ -1138,6 +1150,9 @@
                         <div class="summary-controls">
                             <button class="module-eye-btn active" data-module="detail" title="Afficher/Masquer le détail">
                                 <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                            <button class="reset-btn" id="resetDetailModuleBtn" title="Réinitialiser les détails">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
                             </button>
                         </div>
                     </summary>
@@ -1160,6 +1175,9 @@
                             <button class="module-eye-btn active" data-module="blur" title="Afficher/Masquer le flou d'objectif">
                                 <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </button>
+                            <button class="reset-btn" id="resetBlurModuleBtn" title="Réinitialiser le flou d'objectif">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
                         </div>
                     </summary>
                     <div class="module-content">
@@ -1175,6 +1193,9 @@
                         <div class="summary-controls">
                             <button class="module-eye-btn active" data-module="optics" title="Afficher/Masquer l'optique">
                                 <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                            <button class="reset-btn" id="resetOpticsModuleBtn" title="Réinitialiser l'optique">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
                             </button>
                         </div>
                     </summary>
@@ -1194,6 +1215,9 @@
                             <button class="module-eye-btn active" data-module="geometry" title="Afficher/Masquer la géométrie">
                                 <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </button>
+                            <button class="reset-btn" id="resetGeometryModuleBtn" title="Réinitialiser la géométrie">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                            </button>
                         </div>
                     </summary>
                     <div class="module-content">
@@ -1210,6 +1234,9 @@
                         <div class="summary-controls">
                             <button class="module-eye-btn active" data-module="effects" title="Afficher/Masquer les effets">
                                 <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                            <button class="reset-btn" id="resetEffectsModuleBtn" title="Réinitialiser les effets">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
                             </button>
                         </div>
                     </summary>
@@ -1228,6 +1255,9 @@
                         <div class="summary-controls">
                             <button class="module-eye-btn active" data-module="calibration" title="Afficher/Masquer l'étalonnage">
                                 <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                            <button class="reset-btn" id="resetCalibrationModuleBtn" title="Réinitialiser l'étalonnage">
+                                <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
                             </button>
                         </div>
                     </summary>
@@ -1265,7 +1295,6 @@
         let selectedLayerIds = [];
         let lastSelectedLayerId = null;
 
-        // ÉTATS DES PANNEAUX (TOGGLE EYE)
         const modulesState = {
             base: true,
             curve: true,
@@ -1309,7 +1338,6 @@
         
         let savedSignatureConfig = null;
 
-        // ALGORITHME D'INTERPOLATION CUBIQUE MONOTONE (FRITSCH-CARLSON) POUR DES COURBES DOUCES ET SANS CASSURES
         function calculateSplinePoints(points) {
             const sorted = [...points].sort((a, b) => a.x - b.x);
             const n = sorted.length;
@@ -1669,7 +1697,7 @@
             }
         });
 
-        // GESTIONNAIRE D'ICÔNE OEIL (TOGGLE) POUR TOUS LES PANNEAUX
+        // GESTION DES YEUX (TOGGLE)
         document.querySelectorAll('.module-eye-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -1693,21 +1721,83 @@
             });
         });
 
-        const resetBaseBtn = document.getElementById('resetBaseModuleBtn');
-        resetBaseBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
+        // FONCTION DE RÉINITIALISATION MULTI-MODULES
+        function resetModuleKeys(keys) {
             const active = getActiveLayer();
             if (!active || !active.rawSettings) return;
 
-            const baseKeys = ['t_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat'];
-            baseKeys.forEach(k => {
+            keys.forEach(k => {
                 active.rawSettings[k] = DEFAULT_RAW_SETTINGS[k];
             });
-            active.rawSettings.baseProfile = 'adobe_color';
 
             syncRawPanelUI();
             processImage();
             saveHistoryState();
+        }
+
+        // RESET RÉGLAGES DE BASE
+        document.getElementById('resetBaseModuleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetModuleKeys(['t_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat']);
+            const active = getActiveLayer();
+            if (active && active.rawSettings) active.rawSettings.baseProfile = 'adobe_color';
+            syncRawPanelUI();
+        });
+
+        // RESET COURBE
+        document.getElementById('resetCurveModuleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetModuleKeys(['c_hl', 'c_light', 'c_dark', 'c_shad']);
+            resetCurveBtn.click();
+        });
+
+        // RESET MÉLANGEUR
+        document.getElementById('resetMixerModuleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetModuleKeys(['m_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag']);
+        });
+
+        // RESET COLOR GRADING
+        document.getElementById('resetColorGradingModuleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetModuleKeys(['cg_hue', 'cg_sat', 'cg_lum', 'cg_blend', 'cg_bal']);
+        });
+
+        // RESET DÉTAIL
+        document.getElementById('resetDetailModuleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetModuleKeys(['d_gain', 'd_rad', 'd_det', 'd_mask', 'd_nlum', 'd_ncol']);
+        });
+
+        // RESET FLOU D'OBJECTIF
+        document.getElementById('resetBlurModuleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetModuleKeys(['b_int']);
+        });
+
+        // RESET OPTIQUE
+        document.getElementById('resetOpticsModuleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetModuleKeys(['o_dist', 'o_vig']);
+            document.getElementById('o_ca').checked = false;
+        });
+
+        // RESET GÉOMÉTRIE
+        document.getElementById('resetGeometryModuleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetModuleKeys(['g_vert', 'g_horiz', 'g_rot']);
+        });
+
+        // RESET EFFETS
+        document.getElementById('resetEffectsModuleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetModuleKeys(['e_viggain', 'e_vigmid', 'e_grngain', 'e_grnsize']);
+        });
+
+        // RESET ÉTALONNAGE
+        document.getElementById('resetCalibrationModuleBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            resetModuleKeys(['cal_shad', 'cal_rh', 'cal_rs', 'cal_gh', 'cal_gs', 'cal_bh', 'cal_bs']);
         });
 
         function saveHistoryState() {
@@ -3016,7 +3106,6 @@
             saveHistoryState();
         });
 
-        // TRAITEMENT PIXEL EN TEMPS RÉEL SUR CANVAS
         function processImage() {
             try {
                 layers.forEach((layer) => {
@@ -3067,26 +3156,22 @@
                             r *= 0.98; g *= 0.98; b *= 0.98;
                         }
 
-                        // 1. BALANCE DES BLANCS ET EXPOSITION
                         r *= expMult * rFactor;
                         g *= expMult * gFactor;
                         b *= expMult * bFactor;
 
-                        // 2. COURBE DES TONALITÉS INTERACTIVE
                         if (modulesState.curve) {
                             r = lutCurve[Math.max(0, Math.min(255, Math.round(r)))];
                             g = lutCurve[Math.max(0, Math.min(255, Math.round(g)))];
                             b = lutCurve[Math.max(0, Math.min(255, Math.round(b)))];
                         }
 
-                        // 3. CONTRASTE
                         if (cont !== 0) {
                             r = ((r / 255 - 0.5) * (1 + cont) + 0.5) * 255;
                             g = ((g / 255 - 0.5) * (1 + cont) + 0.5) * 255;
                             b = ((b / 255 - 0.5) * (1 + cont) + 0.5) * 255;
                         }
 
-                        // 4. SATURATION ET VIBRANCE
                         if (profile !== 'monochrome') {
                             const lum = 0.299 * r + 0.587 * g + 0.114 * b;
                             if (sat !== 1 || vib !== 0) {
