@@ -432,7 +432,6 @@
     details[open] summary:after { content: "▲"; color: var(--accent-color); }
     details[open] summary { color: var(--accent-color); }
 
-    /* CONTENEUR FIXE À 48PX POUR ALIGNER LES YEUX D'UN PANNEAU À L'AUTRE */
     .summary-controls {
         display: flex;
         align-items: center;
@@ -1033,7 +1032,7 @@
                 </details>
 
                 <!-- PANNEAU COURBE DES TONALITÉS -->
-                <details open>
+                <details>
                     <summary>
                         <span>Courbe des tonalités</span>
                         <div class="summary-controls">
@@ -1279,6 +1278,20 @@
     </div>
 
     <script>
+        // MODE SOLO (LIGHTROOM) : Gestion de l'ouverture unique des panneaux
+        const allPanels = document.querySelectorAll('#controls details');
+        allPanels.forEach(panel => {
+            panel.addEventListener('toggle', (e) => {
+                if (panel.open) {
+                    allPanels.forEach(otherPanel => {
+                        if (otherPanel !== panel) {
+                            otherPanel.open = false;
+                        }
+                    });
+                }
+            });
+        });
+
         const imageContainer = document.getElementById('image-container');
         const overlay = document.getElementById('vignette-overlay');
         const layersContainer = document.getElementById('layersContainer');
