@@ -480,7 +480,6 @@
 
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
 
-    /* STYLES VIGNETTES ET GRILLE EFFETS (PAR CATEGORIES - 3 COLONNES) */
     .effects-category-title {
         font-size: 10px;
         font-weight: 700;
@@ -660,7 +659,6 @@
         color: #aaa;
     }
 
-    /* COURBE DES TONALITÉS */
     .curve-container {
         display: flex;
         flex-direction: column;
@@ -1291,7 +1289,6 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <!-- CASE À COCHER CONVERTIR EN NOIR ET BLANC -->
                         <div class="control-group" style="margin-bottom:10px;">
                             <label style="font-size:11px; display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--accent-color); font-weight:bold;">
                                 <input type="checkbox" id="chk_bw_mode" style="width:auto; accent-color:var(--accent-color);">
@@ -1299,7 +1296,6 @@
                             </label>
                         </div>
 
-                        <!-- MENU DÉROULANT DE PRESETS HSL -->
                         <div class="control-group" style="margin-bottom:12px;">
                             <label>Presets HSL / Couleurs
                                 <select id="hslPresetSelect">
@@ -1314,7 +1310,6 @@
                             </label>
                         </div>
 
-                        <!-- OUTILS CIBLE ET SOLO COLOR -->
                         <div class="hsl-tools-bar">
                             <button class="tat-btn" id="tatToolBtn" title="Outil d'Ajustement Cible (TAT) : Clic + Glissé sur la photo">
                                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="1" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="23"></line><line x1="1" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="23" y2="12"></line></svg>
@@ -1326,10 +1321,7 @@
                             </button>
                         </div>
 
-                        <!-- BARRE DES PUCK/CIRCLES DE SÉLECTION DE COULEUR -->
                         <div class="color-circles-bar" id="colorCirclesBar"></div>
-
-                        <!-- CONTENEUR DES DYNAMIQUES PAR COULEUR (TEINTE, SATURATION, LUMINANCE L'UN EN DESSOUS DE L'AUTRE) -->
                         <div id="hsl-color-blocks-container"></div>
                     </div>
                 </details>
@@ -1348,7 +1340,6 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <!-- GRILLE DES 33 EFFETS REGROUPES PAR CATEGORIES -->
                         <div id="effectsCategoriesContainer"></div>
                         <hr class="divider">
                         <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" id="e_viggain" min="-100" max="100" value="0"></div>
@@ -1497,7 +1488,6 @@
     </div>
 
     <script>
-        // TOTAL DE 33 PRESETS REGROUPES PAR CATEGORIES (ORIGINE + NOUVEAUX)
         const PRESET_EFFECTS_CATEGORIES = [
             {
                 categoryName: "Général",
@@ -1588,8 +1578,21 @@
                         document.querySelectorAll('.effect-card').forEach(c => c.classList.remove('active'));
                         card.classList.add('active');
 
-                        active.rawSettings.activeEffect = eff.id;
-                        eff.apply(active.rawSettings);
+                        // Si c'est la première fois qu'on applique un effet, on enregistre l'état utilisateur actuel
+                        if (!active.baseRawSettings) {
+                            active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
+                        }
+
+                        if (eff.id === 'none') {
+                            // RESTAURER L'IMAGE D'ORIGINE / RÉGLAGES INITIAUX
+                            active.rawSettings = JSON.parse(JSON.stringify(active.baseRawSettings));
+                            active.rawSettings.activeEffect = 'none';
+                        } else {
+                            // APPLIQUER UN EFFET EN PARTANT DES REGLAGES DE BASE
+                            active.rawSettings = JSON.parse(JSON.stringify(active.baseRawSettings));
+                            active.rawSettings.activeEffect = eff.id;
+                            eff.apply(active.rawSettings);
+                        }
 
                         syncRawPanelUI();
                         processImage();
@@ -1602,7 +1605,6 @@
             });
         }
 
-        // MODE SOLO (LIGHTROOM) : Gestion de l'ouverture unique des panneaux
         const allPanels = document.querySelectorAll('#controls details');
         allPanels.forEach(panel => {
             panel.addEventListener('toggle', (e) => {
@@ -1616,7 +1618,6 @@
             });
         });
 
-        // DEFINITIONS DES COULEURS AVEC RANGE D'ORIGINE ET COULEURS EXPLICITES
         const COLOR_DEFINITIONS = [
             { key: 'red', name: 'Rouge', color: '#ff4a4a', center: 0, defaultRange: 30 },
             { key: 'org', name: 'Orange', color: '#ffa500', center: 30, defaultRange: 30 },
@@ -1628,7 +1629,6 @@
             { key: 'mag', name: 'Magenta', color: '#ff00a5', center: 300, defaultRange: 30 }
         ];
 
-        // ETAT GLOBAL SOLO COLOR ET CANAL ACTIF
         let isSoloColorActive = false;
         let activeColorChannel = 'red';
 
@@ -1639,7 +1639,6 @@
             processImage();
         });
 
-        // GENERATION DYNAMIQUE DU SELECTEUR PAR CERCLE (STYLE CAMERA RAW) ET BLOCS DE REGLES
         function buildCameraRawMixerUI() {
             const circlesBar = document.getElementById('colorCirclesBar');
             const container = document.getElementById('hsl-color-blocks-container');
@@ -1650,7 +1649,6 @@
             container.innerHTML = '';
 
             COLOR_DEFINITIONS.forEach(col => {
-                // Puce cercle / Puck de couleur
                 const btn = document.createElement('div');
                 btn.className = `color-circle-btn ${col.key === activeColorChannel ? 'active' : ''}`;
                 btn.style.backgroundColor = col.color;
@@ -1670,7 +1668,6 @@
 
                 circlesBar.appendChild(btn);
 
-                // Bloc regroupant Teinte, Saturation et Luminance pour la couleur
                 const group = document.createElement('div');
                 group.className = 'color-block-group';
                 group.dataset.key = col.key;
@@ -1679,7 +1676,6 @@
                 group.innerHTML = `
                     <div class="color-block-title" style="color:${col.color}">● ${col.name}</div>
                     
-                    <!-- TEINTE -->
                     <div class="control-group">
                         <label>Teinte
                             <div class="transform-input-wrapper">
@@ -1690,7 +1686,6 @@
                         <input type="range" id="mh_${col.key}" min="-100" max="100" value="0">
                     </div>
 
-                    <!-- SATURATION -->
                     <div class="control-group">
                         <label>Saturation
                             <div class="transform-input-wrapper">
@@ -1701,7 +1696,6 @@
                         <input type="range" id="m_${col.key}" min="-100" max="100" value="0">
                     </div>
 
-                    <!-- LUMINANCE -->
                     <div class="control-group">
                         <label>Luminance
                             <div class="transform-input-wrapper">
@@ -1712,7 +1706,6 @@
                         <input type="range" id="ml_${col.key}" min="-100" max="100" value="0">
                     </div>
 
-                    <!-- TOLÉRANCE DE TEINTE (HUE RANGE) -->
                     <details class="range-tolerance-box">
                         <summary>Tolérance de teinte (Hue Range)</summary>
                         <div class="control-group" style="margin-top:4px; margin-bottom:0;">
@@ -1724,13 +1717,11 @@
 
                 container.appendChild(group);
 
-                // Attachement de la synchronisation des champs
                 ['mh_', 'm_', 'ml_'].forEach(prefix => {
                     const id = prefix + col.key;
                     setupRawFieldSync(id, `num_${id}`);
                 });
 
-                // Attachement de la tolérance de teinte
                 const rangeRange = document.getElementById(`mh_range_${col.key}`);
                 if (rangeRange) {
                     rangeRange.addEventListener('input', (e) => {
@@ -1749,7 +1740,6 @@
         }
         buildCameraRawMixerUI();
 
-        // MISE À JOUR DES TÉMOINS DE MODIFICATION SUR LES CERCLES COLORÉS
         function updateHslTabDots() {
             const active = getActiveLayer();
             if (!active || !active.rawSettings) return;
@@ -1763,7 +1753,6 @@
             });
         }
 
-        // CONVERSIONS COLORIMÉTRIQUES RVB <-> HSL
         function rgbToHsl(r, g, b) {
             r /= 255; g /= 255; b /= 255;
             const max = Math.max(r, g, b), min = Math.min(r, g, b);
@@ -1806,7 +1795,6 @@
             return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         }
 
-        // CALCUL DE WEIGHT AVEC TOLÉRANCE DE TEINTE DYNAMIQUE (HUE RANGE)
         function getColorWeights(h, rawSettings = {}) {
             const getWeight = (centerHue, tolerance) => {
                 let diff = Math.abs(h - centerHue);
@@ -1864,13 +1852,9 @@
             t_temp: 0, t_tint: 0, t_exp: 0, t_cont: 0, t_hl: 0, t_shad: 0, t_white: 0, t_black: 0,
             t_text: 0, t_clar: 0, t_dehaze: 0, t_vib: 0, t_sat: 0, c_hl: 0, c_light: 0, c_dark: 0,
             c_shad: 0,
-            // HUE
             mh_red: 0, mh_org: 0, mh_yel: 0, mh_grn: 0, mh_aqu: 0, mh_blu: 0, mh_vio: 0, mh_mag: 0,
-            // SATURATION
             m_red: 0, m_org: 0, m_yel: 0, m_grn: 0, m_aqu: 0, m_blu: 0, m_vio: 0, m_mag: 0,
-            // LUMINANCE
             ml_red: 0, ml_org: 0, ml_yel: 0, ml_grn: 0, ml_aqu: 0, ml_blu: 0, ml_vio: 0, ml_mag: 0,
-            // HUE RANGE (TOLÉRANCE DE TEINTE)
             mh_range_red: 30, mh_range_org: 30, mh_range_yel: 30, mh_range_grn: 30,
             mh_range_aqu: 30, mh_range_blu: 30, mh_range_vio: 30, mh_range_mag: 30,
 
@@ -1898,7 +1882,6 @@
         let draggedLayerId = null;
         let savedSignatureConfig = null;
 
-        // VARIABLES TAT (TARGETED ADJUSTMENT TOOL)
         let isTatDragging = false;
         let tatStartY = 0;
         let tatWeights = null;
@@ -2271,7 +2254,6 @@
             }
         });
 
-        // GESTION DU MODE NOIR ET BLANC
         const chkBwMode = document.getElementById('chk_bw_mode');
         chkBwMode.addEventListener('change', (e) => {
             const active = getActiveLayer();
@@ -2282,7 +2264,6 @@
             }
         });
 
-        // GESTION DU MENU DÉROULANT DES PRESETS HSL
         const hslPresetSelect = document.getElementById('hslPresetSelect');
 
         const HSL_PRESETS = {
@@ -2347,7 +2328,6 @@
             }
         });
 
-        // GESTION DES YEUX (TOGGLE)
         document.querySelectorAll('.module-eye-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
@@ -2371,7 +2351,6 @@
             });
         });
 
-        // FONCTION DE RÉINITIALISATION MULTI-MODULES
         function resetModuleKeys(keys) {
             const active = getActiveLayer();
             if (!active || !active.rawSettings) return;
@@ -2385,7 +2364,6 @@
             saveHistoryState();
         }
 
-        // RESET RÉGLAGES DE BASE
         document.getElementById('resetBaseModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys(['t_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat']);
@@ -2394,14 +2372,12 @@
             syncRawPanelUI();
         });
 
-        // RESET COURBE
         document.getElementById('resetCurveModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys(['c_hl', 'c_light', 'c_dark', 'c_shad']);
             resetCurveBtn.click();
         });
 
-        // RESET MÉLANGEUR (TEINTE + SATURATION + LUMINANCE + TOLERANCE)
         document.getElementById('resetMixerModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys([
@@ -2417,38 +2393,32 @@
             hslPresetSelect.value = 'custom';
         });
 
-        // RESET COLOR GRADING
         document.getElementById('resetColorGradingModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys(['cg_hue', 'cg_sat', 'cg_lum', 'cg_blend', 'cg_bal']);
         });
 
-        // RESET DÉTAIL
         document.getElementById('resetDetailModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys(['d_gain', 'd_rad', 'd_det', 'd_mask', 'd_nlum', 'd_ncol']);
         });
 
-        // RESET FLOU D'OBJECTIF
         document.getElementById('resetBlurModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys(['b_int']);
         });
 
-        // RESET OPTIQUE
         document.getElementById('resetOpticsModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys(['o_dist', 'o_vig']);
             document.getElementById('o_ca').checked = false;
         });
 
-        // RESET GÉOMÉTRIE
         document.getElementById('resetGeometryModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys(['g_vert', 'g_horiz', 'g_rot']);
         });
 
-        // RESET EFFETS
         document.getElementById('resetEffectsModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys(['e_viggain', 'e_vigmid', 'e_grngain', 'e_grnsize']);
@@ -2457,7 +2427,6 @@
             document.querySelectorAll('.effect-card').forEach(c => c.classList.toggle('active', c.dataset.id === 'none'));
         });
 
-        // RESET ÉTALONNAGE
         document.getElementById('resetCalibrationModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys(['cal_shad', 'cal_rh', 'cal_rs', 'cal_gh', 'cal_gs', 'cal_bh', 'cal_bs']);
@@ -2486,6 +2455,7 @@
                 isLogo: layer.isLogo,
                 isSmartObject: layer.isSmartObject,
                 rawSettings: JSON.parse(JSON.stringify(layer.rawSettings)),
+                baseRawSettings: layer.baseRawSettings ? JSON.parse(JSON.stringify(layer.baseRawSettings)) : null,
                 textConfig: layer.textConfig ? JSON.parse(JSON.stringify(layer.textConfig)) : null,
                 hasMask: layer.hasMask,
                 maskDataUrl: layer.hasMask && layer.maskCanvas ? layer.maskCanvas.toDataURL() : null
@@ -2537,6 +2507,7 @@
                     isText: item.isText,
                     isLogo: item.isLogo,
                     rawSettings: JSON.parse(JSON.stringify(item.rawSettings)),
+                    baseRawSettings: item.baseRawSettings ? JSON.parse(JSON.stringify(item.baseRawSettings)) : null,
                     textConfig: item.textConfig,
                     hasMask: item.hasMask,
                     maskCanvas: null,
@@ -2664,7 +2635,6 @@
             updateBoundingBoxVisibility();
         }
 
-        // DÉLÉGATION DE L'OUTIL TAT (TARGETED ADJUSTMENT TOOL)
         function startTatDrag(e, layerObj) {
             if (!layerObj || !layerObj.rawImg.complete) return;
 
@@ -2689,7 +2659,7 @@
             tatInitialValues = {};
             Object.keys(tatWeights).forEach(colKey => {
                 if (tatWeights[colKey] > 0.05) {
-                    const settingKey = 'm_' + colKey; // Saturation par défaut
+                    const settingKey = 'm_' + colKey;
                     tatInitialValues[settingKey] = layerObj.rawSettings[settingKey] || 0;
                 }
             });
@@ -3041,6 +3011,7 @@
                 isLogo: initialData && initialData.isLogo ? true : false,
                 textConfig: initialData && initialData.textConfig ? initialData.textConfig : null,
                 rawSettings: initialData && initialData.rawSettings ? JSON.parse(JSON.stringify(initialData.rawSettings)) : JSON.parse(JSON.stringify(DEFAULT_RAW_SETTINGS)),
+                baseRawSettings: null, // Stockera les réglages avant effet
                 hasMask: false,
                 maskCanvas: null,
                 maskCtx: null,
@@ -3442,6 +3413,7 @@
                 isText: source.isText,
                 isLogo: source.isLogo,
                 rawSettings: JSON.parse(JSON.stringify(source.rawSettings)),
+                baseRawSettings: source.baseRawSettings ? JSON.parse(JSON.stringify(source.baseRawSettings)) : null,
                 textConfig: source.textConfig ? JSON.parse(JSON.stringify(source.textConfig)) : null,
                 insertIndex: sourceIdx + 1
             };
@@ -3803,6 +3775,9 @@
                 numEl.value = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
 
                 active.rawSettings[rangeId] = numVal;
+                
+                // Si l'utilisateur effectue un réglage manuel, on met à jour la base utilisateur
+                active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
 
                 if (mixerSliderIds.includes(rangeId)) {
                     hslPresetSelect.value = 'custom';
@@ -3848,6 +3823,7 @@
             const active = getActiveLayer();
             if (active && active.rawSettings) {
                 active.rawSettings.baseProfile = e.target.value;
+                active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
                 processImage();
                 saveHistoryState();
             }
@@ -3869,7 +3845,6 @@
             saveHistoryState();
         });
 
-        // MOTEUR DE RENDU DU TRAITEMENT D'IMAGE (AVEC SOLO COLOR ET HUE RANGE)
         function processImage() {
             try {
                 layers.forEach((layer) => {
@@ -3925,7 +3900,6 @@
                         g *= expMult * gFactor;
                         b *= expMult * bFactor;
 
-                        // MIXEUR NOIR & BLANC À 8 CANAUX OU MÉLANGEUR HSL STANDARD
                         if (modulesState.mixer) {
                             if (isBwMode) {
                                 const [h] = rgbToHsl(r, g, b);
@@ -3949,22 +3923,18 @@
                                 let [h, sVal, lVal] = rgbToHsl(r, g, b);
                                 const w = getColorWeights(h, s);
 
-                                // GESTION DU MODE SOLO COLOR (ISOLATION TEMPORAIRE DE CANAL)
                                 if (isSoloColorActive) {
                                     const activeWeight = w[activeColorChannel] || 0;
                                     if (activeWeight < 0.1) {
                                         const gray = 0.299 * r + 0.587 * g + 0.114 * b;
                                         r = gray; g = gray; b = gray;
                                     } else {
-                                        // TEINTE
                                         const hueShift = (s[`mh_${activeColorChannel}`] || 0) * activeWeight;
                                         h = (h + (hueShift * 0.3) + 360) % 360;
 
-                                        // SATURATION
                                         const satShift = (s[`m_${activeColorChannel}`] || 0) * activeWeight;
                                         sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
 
-                                        // LUMINANCE
                                         const lumShift = (s[`ml_${activeColorChannel}`] || 0) * activeWeight;
                                         lVal = Math.max(0, Math.min(1, lVal * (1 + (lumShift * 0.005))));
 
@@ -3972,7 +3942,6 @@
                                         r = newR; g = newG; b = newB;
                                     }
                                 } else {
-                                    // TEINTE
                                     const hueShift = 
                                         (s.mh_red || 0) * w.red +
                                         (s.mh_org || 0) * w.org +
@@ -3985,7 +3954,6 @@
 
                                     h = (h + (hueShift * 0.3) + 360) % 360;
 
-                                    // SATURATION
                                     const satShift = 
                                         (s.m_red || 0) * w.red +
                                         (s.m_org || 0) * w.org +
@@ -3998,7 +3966,6 @@
 
                                     sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
 
-                                    // LUMINANCE
                                     const lumShift = 
                                         (s.ml_red || 0) * w.red +
                                         (s.ml_org || 0) * w.org +
@@ -4138,6 +4105,7 @@
                         layers[0].name = name;
                         
                         layers[0].rawSettings = JSON.parse(JSON.stringify(DEFAULT_RAW_SETTINGS));
+                        layers[0].baseRawSettings = null;
                         
                         layers[0].rawImg.onload = () => {
                             layers[0].img.width = layers[0].rawImg.naturalWidth;
@@ -4165,6 +4133,7 @@
                 const active = getActiveLayer();
                 if (active && active.rawSettings) {
                     active.rawSettings[e.target.id] = parseFloat(e.target.value);
+                    active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
                 }
 
                 const label = e.target.previousElementSibling;
