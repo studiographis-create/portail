@@ -480,7 +480,10 @@
 
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
 
-    .effects-search-box { margin-bottom: 8px; }
+    /* STYLES PANNEAU EFFETS AVANCÉS (RECHERCHE, TAGS, FAVORIS & PRESETS) */
+    .effects-search-box {
+        margin-bottom: 8px;
+    }
     .effects-tags-bar {
         display: flex;
         gap: 4px;
@@ -1293,7 +1296,7 @@
                     </div>
                 </details>
 
-                <!-- PANNEAU MÉLANGEUR DE COULEURS SIMPLIFIÉ -->
+                <!-- PANNEAU MÉLANGEUR DE COULEURS SIMPLIFIÉ (CAMERA RAW STYLE) -->
                 <details>
                     <summary>
                         <span>Mélangeur de couleurs</span>
@@ -1344,7 +1347,7 @@
                     </div>
                 </details>
 
-                <!-- PANNEAU EFFETS AVANCÉ (AVEC CORRECTIONS INTÉGRÉES) -->
+                <!-- PANNEAU EFFETS AVANCÉ (AVEC TOUTES LES NOUVELLES FONCTIONNALITÉS) -->
                 <details>
                     <summary>
                         <span>Effets & Presets</span>
@@ -1358,6 +1361,7 @@
                         </div>
                     </summary>
                     <div class="module-content">
+                        <!-- IDEE 3: BARRE DE RECHERCHE ET TAGS -->
                         <div class="effects-search-box">
                             <input type="text" id="effectSearchInput" placeholder="Rechercher un effet (ex: vintage, N&B, cinéma)...">
                         </div>
@@ -1372,60 +1376,45 @@
                             <button class="tag-btn" data-tag="Styles Modernes & Créatifs">Créatif</button>
                         </div>
 
+                        <!-- IDEE 2: BOUTONS ACTION (SAUVEGARDER PRESET, EXPORT/IMPORT JSON) -->
                         <div class="effects-action-bar">
                             <button id="saveCustomPresetBtn" title="Enregistrer l'état actuel sous un nouveau preset">+ Créer Preset</button>
                             <button id="exportPresetsBtn" title="Exporter les presets au format JSON">Exporter</button>
                             <button id="importPresetsBtn" title="Importer des presets JSON">Importer</button>
                         </div>
 
+                        <!-- IDEE 4: BOUTON COMPARATIF APPUYER POUR VOIR AVANT EFFET -->
                         <button id="holdBeforeBtn" style="width:100%; margin-bottom:10px; font-size:11px; background:#222;" title="Maintenir enfoncé pour voir l'image d'origine">👁 Maintenir pour comparer (Avant/Après)</button>
 
+                        <!-- IDEE 1: CURSEUR D'INTENSITÉ DE L'EFFET -->
                         <div class="control-group">
                             <label>Intensité globale de l'effet <span class="value-display" id="val_e_intensity">100%</span></label>
                             <input type="range" id="e_intensity" min="0" max="100" value="100">
                         </div>
                         <hr class="divider">
 
+                        <!-- GRILLE DES EFFETS DYNAMIQUES -->
                         <div id="effectsCategoriesContainer"></div>
                         <hr class="divider">
 
-                        <!-- CURSEURS CORRIGÉS -->
-                        <div class="control-group">
-                            <label>Fuites de lumière (Light Leaks) <span class="value-display" id="val_e_lightleak">0%</span></label>
-                            <input type="range" id="e_lightleak" min="0" max="100" value="0">
-                        </div>
-                        <div class="control-group">
-                            <label>Poussières & Rayures Film <span class="value-display" id="val_e_dust">0%</span></label>
-                            <input type="range" id="e_dust" min="0" max="100" value="0">
-                        </div>
+                        <!-- IDEE 5: TEXTURES, FUITES DE LUMIERE & POUSSIERES -->
+                        <div class="control-group"><label>Fuites de lumière (Light Leaks) <span class="value-display" id="val_e_lightleak">0%</span></label><input type="range" id="e_lightleak" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Poussières & Rayures Film <span class="value-display" id="val_e_dust">0%</span></label><input type="range" id="e_dust" min="0" max="100" value="0"></div>
 
-                        <div class="control-group">
-                            <label>Flou Maquette (Tilt-Shift) <span class="value-display" id="val_e_tiltshift">0</span></label>
-                            <input type="range" id="e_tiltshift" min="0" max="100" value="0">
-                        </div>
-                        <div class="control-group">
-                            <label>Flou Radial / Zoom <span class="value-display" id="val_e_radialblur">0</span></label>
-                            <input type="range" id="e_radialblur" min="0" max="100" value="0">
-                        </div>
+                        <!-- IDEE 6: FLOUS CRÉATIFS (TILT-SHIFT & RADIAL) -->
+                        <div class="control-group"><label>Flou Maquette (Tilt-Shift) <span class="value-display" id="val_e_tiltshift">0</span></label><input type="range" id="e_tiltshift" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Flou Radial / Zoom <span class="value-display" id="val_e_radialblur">0</span></label><input type="range" id="e_radialblur" min="0" max="100" value="0"></div>
 
-                        <div class="control-group">
-                            <label>Split Toning - Teinte Lumières <span class="value-display" id="val_st_hlhue">0°</span></label>
-                            <input type="range" id="st_hlhue" min="0" max="360" value="0">
-                        </div>
-                        <div class="control-group">
-                            <label>Split Toning - Teinte Ombres <span class="value-display" id="val_st_shhue">0°</span></label>
-                            <input type="range" id="st_shhue" min="0" max="360" value="0">
-                        </div>
-                        <div class="control-group">
-                            <label>Split Toning - Balance <span class="value-display" id="val_st_bal">0</span></label>
-                            <input type="range" id="st_bal" min="-100" max="100" value="0">
-                        </div>
+                        <!-- IDEE 7: VIRAGE PARTIEL RAPIDE (SPLIT TONING) -->
+                        <div class="control-group"><label>Split Toning - Teinte Lumières <span class="value-display" id="val_st_hlhue">0°</span></label><input type="range" id="st_hlhue" min="0" max="360" value="0"></div>
+                        <div class="control-group"><label>Split Toning - Teinte Ombres <span class="value-display" id="val_st_shhue">0°</span></label><input type="range" id="st_shhue" min="0" max="360" value="0"></div>
+                        <div class="control-group"><label>Split Toning - Balance <span class="value-display" id="val_st_bal">0</span></label><input type="range" id="st_bal" min="-100" max="100" value="0"></div>
                         <hr class="divider">
 
-                        <div class="control-group"><label>Vignettage Gain <span class="value-display" id="val_e_viggain">0</span></label><input type="range" id="e_viggain" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Milieu <span class="value-display" id="val_e_vigmid">50</span></label><input type="range" id="e_vigmid" min="0" max="100" value="50"></div>
-                        <div class="control-group"><label>Grain Gain <span class="value-display" id="val_e_grngain">0</span></label><input type="range" id="e_grngain" min="0" max="100" value="0"></div>
-                        <div class="control-group"><label>Taille <span class="value-display" id="val_e_grnsize">25</span></label><input type="range" id="e_grnsize" min="0" max="100" value="25"></div>
+                        <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" id="e_viggain" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Milieu <span class="value-display">50</span></label><input type="range" id="e_vigmid" min="0" max="100" value="50"></div>
+                        <div class="control-group"><label>Grain Gain <span class="value-display">0</span></label><input type="range" id="e_grngain" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Taille <span class="value-display">25</span></label><input type="range" id="e_grnsize" min="0" max="100" value="25"></div>
                     </div>
                 </details>
 
@@ -1444,12 +1433,12 @@
                     </summary>
                     <div class="module-content">
                         <div class="control-group"><label>Cible <select id="cg_target"><option>Global</option></select></label></div>
-                        <div class="control-group"><label>Teinte <span class="value-display" id="val_cg_hue">0</span></label><input type="range" id="cg_hue" min="0" max="360" value="0"></div>
-                        <div class="control-group"><label>Saturation <span class="value-display" id="val_cg_sat">0</span></label><input type="range" id="cg_sat" min="0" max="100" value="0"></div>
-                        <div class="control-group"><label>Luminance <span class="value-display" id="val_cg_lum">0</span></label><input type="range" id="cg_lum" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Teinte <span class="value-display">0</span></label><input type="range" id="cg_hue" min="0" max="360" value="0"></div>
+                        <div class="control-group"><label>Saturation <span class="value-display">0</span></label><input type="range" id="cg_sat" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Luminance <span class="value-display">0</span></label><input type="range" id="cg_lum" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label>Fusionnement <span class="value-display" id="val_cg_blend">50</span></label><input type="range" id="cg_blend" min="0" max="100" value="50"></div>
-                        <div class="control-group"><label>Balance <span class="value-display" id="val_cg_bal">0</span></label><input type="range" id="cg_bal" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Fusionnement <span class="value-display">50</span></label><input type="range" id="cg_blend" min="0" max="100" value="50"></div>
+                        <div class="control-group"><label>Balance <span class="value-display">0</span></label><input type="range" id="cg_bal" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
 
@@ -1467,13 +1456,13 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <div class="control-group"><label>Gain (Netteté) <span class="value-display" id="val_d_gain">40</span></label><input type="range" id="d_gain" min="0" max="150" value="40"></div>
-                        <div class="control-group"><label>Rayon <span class="value-display" id="val_d_rad">1.0</span></label><input type="range" id="d_rad" min="0.5" max="3" step="0.1" value="1.0"></div>
-                        <div class="control-group"><label>Détail <span class="value-display" id="val_d_det">25</span></label><input type="range" id="d_det" min="0" max="100" value="25"></div>
-                        <div class="control-group"><label>Masquage <span class="value-display" id="val_d_mask">0</span></label><input type="range" id="d_mask" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Gain (Netteté) <span class="value-display">40</span></label><input type="range" id="d_gain" min="0" max="150" value="40"></div>
+                        <div class="control-group"><label>Rayon <span class="value-display">1.0</span></label><input type="range" id="d_rad" min="0.5" max="3" step="0.1" value="1.0"></div>
+                        <div class="control-group"><label>Détail <span class="value-display">25</span></label><input type="range" id="d_det" min="0" max="100" value="25"></div>
+                        <div class="control-group"><label>Masquage <span class="value-display">0</span></label><input type="range" id="d_mask" min="0" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label>Bruit Luminance <span class="value-display" id="val_d_nlum">0</span></label><input type="range" id="d_nlum" min="0" max="100" value="0"></div>
-                        <div class="control-group"><label>Bruit Couleur <span class="value-display" id="val_d_ncol">25</span></label><input type="range" id="d_ncol" min="0" max="100" value="25"></div>
+                        <div class="control-group"><label>Bruit Luminance <span class="value-display">0</span></label><input type="range" id="d_nlum" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Bruit Couleur <span class="value-display">25</span></label><input type="range" id="d_ncol" min="0" max="100" value="25"></div>
                     </div>
                 </details>
 
@@ -1491,7 +1480,7 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <div class="control-group"><label>Intensité du Flou <span class="value-display" id="val_b_int">0</span></label><input type="range" id="b_int" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Intensité du Flou <span class="value-display">0</span></label><input type="range" id="b_int" min="0" max="100" value="0"></div>
                         <div class="control-group"><label>Forme Bokeh <select id="b_shape"><option>Cercle</option></select></label></div>
                     </div>
                 </details>
@@ -1512,8 +1501,8 @@
                     <div class="module-content">
                         <label style="font-size:11px; display:flex; gap:10px;"><input type="checkbox" id="o_ca"> Supprimer l'aberration chromatique</label>
                         <hr class="divider">
-                        <div class="control-group"><label>Distorsion <span class="value-display" id="val_o_dist">0</span></label><input type="range" id="o_dist" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Vignettage <span class="value-display" id="val_o_vig">0</span></label><input type="range" id="o_vig" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Distorsion <span class="value-display">0</span></label><input type="range" id="o_dist" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Vignettage <span class="value-display">0</span></label><input type="range" id="o_vig" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
 
@@ -1531,9 +1520,9 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <div class="control-group"><label>Vertical <span class="value-display" id="val_g_vert">0</span></label><input type="range" id="g_vert" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Horizontal <span class="value-display" id="val_g_horiz">0</span></label><input type="range" id="g_horiz" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Rotation <span class="value-display" id="val_g_rot">0</span></label><input type="range" id="g_rot" min="-10" max="10" step="0.1" value="0"></div>
+                        <div class="control-group"><label>Vertical <span class="value-display">0</span></label><input type="range" id="g_vert" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Horizontal <span class="value-display">0</span></label><input type="range" id="g_horiz" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Rotation <span class="value-display">0</span></label><input type="range" id="g_rot" min="-10" max="10" step="0.1" value="0"></div>
                     </div>
                 </details>
 
@@ -1551,16 +1540,16 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <div class="control-group"><label>Tons foncés - Teinte <span class="value-display" id="val_cal_shad">0</span></label><input type="range" id="cal_shad" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Tons foncés - Teinte <span class="value-display">0</span></label><input type="range" id="cal_shad" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Teinte <span class="value-display" id="val_cal_rh">0</span></label><input type="range" id="cal_rh" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Saturation <span class="value-display" id="val_cal_rs">0</span></label><input type="range" id="cal_rs" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Teinte <span class="value-display">0</span></label><input type="range" id="cal_rh" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Saturation <span class="value-display">0</span></label><input type="range" id="cal_rs" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label style="color:#00ff00">Primaire Vert - Teinte <span class="value-display" id="val_cal_gh">0</span></label><input type="range" id="cal_gh" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#00ff00">Primaire Vert - Saturation <span class="value-display" id="val_cal_gs">0</span></label><input type="range" id="cal_gs" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#00ff00">Primaire Vert - Teinte <span class="value-display">0</span></label><input type="range" id="cal_gh" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#00ff00">Primaire Vert - Saturation <span class="value-display">0</span></label><input type="range" id="cal_gs" min="-100" max="100" value="0"></div>
                         <hr class="divider">
-                        <div class="control-group"><label style="color:#4a4aff">Primaire Bleu - Teinte <span class="value-display" id="val_cal_bh">0</span></label><input type="range" id="cal_bh" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label style="color:#4a4aff">Primaire Bleu - Saturation <span class="value-display" id="val_cal_bs">0</span></label><input type="range" id="cal_bs" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#4a4aff">Primaire Bleu - Teinte <span class="value-display">0</span></label><input type="range" id="cal_bh" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label style="color:#4a4aff">Primaire Bleu - Saturation <span class="value-display">0</span></label><input type="range" id="cal_bs" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
             </div>
@@ -1568,6 +1557,7 @@
     </div>
 
     <script>
+        // BASE DES PRESETS EFFETS + PRESETS PERSONNALISÉS DE L'UTILISATEUR
         let favoriteEffectIds = JSON.parse(localStorage.getItem('graphis_fav_effects') || '[]');
         let customUserPresets = JSON.parse(localStorage.getItem('graphis_custom_presets') || '[]');
 
@@ -1648,11 +1638,13 @@
                 effApplyFn(targetSettings);
             }
 
+            // APPLIQUER EN TENANT COMPTE DU CURSEUR D'INTENSITÉ (0 A 100%)
             const intensity = (active.rawSettings.e_intensity !== undefined ? active.rawSettings.e_intensity : 100) / 100;
 
             if (intensity === 1 || effId === 'none') {
                 active.rawSettings = targetSettings;
             } else {
+                // INTERPOLATION ENTRE ETAT D'ORIGINE ET EFFET
                 const baseS = active.baseRawSettings;
                 Object.keys(targetSettings).forEach(key => {
                     if (typeof targetSettings[key] === 'number' && typeof baseS[key] === 'number') {
@@ -1675,6 +1667,7 @@
 
             let categoriesToRender = [...PRESET_EFFECTS_CATEGORIES];
 
+            // SI DES PRESETS PERSO EXISTENT, ON LES AJOUTE
             if (customUserPresets.length > 0) {
                 categoriesToRender.unshift({
                     categoryName: "Mes Presets Personnalisés",
@@ -1721,6 +1714,7 @@
                         <div class="effect-card-title">${eff.name}</div>
                     `;
 
+                    // GESTION DU FAVORIS (ÉTOILE)
                     const star = card.querySelector('.fav-star');
                     star.addEventListener('click', (e) => {
                         e.stopPropagation();
@@ -1733,6 +1727,7 @@
                         buildEffectsGridUI();
                     });
 
+                    // IDEE 4: PRÉVISUALISATION TEMPORAIRE AU SURVOL (HOVER)
                     card.addEventListener('mouseenter', () => {
                         const active = getActiveLayer();
                         if (!active || !active.rawSettings) return;
@@ -1749,6 +1744,7 @@
                         processImage();
                     });
 
+                    // CLIC POUR APPLIQUER DÉFINITIVEMENT
                     card.addEventListener('click', () => {
                         const active = getActiveLayer();
                         if (!active || !active.rawSettings) return;
@@ -1768,6 +1764,7 @@
             });
         }
 
+        // RECHERCHE ET RECHERCHE PAR TAGS
         document.getElementById('effectSearchInput').addEventListener('input', (e) => {
             activeSearchFilter = e.target.value.trim();
             buildEffectsGridUI();
@@ -1782,6 +1779,7 @@
             });
         });
 
+        // CRÉATION DE PRESETS PERSONNALISÉS ET IMPORT/EXPORT
         document.getElementById('saveCustomPresetBtn').addEventListener('click', () => {
             const active = getActiveLayer();
             if (!active || !active.rawSettings) return;
@@ -1834,6 +1832,7 @@
             }
         });
 
+        // MAINTENIR POUR COMPARER (AVANT/APRÈS)
         let holdBackup = null;
         const holdBeforeBtn = document.getElementById('holdBeforeBtn');
         holdBeforeBtn.addEventListener('mousedown', () => {
@@ -1856,6 +1855,24 @@
         };
         holdBeforeBtn.addEventListener('mouseup', releaseHold);
         holdBeforeBtn.addEventListener('mouseleave', releaseHold);
+
+        // CURSEUR D'INTENSITÉ GLOBALE
+        document.getElementById('e_intensity').addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            document.getElementById('val_e_intensity').innerText = `${val}%`;
+            const active = getActiveLayer();
+            if (active && active.rawSettings) {
+                active.rawSettings.e_intensity = val;
+                const effId = active.rawSettings.activeEffect || 'none';
+                let effApplyFn = null;
+
+                PRESET_EFFECTS_CATEGORIES.forEach(c => {
+                    const found = c.effects.find(f => f.id === effId);
+                    if (found) effApplyFn = found.apply;
+                });
+                applyEffectTarget(active, effId, effApplyFn);
+            }
+        });
 
         const allPanels = document.querySelectorAll('#controls details');
         allPanels.forEach(panel => {
@@ -2112,6 +2129,7 @@
             mh_range_red: 30, mh_range_org: 30, mh_range_yel: 30, mh_range_grn: 30,
             mh_range_aqu: 30, mh_range_blu: 30, mh_range_vio: 30, mh_range_mag: 30,
 
+            // DE NOUVELLES OPTIONS EFFETS AVANCÉES
             e_lightleak: 0, e_dust: 0, e_tiltshift: 0, e_radialblur: 0,
             st_hlhue: 0, st_shhue: 0, st_bal: 0,
 
@@ -2722,333 +2740,518 @@
             if (historyStack.length > MAX_HISTORY_STEPS) historyStack.shift();
         }
 
-        function syncRawPanelUI() {
+        function undoAction() {
+            if (historyStack.length <= 1) return;
+            historyStack.pop();
+            const previousState = historyStack[historyStack.length - 1];
+            restoreState(previousState);
+        }
+
+        function restoreState(state) {
+            layers.forEach(l => { 
+                if (l.img && l.img.parentNode) l.img.remove();
+            });
+            layers = [];
+
+            state.forEach((item, index) => {
+                const canvasLayer = document.createElement('canvas');
+                canvasLayer.className = 'canvas-layer';
+                const rawImg = new Image();
+                rawImg.crossOrigin = 'anonymous';
+
+                const layerObj = {
+                    id: item.id,
+                    name: item.name,
+                    img: canvasLayer,
+                    rawImg: rawImg,
+                    isSmartObject: true,
+                    x: item.x,
+                    y: item.y,
+                    scale: item.scale,
+                    rotation: item.rotation,
+                    skewX: item.skewX,
+                    skewY: item.skewY,
+                    perspX: item.perspX,
+                    perspY: item.perspY,
+                    flipX: item.flipX,
+                    flipY: item.flipY,
+                    opacity: item.opacity,
+                    blendMode: item.blendMode,
+                    visible: item.visible,
+                    locked: item.locked,
+                    isText: item.isText,
+                    isLogo: item.isLogo,
+                    rawSettings: JSON.parse(JSON.stringify(item.rawSettings)),
+                    baseRawSettings: item.baseRawSettings ? JSON.parse(JSON.stringify(item.baseRawSettings)) : null,
+                    textConfig: item.textConfig,
+                    hasMask: item.hasMask,
+                    maskCanvas: null,
+                    maskCtx: null,
+                    maskDataUrl: item.maskDataUrl
+                };
+
+                rawImg.onload = () => {
+                    canvasLayer.width = rawImg.naturalWidth || 800;
+                    canvasLayer.height = rawImg.naturalHeight || 600;
+                    
+                    if (layerObj.hasMask && layerObj.maskDataUrl) {
+                        const mCanvas = document.createElement('canvas');
+                        mCanvas.width = canvasLayer.width;
+                        mCanvas.height = canvasLayer.height;
+                        const mCtx = mCanvas.getContext('2d');
+                        const mImg = new Image();
+                        mImg.onload = () => {
+                            mCtx.drawImage(mImg, 0, 0);
+                            layerObj.maskCanvas = mCanvas;
+                            layerObj.maskCtx = mCtx;
+                            renderLayerComposite(layerObj);
+                            applyLayerTransform(layerObj);
+                        };
+                        mImg.src = layerObj.maskDataUrl;
+                    } else {
+                        renderLayerComposite(layerObj);
+                        applyLayerTransform(layerObj);
+                    }
+
+                    if (index === 0) handleLayerSelection(layerObj.id);
+                    updateLayersUI();
+                    processImage();
+                };
+
+                rawImg.src = item.src;
+
+                canvasLayer.addEventListener('mousedown', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleLayerSelection(item.id, e);
+                    
+                    if (currentTool === 'move' && layerObj.visible && !layerObj.locked) {
+                        isDraggingLayer = true;
+                        startX = e.clientX - layerObj.x;
+                        startY = e.clientY - layerObj.y;
+                    } else if (currentTool === 'maskBrush' && !layerObj.locked) {
+                        if (!layerObj.hasMask) addLayerMask(layerObj.id);
+                        isPaintingMask = true;
+                        lastMaskPos = null;
+                        paintMask(layerObj, e);
+                    } else if (currentTool === 'tat' && !layerObj.locked) {
+                        startTatDrag(e, layerObj);
+                    }
+                });
+
+                imageContainer.insertBefore(canvasLayer, overlay);
+                layers.push(layerObj);
+            });
+
+            updateZIndices();
+            updateLayersUI();
+        }
+
+        const btnMove = document.getElementById('toolMove');
+        const btnFreeTrans = document.getElementById('toolFreeTransform');
+        const btnMaskBrush = document.getElementById('toolMaskBrush');
+        const btnText = document.getElementById('toolText');
+
+        btnMove.addEventListener('click', () => { setTool('move'); });
+        btnFreeTrans.addEventListener('click', () => { setTool('transform'); });
+        btnMaskBrush.addEventListener('click', () => { 
+            setTool('maskBrush'); 
+            const active = getActiveLayer();
+            if (active && !active.hasMask) {
+                addLayerMask(active.id);
+            }
+        });
+        btnText.addEventListener('click', () => { 
+            setTool('text'); 
+            handleTextToolActivation();
+        });
+
+        async function loadSystemFonts() {
+            const optGroup = document.getElementById('systemFontsOptGroup');
+            let fontSet = new Set(['sans-serif', 'serif', 'monospace', 'Arial', 'Georgia', 'Impact', 'Times New Roman', 'Verdana', 'Courier New']);
+            
+            if ('queryLocalFonts' in window) {
+                try {
+                    const availableFonts = await window.queryLocalFonts();
+                    for (const font of availableFonts) {
+                        fontSet.add(font.family);
+                    }
+                } catch (err) {}
+            }
+
+            optGroup.innerHTML = '';
+            Array.from(fontSet).sort().forEach(font => {
+                const opt = document.createElement('option');
+                opt.value = font;
+                opt.textContent = font;
+                optGroup.appendChild(opt);
+            });
+        }
+        loadSystemFonts();
+
+        function setTool(tool) {
+            currentTool = tool;
+            btnMove.classList.toggle('active', tool === 'move');
+            btnFreeTrans.classList.toggle('active', tool === 'transform');
+            btnMaskBrush.classList.toggle('active', tool === 'maskBrush');
+            btnText.classList.toggle('active', tool === 'text');
+            tatToolBtn.classList.toggle('active', tool === 'tat');
+            
+            maskBrushBox.style.display = (tool === 'maskBrush') ? 'block' : 'none';
+            textOptionsBox.style.display = (tool === 'text') ? 'block' : 'none';
+
+            document.body.classList.toggle('tool-brush', tool === 'maskBrush');
+            document.body.classList.toggle('tool-tat', tool === 'tat');
+            
+            if (tool !== 'maskBrush') {
+                brushCursor.style.display = 'none';
+            }
+
+            updateBoundingBoxVisibility();
+        }
+
+        function startTatDrag(e, layerObj) {
+            if (!layerObj || !layerObj.rawImg.complete) return;
+
+            const rect = layerObj.img.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+
+            const ratioX = layerObj.img.width / rect.width;
+            const ratioY = layerObj.img.height / rect.height;
+
+            const px = Math.round(clickX * ratioX);
+            const py = Math.round(clickY * ratioY);
+
+            const tempCtx = layerObj.img.getContext('2d');
+            const pixel = tempCtx.getImageData(px, py, 1, 1).data;
+            const [h] = rgbToHsl(pixel[0], pixel[1], pixel[2]);
+
+            tatWeights = getColorWeights(h, layerObj.rawSettings);
+            isTatDragging = true;
+            tatStartY = e.clientY;
+
+            tatInitialValues = {};
+            Object.keys(tatWeights).forEach(colKey => {
+                if (tatWeights[colKey] > 0.05) {
+                    const settingKey = 'm_' + colKey;
+                    tatInitialValues[settingKey] = layerObj.rawSettings[settingKey] || 0;
+                }
+            });
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isTatDragging || !tatWeights) return;
+
             const active = getActiveLayer();
             if (!active || !active.rawSettings) return;
 
-            const settings = active.rawSettings;
+            const deltaY = tatStartY - e.clientY;
+            const sensitivity = 0.5;
 
-            const profileSelect = document.getElementById('baseProfile');
-            if (profileSelect && settings.baseProfile) {
-                profileSelect.value = settings.baseProfile;
-            }
+            Object.keys(tatInitialValues).forEach(settingKey => {
+                const colKey = settingKey.replace(/^m_/, '');
+                const weight = tatWeights[colKey];
 
-            chkBwMode.checked = !!settings.bwMode;
+                let newVal = tatInitialValues[settingKey] + (deltaY * sensitivity * weight);
+                newVal = Math.max(-100, Math.min(100, Math.round(newVal)));
 
-            document.querySelectorAll('.effect-card').forEach(card => {
-                card.classList.toggle('active', card.dataset.id === (settings.activeEffect || 'none'));
-            });
+                active.rawSettings[settingKey] = newVal;
 
-            Object.keys(settings).forEach(key => {
-                if (key === 'baseProfile' || key === 'curvePoints' || key === 'bwMode' || key === 'activeEffect') return;
-
-                const el = document.getElementById(key);
-                if (el) {
-                    el.value = settings[key];
-                    
-                    const numEl = document.getElementById(`num_${key}`);
-                    if (numEl) {
-                        numEl.value = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
-                    }
-
-                    const label = el.previousElementSibling;
-                    const valDisplay = document.getElementById(`val_${key}`);
-                    if (valDisplay) {
-                        let unit = '';
-                        if (key.startsWith('st_') && key.endsWith('hue')) unit = '°';
-                        else if (key === 'e_lightleak' || key === 'e_dust' || key === 'e_intensity') unit = '%';
-                        valDisplay.innerText = `${el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key]}${unit}`;
-                    }
-                }
+                const rangeEl = document.getElementById(settingKey);
+                const numEl = document.getElementById(`num_${settingKey}`);
+                if (rangeEl) rangeEl.value = newVal;
+                if (numEl) numEl.value = newVal;
             });
 
             updateHslTabDots();
-            renderToneCurveGUI();
-            computeAndRenderHistogram(active);
-        }
+            processImage();
+        });
 
-        function setupRawFieldSync(rangeId, numId) {
-            const rangeEl = document.getElementById(rangeId);
-            const numEl = document.getElementById(numId);
-
-            if (!rangeEl) return;
-
-            const updateValue = (val) => {
-                const active = getActiveLayer();
-                if (!active || !active.rawSettings) return;
-
-                let numVal = parseFloat(val);
-                if (isNaN(numVal)) numVal = 0;
-
-                rangeEl.value = numVal;
-                if (numEl) numEl.value = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
-
-                active.rawSettings[rangeId] = numVal;
-                active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
-
-                const valDisplay = document.getElementById(`val_${rangeId}`);
-                if (valDisplay) {
-                    let unit = '';
-                    if (rangeId.startsWith('st_') && rangeId.endsWith('hue')) unit = '°';
-                    else if (rangeId === 'e_lightleak' || rangeId === 'e_dust' || rangeId === 'e_intensity') unit = '%';
-                    valDisplay.innerText = `${rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal}${unit}`;
-                }
-                processImage();
-            };
-
-            rangeEl.addEventListener('input', (e) => updateValue(e.target.value));
-            if (numEl) numEl.addEventListener('input', (e) => updateValue(e.target.value));
-
-            rangeEl.addEventListener('change', () => saveHistoryState());
-            if (numEl) numEl.addEventListener('change', () => saveHistoryState());
-        }
-
-        const mixerSliderIds = [
-            'mh_red', 'mh_org', 'mh_yel', 'mh_grn', 'mh_aqu', 'mh_blu', 'mh_vio', 'mh_mag',
-            'm_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag',
-            'ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag'
-        ];
-
-        const rawFieldsList = [
-            't_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat',
-            'e_lightleak', 'e_dust', 'e_tiltshift', 'e_radialblur', 'st_hlhue', 'st_shhue', 'st_bal', 'e_intensity',
-            'e_viggain', 'e_vigmid', 'e_grngain', 'e_grnsize', 'cg_hue', 'cg_sat', 'cg_lum', 'cg_blend', 'cg_bal',
-            'd_gain', 'd_rad', 'd_det', 'd_mask', 'd_nlum', 'd_ncol', 'b_int', 'o_dist', 'o_vig', 'g_vert', 'g_horiz', 'g_rot',
-            'cal_shad', 'cal_rh', 'cal_rs', 'cal_gh', 'cal_gs', 'cal_bh', 'cal_bs',
-            ...mixerSliderIds
-        ];
-        
-        rawFieldsList.forEach(id => setupRawFieldSync(id, `num_${id}`));
-
-        window.resetRawField = function(rangeId, defaultValue) {
-            const rangeEl = document.getElementById(rangeId);
-            if (rangeEl) {
-                rangeEl.value = defaultValue;
-                rangeEl.dispatchEvent(new Event('input'));
-                rangeEl.dispatchEvent(new Event('change'));
+        document.addEventListener('mouseup', () => {
+            if (isTatDragging) {
+                isTatDragging = false;
+                tatWeights = null;
+                saveHistoryState();
             }
-        };
+        });
 
-        // RENDU IMAGE AVANCÉ TOTALEMENT REFAIT ET CORRIGÉ
-        function processImage() {
-            try {
-                layers.forEach((layer) => {
-                    const s = layer.rawSettings;
-                    if (!s || !layer.rawImg.complete || layer.rawImg.naturalWidth === 0) return;
-
-                    const width = layer.img.width;
-                    const height = layer.img.height;
-                    const ctx = layer.img.getContext('2d');
-
-                    ctx.clearRect(0, 0, width, height);
-                    ctx.drawImage(layer.rawImg, 0, 0, width, height);
-
-                    const imgData = ctx.getImageData(0, 0, width, height);
-                    const data = imgData.data;
-
-                    const lutCurve = buildLutFromPoints((modulesState.curve && s.curvePoints) ? s.curvePoints : DEFAULT_RAW_SETTINGS.curvePoints);
-
-                    const expMult = modulesState.base ? Math.pow(2, (s.t_exp || 0)) : 1.0;
-                    const temp = modulesState.base ? (s.t_temp || 0) : 0;
-                    const tint = modulesState.base ? (s.t_tint || 0) : 0;
-                    const sat = modulesState.base ? (1 + ((s.t_sat || 0) * 0.01)) : 1.0;
-                    const vib = modulesState.base ? ((s.t_vib || 0) * 0.01) : 0;
-                    const cont = modulesState.base ? ((s.t_cont || 0) * 0.01) : 0;
-                    const profile = modulesState.base ? (s.baseProfile || 'adobe_color') : 'adobe_color';
-                    const isBwMode = s.bwMode || profile === 'monochrome';
-
-                    const rFactor = 1 + (temp * 0.003);
-                    const bFactor = 1 - (temp * 0.003);
-                    const gFactor = 1 - (tint * 0.003);
-
-                    // CORRECTION ET RENDU DU SPLIT TONING
-                    const stHlHue = (s.st_hlhue || 0);
-                    const stShHue = (s.st_shhue || 0);
-                    const stBal = (s.st_bal || 0) * 0.01;
-                    const [stHlR, stHlG, stHlB] = hslToRgb(stHlHue, 0.45, 0.5);
-                    const [stShR, stShG, stShB] = hslToRgb(stShHue, 0.45, 0.5);
-
-                    for (let i = 0; i < data.length; i += 4) {
-                        let r = data[i];
-                        let g = data[i+1];
-                        let b = data[i+2];
-
-                        if (profile === 'landscape') { r *= 1.05; g *= 1.08; b *= 0.95; }
-                        else if (profile === 'portrait') { r *= 1.08; g *= 0.98; b *= 0.96; }
-                        else if (profile === 'monochrome') {
-                            const monoLum = 0.299 * r + 0.587 * g + 0.114 * b;
-                            r = monoLum; g = monoLum; b = monoLum;
-                        }
-
-                        r *= expMult * rFactor;
-                        g *= expMult * gFactor;
-                        b *= expMult * bFactor;
-
-                        if (modulesState.mixer) {
-                            if (isBwMode) {
-                                const [h] = rgbToHsl(r, g, b);
-                                const w = getColorWeights(h, s);
-                                const bwShift = (s.ml_red || 0) * w.red + (s.ml_org || 0) * w.org + (s.ml_yel || 0) * w.yel + (s.ml_grn || 0) * w.grn + (s.ml_aqu || 0) * w.aqu + (s.ml_blu || 0) * w.blu + (s.ml_vio || 0) * w.vio + (s.ml_mag || 0) * w.mag;
-                                let gray = 0.299 * r + 0.587 * g + 0.114 * b;
-                                gray = Math.max(0, Math.min(255, gray * (1 + (bwShift * 0.005))));
-                                r = gray; g = gray; b = gray;
-                            } else {
-                                let [h, sVal, lVal] = rgbToHsl(r, g, b);
-                                const w = getColorWeights(h, s);
-
-                                const hueShift = (s.mh_red || 0) * w.red + (s.mh_org || 0) * w.org + (s.mh_yel || 0) * w.yel + (s.mh_grn || 0) * w.grn + (s.mh_aqu || 0) * w.aqu + (s.mh_blu || 0) * w.blu + (s.mh_vio || 0) * w.vio + (s.mh_mag || 0) * w.mag;
-                                h = (h + (hueShift * 0.3) + 360) % 360;
-
-                                const satShift = (s.m_red || 0) * w.red + (s.m_org || 0) * w.org + (s.m_yel || 0) * w.yel + (s.m_grn || 0) * w.grn + (s.m_aqu || 0) * w.aqu + (s.m_blu || 0) * w.blu + (s.m_vio || 0) * w.vio + (s.m_mag || 0) * w.mag;
-                                sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
-
-                                const lumShift = (s.ml_red || 0) * w.red + (s.ml_org || 0) * w.org + (s.ml_yel || 0) * w.yel + (s.ml_grn || 0) * w.grn + (s.ml_aqu || 0) * w.aqu + (s.ml_blu || 0) * w.blu + (s.ml_vio || 0) * w.vio + (s.ml_mag || 0) * w.mag;
-                                lVal = Math.max(0, Math.min(1, lVal * (1 + (lumShift * 0.005))));
-
-                                const [newR, newG, newB] = hslToRgb(h, sVal, lVal);
-                                r = newR; g = newG; b = newB;
-                            }
-                        }
-
-                        // CALCUL DYNAMIQUE DU SPLIT TONING
-                        if (modulesState.effects && (stHlHue > 0 || stShHue > 0)) {
-                            const lumNorm = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-                            const weightHl = Math.max(0, Math.min(1, (lumNorm - (0.5 + stBal * 0.25)) * 2));
-                            const weightSh = 1 - weightHl;
-
-                            if (stHlHue > 0 && weightHl > 0) {
-                                r = r * (1 - weightHl * 0.35) + stHlR * weightHl * 0.35;
-                                g = g * (1 - weightHl * 0.35) + stHlG * weightHl * 0.35;
-                                b = b * (1 - weightHl * 0.35) + stHlB * weightHl * 0.35;
-                            }
-                            if (stShHue > 0 && weightSh > 0) {
-                                r = r * (1 - weightSh * 0.35) + stShR * weightSh * 0.35;
-                                g = g * (1 - weightSh * 0.35) + stShG * weightSh * 0.35;
-                                b = b * (1 - weightSh * 0.35) + stShB * weightSh * 0.35;
-                            }
-                        }
-
-                        if (modulesState.curve) {
-                            r = lutCurve[Math.max(0, Math.min(255, Math.round(r)))];
-                            g = lutCurve[Math.max(0, Math.min(255, Math.round(g)))];
-                            b = lutCurve[Math.max(0, Math.min(255, Math.round(b)))];
-                        }
-
-                        if (cont !== 0) {
-                            r = ((r / 255 - 0.5) * (1 + cont) + 0.5) * 255;
-                            g = ((g / 255 - 0.5) * (1 + cont) + 0.5) * 255;
-                            b = ((b / 255 - 0.5) * (1 + cont) + 0.5) * 255;
-                        }
-
-                        if (!isBwMode) {
-                            const lum = 0.299 * r + 0.587 * g + 0.114 * b;
-                            if (sat !== 1 || vib !== 0) {
-                                const maxColor = Math.max(r, g, b);
-                                const currentSat = (maxColor - lum) / (maxColor || 1);
-                                const finalSat = sat + (1 - currentSat) * vib;
-                                r = lum + (r - lum) * finalSat;
-                                g = lum + (g - lum) * finalSat;
-                                b = lum + (b - lum) * finalSat;
-                            }
-                        }
-
-                        // GENERATION DES POUSSIÈRES ET RAYURES
-                        if (modulesState.effects && s.e_dust > 0) {
-                            if (Math.random() < (s.e_dust * 0.0004)) {
-                                const val = Math.random() > 0.4 ? 255 : 0;
-                                r = val; g = val; b = val;
-                            }
-                        }
-
-                        data[i] = Math.max(0, Math.min(255, r));
-                        data[i+1] = Math.max(0, Math.min(255, g));
-                        data[i+2] = Math.max(0, Math.min(255, b));
-                    }
-
-                    ctx.putImageData(imgData, 0, 0);
-
-                    // APPLICATION DES FLOUS CRÉATIFS SUR LE CANVAS
-                    if (modulesState.effects && (s.e_tiltshift > 0 || s.e_radialblur > 0)) {
-                        const totalBlur = (s.e_tiltshift || 0) * 0.15 + (s.e_radialblur || 0) * 0.15;
-                        ctx.save();
-                        ctx.filter = `blur(${totalBlur}px)`;
-                        ctx.drawImage(layer.img, 0, 0);
-                        ctx.restore();
-                    }
-
-                    if (layer.hasMask && layer.maskCanvas) {
-                        const maskCtx = layer.maskCanvas.getContext('2d');
-                        const maskData = maskCtx.getImageData(0, 0, width, height);
-
-                        const currentImgData = ctx.getImageData(0, 0, width, height);
-                        for (let i = 0; i < currentImgData.data.length; i += 4) {
-                            const maskAlpha = maskData.data[i + 3];
-                            currentImgData.data[i + 3] = Math.round(currentImgData.data[i + 3] * (maskAlpha / 255));
-                        }
-                        ctx.putImageData(currentImgData, 0, 0);
-                    }
-
-                    applyLayerTransform(layer);
-                });
-
-                // GESTION DU VIGNETTAGE ET DES LEAKS DE LUMIÈRE DYNAMIQUES
-                const active = getActiveLayer();
-                if (active && active.rawSettings && modulesState.effects) {
-                    let vigTotal = Math.min(1, Math.abs(((active.rawSettings.e_viggain || 0) + (active.rawSettings.o_vig || 0)) * -0.01));
-                    overlay.style.boxShadow = `inset 0 0 ${100 - (active.rawSettings.e_vigmid || 50)}vmin rgba(0,0,0,${vigTotal})`;
-
-                    const lightLeakVal = active.rawSettings.e_lightleak || 0;
-                    if (lightLeakVal > 0) {
-                        lightleakOverlay.style.background = `radial-gradient(circle at 90% 10%, rgba(255, 170, 0, ${lightLeakVal * 0.007}), rgba(255, 40, 0, ${lightLeakVal * 0.004}) 45%, transparent 80%)`;
-                    } else {
-                        lightleakOverlay.style.background = 'none';
-                    }
-                } else {
-                    overlay.style.boxShadow = 'none';
-                    lightleakOverlay.style.background = 'none';
-                }
-
-            } catch (error) {
-                console.error("Erreur dans le rendu : ", error);
-            }
+        function removeAllSignatureAndTextLayers() {
+            const signatureLayers = layers.filter(l => l.isText || l.isLogo);
+            signatureLayers.forEach(l => {
+                if (l.img && l.img.parentNode) l.img.remove();
+            });
+            layers = layers.filter(l => !l.isText && !l.isLogo);
+            updateZIndices();
+            saveHistoryState();
         }
 
-        function handleLayerSelection(id, event = null) {
-            if (!event) {
-                activeLayerId = id;
-                selectedLayerIds = [id];
-                lastSelectedLayerId = id;
-            } else if (event.ctrlKey || event.metaKey) {
-                activeLayerId = id;
-                if (selectedLayerIds.includes(id)) {
-                    if (selectedLayerIds.length > 1) {
-                        selectedLayerIds = selectedLayerIds.filter(item => item !== id);
-                        activeLayerId = selectedLayerIds[selectedLayerIds.length - 1];
-                    }
-                } else {
-                    selectedLayerIds.push(id);
-                }
-                lastSelectedLayerId = id;
-            } else if (event.shiftKey && lastSelectedLayerId) {
-                const reversedLayers = layers.slice().reverse();
-                const idx1 = reversedLayers.findIndex(l => l.id === lastSelectedLayerId);
-                const idx2 = reversedLayers.findIndex(l => l.id === id);
-                
-                const start = Math.min(idx1, idx2);
-                const end = Math.max(idx1, idx2);
-                
-                selectedLayerIds = reversedLayers.slice(start, end + 1).map(l => l.id);
-                activeLayerId = id;
+        function handleTextToolActivation() {
+            const active = getActiveLayer();
+            const titleEl = document.getElementById('textPanelTitle');
+
+            if (active && active.isText) {
+                titleEl.textContent = "Modifier le Calque Texte / Signature";
+                document.getElementById('textInputVal').value = active.textConfig.text;
+                document.getElementById('textFontSelect').value = active.textConfig.fontFamily;
+                document.getElementById('textStyleSelect').value = active.textConfig.style;
+                document.getElementById('textSizeRange').value = active.textConfig.size;
+                document.getElementById('val_textSize').innerText = active.textConfig.size + 'px';
+                document.getElementById('textColorPicker').value = active.textConfig.color;
             } else {
-                activeLayerId = id;
-                selectedLayerIds = [id];
-                lastSelectedLayerId = id;
+                titleEl.textContent = "Propriétés du Texte / Signature";
+                const existingSignature = layers.find(l => l.isText || l.isLogo);
+                if (!existingSignature) {
+                    createTextLayer("Graphis Studio", "Dancing Script", "normal", 54, "#FFD700");
+                }
             }
-            
-            updateLayersUI();
+        }
+
+        const importLogoBtn = document.getElementById('importLogoBtn');
+        const logoFileInput = document.getElementById('logoFileInput');
+        
+        importLogoBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logoFileInput.click();
+        });
+
+        logoFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                    removeAllSignatureAndTextLayers();
+                    createLayer(evt.target.result, `Logo Signature: ${file.name}`, {
+                        isLogo: true,
+                        scale: 0.5
+                    });
+                    setTool('move');
+                    logoFileInput.value = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('saveAsSignatureBtn').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if (active && (active.isText || active.isLogo)) {
+                savedSignatureConfig = active.isText ? JSON.parse(JSON.stringify(active.textConfig)) : { isLogo: true, src: active.rawImg.src };
+                document.getElementById('signatureStatus').style.display = 'block';
+                alert("Signature enregistrée avec succès !");
+            } else {
+                alert("Veuillez sélectionner un calque de texte ou un logo à définir comme signature.");
+            }
+        });
+
+        function positionActiveLayer(corner) {
+            const active = getActiveLayer();
+            const baseLayer = layers[0];
+            if (!active || !baseLayer) return;
+
+            const baseRect = baseLayer.img.getBoundingClientRect();
+            const activeRect = active.img.getBoundingClientRect();
+            const margin = 20;
+
+            let deltaX = 0, deltaY = 0;
+
+            if (corner === 'bottom-right') {
+                deltaX = (baseRect.right - margin) - activeRect.right;
+                deltaY = (baseRect.bottom - margin) - activeRect.bottom;
+            } else if (corner === 'bottom-left') {
+                deltaX = (baseRect.left + margin) - activeRect.left;
+                deltaY = (baseRect.bottom - margin) - activeRect.bottom;
+            } else if (corner === 'bottom-center') {
+                deltaX = (baseRect.left + (baseRect.width / 2)) - (activeRect.left + (activeRect.width / 2));
+                deltaY = (baseRect.bottom - margin) - activeRect.bottom;
+            } else if (corner === 'top-right') {
+                deltaX = (baseRect.right - margin) - activeRect.right;
+                deltaY = (baseRect.top + margin) - activeRect.top;
+            } else if (corner === 'top-left') {
+                deltaX = (baseRect.left + margin) - activeRect.left;
+                deltaY = (baseRect.top + margin) - activeRect.top;
+            }
+
+            active.x += (deltaX / currentScale);
+            active.y += (deltaY / currentScale);
+
+            applyLayerTransform(active);
+            updateBoundingBoxPosition();
             syncTransformUI();
-            syncRawPanelUI();
-            updateBoundingBoxVisibility();
+            saveHistoryState();
+        }
+
+        document.getElementById('posTopLeft').addEventListener('click', () => positionActiveLayer('top-left'));
+        document.getElementById('posTopRight').addEventListener('click', () => positionActiveLayer('top-right'));
+        document.getElementById('posBottomLeft').addEventListener('click', () => positionActiveLayer('bottom-left'));
+        document.getElementById('posBottomCenter').addEventListener('click', () => positionActiveLayer('bottom-center'));
+        document.getElementById('posBottomRight').addEventListener('click', () => positionActiveLayer('bottom-right'));
+
+        function handleTextParamChange() {
+            const active = getActiveLayer();
+            const textVal = document.getElementById('textInputVal').value;
+            const fontFam = document.getElementById('textFontSelect').value;
+            const fontStyle = document.getElementById('textStyleSelect').value;
+            const fontSize = document.getElementById('textSizeRange').value;
+            const color = document.getElementById('textColorPicker').value;
+
+            if (active && active.isText) {
+                active.textConfig = { text: textVal, fontFamily: fontFam, style: fontStyle, size: fontSize, color: color };
+                active.name = `Signature: "${textVal}"`;
+                redrawTextLayer(active);
+                updateLayersUI();
+            } else if (currentTool === 'text') {
+                removeAllSignatureAndTextLayers();
+                createTextLayer(textVal, fontFam, fontStyle, fontSize, color);
+            }
+        }
+
+        document.getElementById('textInputVal').addEventListener('input', handleTextParamChange);
+        document.getElementById('textFontSelect').addEventListener('change', handleTextParamChange);
+        document.getElementById('textStyleSelect').addEventListener('change', handleTextParamChange);
+        document.getElementById('textSizeRange').addEventListener('input', (e) => {
+            document.getElementById('val_textSize').innerText = e.target.value + 'px';
+            handleTextParamChange();
+        });
+        document.getElementById('textColorPicker').addEventListener('input', handleTextParamChange);
+
+        function updateBrushCursorDimensions() {
+            const active = getActiveLayer();
+            if (!active) return;
+
+            const rect = active.img.getBoundingClientRect();
+            const scaleX = rect.width / (active.img.width || 800);
+
+            const size = parseFloat(document.getElementById('brushSize').value);
+            const hardness = parseFloat(document.getElementById('brushHardness').value) / 100;
+
+            const displayOuterSize = size * scaleX;
+            const displayInnerSize = displayOuterSize * hardness;
+
+            brushCursor.style.width = displayOuterSize + 'px';
+            brushCursor.style.height = displayOuterSize + 'px';
+
+            brushInnerCircle.style.width = displayInnerSize + 'px';
+            brushInnerCircle.style.height = displayInnerSize + 'px';
+        }
+
+        imageContainer.addEventListener('mousemove', (e) => {
+            if (currentTool === 'maskBrush') {
+                brushCursor.style.display = 'block';
+                brushCursor.style.left = e.clientX + 'px';
+                brushCursor.style.top = e.clientY + 'px';
+                updateBrushCursorDimensions();
+            } else {
+                brushCursor.style.display = 'none';
+            }
+        });
+
+        imageContainer.addEventListener('mouseleave', () => {
+            brushCursor.style.display = 'none';
+        });
+
+        document.getElementById('brushSize').addEventListener('input', (e) => {
+            document.getElementById('val_brushSize').innerText = e.target.value + 'px';
+            updateBrushCursorDimensions();
+        });
+
+        document.getElementById('brushOpacity').addEventListener('input', (e) => {
+            document.getElementById('val_brushOpacity').innerText = e.target.value + '%';
+        });
+
+        document.getElementById('brushHardness').addEventListener('input', (e) => {
+            document.getElementById('val_brushHardness').innerText = e.target.value + '%';
+            updateBrushCursorDimensions();
+        });
+
+        document.getElementById('invertMaskBtn').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if (active && active.hasMask) {
+                invertLayerMask(active.id);
+                saveHistoryState();
+            }
+        });
+
+        document.getElementById('deleteMaskBtn').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if (active && active.hasMask) {
+                deleteLayerMask(active.id);
+                saveHistoryState();
+            }
+        });
+
+        function updateBoundingBoxVisibility() {
+            const active = getActiveLayer();
+            if (currentTool === 'transform' && active && active.visible && !active.locked) {
+                boundingBox.style.display = 'block';
+                updateBoundingBoxPosition();
+            } else {
+                boundingBox.style.display = 'none';
+            }
+        }
+
+        function updateBoundingBoxPosition() {
+            const active = getActiveLayer();
+            if (!active || !active.visible || active.locked) return;
+            const rect = active.img.getBoundingClientRect();
+            const containerRect = imageContainer.getBoundingClientRect();
+
+            boundingBox.style.left = (rect.left - containerRect.left) + 'px';
+            boundingBox.style.top = (rect.top - containerRect.top) + 'px';
+            boundingBox.style.width = rect.width + 'px';
+            boundingBox.style.height = rect.height + 'px';
+        }
+
+        function createTextLayer(text = "Graphis Studio", fontFamily = "Dancing Script", style = "normal", size = 54, color = "#FFD700") {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const fontSpec = `${style === 'normal' ? '' : style} ${size}px "${fontFamily}", cursive`;
+            ctx.font = fontSpec;
+            
+            const metrics = ctx.measureText(text);
+            const textWidth = Math.ceil(metrics.width) + 30;
+            const textHeight = Math.ceil(size * 1.5);
+
+            canvas.width = textWidth;
+            canvas.height = textHeight;
+            
+            ctx.font = fontSpec;
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+
+            const dataUrl = canvas.toDataURL();
+            createLayer(dataUrl, `Signature: "${text}"`, {
+                isText: true,
+                textConfig: { text, fontFamily, style, size, color }
+            });
+        }
+
+        function redrawTextLayer(layer) {
+            const canvas = layer.img;
+            const ctx = canvas.getContext('2d');
+            const cfg = layer.textConfig;
+            
+            const fontSpec = `${cfg.style === 'normal' ? '' : cfg.style} ${cfg.size}px "${cfg.fontFamily}", cursive`;
+            ctx.font = fontSpec;
+            
+            const metrics = ctx.measureText(cfg.text);
+            const textWidth = Math.ceil(metrics.width) + 30;
+            const textHeight = Math.ceil(cfg.size * 1.5);
+
+            canvas.width = textWidth;
+            canvas.height = textHeight;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.font = fontSpec;
+            ctx.fillStyle = cfg.color;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(cfg.text, canvas.width / 2, canvas.height / 2);
+
+            layer.rawImg.src = canvas.toDataURL();
+            renderLayerComposite(layer);
         }
 
         function createLayer(imgSrc, name = "Calque", initialData = null) {
@@ -3113,6 +3316,13 @@
                     isDraggingLayer = true;
                     startX = e.clientX - layerObj.x;
                     startY = e.clientY - layerObj.y;
+                } else if (currentTool === 'maskBrush' && !layerObj.locked) {
+                    if (!layerObj.hasMask) addLayerMask(layerObj.id);
+                    isPaintingMask = true;
+                    lastMaskPos = null;
+                    paintMask(layerObj, e);
+                } else if (currentTool === 'tat' && !layerObj.locked) {
+                    startTatDrag(e, layerObj);
                 }
             });
 
@@ -3136,12 +3346,19 @@
                     startY = e.clientY - layerObj.y;
                     syncTransformUI();
                     updateBoundingBoxPosition();
+                } else if (isPaintingMask && currentTool === 'maskBrush' && layerObj.hasMask && activeLayerId === id) {
+                    paintMask(layerObj, e);
                 }
             });
 
             document.addEventListener('mouseup', () => { 
                 if (isDraggingLayer) {
                     isDraggingLayer = false;
+                    saveHistoryState();
+                }
+                if (isPaintingMask) {
+                    isPaintingMask = false;
+                    lastMaskPos = null;
                     saveHistoryState();
                 }
             });
@@ -3160,6 +3377,95 @@
             processImage();
         }
 
+        function syncRawPanelUI() {
+            const active = getActiveLayer();
+            if (!active || !active.rawSettings) return;
+
+            const settings = active.rawSettings;
+
+            const profileSelect = document.getElementById('baseProfile');
+            if (profileSelect && settings.baseProfile) {
+                profileSelect.value = settings.baseProfile;
+            }
+
+            chkBwMode.checked = !!settings.bwMode;
+
+            document.querySelectorAll('.effect-card').forEach(card => {
+                card.classList.toggle('active', card.dataset.id === (settings.activeEffect || 'none'));
+            });
+
+            Object.keys(settings).forEach(key => {
+                if (key === 'baseProfile' || key === 'curvePoints' || key === 'bwMode' || key === 'activeEffect') return;
+
+                const el = document.getElementById(key);
+                if (el) {
+                    el.value = settings[key];
+                    
+                    const numEl = document.getElementById(`num_${key}`);
+                    if (numEl) {
+                        numEl.value = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
+                    }
+
+                    const label = el.previousElementSibling;
+                    if (label && label.querySelector('.value-display')) {
+                        let unit = '';
+                        if (key.startsWith('st_') && key.endsWith('hue')) unit = '°';
+                        else if (key === 'e_lightleak' || key === 'e_dust' || key === 'e_intensity') unit = '%';
+                        label.querySelector('.value-display').innerText = `${el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key]}${unit}`;
+                    }
+                }
+
+                if (key.startsWith('mh_range_')) {
+                    const rEl = document.getElementById(key);
+                    if (rEl) rEl.value = settings[key];
+                    const v1 = document.getElementById(`val_${key}`);
+                    if (v1) v1.innerText = `${settings[key]}°`;
+                }
+            });
+
+            updateHslTabDots();
+            renderToneCurveGUI();
+            computeAndRenderHistogram(active);
+        }
+
+        function handleLayerSelection(id, event = null) {
+            if (!event) {
+                activeLayerId = id;
+                selectedLayerIds = [id];
+                lastSelectedLayerId = id;
+            } else if (event.ctrlKey || event.metaKey) {
+                activeLayerId = id;
+                if (selectedLayerIds.includes(id)) {
+                    if (selectedLayerIds.length > 1) {
+                        selectedLayerIds = selectedLayerIds.filter(item => item !== id);
+                        activeLayerId = selectedLayerIds[selectedLayerIds.length - 1];
+                    }
+                } else {
+                    selectedLayerIds.push(id);
+                }
+                lastSelectedLayerId = id;
+            } else if (event.shiftKey && lastSelectedLayerId) {
+                const reversedLayers = layers.slice().reverse();
+                const idx1 = reversedLayers.findIndex(l => l.id === lastSelectedLayerId);
+                const idx2 = reversedLayers.findIndex(l => l.id === id);
+                
+                const start = Math.min(idx1, idx2);
+                const end = Math.max(idx1, idx2);
+                
+                selectedLayerIds = reversedLayers.slice(start, end + 1).map(l => l.id);
+                activeLayerId = id;
+            } else {
+                activeLayerId = id;
+                selectedLayerIds = [id];
+                lastSelectedLayerId = id;
+            }
+            
+            updateLayersUI();
+            syncTransformUI();
+            syncRawPanelUI();
+            updateBoundingBoxVisibility();
+        }
+
         function renderLayerComposite(layer) {
             if (!layer.rawImg.complete || layer.rawImg.naturalWidth === 0) return;
 
@@ -3169,6 +3475,279 @@
 
             ctx.clearRect(0, 0, width, height);
             ctx.drawImage(layer.rawImg, 0, 0, width, height);
+
+            if (layer.hasMask && layer.maskCanvas) {
+                const imgData = ctx.getImageData(0, 0, width, height);
+                const maskCtx = layer.maskCanvas.getContext('2d');
+                const maskData = maskCtx.getImageData(0, 0, width, height);
+
+                for (let i = 0; i < imgData.data.length; i += 4) {
+                    const maskAlpha = maskData.data[i + 3];
+                    imgData.data[i + 3] = Math.round(imgData.data[i + 3] * (maskAlpha / 255));
+                }
+                ctx.putImageData(imgData, 0, 0);
+            }
+        }
+
+        function addLayerMask(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer) return;
+
+            if (!layer.hasMask) {
+                const canvas = document.createElement('canvas');
+                canvas.width = layer.img.width || 800;
+                canvas.height = layer.img.height || 600;
+                const ctx = canvas.getContext('2d');
+                
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                layer.hasMask = true;
+                layer.maskCanvas = canvas;
+                layer.maskCtx = ctx;
+                
+                updateMaskCSS(layer);
+            }
+            updateLayersUI();
+            saveHistoryState();
+        }
+
+        function invertLayerMask(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer || !layer.hasMask) return;
+
+            const width = layer.maskCanvas.width;
+            const height = layer.maskCanvas.height;
+            const imgData = layer.maskCtx.getImageData(0, 0, width, height);
+            const data = imgData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+                data[i + 3] = 255 - data[i + 3];
+            }
+
+            layer.maskCtx.putImageData(imgData, 0, 0);
+            updateMaskCSS(layer);
+        }
+
+        function deleteLayerMask(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer || !layer.hasMask) return;
+
+            layer.hasMask = false;
+            layer.maskCanvas = null;
+            layer.maskCtx = null;
+            layer.maskDataUrl = null;
+
+            renderLayerComposite(layer);
+            if (currentTool === 'maskBrush') setTool('move');
+            updateLayersUI();
+        }
+
+        function paintMask(layer, e) {
+            if (!layer.hasMask) return;
+            const rect = layer.img.getBoundingClientRect();
+
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const ratioX = layer.maskCanvas.width / rect.width;
+            const ratioY = layer.maskCanvas.height / rect.height;
+
+            const currX = mouseX * ratioX;
+            const currY = mouseY * ratioY;
+
+            const sizeSetting = parseFloat(document.getElementById('brushSize').value);
+            const opacitySetting = parseFloat(document.getElementById('brushOpacity').value) / 100;
+            const hardnessSetting = parseFloat(document.getElementById('brushHardness').value) / 100;
+            const isBlack = document.getElementById('brushColorSelect').value === 'black';
+
+            const radius = (sizeSetting / 2) * ratioX;
+            const innerRadius = radius * hardnessSetting;
+
+            const drawBrushSpot = (x, y) => {
+                layer.maskCtx.save();
+                
+                if (isBlack) {
+                    layer.maskCtx.globalCompositeOperation = 'destination-out';
+                    
+                    if (hardnessSetting >= 0.99) {
+                        layer.maskCtx.fillStyle = `rgba(0,0,0,${opacitySetting})`;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    } else {
+                        const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
+                        grad.addColorStop(0, `rgba(0, 0, 0, ${opacitySetting})`);
+                        grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+                        layer.maskCtx.fillStyle = grad;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    }
+                } else {
+                    layer.maskCtx.globalCompositeOperation = 'source-over';
+                    
+                    if (hardnessSetting >= 0.99) {
+                        layer.maskCtx.fillStyle = `rgba(255, 255, 255, ${opacitySetting})`;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    } else {
+                        const grad = layer.maskCtx.createRadialGradient(x, y, innerRadius, x, y, radius);
+                        grad.addColorStop(0, `rgba(255, 255, 255, ${opacitySetting})`);
+                        grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+                        layer.maskCtx.fillStyle = grad;
+                        layer.maskCtx.beginPath();
+                        layer.maskCtx.arc(x, y, radius, 0, Math.PI * 2);
+                        layer.maskCtx.fill();
+                    }
+                }
+
+                layer.maskCtx.restore();
+            };
+
+            if (!lastMaskPos) {
+                drawBrushSpot(currX, currY);
+            } else {
+                const dx = currX - lastMaskPos.x;
+                const dy = currY - lastMaskPos.y;
+                const dist = Math.hypot(dx, dy);
+                const step = Math.max(0.5, radius * 0.05);
+
+                for (let i = 0; i < dist; i += step) {
+                    const interX = lastMaskPos.x + (dx * (i / dist));
+                    const interY = lastMaskPos.y + (dy * (i / dist));
+                    drawBrushSpot(interX, interY);
+                }
+                drawBrushSpot(currX, currY);
+            }
+
+            lastMaskPos = { x: currX, y: currY };
+            updateMaskCSS(layer);
+        }
+
+        function updateMaskCSS(layer) {
+            if (!layer.hasMask) return;
+            renderLayerComposite(layer);
+            const url = layer.maskCanvas.toDataURL();
+            layer.maskDataUrl = url;
+            
+            const maskThumb = document.getElementById(`mask_thumb_${layer.id}`);
+            if (maskThumb) maskThumb.src = url;
+        }
+
+        function toggleLayerVisibility(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer) return;
+            layer.visible = !layer.visible;
+            layer.img.style.display = layer.visible ? 'block' : 'none';
+            updateLayersUI();
+            updateBoundingBoxVisibility();
+            saveHistoryState();
+        }
+
+        function toggleLayerLock(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer) return;
+            layer.locked = !layer.locked;
+            updateLayersUI();
+            updateBoundingBoxVisibility();
+            saveHistoryState();
+        }
+
+        function renameLayer(id) {
+            const layer = layers.find(l => l.id === id);
+            if (!layer || layer.locked) return;
+            const newName = prompt("Nouveau nom du calque :", layer.name);
+            if (newName && newName.trim() !== "") {
+                layer.name = newName.trim();
+                updateLayersUI();
+                saveHistoryState();
+            }
+        }
+
+        function duplicateLayer(id) {
+            const source = layers.find(l => l.id === id);
+            if (!source) return;
+            
+            const sourceIdx = layers.findIndex(l => l.id === id);
+            const duplicateData = {
+                x: source.x + 20,
+                y: source.y + 20,
+                scale: source.scale,
+                rotation: source.rotation,
+                skewX: source.skewX,
+                skewY: source.skewY,
+                perspX: source.perspX,
+                perspY: source.perspY,
+                flipX: source.flipX,
+                flipY: source.flipY,
+                opacity: source.opacity,
+                blendMode: source.blendMode,
+                visible: source.visible,
+                locked: false,
+                isText: source.isText,
+                isLogo: source.isLogo,
+                rawSettings: JSON.parse(JSON.stringify(source.rawSettings)),
+                baseRawSettings: source.baseRawSettings ? JSON.parse(JSON.stringify(source.baseRawSettings)) : null,
+                textConfig: source.textConfig ? JSON.parse(JSON.stringify(source.textConfig)) : null,
+                insertIndex: sourceIdx + 1
+            };
+
+            createLayer(source.rawImg.src, `${source.name} (copie)`, duplicateData);
+        }
+
+        let isTransforming = false;
+        let transformType = null;
+        let startMouseX, initialScale, initialRotation;
+
+        document.querySelectorAll('.t-handle').forEach(handle => {
+            handle.addEventListener('mousedown', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const active = getActiveLayer();
+                if (!active || !active.visible || active.locked) return;
+                isTransforming = true;
+                startMouseX = e.clientX;
+                initialScale = active.scale;
+                initialRotation = active.rotation;
+                transformType = handle.id === 'h_rot' ? 'rotate' : 'scale';
+            });
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isTransforming) return;
+            const active = getActiveLayer();
+            if (!active || !active.visible || active.locked) return;
+
+            if (transformType === 'scale') {
+                let dx = e.clientX - startMouseX;
+                let newScale = Math.max(0.1, initialScale + (dx * 0.005));
+                active.scale = newScale;
+                const scaleVal = Math.round(active.scale * 100);
+                document.getElementById('tr_scale').value = scaleVal;
+                document.getElementById('num_scale').value = scaleVal;
+            } else if (transformType === 'rotate') {
+                let dx = e.clientX - startMouseX;
+                active.rotation = Math.round((initialRotation + dx * 0.5) % 360);
+                document.getElementById('tr_rot').value = active.rotation;
+                document.getElementById('num_rot').value = active.rotation;
+            }
+            applyLayerTransform(active);
+            updateBoundingBoxPosition();
+        });
+
+        document.addEventListener('mouseup', () => { 
+            if (isTransforming) {
+                isTransforming = false;
+                saveHistoryState();
+            }
+        });
+
+        function getActiveLayer() {
+            return layers.find(l => l.id === activeLayerId);
         }
 
         function updateZIndices() {
@@ -3177,43 +3756,784 @@
             });
         }
 
-        function getActiveLayer() {
-            return layers.find(l => l.id === activeLayerId);
-        }
-
         function applyLayerTransform(layer) {
-            const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) skew(${layer.skewX}deg, ${layer.skewY}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
+            const transformStr = `translate(${layer.x}px, ${layer.y}px) scale(${layer.scale * currentScale}) rotate(${layer.rotation}deg) skew(${layer.skewX}deg, ${layer.skewY}deg) rotateX(${layer.perspY}deg) rotateY(${layer.perspX}deg) scaleX(${layer.flipX}) scaleY(${layer.flipY})`;
             layer.img.style.transform = transformStr;
             layer.img.style.opacity = layer.opacity / 100;
             layer.img.style.mixBlendMode = layer.blendMode;
             layer.img.style.display = layer.visible ? 'block' : 'none';
+            updateBoundingBoxPosition();
         }
 
         function syncTransformUI() {
             const active = getActiveLayer();
             if(!active) return;
-            document.getElementById('tr_scale').value = Math.round(active.scale * 100);
-            document.getElementById('num_scale').value = Math.round(active.scale * 100);
+            const scaleVal = Math.round(active.scale * 100);
+            document.getElementById('tr_scale').value = scaleVal;
+            document.getElementById('num_scale').value = scaleVal;
+            
             document.getElementById('tr_rot').value = active.rotation;
             document.getElementById('num_rot').value = active.rotation;
+
+            const posXVal = Math.round(active.x);
+            document.getElementById('tr_posX').value = posXVal;
+            document.getElementById('num_posX').value = posXVal;
+
+            const posYVal = Math.round(active.y);
+            document.getElementById('tr_posY').value = posYVal;
+            document.getElementById('num_posY').value = posYVal;
+
+            document.getElementById('tr_skewX').value = active.skewX;
+            document.getElementById('num_skewX').value = active.skewX;
+
+            document.getElementById('tr_skewY').value = active.skewY;
+            document.getElementById('num_skewY').value = active.skewY;
+
+            document.getElementById('tr_perspX').value = active.perspX;
+            document.getElementById('num_perspX').value = active.perspX;
+
+            document.getElementById('tr_perspY').value = active.perspY;
+            document.getElementById('num_perspY').value = active.perspY;
+            
+            document.getElementById('layerOpacity').value = active.opacity;
+            document.getElementById('val_opacity').innerText = active.opacity + '%';
+            document.getElementById('layerBlendMode').value = active.blendMode;
         }
+
+        document.getElementById('layerOpacity').addEventListener('input', (e) => {
+            selectedLayerIds.forEach(id => {
+                const layer = layers.find(l => l.id === id);
+                if (layer && !layer.locked) {
+                    layer.opacity = parseFloat(e.target.value);
+                    applyLayerTransform(layer);
+                }
+            });
+            document.getElementById('val_opacity').innerText = e.target.value + '%';
+        });
+
+        document.getElementById('layerOpacity').addEventListener('change', () => saveHistoryState());
+
+        document.getElementById('layerBlendMode').addEventListener('change', (e) => {
+            selectedLayerIds.forEach(id => {
+                const layer = layers.find(l => l.id === id);
+                if (layer && !layer.locked) {
+                    layer.blendMode = e.target.value;
+                    applyLayerTransform(layer);
+                }
+            });
+            saveHistoryState();
+        });
 
         function updateLayersUI() {
             layersContainer.innerHTML = '';
             layers.slice().reverse().forEach((layer) => {
                 const item = document.createElement('div');
                 const isSelected = selectedLayerIds.includes(layer.id);
+                
                 item.className = `layer-item ${isSelected ? 'active' : ''}`;
-                item.onclick = (e) => handleLayerSelection(layer.id, e);
+                item.setAttribute('draggable', 'true');
+                item.dataset.id = layer.id;
+                
+                item.onclick = (e) => {
+                    handleLayerSelection(layer.id, e);
+                };
+
+                item.ondragstart = (e) => {
+                    draggedLayerId = layer.id;
+                    item.classList.add('dragging');
+                    e.dataTransfer.effectAllowed = 'move';
+                };
+
+                item.ondragend = () => {
+                    item.classList.remove('dragging');
+                    document.querySelectorAll('.layer-item').forEach(el => el.classList.remove('drag-over'));
+                };
+
+                item.ondragover = (e) => {
+                    e.preventDefault();
+                    item.classList.add('drag-over');
+                };
+
+                item.ondragleave = () => {
+                    item.classList.remove('drag-over');
+                };
+
+                item.ondrop = (e) => {
+                    e.preventDefault();
+                    item.classList.remove('drag-over');
+                    if (!draggedLayerId || draggedLayerId === layer.id) return;
+
+                    const fromIndex = layers.findIndex(l => l.id === draggedLayerId);
+                    const toIndex = layers.findIndex(l => l.id === layer.id);
+
+                    if (fromIndex !== -1 && toIndex !== -1) {
+                        const [movedLayer] = layers.splice(fromIndex, 1);
+                        layers.splice(toIndex, 0, movedLayer);
+                        updateZIndices();
+                        updateLayersUI();
+                        saveHistoryState();
+                    }
+                };
+                
+                let maskHTML = layer.hasMask 
+                    ? `<img id="mask_thumb_${layer.id}" class="layer-mask-thumbnail ${currentTool === 'maskBrush' ? 'active-target' : ''}" src="${layer.maskDataUrl}" title="Masque de fusion N&B" onclick="event.stopPropagation(); setTool('maskBrush');">`
+                    : '';
+
                 item.innerHTML = `
                     <div class="layer-info">
+                        <button class="icon-btn ${layer.visible ? '' : 'hidden-eye'}" title="${layer.visible ? 'Masquer' : 'Afficher'}" onclick="event.stopPropagation(); toggleLayerVisibility('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
                         <img class="layer-thumbnail" src="${layer.rawImg.src}" alt="Vignette">
-                        <span class="layer-name">${layer.name}</span>
+                        ${maskHTML}
+                        <span class="layer-name" title="${layer.name}">${layer.name}</span>
+                        <span class="smart-badge">SMART</span>
+                    </div>
+                    <div class="layer-actions">
+                        <button class="icon-btn" title="Renommer" onclick="event.stopPropagation(); renameLayer('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                        </button>
+                        <button class="icon-btn" title="Dupliquer (Ctrl+J)" onclick="event.stopPropagation(); duplicateLayer('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        </button>
+                        <button class="icon-btn" title="Supprimer le calque (Suppr / Backspace)" onclick="event.stopPropagation(); deleteLayer('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                        <button class="icon-btn ${layer.locked ? 'locked-btn' : ''}" title="${layer.locked ? 'Déverrouiller' : 'Verrouiller'}" onclick="event.stopPropagation(); toggleLayerLock('${layer.id}')">
+                            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        </button>
                     </div>
                 `;
+                
+                const thumbImg = item.querySelector('.layer-thumbnail');
+                thumbImg.addEventListener('mouseenter', (e) => {
+                    previewPopover.src = layer.rawImg.src;
+                    previewPopover.style.display = 'block';
+                    positionPopover(e);
+                });
+                thumbImg.addEventListener('mousemove', (e) => { positionPopover(e); });
+                thumbImg.addEventListener('mouseleave', () => { previewPopover.style.display = 'none'; });
+
                 layersContainer.appendChild(item);
             });
         }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+                if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+                e.preventDefault();
+                e.stopPropagation();
+                undoAction();
+                return;
+            }
+
+            if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                e.preventDefault();
+                deleteSelectedLayers();
+            }
+
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'j' || e.key === 'J')) {
+                e.preventDefault();
+                if (activeLayerId) {
+                    duplicateLayer(activeLayerId);
+                }
+            }
+
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'i' || e.key === 'I')) {
+                e.preventDefault();
+                const active = getActiveLayer();
+                if (active && active.hasMask) {
+                    invertLayerMask(active.id);
+                }
+            }
+        });
+
+        function deleteSelectedLayers() {
+            if (layers.length <= selectedLayerIds.length) {
+                alert("Impossible de supprimer tous les calques. Conservez au moins un calque.");
+                return;
+            }
+
+            const idsToDelete = [...selectedLayerIds];
+            idsToDelete.forEach(id => {
+                const layer = layers.find(l => l.id === id);
+                if (layer && !layer.locked) {
+                    layer.img.remove();
+                    layers = layers.filter(l => l.id !== id);
+                }
+            });
+
+            selectedLayerIds = [];
+            if (layers.length > 0) {
+                handleLayerSelection(layers[layers.length - 1].id);
+            }
+            updateZIndices();
+            processImage();
+            saveHistoryState();
+        }
+
+        function positionPopover(e) {
+            const offset = 15;
+            let left = e.clientX + offset;
+            let top = e.clientY + offset;
+            if (left + 180 > window.innerWidth) left = e.clientX - 180 - offset;
+            if (top + 180 > window.innerHeight) top = e.clientY - 180 - offset;
+            previewPopover.style.left = `${left}px`;
+            previewPopover.style.top = `${top}px`;
+        }
+
+        window.deleteLayer = function(id) {
+            if (!selectedLayerIds.includes(id)) {
+                selectedLayerIds = [id];
+            }
+            deleteSelectedLayers();
+        };
+
+        function setupTransformFieldSync(rangeId, numId, layerProp, isScale = false) {
+            const rangeEl = document.getElementById(rangeId);
+            const numEl = document.getElementById(numId);
+
+            const updateValue = (val) => {
+                const active = getActiveLayer();
+                if (!active || active.locked) return;
+                
+                let numVal = parseFloat(val);
+                if (isNaN(numVal)) numVal = 0;
+
+                rangeEl.value = numVal;
+                numEl.value = numVal;
+
+                if (isScale) {
+                    active[layerProp] = numVal / 100;
+                } else {
+                    active[layerProp] = numVal;
+                }
+                applyLayerTransform(active);
+            };
+
+            rangeEl.addEventListener('input', (e) => updateValue(e.target.value));
+            numEl.addEventListener('input', (e) => updateValue(e.target.value));
+
+            rangeEl.addEventListener('change', () => saveHistoryState());
+            numEl.addEventListener('change', () => saveHistoryState());
+        }
+
+        setupTransformFieldSync('tr_scale', 'num_scale', 'scale', true);
+        setupTransformFieldSync('tr_rot', 'num_rot', 'rotation');
+        setupTransformFieldSync('tr_posX', 'num_posX', 'x');
+        setupTransformFieldSync('tr_posY', 'num_posY', 'y');
+        setupTransformFieldSync('tr_skewX', 'num_skewX', 'skewX');
+        setupTransformFieldSync('tr_skewY', 'num_skewY', 'skewY');
+        setupTransformFieldSync('tr_perspX', 'num_perspX', 'perspX');
+        setupTransformFieldSync('tr_perspY', 'num_perspY', 'perspY');
+
+        window.resetTransformField = function(rangeId, defaultValue) {
+            const rangeEl = document.getElementById(rangeId);
+            rangeEl.value = defaultValue;
+            rangeEl.dispatchEvent(new Event('input'));
+            rangeEl.dispatchEvent(new Event('change'));
+        };
+
+        function setupRawFieldSync(rangeId, numId) {
+            const rangeEl = document.getElementById(rangeId);
+            const numEl = document.getElementById(numId);
+
+            if (!rangeEl || !numEl) return;
+
+            const updateValue = (val) => {
+                const active = getActiveLayer();
+                if (!active || !active.rawSettings) return;
+
+                let numVal = parseFloat(val);
+                if (isNaN(numVal)) numVal = 0;
+
+                rangeEl.value = numVal;
+                numEl.value = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
+
+                active.rawSettings[rangeId] = numVal;
+                active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
+
+                if (mixerSliderIds.includes(rangeId)) {
+                    hslPresetSelect.value = 'custom';
+                    updateHslTabDots();
+                }
+
+                const label = rangeEl.previousElementSibling;
+                if (label && label.querySelector('.value-display')) {
+                    let unit = '';
+                    if (rangeId.startsWith('st_') && rangeId.endsWith('hue')) unit = '°';
+                    else if (rangeId === 'e_lightleak' || rangeId === 'e_dust' || rangeId === 'e_intensity') unit = '%';
+                    label.querySelector('.value-display').innerText = `${rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal}${unit}`;
+                }
+                processImage();
+            };
+
+            rangeEl.addEventListener('input', (e) => updateValue(e.target.value));
+            numEl.addEventListener('input', (e) => updateValue(e.target.value));
+
+            rangeEl.addEventListener('change', () => saveHistoryState());
+            numEl.addEventListener('change', () => saveHistoryState());
+        }
+
+        const mixerSliderIds = [
+            'mh_red', 'mh_org', 'mh_yel', 'mh_grn', 'mh_aqu', 'mh_blu', 'mh_vio', 'mh_mag',
+            'm_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag',
+            'ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag'
+        ];
+
+        const rawFieldsList = [
+            't_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat',
+            'e_lightleak', 'e_dust', 'e_tiltshift', 'e_radialblur', 'st_hlhue', 'st_shhue', 'st_bal',
+            ...mixerSliderIds
+        ];
+        rawFieldsList.forEach(id => setupRawFieldSync(id, `num_${id}`));
+
+        window.resetRawField = function(rangeId, defaultValue) {
+            const rangeEl = document.getElementById(rangeId);
+            if (rangeEl) {
+                rangeEl.value = defaultValue;
+                rangeEl.dispatchEvent(new Event('input'));
+                rangeEl.dispatchEvent(new Event('change'));
+            }
+        };
+
+        document.getElementById('baseProfile').addEventListener('change', (e) => {
+            const active = getActiveLayer();
+            if (active && active.rawSettings) {
+                active.rawSettings.baseProfile = e.target.value;
+                active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
+                processImage();
+                saveHistoryState();
+            }
+        });
+
+        document.getElementById('tr_flipH').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if(!active || active.locked) return;
+            active.flipX *= -1;
+            applyLayerTransform(active);
+            saveHistoryState();
+        });
+
+        document.getElementById('tr_flipV').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if(!active || active.locked) return;
+            active.flipY *= -1;
+            applyLayerTransform(active);
+            saveHistoryState();
+        });
+
+        // MOTEUR DE RENDU DU TRAITEMENT D'IMAGE AVANCÉ
+        function processImage() {
+            try {
+                layers.forEach((layer) => {
+                    const s = layer.rawSettings;
+                    if (!s || !layer.rawImg.complete || layer.rawImg.naturalWidth === 0) return;
+
+                    const width = layer.img.width;
+                    const height = layer.img.height;
+                    const ctx = layer.img.getContext('2d');
+
+                    ctx.clearRect(0, 0, width, height);
+                    ctx.drawImage(layer.rawImg, 0, 0, width, height);
+
+                    const imgData = ctx.getImageData(0, 0, width, height);
+                    const data = imgData.data;
+
+                    const lutCurve = buildLutFromPoints((modulesState.curve && s.curvePoints) ? s.curvePoints : DEFAULT_RAW_SETTINGS.curvePoints);
+
+                    const expMult = modulesState.base ? Math.pow(2, (s.t_exp || 0)) : 1.0;
+                    const temp = modulesState.base ? (s.t_temp || 0) : 0;
+                    const tint = modulesState.base ? (s.t_tint || 0) : 0;
+                    const sat = modulesState.base ? (1 + ((s.t_sat || 0) * 0.01)) : 1.0;
+                    const vib = modulesState.base ? ((s.t_vib || 0) * 0.01) : 0;
+                    const cont = modulesState.base ? ((s.t_cont || 0) * 0.01) : 0;
+                    const profile = modulesState.base ? (s.baseProfile || 'adobe_color') : 'adobe_color';
+                    const isBwMode = s.bwMode || profile === 'monochrome';
+
+                    const rFactor = 1 + (temp * 0.003);
+                    const bFactor = 1 - (temp * 0.003);
+                    const gFactor = 1 - (tint * 0.003);
+
+                    // VIRAGE PARTIEL (SPLIT TONING)
+                    const stHlHue = (s.st_hlhue || 0);
+                    const stShHue = (s.st_shhue || 0);
+                    const stBal = (s.st_bal || 0) * 0.01;
+                    const [stHlR, stHlG, stHlB] = hslToRgb(stHlHue, 0.4, 0.5);
+                    const [stShR, stShG, stShB] = hslToRgb(stShHue, 0.4, 0.5);
+
+                    const dustValSetting = (modulesState.effects && s.e_dust) ? s.e_dust : 0;
+
+                    for (let i = 0; i < data.length; i += 4) {
+                        let r = data[i];
+                        let g = data[i+1];
+                        let b = data[i+2];
+
+                        if (profile === 'landscape') {
+                            r *= 1.05; g *= 1.08; b *= 0.95;
+                        } else if (profile === 'portrait') {
+                            r *= 1.08; g *= 0.98; b *= 0.96;
+                        } else if (profile === 'monochrome') {
+                            const monoLum = 0.299 * r + 0.587 * g + 0.114 * b;
+                            r = monoLum; g = monoLum; b = monoLum;
+                        } else if (profile === 'neutral') {
+                            r = ((r / 255 - 0.5) * 0.85 + 0.5) * 255;
+                            g = ((g / 255 - 0.5) * 0.85 + 0.5) * 255;
+                            b = ((b / 255 - 0.5) * 0.85 + 0.5) * 255;
+                        } else if (profile === 'adobe_standard') {
+                            r *= 0.98; g *= 0.98; b *= 0.98;
+                        }
+
+                        r *= expMult * rFactor;
+                        g *= expMult * gFactor;
+                        b *= expMult * bFactor;
+
+                        if (modulesState.mixer) {
+                            if (isBwMode) {
+                                const [h] = rgbToHsl(r, g, b);
+                                const w = getColorWeights(h, s);
+
+                                const bwShift = 
+                                    (s.ml_red || 0) * w.red +
+                                    (s.ml_org || 0) * w.org +
+                                    (s.ml_yel || 0) * w.yel +
+                                    (s.ml_grn || 0) * w.grn +
+                                    (s.ml_aqu || 0) * w.aqu +
+                                    (s.ml_blu || 0) * w.blu +
+                                    (s.ml_vio || 0) * w.vio +
+                                    (s.ml_mag || 0) * w.mag;
+
+                                let gray = 0.299 * r + 0.587 * g + 0.114 * b;
+                                gray = gray * (1 + (bwShift * 0.005));
+                                gray = Math.max(0, Math.min(255, gray));
+                                r = gray; g = gray; b = gray;
+                            } else {
+                                let [h, sVal, lVal] = rgbToHsl(r, g, b);
+                                const w = getColorWeights(h, s);
+
+                                if (isSoloColorActive) {
+                                    const activeWeight = w[activeColorChannel] || 0;
+                                    if (activeWeight < 0.1) {
+                                        const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+                                        r = gray; g = gray; b = gray;
+                                    } else {
+                                        const hueShift = (s[`mh_${activeColorChannel}`] || 0) * activeWeight;
+                                        h = (h + (hueShift * 0.3) + 360) % 360;
+
+                                        const satShift = (s[`m_${activeColorChannel}`] || 0) * activeWeight;
+                                        sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
+
+                                        const lumShift = (s[`ml_${activeColorChannel}`] || 0) * activeWeight;
+                                        lVal = Math.max(0, Math.min(1, lVal * (1 + (lumShift * 0.005))));
+
+                                        const [newR, newG, newB] = hslToRgb(h, sVal, lVal);
+                                        r = newR; g = newG; b = newB;
+                                    }
+                                } else {
+                                    const hueShift = 
+                                        (s.mh_red || 0) * w.red +
+                                        (s.mh_org || 0) * w.org +
+                                        (s.mh_yel || 0) * w.yel +
+                                        (s.mh_grn || 0) * w.grn +
+                                        (s.mh_aqu || 0) * w.aqu +
+                                        (s.mh_blu || 0) * w.blu +
+                                        (s.mh_vio || 0) * w.vio +
+                                        (s.mh_mag || 0) * w.mag;
+
+                                    h = (h + (hueShift * 0.3) + 360) % 360;
+
+                                    const satShift = 
+                                        (s.m_red || 0) * w.red +
+                                        (s.m_org || 0) * w.org +
+                                        (s.m_yel || 0) * w.yel +
+                                        (s.m_grn || 0) * w.grn +
+                                        (s.m_aqu || 0) * w.aqu +
+                                        (s.m_blu || 0) * w.blu +
+                                        (s.m_vio || 0) * w.vio +
+                                        (s.m_mag || 0) * w.mag;
+
+                                    sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
+
+                                    const lumShift = 
+                                        (s.ml_red || 0) * w.red +
+                                        (s.ml_org || 0) * w.org +
+                                        (s.ml_yel || 0) * w.yel +
+                                        (s.ml_grn || 0) * w.grn +
+                                        (s.ml_aqu || 0) * w.aqu +
+                                        (s.ml_blu || 0) * w.blu +
+                                        (s.ml_vio || 0) * w.vio +
+                                        (s.ml_mag || 0) * w.mag;
+
+                                    lVal = Math.max(0, Math.min(1, lVal * (1 + (lumShift * 0.005))));
+
+                                    const [newR, newG, newB] = hslToRgb(h, sVal, lVal);
+                                    r = newR; g = newG; b = newB;
+                                }
+                            }
+                        }
+
+                        // APPLICATION DU SPLIT TONING
+                        if (stHlHue > 0 || stShHue > 0) {
+                            const lumNorm = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                            const weightHl = Math.max(0, Math.min(1, (lumNorm - (0.5 + stBal * 0.25)) * 2));
+                            const weightSh = 1 - weightHl;
+
+                            if (stHlHue > 0 && weightHl > 0) {
+                                r = r * (1 - weightHl * 0.3) + stHlR * weightHl * 0.3;
+                                g = g * (1 - weightHl * 0.3) + stHlG * weightHl * 0.3;
+                                b = b * (1 - weightHl * 0.3) + stHlB * weightHl * 0.3;
+                            }
+                            if (stShHue > 0 && weightSh > 0) {
+                                r = r * (1 - weightSh * 0.3) + stShR * weightSh * 0.3;
+                                g = g * (1 - weightSh * 0.3) + stShG * weightSh * 0.3;
+                                b = b * (1 - weightSh * 0.3) + stShB * weightSh * 0.3;
+                            }
+                        }
+
+                        if (modulesState.curve) {
+                            r = lutCurve[Math.max(0, Math.min(255, Math.round(r)))];
+                            g = lutCurve[Math.max(0, Math.min(255, Math.round(g)))];
+                            b = lutCurve[Math.max(0, Math.min(255, Math.round(b)))];
+                        }
+
+                        if (cont !== 0) {
+                            r = ((r / 255 - 0.5) * (1 + cont) + 0.5) * 255;
+                            g = ((g / 255 - 0.5) * (1 + cont) + 0.5) * 255;
+                            b = ((b / 255 - 0.5) * (1 + cont) + 0.5) * 255;
+                        }
+
+                        if (!isBwMode) {
+                            const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+                            if (sat !== 1 || vib !== 0) {
+                                const maxColor = Math.max(r, g, b);
+                                const currentSat = (maxColor - lum) / (maxColor || 1);
+                                const finalSat = sat + (1 - currentSat) * vib;
+
+                                r = lum + (r - lum) * finalSat;
+                                g = lum + (g - lum) * finalSat;
+                                b = lum + (b - lum) * finalSat;
+                            }
+                        }
+
+                        // BRUIT DE POUSSIÈRES ET RAYURES FILM (DUST)
+                        if (dustValSetting > 0 && Math.random() < (dustValSetting * 0.0003)) {
+                            const dustVal = Math.random() > 0.5 ? 255 : 0;
+                            r = dustVal; g = dustVal; b = dustVal;
+                        }
+
+                        data[i] = Math.max(0, Math.min(255, r));
+                        data[i+1] = Math.max(0, Math.min(255, g));
+                        data[i+2] = Math.max(0, Math.min(255, b));
+                    }
+
+                    ctx.putImageData(imgData, 0, 0);
+
+                    // FLOUS CRÉATIFS (TILT-SHIFT & RADIAL)
+                    if (modulesState.effects) {
+                        const tiltVal = s.e_tiltshift || 0;
+                        const radialVal = s.e_radialblur || 0;
+
+                        if (tiltVal > 0 || radialVal > 0) {
+                            const tempC = document.createElement('canvas');
+                            tempC.width = width;
+                            tempC.height = height;
+                            const tempCtx = tempC.getContext('2d');
+                            tempCtx.drawImage(layer.img, 0, 0);
+
+                            ctx.clearRect(0, 0, width, height);
+
+                            if (tiltVal > 0) {
+                                ctx.save();
+                                ctx.filter = `blur(${tiltVal * 0.15}px)`;
+                                ctx.drawImage(tempC, 0, 0);
+                                ctx.restore();
+
+                                // Masque pour garder le centre net (effet Maquette)
+                                ctx.save();
+                                ctx.beginPath();
+                                ctx.rect(0, height * 0.35, width, height * 0.3);
+                                ctx.clip();
+                                ctx.drawImage(tempC, 0, 0);
+                                ctx.restore();
+                            } else if (radialVal > 0) {
+                                const passes = Math.min(8, Math.ceil(radialVal / 12));
+                                ctx.save();
+                                ctx.globalAlpha = 1 / passes;
+                                for (let p = 0; p < passes; p++) {
+                                    const scale = 1 + (p * (radialVal * 0.0015));
+                                    const dx = (width * (1 - scale)) / 2;
+                                    const dy = (height * (1 - scale)) / 2;
+                                    ctx.drawImage(tempC, dx, dy, width * scale, height * scale);
+                                }
+                                ctx.restore();
+                            }
+                        }
+                    }
+
+                    if (layer.hasMask && layer.maskCanvas) {
+                        const maskCtx = layer.maskCanvas.getContext('2d');
+                        const maskData = maskCtx.getImageData(0, 0, width, height);
+
+                        const currentImgData = ctx.getImageData(0, 0, width, height);
+                        for (let i = 0; i < currentImgData.data.length; i += 4) {
+                            const maskAlpha = maskData.data[i + 3];
+                            currentImgData.data[i + 3] = Math.round(currentImgData.data[i + 3] * (maskAlpha / 255));
+                        }
+                        ctx.putImageData(currentImgData, 0, 0);
+                    }
+
+                    applyLayerTransform(layer);
+                });
+
+                const active = getActiveLayer();
+                if (active && active.rawSettings && modulesState.effects) {
+                    let vigTotal = Math.min(1, Math.abs(((active.rawSettings.e_viggain || 0) + (active.rawSettings.o_vig || 0)) * -0.01));
+                    overlay.style.boxShadow = `inset 0 0 ${100 - (active.rawSettings.e_vigmid || 50)}vmin rgba(0,0,0,${vigTotal})`;
+
+                    // OVERLAY LIGHT LEAK (FUITE DE LUMIÈRE)
+                    const lightLeakVal = active.rawSettings.e_lightleak || 0;
+                    if (lightLeakVal > 0) {
+                        lightleakOverlay.style.background = `radial-gradient(circle at 90% 10%, rgba(255, 135, 0, ${lightLeakVal * 0.008}), rgba(255, 0, 128, ${lightLeakVal * 0.004}) 50%, transparent 80%)`;
+                    } else {
+                        lightleakOverlay.style.background = 'none';
+                    }
+                } else {
+                    overlay.style.boxShadow = 'none';
+                    lightleakOverlay.style.background = 'none';
+                }
+
+            } catch (error) {
+                console.error("Erreur dans le rendu : ", error);
+            }
+        }
+
+        const layersBtn = document.getElementById('layersBtn');
+        const layersPanel = document.getElementById('layersPanel');
+        
+        layersBtn.addEventListener('click', () => {
+            layersPanel.style.display = (layersPanel.style.display === 'none' || layersPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        const addLayerBtn = document.getElementById('addLayerBtn');
+        const layerFileInput = document.getElementById('layerFileInput');
+        addLayerBtn.addEventListener('click', () => layerFileInput.click());
+
+        async function handleImageFile(file, callback) {
+            const fileName = file.name.toLowerCase();
+            const isRaw = fileName.match(/\.(cr2|cr3|nef|arw|dng|raw|orf|rw2)$/);
+
+            if (isRaw) {
+                try {
+                    const buffer = await file.arrayBuffer();
+                    const view = new Uint8Array(buffer);
+                    let start = -1, end = -1, maxLen = 0, bestStart = -1, bestEnd = -1;
+
+                    for (let i = 0; i < view.length - 1; i++) {
+                        if (view[i] === 0xFF && view[i+1] === 0xD8) start = i;
+                        if (view[i] === 0xFF && view[i+1] === 0xD9 && start !== -1) {
+                            end = i + 2;
+                            let len = end - start;
+                            if (len > maxLen) { maxLen = len; bestStart = start; bestEnd = end; }
+                        }
+                    }
+                    if (bestStart !== -1 && bestEnd !== -1) {
+                        const blob = new Blob([view.slice(bestStart, bestEnd)], { type: 'image/jpeg' });
+                        callback(URL.createObjectURL(blob), file.name);
+                    } else {
+                        alert("Aperçu RAW introuvable dans le fichier.");
+                    }
+                } catch (err) {
+                    alert("Erreur de lecture du fichier RAW.");
+                }
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => callback(e.target.result, file.name);
+                reader.readAsDataURL(file);
+            }
+        }
+
+        layerFileInput.addEventListener('change', (e) => {
+            if(e.target.files[0]) {
+                handleImageFile(e.target.files[0], (url, name) => { createLayer(url, name); });
+            }
+        });
+
+        const fileInput = document.getElementById('fileInput');
+        document.getElementById('importBtn').addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', (e) => {
+            if(e.target.files[0]) {
+                handleImageFile(e.target.files[0], (url, name) => {
+                    if(layers.length > 0) {
+                        layers[0].rawImg.src = url;
+                        layers[0].name = name;
+                        
+                        layers[0].rawSettings = JSON.parse(JSON.stringify(DEFAULT_RAW_SETTINGS));
+                        layers[0].baseRawSettings = null;
+                        
+                        layers[0].rawImg.onload = () => {
+                            layers[0].img.width = layers[0].rawImg.naturalWidth;
+                            layers[0].img.height = layers[0].rawImg.naturalHeight;
+                            renderLayerComposite(layers[0]);
+                            updateLayersUI();
+                            syncRawPanelUI();
+                            processImage();
+                            saveHistoryState();
+                        };
+                    } else {
+                        createLayer(url, name);
+                    }
+                });
+            }
+        });
+
+        document.getElementById('zoomInBtn').addEventListener('click', () => { currentScale += 0.25; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+        document.getElementById('zoomOutBtn').addEventListener('click', () => { currentScale = Math.max(0.2, currentScale - 0.25); processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+        document.getElementById('zoom100Btn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+        document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
+
+        document.getElementById('controls').addEventListener('input', (e) => {
+            if (e.target.type === 'range' && !rawFieldsList.includes(e.target.id) && !['c_hl', 'c_light', 'c_dark', 'c_shad'].includes(e.target.id) && !e.target.id.startsWith('mh_range_')) {
+                const active = getActiveLayer();
+                if (active && active.rawSettings) {
+                    active.rawSettings[e.target.id] = parseFloat(e.target.value);
+                    active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
+                }
+
+                const label = e.target.previousElementSibling;
+                if(label && label.querySelector('.value-display')) {
+                    label.querySelector('.value-display').innerText = e.target.step === '0.1' ? parseFloat(e.target.value).toFixed(1) : e.target.value;
+                }
+                processImage();
+            }
+        });
+
+        document.getElementById('controls').addEventListener('change', (e) => {
+            if (e.target.type === 'range') {
+                saveHistoryState();
+            }
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            alert("Rendu en cours...");
+        });
+
+        const panel = document.getElementById('panel');
+        const header = document.getElementById('panelHeader');
+        let isDragging = false, startX, startY, initX, initY;
+
+        header.addEventListener('mousedown', (e) => {
+            isDragging = true; startX = e.clientX; startY = e.clientY;
+            initX = panel.offsetLeft; initY = panel.offsetTop;
+            header.style.cursor = 'grabbing';
+        });
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            panel.style.left = `${initX + (e.clientX - startX)}px`;
+            panel.style.top = `${initY + (e.clientY - startY)}px`;
+        });
+        document.addEventListener('mouseup', () => { isDragging = false; header.style.cursor = 'move'; });
 
         window.onload = () => {
             buildEffectsGridUI();
