@@ -96,6 +96,11 @@
         cursor: none !important;
     }
 
+    body.tool-tat .canvas-layer,
+    body.tool-tat #image-container {
+        cursor: crosshair !important;
+    }
+
     #brush-cursor {
         position: absolute;
         pointer-events: none;
@@ -131,16 +136,16 @@
     }
     .t-handle {
         position: absolute;
-        width: 10px;
+        width: 100px;
         height: 10px;
         background: #fff;
         border: 1px solid var(--accent-color);
         pointer-events: auto;
     }
-    #h_tl { top: -5px; left: -5px; cursor: nwse-resize; }
-    #h_tr { top: -5px; right: -5px; cursor: nesw-resize; }
-    #h_bl { bottom: -5px; left: -5px; cursor: nesw-resize; }
-    #h_br { bottom: -5px; right: -5px; cursor: nwse-resize; }
+    #h_tl { top: -5px; left: -5px; cursor: nwse-resize; width:10px; }
+    #h_tr { top: -5px; right: -5px; cursor: nesw-resize; width:10px; }
+    #h_bl { bottom: -5px; left: -5px; cursor: nesw-resize; width:10px; }
+    #h_br { bottom: -5px; right: -5px; cursor: nwse-resize; width:10px; }
     #h_rot { top: -25px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; border-radius: 50%; background: var(--accent-color); cursor: grab; }
     
     #vignette-overlay { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 999; transition: none; }
@@ -476,10 +481,16 @@
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
 
     /* STYLES ONGLETS HSL MÉLANGEUR */
+    .hsl-subnav-container {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 12px;
+    }
     .hsl-subnav {
         display: flex;
+        flex: 1;
         gap: 4px;
-        margin-bottom: 12px;
         background: #181818;
         padding: 3px;
         border-radius: 4px;
@@ -491,16 +502,65 @@
         color: #aaa;
         border: none;
         padding: 5px 0;
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 600;
         border-radius: 3px;
         cursor: pointer;
         text-align: center;
         transition: all 0.2s;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
     }
     .hsl-subnav-btn.active {
         background: var(--accent-color);
         color: #121212;
+    }
+    .active-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: var(--accent-color);
+        display: none;
+    }
+    .hsl-subnav-btn.active .active-dot {
+        background-color: #121212;
+    }
+    .hsl-subnav-btn.has-modified .active-dot {
+        display: inline-block;
+    }
+
+    .tat-btn {
+        background: #181818;
+        border: 1px solid #444;
+        border-radius: 4px;
+        padding: 5px 7px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+    .tat-btn svg {
+        width: 14px;
+        height: 14px;
+        stroke: #aaa;
+        fill: none;
+        stroke-width: 2;
+    }
+    .tat-btn:hover {
+        border-color: var(--accent-color);
+    }
+    .tat-btn:hover svg { stroke: var(--accent-color); }
+    .tat-btn.active {
+        background: var(--accent-color);
+        border-color: var(--accent-color);
+    }
+    .tat-btn.active svg {
+        stroke: #121212;
     }
 
     .hsl-tab-content {
@@ -508,6 +568,22 @@
     }
     .hsl-tab-content.active {
         display: block;
+    }
+
+    .color-block-group {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid #2a2a2a;
+        border-radius: 4px;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+    .color-block-title {
+        font-size: 11px;
+        font-weight: bold;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 
     /* COURBE DES TONALITÉS */
@@ -953,9 +1029,9 @@
                         </div>
 
                         <div class="control-group">
-                            <label>Hautes lumières 
+                            <label>Tons clairs 
                                 <div class="transform-input-wrapper">
-                                    <button class="reset-btn" onclick="resetRawField('t_hl', 0)" title="Réinitialiser les Hautes lumières">
+                                    <button class="reset-btn" onclick="resetRawField('t_hl', 0)" title="Réinitialiser les Tons clairs">
                                         <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
                                     </button>
                                     <input type="number" id="num_t_hl" class="number-input" value="0" min="-100" max="100">
@@ -965,9 +1041,9 @@
                         </div>
 
                         <div class="control-group">
-                            <label>Ombres 
+                            <label>Tons foncés 
                                 <div class="transform-input-wrapper">
-                                    <button class="reset-btn" onclick="resetRawField('t_shad', 0)" title="Réinitialiser les Ombres">
+                                    <button class="reset-btn" onclick="resetRawField('t_shad', 0)" title="Réinitialiser les Tons foncés">
                                         <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
                                     </button>
                                     <input type="number" id="num_t_shad" class="number-input" value="0" min="-100" max="100">
@@ -1090,7 +1166,7 @@
                                     <option value="s_curve">Courbe en S accentuée</option>
                                     <option value="matte">Effet mat (Fade)</option>
                                     <option value="film_look">Film Vaste</option>
-                                    <option value="shadow_lift">Ombres Réhaussées</option>
+                                    <option value="shadow_lift">Tons foncés Réhaussés</option>
                                     <option value="high_key">High Key</option>
                                     <option value="low_key">Low Key</option>
                                     <option value="invert">Inversé</option>
@@ -1120,10 +1196,10 @@
                             </div>
                         </div>
 
-                        <div class="control-group"><label>Hautes lumières <span class="value-display" id="val_c_hl">0</span></label><input type="range" id="c_hl" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Tons clairs <span class="value-display" id="val_c_light">0</span></label><input type="range" id="c_light" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Tons clairs <span class="value-display" id="val_c_hl">0</span></label><input type="range" id="c_hl" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Lumières <span class="value-display" id="val_c_light">0</span></label><input type="range" id="c_light" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label>Tons sombres <span class="value-display" id="val_c_dark">0</span></label><input type="range" id="c_dark" min="-100" max="100" value="0"></div>
-                        <div class="control-group"><label>Ombres <span class="value-display" id="val_c_shad">0</span></label><input type="range" id="c_shad" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Tons foncés <span class="value-display" id="val_c_shad">0</span></label><input type="range" id="c_shad" min="-100" max="100" value="0"></div>
                     </div>
                 </details>
 
@@ -1141,6 +1217,14 @@
                         </div>
                     </summary>
                     <div class="module-content">
+                        <!-- CASE A COCHER CONVERTIR EN NOIR ET BLANC -->
+                        <div class="control-group" style="margin-bottom:10px;">
+                            <label style="font-size:11px; display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--accent-color); font-weight:bold;">
+                                <input type="checkbox" id="chk_bw_mode" style="width:auto; accent-color:var(--accent-color);">
+                                Convertir en Noir et Blanc (Mixeur N&B)
+                            </label>
+                        </div>
+
                         <!-- MENU DÉROULANT DE PRESETS HSL -->
                         <div class="control-group" style="margin-bottom:12px;">
                             <label>Presets HSL / Couleurs
@@ -1156,11 +1240,25 @@
                             </label>
                         </div>
 
-                        <!-- SOUS-ONGLETS TEINTE / SATURATION / LUMINANCE -->
-                        <div class="hsl-subnav">
-                            <button class="hsl-subnav-btn" data-hsl="hue">Teinte</button>
-                            <button class="hsl-subnav-btn active" data-hsl="sat">Saturation</button>
-                            <button class="hsl-subnav-btn" data-hsl="lum">Luminance</button>
+                        <!-- SOUS-ONGLETS TEINTE / SATURATION / LUMINANCE / TOUT + OUTIL TAT -->
+                        <div class="hsl-subnav-container">
+                            <div class="hsl-subnav">
+                                <button class="hsl-subnav-btn" data-hsl="hue">
+                                    Teinte <span class="active-dot" id="dot-hue"></span>
+                                </button>
+                                <button class="hsl-subnav-btn active" data-hsl="sat">
+                                    Saturation <span class="active-dot" id="dot-sat"></span>
+                                </button>
+                                <button class="hsl-subnav-btn" data-hsl="lum">
+                                    Luminance <span class="active-dot" id="dot-lum"></span>
+                                </button>
+                                <button class="hsl-subnav-btn" data-hsl="all">
+                                    Tout <span class="active-dot" id="dot-all"></span>
+                                </button>
+                            </div>
+                            <button class="tat-btn" id="tatToolBtn" title="Outil d'Ajustement Cible (TAT) : Clic + Glissé sur la photo">
+                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="1" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="23"></line><line x1="1" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="23" y2="12"></line></svg>
+                            </button>
                         </div>
 
                         <!-- TEINTE -->
@@ -1390,6 +1488,13 @@
                                 <input type="range" id="ml_mag" min="-100" max="100" value="0">
                             </div>
                         </div>
+
+                        <!-- MODE TOUT (ALL) -->
+                        <div class="hsl-tab-content" id="hsl-tab-all">
+                            <div id="hsl-all-container">
+                                <!-- Généré dynamiquement en JS pour regrouper Teinte/Sat/Lum par couleur -->
+                            </div>
+                        </div>
                     </div>
                 </details>
 
@@ -1536,7 +1641,7 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <div class="control-group"><label>Ombres - Teinte <span class="value-display">0</span></label><input type="range" id="cal_shad" min="-100" max="100" value="0"></div>
+                        <div class="control-group"><label>Tons foncés - Teinte <span class="value-display">0</span></label><input type="range" id="cal_shad" min="-100" max="100" value="0"></div>
                         <hr class="divider">
                         <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Teinte <span class="value-display">0</span></label><input type="range" id="cal_rh" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label style="color:#ff4a4a">Primaire Rouge - Saturation <span class="value-display">0</span></label><input type="range" id="cal_rs" min="-100" max="100" value="0"></div>
@@ -1567,13 +1672,15 @@
             });
         });
 
-        // GESTION DES SOUS-ONGLETS HSL (TEINTE / SATURATION / LUMINANCE)
+        // GESTION DES SOUS-ONGLETS HSL (TEINTE / SATURATION / LUMINANCE / TOUT)
         const hslSubnavBtns = document.querySelectorAll('.hsl-subnav-btn');
         const hslTabContents = document.querySelectorAll('.hsl-tab-content');
+        let activeHslTab = 'sat';
 
         hslSubnavBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 const targetTab = btn.dataset.hsl;
+                activeHslTab = targetTab;
                 hslSubnavBtns.forEach(b => b.classList.remove('active'));
                 hslTabContents.forEach(c => c.classList.remove('active'));
 
@@ -1582,6 +1689,90 @@
                 if (contentEl) contentEl.classList.add('active');
             });
         });
+
+        // GENERATION DU MODE "TOUT" (ALL) DYNAMIQUEMENT
+        const COLOR_DEFINITIONS = [
+            { key: 'red', name: 'Rouge', color: '#ff4a4a' },
+            { key: 'org', name: 'Orange', color: '#ffa500' },
+            { key: 'yel', name: 'Jaune', color: '#ffff00' },
+            { key: 'grn', name: 'Vert', color: '#00ff00' },
+            { key: 'aqu', name: 'Aqua', color: '#00ffff' },
+            { key: 'blu', name: 'Bleu', color: '#4a4aff' },
+            { key: 'vio', name: 'Violet', color: '#ff00ff' },
+            { key: 'mag', name: 'Magenta', color: '#ff00a5' }
+        ];
+
+        function buildHslAllTab() {
+            const container = document.getElementById('hsl-all-container');
+            if (!container) return;
+            container.innerHTML = '';
+
+            COLOR_DEFINITIONS.forEach(col => {
+                const group = document.createElement('div');
+                group.className = 'color-block-group';
+
+                group.innerHTML = `
+                    <div class="color-block-title" style="color:${col.color}">● ${col.name}</div>
+                    
+                    <!-- TEINTE -->
+                    <div class="control-group">
+                        <label>Teinte
+                            <div class="transform-input-wrapper">
+                                <button class="reset-btn" onclick="resetRawField('mh_${col.key}', 0)"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                <input type="number" id="num_mh_${col.key}_all" class="number-input" value="0" min="-100" max="100">
+                            </div>
+                        </label>
+                        <input type="range" id="mh_${col.key}_all" min="-100" max="100" value="0">
+                    </div>
+
+                    <!-- SATURATION -->
+                    <div class="control-group">
+                        <label>Saturation
+                            <div class="transform-input-wrapper">
+                                <button class="reset-btn" onclick="resetRawField('m_${col.key}', 0)"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                <input type="number" id="num_m_${col.key}_all" class="number-input" value="0" min="-100" max="100">
+                            </div>
+                        </label>
+                        <input type="range" id="m_${col.key}_all" min="-100" max="100" value="0">
+                    </div>
+
+                    <!-- LUMINANCE -->
+                    <div class="control-group">
+                        <label>Luminance
+                            <div class="transform-input-wrapper">
+                                <button class="reset-btn" onclick="resetRawField('ml_${col.key}', 0)"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                <input type="number" id="num_ml_${col.key}_all" class="number-input" value="0" min="-100" max="100">
+                            </div>
+                        </label>
+                        <input type="range" id="ml_${col.key}_all" min="-100" max="100" value="0">
+                    </div>
+                `;
+                container.appendChild(group);
+
+                ['mh_', 'm_', 'ml_'].forEach(prefix => {
+                    const id = prefix + col.key;
+                    setupRawFieldSync(`${id}_all`, `num_${id}_all`, id);
+                });
+            });
+        }
+        buildHslAllTab();
+
+        // METTENT A JOUR LES TÉMOINS LUMINEUX DES ONGLETS HSL
+        function updateHslTabDots() {
+            const active = getActiveLayer();
+            if (!active || !active.rawSettings) return;
+
+            const s = active.rawSettings;
+
+            const hueModified = ['mh_red', 'mh_org', 'mh_yel', 'mh_grn', 'mh_aqu', 'mh_blu', 'mh_vio', 'mh_mag'].some(k => (s[k] || 0) !== 0);
+            const satModified = ['m_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag'].some(k => (s[k] || 0) !== 0);
+            const lumModified = ['ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag'].some(k => (s[k] || 0) !== 0);
+
+            document.querySelector('[data-hsl="hue"]').classList.toggle('has-modified', hueModified);
+            document.querySelector('[data-hsl="sat"]').classList.toggle('has-modified', satModified);
+            document.querySelector('[data-hsl="lum"]').classList.toggle('has-modified', lumModified);
+            document.querySelector('[data-hsl="all"]').classList.toggle('has-modified', hueModified || satModified || lumModified);
+        }
 
         // CONVERSIONS COLORIMÉTRIQUES RVB <-> HSL
         function rgbToHsl(r, g, b) {
@@ -1656,6 +1847,7 @@
         
         const brushCursor = document.getElementById('brush-cursor');
         const brushInnerCircle = brushCursor.querySelector('.brush-inner-circle');
+        const tatToolBtn = document.getElementById('tatToolBtn');
 
         let layers = [];
         let activeLayerId = null;
@@ -1677,6 +1869,7 @@
 
         const DEFAULT_RAW_SETTINGS = {
             baseProfile: 'adobe_color',
+            bwMode: false,
             t_temp: 0, t_tint: 0, t_exp: 0, t_cont: 0, t_hl: 0, t_shad: 0, t_white: 0, t_black: 0,
             t_text: 0, t_clar: 0, t_dehaze: 0, t_vib: 0, t_sat: 0, c_hl: 0, c_light: 0, c_dark: 0,
             c_shad: 0,
@@ -1709,8 +1902,21 @@
         let isPaintingMask = false;
         let lastMaskPos = null;
         let draggedLayerId = null;
-        
         let savedSignatureConfig = null;
+
+        // VARIABLES TAT (TARGETED ADJUSTMENT TOOL)
+        let isTatDragging = false;
+        let tatStartY = 0;
+        let tatWeights = null;
+        let tatInitialValues = {};
+
+        tatToolBtn.addEventListener('click', () => {
+            if (currentTool === 'tat') {
+                setTool('move');
+            } else {
+                setTool('tat');
+            }
+        });
 
         function calculateSplinePoints(points) {
             const sorted = [...points].sort((a, b) => a.x - b.x);
@@ -2071,6 +2277,17 @@
             }
         });
 
+        // GESTION DU MODE NOIR ET BLANC
+        const chkBwMode = document.getElementById('chk_bw_mode');
+        chkBwMode.addEventListener('change', (e) => {
+            const active = getActiveLayer();
+            if (active && active.rawSettings) {
+                active.rawSettings.bwMode = e.target.checked;
+                processImage();
+                saveHistoryState();
+            }
+        });
+
         // GESTION DU MENU DÉROULANT DES PRESETS HSL
         const hslPresetSelect = document.getElementById('hslPresetSelect');
 
@@ -2123,6 +2340,11 @@
                     const numEl = document.getElementById(`num_${key}`);
                     if (rangeEl) rangeEl.value = preset[key];
                     if (numEl) numEl.value = preset[key];
+
+                    const rangeAllEl = document.getElementById(`${key}_all`);
+                    const numAllEl = document.getElementById(`num_${key}_all`);
+                    if (rangeAllEl) rangeAllEl.value = preset[key];
+                    if (numAllEl) numAllEl.value = preset[key];
 
                     const label = rangeEl ? rangeEl.previousElementSibling : null;
                     if (label && label.querySelector('.value-display')) {
@@ -2197,6 +2419,9 @@
                 'm_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag',
                 'ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag'
             ]);
+            const active = getActiveLayer();
+            if (active && active.rawSettings) active.rawSettings.bwMode = false;
+            chkBwMode.checked = false;
             hslPresetSelect.value = 'custom';
         });
 
@@ -2368,6 +2593,8 @@
                         isPaintingMask = true;
                         lastMaskPos = null;
                         paintMask(layerObj, e);
+                    } else if (currentTool === 'tat' && !layerObj.locked) {
+                        startTatDrag(e, layerObj);
                     }
                 });
 
@@ -2427,19 +2654,94 @@
             btnFreeTrans.classList.toggle('active', tool === 'transform');
             btnMaskBrush.classList.toggle('active', tool === 'maskBrush');
             btnText.classList.toggle('active', tool === 'text');
+            tatToolBtn.classList.toggle('active', tool === 'tat');
             
             maskBrushBox.style.display = (tool === 'maskBrush') ? 'block' : 'none';
             textOptionsBox.style.display = (tool === 'text') ? 'block' : 'none';
 
-            if (tool === 'maskBrush') {
-                document.body.classList.add('tool-brush');
-            } else {
-                document.body.classList.remove('tool-brush');
+            document.body.classList.toggle('tool-brush', tool === 'maskBrush');
+            document.body.classList.toggle('tool-tat', tool === 'tat');
+            
+            if (tool !== 'maskBrush') {
                 brushCursor.style.display = 'none';
             }
 
             updateBoundingBoxVisibility();
         }
+
+        // DÉLEUATION DE L'OUTIL TAT (TARGETED ADJUSTMENT TOOL)
+        function startTatDrag(e, layerObj) {
+            if (!layerObj || !layerObj.rawImg.complete) return;
+
+            const rect = layerObj.img.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+
+            const ratioX = layerObj.img.width / rect.width;
+            const ratioY = layerObj.img.height / rect.height;
+
+            const px = Math.round(clickX * ratioX);
+            const py = Math.round(clickY * ratioY);
+
+            const tempCtx = layerObj.img.getContext('2d');
+            const pixel = tempCtx.getImageData(px, py, 1, 1).data;
+            const [h] = rgbToHsl(pixel[0], pixel[1], pixel[2]);
+
+            tatWeights = getColorWeights(h);
+            isTatDragging = true;
+            tatStartY = e.clientY;
+
+            const prefixMap = { hue: 'mh_', sat: 'm_', lum: 'ml_', all: 'm_' };
+            const activePrefix = prefixMap[activeHslTab] || 'm_';
+
+            tatInitialValues = {};
+            Object.keys(tatWeights).forEach(colKey => {
+                if (tatWeights[colKey] > 0.05) {
+                    const settingKey = activePrefix + colKey;
+                    tatInitialValues[settingKey] = layerObj.rawSettings[settingKey] || 0;
+                }
+            });
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isTatDragging || !tatWeights) return;
+
+            const active = getActiveLayer();
+            if (!active || !active.rawSettings) return;
+
+            const deltaY = tatStartY - e.clientY;
+            const sensitivity = 0.5;
+
+            Object.keys(tatInitialValues).forEach(settingKey => {
+                const colKey = settingKey.replace(/^(mh_|m_|ml_)/, '');
+                const weight = tatWeights[colKey];
+
+                let newVal = tatInitialValues[settingKey] + (deltaY * sensitivity * weight);
+                newVal = Math.max(-100, Math.min(100, Math.round(newVal)));
+
+                active.rawSettings[settingKey] = newVal;
+
+                const rangeEl = document.getElementById(settingKey);
+                const numEl = document.getElementById(`num_${settingKey}`);
+                if (rangeEl) rangeEl.value = newVal;
+                if (numEl) numEl.value = newVal;
+
+                const rangeAllEl = document.getElementById(`${settingKey}_all`);
+                const numAllEl = document.getElementById(`num_${settingKey}_all`);
+                if (rangeAllEl) rangeAllEl.value = newVal;
+                if (numAllEl) numAllEl.value = newVal;
+            });
+
+            processImage();
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isTatDragging) {
+                isTatDragging = false;
+                tatWeights = null;
+                saveHistoryState();
+            }
+        });
 
         function removeAllSignatureAndTextLayers() {
             const signatureLayers = layers.filter(l => l.isText || l.isLogo);
@@ -2785,6 +3087,8 @@
                     isPaintingMask = true;
                     lastMaskPos = null;
                     paintMask(layerObj, e);
+                } else if (currentTool === 'tat' && !layerObj.locked) {
+                    startTatDrag(e, layerObj);
                 }
             });
 
@@ -2850,8 +3154,10 @@
                 profileSelect.value = settings.baseProfile;
             }
 
+            chkBwMode.checked = !!settings.bwMode;
+
             Object.keys(settings).forEach(key => {
-                if (key === 'baseProfile' || key === 'curvePoints') return;
+                if (key === 'baseProfile' || key === 'curvePoints' || key === 'bwMode') return;
 
                 const el = document.getElementById(key);
                 if (el) {
@@ -2862,6 +3168,11 @@
                         numEl.value = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
                     }
 
+                    const rangeAllEl = document.getElementById(`${key}_all`);
+                    const numAllEl = document.getElementById(`num_${key}_all`);
+                    if (rangeAllEl) rangeAllEl.value = settings[key];
+                    if (numAllEl) numAllEl.value = settings[key];
+
                     const label = el.previousElementSibling;
                     if (label && label.querySelector('.value-display')) {
                         label.querySelector('.value-display').innerText = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
@@ -2869,6 +3180,7 @@
                 }
             });
 
+            updateHslTabDots();
             renderToneCurveGUI();
             computeAndRenderHistogram(active);
         }
@@ -3480,11 +3792,13 @@
             rangeEl.dispatchEvent(new Event('change'));
         };
 
-        function setupRawFieldSync(rangeId, numId) {
+        function setupRawFieldSync(rangeId, numId, masterId = null) {
             const rangeEl = document.getElementById(rangeId);
             const numEl = document.getElementById(numId);
 
             if (!rangeEl || !numEl) return;
+
+            const targetKey = masterId || rangeId;
 
             const updateValue = (val) => {
                 const active = getActiveLayer();
@@ -3496,10 +3810,18 @@
                 rangeEl.value = numVal;
                 numEl.value = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
 
-                active.rawSettings[rangeId] = numVal;
+                // Synchronise les éléments homologues (Tab unique <-> Tab Tout)
+                const baseId = targetKey;
+                const altRangeEl = document.getElementById(rangeId.endsWith('_all') ? baseId : `${baseId}_all`);
+                const altNumEl = document.getElementById(numId.endsWith('_all') ? `num_${baseId}` : `num_${baseId}_all`);
+                if (altRangeEl) altRangeEl.value = numVal;
+                if (altNumEl) altNumEl.value = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
 
-                if (mixerSliderIds.includes(rangeId)) {
+                active.rawSettings[baseId] = numVal;
+
+                if (mixerSliderIds.includes(baseId)) {
                     hslPresetSelect.value = 'custom';
+                    updateHslTabDots();
                 }
 
                 const label = rangeEl.previousElementSibling;
@@ -3562,7 +3884,7 @@
             saveHistoryState();
         });
 
-        // MOTEUR DE RENDU DU TRAITEMENT D'IMAGE (INCLUANT LE MÉLANGEUR HSL COMPLET)
+        // MOTEUR DE RENDU DU TRAITEMENT D'IMAGE (INCLUANT LE MIXEUR N&B ET HSL)
         function processImage() {
             try {
                 layers.forEach((layer) => {
@@ -3588,6 +3910,7 @@
                     const vib = modulesState.base ? ((s.t_vib || 0) * 0.01) : 0;
                     const cont = modulesState.base ? ((s.t_cont || 0) * 0.01) : 0;
                     const profile = modulesState.base ? (s.baseProfile || 'adobe_color') : 'adobe_color';
+                    const isBwMode = s.bwMode || profile === 'monochrome';
 
                     const rFactor = 1 + (temp * 0.003);
                     const bFactor = 1 - (temp * 0.003);
@@ -3617,52 +3940,72 @@
                         g *= expMult * gFactor;
                         b *= expMult * bFactor;
 
-                        // TRAITEMENT HSL MÉLANGEUR DE COULEURS
-                        if (modulesState.mixer && profile !== 'monochrome') {
-                            let [h, sVal, lVal] = rgbToHsl(r, g, b);
-                            const w = getColorWeights(h);
+                        // MIXEUR NOIR & BLANC A 8 CANAUX OU MÉLANGEUR HSL STANDARD
+                        if (modulesState.mixer) {
+                            if (isBwMode) {
+                                const [h, sVal, lVal] = rgbToHsl(r, g, b);
+                                const w = getColorWeights(h);
 
-                            // TEINTE (HUE SHIFT -100 à +100 MAPPER SUR -30° à +30°)
-                            const hueShift = 
-                                (s.mh_red || 0) * w.red +
-                                (s.mh_org || 0) * w.org +
-                                (s.mh_yel || 0) * w.yel +
-                                (s.mh_grn || 0) * w.grn +
-                                (s.mh_aqu || 0) * w.aqu +
-                                (s.mh_blu || 0) * w.blu +
-                                (s.mh_vio || 0) * w.vio +
-                                (s.mh_mag || 0) * w.mag;
+                                const bwShift = 
+                                    (s.ml_red || 0) * w.red +
+                                    (s.ml_org || 0) * w.org +
+                                    (s.ml_yel || 0) * w.yel +
+                                    (s.ml_grn || 0) * w.grn +
+                                    (s.ml_aqu || 0) * w.aqu +
+                                    (s.ml_blu || 0) * w.blu +
+                                    (s.ml_vio || 0) * w.vio +
+                                    (s.ml_mag || 0) * w.mag;
 
-                            h = (h + (hueShift * 0.3) + 360) % 360;
+                                let gray = 0.299 * r + 0.587 * g + 0.114 * b;
+                                gray = gray * (1 + (bwShift * 0.005));
+                                gray = Math.max(0, Math.min(255, gray));
+                                r = gray; g = gray; b = gray;
+                            } else {
+                                let [h, sVal, lVal] = rgbToHsl(r, g, b);
+                                const w = getColorWeights(h);
 
-                            // SATURATION (-100 à +100)
-                            const satShift = 
-                                (s.m_red || 0) * w.red +
-                                (s.m_org || 0) * w.org +
-                                (s.m_yel || 0) * w.yel +
-                                (s.m_grn || 0) * w.grn +
-                                (s.m_aqu || 0) * w.aqu +
-                                (s.m_blu || 0) * w.blu +
-                                (s.m_vio || 0) * w.vio +
-                                (s.m_mag || 0) * w.mag;
+                                // TEINTE
+                                const hueShift = 
+                                    (s.mh_red || 0) * w.red +
+                                    (s.mh_org || 0) * w.org +
+                                    (s.mh_yel || 0) * w.yel +
+                                    (s.mh_grn || 0) * w.grn +
+                                    (s.mh_aqu || 0) * w.aqu +
+                                    (s.mh_blu || 0) * w.blu +
+                                    (s.mh_vio || 0) * w.vio +
+                                    (s.mh_mag || 0) * w.mag;
 
-                            sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
+                                h = (h + (hueShift * 0.3) + 360) % 360;
 
-                            // LUMINANCE (-100 à +100)
-                            const lumShift = 
-                                (s.ml_red || 0) * w.red +
-                                (s.ml_org || 0) * w.org +
-                                (s.ml_yel || 0) * w.yel +
-                                (s.ml_grn || 0) * w.grn +
-                                (s.ml_aqu || 0) * w.aqu +
-                                (s.ml_blu || 0) * w.blu +
-                                (s.ml_vio || 0) * w.vio +
-                                (s.ml_mag || 0) * w.mag;
+                                // SATURATION
+                                const satShift = 
+                                    (s.m_red || 0) * w.red +
+                                    (s.m_org || 0) * w.org +
+                                    (s.m_yel || 0) * w.yel +
+                                    (s.m_grn || 0) * w.grn +
+                                    (s.m_aqu || 0) * w.aqu +
+                                    (s.m_blu || 0) * w.blu +
+                                    (s.m_vio || 0) * w.vio +
+                                    (s.m_mag || 0) * w.mag;
 
-                            lVal = Math.max(0, Math.min(1, lVal * (1 + (lumShift * 0.005))));
+                                sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
 
-                            const [newR, newG, newB] = hslToRgb(h, sVal, lVal);
-                            r = newR; g = newG; b = newB;
+                                // LUMINANCE
+                                const lumShift = 
+                                    (s.ml_red || 0) * w.red +
+                                    (s.ml_org || 0) * w.org +
+                                    (s.ml_yel || 0) * w.yel +
+                                    (s.ml_grn || 0) * w.grn +
+                                    (s.ml_aqu || 0) * w.aqu +
+                                    (s.ml_blu || 0) * w.blu +
+                                    (s.ml_vio || 0) * w.vio +
+                                    (s.ml_mag || 0) * w.mag;
+
+                                lVal = Math.max(0, Math.min(1, lVal * (1 + (lumShift * 0.005))));
+
+                                const [newR, newG, newB] = hslToRgb(h, sVal, lVal);
+                                r = newR; g = newG; b = newB;
+                            }
                         }
 
                         if (modulesState.curve) {
@@ -3677,7 +4020,7 @@
                             b = ((b / 255 - 0.5) * (1 + cont) + 0.5) * 255;
                         }
 
-                        if (profile !== 'monochrome') {
+                        if (!isBwMode) {
                             const lum = 0.299 * r + 0.587 * g + 0.114 * b;
                             if (sat !== 1 || vib !== 0) {
                                 const maxColor = Math.max(r, g, b);
