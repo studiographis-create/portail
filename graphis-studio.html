@@ -480,69 +480,71 @@
 
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
 
-    /* STYLES ONGLETS HSL MÉLANGEUR */
-    .hsl-subnav-container {
+    /* NOUVEAU STYLE : SÉLECTEUR DE COULEURS EN PUCK / CIRCLE (CAMERA RAW) */
+    .color-circles-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #181818;
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid #333;
+        margin-bottom: 12px;
+    }
+    .color-circle-btn {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        cursor: pointer;
+        position: relative;
+        transition: transform 0.2s, border-color 0.2s;
+        box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
+    }
+    .color-circle-btn:hover {
+        transform: scale(1.2);
+    }
+    .color-circle-btn.active {
+        transform: scale(1.25);
+        border-color: #ffffff;
+        box-shadow: 0 0 6px rgba(255,255,255,0.8);
+    }
+    .color-circle-btn .modified-dot {
+        position: absolute;
+        top: -3px;
+        right: -3px;
+        width: 6px;
+        height: 6px;
+        background-color: var(--accent-color);
+        border: 1px solid #121212;
+        border-radius: 50%;
+        display: none;
+    }
+    .color-circle-btn.has-modified .modified-dot {
+        display: block;
+    }
+
+    .hsl-tools-bar {
         display: flex;
         align-items: center;
         gap: 6px;
         margin-bottom: 12px;
-    }
-    .hsl-subnav {
-        display: flex;
-        flex: 1;
-        gap: 4px;
-        background: #181818;
-        padding: 3px;
-        border-radius: 4px;
-        border: 1px solid #333;
-    }
-    .hsl-subnav-btn {
-        flex: 1;
-        background: transparent;
-        color: #aaa;
-        border: none;
-        padding: 5px 0;
-        font-size: 10.5px;
-        font-weight: 600;
-        border-radius: 3px;
-        cursor: pointer;
-        text-align: center;
-        transition: all 0.2s;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 4px;
-    }
-    .hsl-subnav-btn.active {
-        background: var(--accent-color);
-        color: #121212;
-    }
-    .active-dot {
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background-color: var(--accent-color);
-        display: none;
-    }
-    .hsl-subnav-btn.active .active-dot {
-        background-color: #121212;
-    }
-    .hsl-subnav-btn.has-modified .active-dot {
-        display: inline-block;
     }
 
     .tat-btn, .solo-color-btn {
         background: #181818;
         border: 1px solid #444;
         border-radius: 4px;
-        padding: 5px 7px;
+        padding: 5px 8px;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 6px;
+        font-size: 11px;
+        color: #aaa;
         transition: all 0.2s;
-        flex-shrink: 0;
+        flex: 1;
     }
     .tat-btn svg, .solo-color-btn svg {
         width: 14px;
@@ -553,37 +555,34 @@
     }
     .tat-btn:hover, .solo-color-btn:hover {
         border-color: var(--accent-color);
+        color: var(--accent-color);
     }
     .tat-btn:hover svg, .solo-color-btn:hover svg { stroke: var(--accent-color); }
     .tat-btn.active, .solo-color-btn.active {
         background: var(--accent-color);
         border-color: var(--accent-color);
+        color: #121212;
+        font-weight: bold;
     }
     .tat-btn.active svg, .solo-color-btn.active svg {
         stroke: #121212;
-    }
-
-    .hsl-tab-content {
-        display: none;
-    }
-    .hsl-tab-content.active {
-        display: block;
     }
 
     .color-block-group {
         background: rgba(0, 0, 0, 0.2);
         border: 1px solid #2a2a2a;
         border-radius: 4px;
-        padding: 8px;
+        padding: 10px;
         margin-bottom: 10px;
     }
     .color-block-title {
-        font-size: 11px;
+        font-size: 12px;
         font-weight: bold;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
         display: flex;
         align-items: center;
         gap: 6px;
+        text-transform: uppercase;
     }
     .range-tolerance-box {
         background: rgba(255, 215, 0, 0.04);
@@ -1216,7 +1215,7 @@
                     </div>
                 </details>
 
-                <!-- PANNEAU MÉLANGEUR DE COULEURS -->
+                <!-- PANNEAU MÉLANGEUR DE COULEURS SIMPLIFIÉ (CAMERA RAW STYLE) -->
                 <details>
                     <summary>
                         <span>Mélangeur de couleurs</span>
@@ -1230,7 +1229,7 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <!-- CASE A COCHER CONVERTIR EN NOIR ET BLANC -->
+                        <!-- CASE À COCHER CONVERTIR EN NOIR ET BLANC -->
                         <div class="control-group" style="margin-bottom:10px;">
                             <label style="font-size:11px; display:flex; align-items:center; gap:8px; cursor:pointer; color:var(--accent-color); font-weight:bold;">
                                 <input type="checkbox" id="chk_bw_mode" style="width:auto; accent-color:var(--accent-color);">
@@ -1253,50 +1252,23 @@
                             </label>
                         </div>
 
-                        <!-- SOUS-ONGLETS TEINTE / SATURATION / LUMINANCE / TOUT + OUTIL TAT + SOLO COLOR -->
-                        <div class="hsl-subnav-container">
-                            <div class="hsl-subnav">
-                                <button class="hsl-subnav-btn" data-hsl="hue">
-                                    Teinte <span class="active-dot" id="dot-hue"></span>
-                                </button>
-                                <button class="hsl-subnav-btn active" data-hsl="sat">
-                                    Saturation <span class="active-dot" id="dot-sat"></span>
-                                </button>
-                                <button class="hsl-subnav-btn" data-hsl="lum">
-                                    Luminance <span class="active-dot" id="dot-lum"></span>
-                                </button>
-                                <button class="hsl-subnav-btn" data-hsl="all">
-                                    Tout <span class="active-dot" id="dot-all"></span>
-                                </button>
-                            </div>
+                        <!-- OUTILS CIBLE ET SOLO COLOR -->
+                        <div class="hsl-tools-bar">
                             <button class="tat-btn" id="tatToolBtn" title="Outil d'Ajustement Cible (TAT) : Clic + Glissé sur la photo">
                                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="1" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="23"></line><line x1="1" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="23" y2="12"></line></svg>
+                                <span>Cible (TAT)</span>
                             </button>
-                            <!-- BOUTON MODE SOLO COLOR / ISOLATION -->
                             <button class="solo-color-btn" id="soloColorBtn" title="Mode Solo Color : Isole la couleur modifiée et passe le reste en N&B">
                                 <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                <span>Solo Color</span>
                             </button>
                         </div>
 
-                        <!-- TEINTE -->
-                        <div class="hsl-tab-content" id="hsl-tab-hue">
-                            <div id="hsl-hue-container"></div>
-                        </div>
+                        <!-- BARRE DES PUCK/CIRCLES DE SÉLECTION DE COULEUR -->
+                        <div class="color-circles-bar" id="colorCirclesBar"></div>
 
-                        <!-- SATURATION -->
-                        <div class="hsl-tab-content active" id="hsl-tab-sat">
-                            <div id="hsl-sat-container"></div>
-                        </div>
-
-                        <!-- LUMINANCE -->
-                        <div class="hsl-tab-content" id="hsl-tab-lum">
-                            <div id="hsl-lum-container"></div>
-                        </div>
-
-                        <!-- MODE TOUT (ALL) -->
-                        <div class="hsl-tab-content" id="hsl-tab-all">
-                            <div id="hsl-all-container"></div>
-                        </div>
+                        <!-- CONTENEUR DES DYNAMIQUES PAR COULEUR (TEINTE, SATURATION, LUMINANCE L'UN EN DESSOUS DE L'AUTRE) -->
+                        <div id="hsl-color-blocks-container"></div>
                     </div>
                 </details>
 
@@ -1474,7 +1446,7 @@
             });
         });
 
-        // DEFINITIONS DES COULEURS AVEC RANGE D'ORIGINE
+        // DEFINITIONS DES COULEURS AVEC RANGE D'ORIGINE ET COULEURS EXPLICITES
         const COLOR_DEFINITIONS = [
             { key: 'red', name: 'Rouge', color: '#ff4a4a', center: 0, defaultRange: 30 },
             { key: 'org', name: 'Orange', color: '#ffa500', center: 30, defaultRange: 30 },
@@ -1497,186 +1469,128 @@
             processImage();
         });
 
-        // GESTION DES SOUS-ONGLETS HSL (TEINTE / SATURATION / LUMINANCE / TOUT)
-        const hslSubnavBtns = document.querySelectorAll('.hsl-subnav-btn');
-        const hslTabContents = document.querySelectorAll('.hsl-tab-content');
-        let activeHslTab = 'sat';
+        // GENERATION DYNAMIQUE DU SELECTEUR PAR CERCLE (STYLE CAMERA RAW) ET BLOCS DE REGLES
+        function buildCameraRawMixerUI() {
+            const circlesBar = document.getElementById('colorCirclesBar');
+            const container = document.getElementById('hsl-color-blocks-container');
 
-        hslSubnavBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const targetTab = btn.dataset.hsl;
-                activeHslTab = targetTab;
-                hslSubnavBtns.forEach(b => b.classList.remove('active'));
-                hslTabContents.forEach(c => c.classList.remove('active'));
+            if (!circlesBar || !container) return;
 
-                btn.classList.add('active');
-                const contentEl = document.getElementById(`hsl-tab-${targetTab}`);
-                if (contentEl) contentEl.classList.add('active');
-            });
-        });
-
-        // GENERATION DYNAMIQUE DES INTERFACES HSL (TEINTE / SAT / LUM / TOUT) AVEC HUE RANGE
-        function buildHslTabs() {
-            const hueContainer = document.getElementById('hsl-hue-container');
-            const satContainer = document.getElementById('hsl-sat-container');
-            const lumContainer = document.getElementById('hsl-lum-container');
-            const allContainer = document.getElementById('hsl-all-container');
-
-            if (!hueContainer || !satContainer || !lumContainer || !allContainer) return;
-
-            hueContainer.innerHTML = '';
-            satContainer.innerHTML = '';
-            lumContainer.innerHTML = '';
-            allContainer.innerHTML = '';
+            circlesBar.innerHTML = '';
+            container.innerHTML = '';
 
             COLOR_DEFINITIONS.forEach(col => {
-                // ONGLET TEINTE
-                const hueGroup = document.createElement('div');
-                hueGroup.className = 'control-group';
-                hueGroup.innerHTML = `
-                    <label style="color:${col.color}">${col.name}
-                        <div class="transform-input-wrapper">
-                            <button class="reset-btn" onclick="resetRawField('mh_${col.key}', 0)" title="Réinitialiser"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                            <input type="number" id="num_mh_${col.key}" class="number-input" value="0" min="-100" max="100">
-                        </div>
-                    </label>
-                    <input type="range" id="mh_${col.key}" min="-100" max="100" value="0">
+                // Puce cercle / Puck de couleur
+                const btn = document.createElement('div');
+                btn.className = `color-circle-btn ${col.key === activeColorChannel ? 'active' : ''}`;
+                btn.style.backgroundColor = col.color;
+                btn.title = col.name;
+                btn.dataset.key = col.key;
+                btn.innerHTML = `<span class="modified-dot"></span>`;
+
+                btn.addEventListener('click', () => {
+                    activeColorChannel = col.key;
+                    document.querySelectorAll('.color-circle-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    document.querySelectorAll('.color-block-group').forEach(group => {
+                        group.style.display = group.dataset.key === col.key ? 'block' : 'none';
+                    });
+                });
+
+                circlesBar.appendChild(btn);
+
+                // Bloc regroupant Teinte, Saturation et Luminance pour la couleur
+                const group = document.createElement('div');
+                group.className = 'color-block-group';
+                group.dataset.key = col.key;
+                group.style.display = col.key === activeColorChannel ? 'block' : 'none';
+
+                group.innerHTML = `
+                    <div class="color-block-title" style="color:${col.color}">● ${col.name}</div>
+                    
+                    <!-- TEINTE -->
+                    <div class="control-group">
+                        <label>Teinte
+                            <div class="transform-input-wrapper">
+                                <button class="reset-btn" onclick="resetRawField('mh_${col.key}', 0)" title="Réinitialiser Teinte"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                <input type="number" id="num_mh_${col.key}" class="number-input" value="0" min="-100" max="100">
+                            </div>
+                        </label>
+                        <input type="range" id="mh_${col.key}" min="-100" max="100" value="0">
+                    </div>
+
+                    <!-- SATURATION -->
+                    <div class="control-group">
+                        <label>Saturation
+                            <div class="transform-input-wrapper">
+                                <button class="reset-btn" onclick="resetRawField('m_${col.key}', 0)" title="Réinitialiser Saturation"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                <input type="number" id="num_m_${col.key}" class="number-input" value="0" min="-100" max="100">
+                            </div>
+                        </label>
+                        <input type="range" id="m_${col.key}" min="-100" max="100" value="0">
+                    </div>
+
+                    <!-- LUMINANCE -->
+                    <div class="control-group">
+                        <label>Luminance
+                            <div class="transform-input-wrapper">
+                                <button class="reset-btn" onclick="resetRawField('ml_${col.key}', 0)" title="Réinitialiser Luminance"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                                <input type="number" id="num_ml_${col.key}" class="number-input" value="0" min="-100" max="100">
+                            </div>
+                        </label>
+                        <input type="range" id="ml_${col.key}" min="-100" max="100" value="0">
+                    </div>
+
+                    <!-- TOLÉRANCE DE TEINTE (HUE RANGE) -->
                     <details class="range-tolerance-box">
-                        <summary>Tolérance / Étendue de teinte (Hue Range)</summary>
+                        <summary>Tolérance de teinte (Hue Range)</summary>
                         <div class="control-group" style="margin-top:4px; margin-bottom:0;">
-                            <label style="font-size:10px;">Plage <span class="value-display" id="val_mh_range_${col.key}">30°</span></label>
+                            <label style="font-size:10px;">Plage d'action <span class="value-display" id="val_mh_range_${col.key}">30°</span></label>
                             <input type="range" id="mh_range_${col.key}" min="10" max="90" value="30">
                         </div>
                     </details>
                 `;
-                hueContainer.appendChild(hueGroup);
 
-                // ONGLET SATURATION
-                const satGroup = document.createElement('div');
-                satGroup.className = 'control-group';
-                satGroup.innerHTML = `
-                    <label style="color:${col.color}">${col.name}
-                        <div class="transform-input-wrapper">
-                            <button class="reset-btn" onclick="resetRawField('m_${col.key}', 0)" title="Réinitialiser"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                            <input type="number" id="num_m_${col.key}" class="number-input" value="0" min="-100" max="100">
-                        </div>
-                    </label>
-                    <input type="range" id="m_${col.key}" min="-100" max="100" value="0">
-                `;
-                satContainer.appendChild(satGroup);
+                container.appendChild(group);
 
-                // ONGLET LUMINANCE
-                const lumGroup = document.createElement('div');
-                lumGroup.className = 'control-group';
-                lumGroup.innerHTML = `
-                    <label style="color:${col.color}">${col.name}
-                        <div class="transform-input-wrapper">
-                            <button class="reset-btn" onclick="resetRawField('ml_${col.key}', 0)" title="Réinitialiser"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                            <input type="number" id="num_ml_${col.key}" class="number-input" value="0" min="-100" max="100">
-                        </div>
-                    </label>
-                    <input type="range" id="ml_${col.key}" min="-100" max="100" value="0">
-                `;
-                lumContainer.appendChild(lumGroup);
-
-                // ONGLET TOUT (ALL)
-                const allGroup = document.createElement('div');
-                allGroup.className = 'color-block-group';
-                allGroup.innerHTML = `
-                    <div class="color-block-title" style="color:${col.color}">● ${col.name}</div>
-                    <div class="control-group">
-                        <label>Teinte
-                            <div class="transform-input-wrapper">
-                                <button class="reset-btn" onclick="resetRawField('mh_${col.key}', 0)"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                <input type="number" id="num_mh_${col.key}_all" class="number-input" value="0" min="-100" max="100">
-                            </div>
-                        </label>
-                        <input type="range" id="mh_${col.key}_all" min="-100" max="100" value="0">
-                    </div>
-                    <div class="control-group">
-                        <label>Saturation
-                            <div class="transform-input-wrapper">
-                                <button class="reset-btn" onclick="resetRawField('m_${col.key}', 0)"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                <input type="number" id="num_m_${col.key}_all" class="number-input" value="0" min="-100" max="100">
-                            </div>
-                        </label>
-                        <input type="range" id="m_${col.key}_all" min="-100" max="100" value="0">
-                    </div>
-                    <div class="control-group">
-                        <label>Luminance
-                            <div class="transform-input-wrapper">
-                                <button class="reset-btn" onclick="resetRawField('ml_${col.key}', 0)"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                <input type="number" id="num_ml_${col.key}_all" class="number-input" value="0" min="-100" max="100">
-                            </div>
-                        </label>
-                        <input type="range" id="ml_${col.key}_all" min="-100" max="100" value="0">
-                    </div>
-                    <details class="range-tolerance-box">
-                        <summary>Tolérance de teinte (Hue Range)</summary>
-                        <div class="control-group" style="margin-top:4px; margin-bottom:0;">
-                            <label style="font-size:10px;">Plage <span class="value-display" id="val_mh_range_${col.key}_all">30°</span></label>
-                            <input type="range" id="mh_range_${col.key}_all" min="10" max="90" value="30">
-                        </div>
-                    </details>
-                `;
-                allContainer.appendChild(allGroup);
-
-                // SYNC INTERACTIVE ET DÉTECTION DU CANAL ACTIF
+                // Attachement de la synchronisation des champs
                 ['mh_', 'm_', 'ml_'].forEach(prefix => {
                     const id = prefix + col.key;
-                    setupRawFieldSync(`${id}_all`, `num_${id}_all`, id);
-                    const el = document.getElementById(id);
-                    if (el) {
-                        el.addEventListener('focus', () => { activeColorChannel = col.key; });
-                        el.addEventListener('pointerdown', () => { activeColorChannel = col.key; });
-                    }
+                    setupRawFieldSync(id, `num_${id}`);
                 });
 
-                // SYNC HUE RANGE TOLERANCE SLIDERS
+                // Attachement de la tolérance de teinte
                 const rangeRange = document.getElementById(`mh_range_${col.key}`);
-                const rangeRangeAll = document.getElementById(`mh_range_${col.key}_all`);
-
-                const syncRange = (val) => {
-                    const active = getActiveLayer();
-                    if (!active || !active.rawSettings) return;
-                    active.rawSettings[`mh_range_${col.key}`] = parseFloat(val);
-                    if (rangeRange) rangeRange.value = val;
-                    if (rangeRangeAll) rangeRangeAll.value = val;
-
-                    const v1 = document.getElementById(`val_mh_range_${col.key}`);
-                    const v2 = document.getElementById(`val_mh_range_${col.key}_all`);
-                    if (v1) v1.innerText = `${val}°`;
-                    if (v2) v2.innerText = `${val}°`;
-                    processImage();
-                };
-
                 if (rangeRange) {
-                    rangeRange.addEventListener('input', (e) => syncRange(e.target.value));
+                    rangeRange.addEventListener('input', (e) => {
+                        const val = parseFloat(e.target.value);
+                        const active = getActiveLayer();
+                        if (active && active.rawSettings) {
+                            active.rawSettings[`mh_range_${col.key}`] = val;
+                        }
+                        const display = document.getElementById(`val_mh_range_${col.key}`);
+                        if (display) display.innerText = `${val}°`;
+                        processImage();
+                    });
                     rangeRange.addEventListener('change', () => saveHistoryState());
-                }
-                if (rangeRangeAll) {
-                    rangeRangeAll.addEventListener('input', (e) => syncRange(e.target.value));
-                    rangeRangeAll.addEventListener('change', () => saveHistoryState());
                 }
             });
         }
-        buildHslTabs();
+        buildCameraRawMixerUI();
 
-        // METTENT A JOUR LES TÉMOINS LUMINEUX DES ONGLETS HSL
+        // MISE À JOUR DES TÉMOINS DE MODIFICATION SUR LES CERCLES COLORÉS
         function updateHslTabDots() {
             const active = getActiveLayer();
             if (!active || !active.rawSettings) return;
 
             const s = active.rawSettings;
 
-            const hueModified = ['mh_red', 'mh_org', 'mh_yel', 'mh_grn', 'mh_aqu', 'mh_blu', 'mh_vio', 'mh_mag'].some(k => (s[k] || 0) !== 0);
-            const satModified = ['m_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag'].some(k => (s[k] || 0) !== 0);
-            const lumModified = ['ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag'].some(k => (s[k] || 0) !== 0);
-
-            document.querySelector('[data-hsl="hue"]').classList.toggle('has-modified', hueModified);
-            document.querySelector('[data-hsl="sat"]').classList.toggle('has-modified', satModified);
-            document.querySelector('[data-hsl="lum"]').classList.toggle('has-modified', lumModified);
-            document.querySelector('[data-hsl="all"]').classList.toggle('has-modified', hueModified || satModified || lumModified);
+            COLOR_DEFINITIONS.forEach(col => {
+                const isModified = (s[`mh_${col.key}`] || 0) !== 0 || (s[`m_${col.key}`] || 0) !== 0 || (s[`ml_${col.key}`] || 0) !== 0;
+                const circleBtn = document.querySelector(`.color-circle-btn[data-key="${col.key}"]`);
+                if (circleBtn) circleBtn.classList.toggle('has-modified', isModified);
+            });
         }
 
         // CONVERSIONS COLORIMÉTRIQUES RVB <-> HSL
@@ -2250,17 +2164,13 @@
                     if (rangeEl) rangeEl.value = preset[key];
                     if (numEl) numEl.value = preset[key];
 
-                    const rangeAllEl = document.getElementById(`${key}_all`);
-                    const numAllEl = document.getElementById(`num_${key}_all`);
-                    if (rangeAllEl) rangeAllEl.value = preset[key];
-                    if (numAllEl) numAllEl.value = preset[key];
-
                     const label = rangeEl ? rangeEl.previousElementSibling : null;
                     if (label && label.querySelector('.value-display')) {
                         label.querySelector('.value-display').innerText = preset[key];
                     }
                 });
 
+                updateHslTabDots();
                 processImage();
                 saveHistoryState();
             }
@@ -2580,7 +2490,7 @@
             updateBoundingBoxVisibility();
         }
 
-        // DÉLEUATION DE L'OUTIL TAT (TARGETED ADJUSTMENT TOOL)
+        // DÉLÉGATION DE L'OUTIL TAT (TARGETED ADJUSTMENT TOOL)
         function startTatDrag(e, layerObj) {
             if (!layerObj || !layerObj.rawImg.complete) return;
 
@@ -2602,13 +2512,10 @@
             isTatDragging = true;
             tatStartY = e.clientY;
 
-            const prefixMap = { hue: 'mh_', sat: 'm_', lum: 'ml_', all: 'm_' };
-            const activePrefix = prefixMap[activeHslTab] || 'm_';
-
             tatInitialValues = {};
             Object.keys(tatWeights).forEach(colKey => {
                 if (tatWeights[colKey] > 0.05) {
-                    const settingKey = activePrefix + colKey;
+                    const settingKey = 'm_' + colKey; // Saturation par défaut
                     tatInitialValues[settingKey] = layerObj.rawSettings[settingKey] || 0;
                 }
             });
@@ -2624,7 +2531,7 @@
             const sensitivity = 0.5;
 
             Object.keys(tatInitialValues).forEach(settingKey => {
-                const colKey = settingKey.replace(/^(mh_|m_|ml_)/, '');
+                const colKey = settingKey.replace(/^m_/, '');
                 const weight = tatWeights[colKey];
 
                 let newVal = tatInitialValues[settingKey] + (deltaY * sensitivity * weight);
@@ -2636,13 +2543,9 @@
                 const numEl = document.getElementById(`num_${settingKey}`);
                 if (rangeEl) rangeEl.value = newVal;
                 if (numEl) numEl.value = newVal;
-
-                const rangeAllEl = document.getElementById(`${settingKey}_all`);
-                const numAllEl = document.getElementById(`num_${settingKey}_all`);
-                if (rangeAllEl) rangeAllEl.value = newVal;
-                if (numAllEl) numAllEl.value = newVal;
             });
 
+            updateHslTabDots();
             processImage();
         });
 
@@ -3079,11 +2982,6 @@
                         numEl.value = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
                     }
 
-                    const rangeAllEl = document.getElementById(`${key}_all`);
-                    const numAllEl = document.getElementById(`num_${key}_all`);
-                    if (rangeAllEl) rangeAllEl.value = settings[key];
-                    if (numAllEl) numAllEl.value = settings[key];
-
                     const label = el.previousElementSibling;
                     if (label && label.querySelector('.value-display')) {
                         label.querySelector('.value-display').innerText = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
@@ -3092,13 +2990,9 @@
 
                 if (key.startsWith('mh_range_')) {
                     const rEl = document.getElementById(key);
-                    const rAllEl = document.getElementById(`${key}_all`);
                     if (rEl) rEl.value = settings[key];
-                    if (rAllEl) rAllEl.value = settings[key];
                     const v1 = document.getElementById(`val_${key}`);
-                    const v2 = document.getElementById(`val_${key}_all`);
                     if (v1) v1.innerText = `${settings[key]}°`;
-                    if (v2) v2.innerText = `${settings[key]}°`;
                 }
             });
 
@@ -3714,13 +3608,11 @@
             rangeEl.dispatchEvent(new Event('change'));
         };
 
-        function setupRawFieldSync(rangeId, numId, masterId = null) {
+        function setupRawFieldSync(rangeId, numId) {
             const rangeEl = document.getElementById(rangeId);
             const numEl = document.getElementById(numId);
 
             if (!rangeEl || !numEl) return;
-
-            const targetKey = masterId || rangeId;
 
             const updateValue = (val) => {
                 const active = getActiveLayer();
@@ -3732,16 +3624,9 @@
                 rangeEl.value = numVal;
                 numEl.value = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
 
-                // Synchronise les éléments homologues (Tab unique <-> Tab Tout)
-                const baseId = targetKey;
-                const altRangeEl = document.getElementById(rangeId.endsWith('_all') ? baseId : `${baseId}_all`);
-                const altNumEl = document.getElementById(numId.endsWith('_all') ? `num_${baseId}` : `num_${baseId}_all`);
-                if (altRangeEl) altRangeEl.value = numVal;
-                if (altNumEl) altNumEl.value = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
+                active.rawSettings[rangeId] = numVal;
 
-                active.rawSettings[baseId] = numVal;
-
-                if (mixerSliderIds.includes(baseId)) {
+                if (mixerSliderIds.includes(rangeId)) {
                     hslPresetSelect.value = 'custom';
                     updateHslTabDots();
                 }
@@ -3862,7 +3747,7 @@
                         g *= expMult * gFactor;
                         b *= expMult * bFactor;
 
-                        // MIXEUR NOIR & BLANC A 8 CANAUX OU MÉLANGEUR HSL STANDARD
+                        // MIXEUR NOIR & BLANC À 8 CANAUX OU MÉLANGEUR HSL STANDARD
                         if (modulesState.mixer) {
                             if (isBwMode) {
                                 const [h] = rgbToHsl(r, g, b);
