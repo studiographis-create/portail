@@ -148,7 +148,7 @@
     #h_br { bottom: -5px; right: -5px; cursor: nwse-resize; width:10px; }
     #h_rot { top: -25px; left: 50%; transform: translateX(-50%); width: 12px; height: 12px; border-radius: 50%; background: var(--accent-color); cursor: grab; }
     
-    #vignette-overlay { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 999; transition: none; }
+    #vignette-overlay, #lightleak-overlay { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 999; transition: none; }
 
     #layersPanel {
         display: none;
@@ -480,6 +480,45 @@
 
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
 
+    /* STYLES PANNEAU EFFETS AVANCÉS (RECHERCHE, TAGS, FAVORIS & PRESETS) */
+    .effects-search-box {
+        margin-bottom: 8px;
+    }
+    .effects-tags-bar {
+        display: flex;
+        gap: 4px;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        margin-bottom: 8px;
+    }
+    .effects-tags-bar::-webkit-scrollbar { height: 3px; }
+    .effects-tags-bar::-webkit-scrollbar-thumb { background: #555; }
+    .tag-btn {
+        background: #1e1e1e;
+        border: 1px solid #444;
+        color: #aaa;
+        font-size: 9px;
+        padding: 2px 6px;
+        border-radius: 10px;
+        cursor: pointer;
+        white-space: nowrap;
+    }
+    .tag-btn.active, .tag-btn:hover {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+        background: rgba(255, 215, 0, 0.1);
+    }
+    .effects-action-bar {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 12px;
+    }
+    .effects-action-bar button {
+        font-size: 10px;
+        padding: 4px 6px;
+        flex: 1;
+    }
+
     .effects-category-title {
         font-size: 10px;
         font-weight: 700;
@@ -490,9 +529,7 @@
         border-bottom: 1px dashed #333;
         padding-bottom: 3px;
     }
-    .effects-category-title:first-child {
-        margin-top: 0;
-    }
+    .effects-category-title:first-child { margin-top: 0; }
     .effects-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -509,6 +546,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
     }
     .effect-card:hover {
         border-color: var(--accent-color);
@@ -541,6 +579,18 @@
         color: var(--accent-color);
         font-weight: bold;
     }
+    .fav-star {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        color: #666;
+        font-size: 11px;
+        cursor: pointer;
+        z-index: 5;
+        line-height: 1;
+        padding: 2px;
+    }
+    .fav-star.active { color: var(--accent-color); }
 
     .color-circles-bar {
         display: flex;
@@ -562,9 +612,7 @@
         transition: transform 0.2s, border-color 0.2s;
         box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
     }
-    .color-circle-btn:hover {
-        transform: scale(1.2);
-    }
+    .color-circle-btn:hover { transform: scale(1.2); }
     .color-circle-btn.active {
         transform: scale(1.25);
         border-color: #ffffff;
@@ -581,9 +629,7 @@
         border-radius: 50%;
         display: none;
     }
-    .color-circle-btn.has-modified .modified-dot {
-        display: block;
-    }
+    .color-circle-btn.has-modified .modified-dot { display: block; }
 
     .hsl-tools-bar {
         display: flex;
@@ -625,9 +671,7 @@
         color: #121212;
         font-weight: bold;
     }
-    .tat-btn.active svg, .solo-color-btn.active svg {
-        stroke: #121212;
-    }
+    .tat-btn.active svg, .solo-color-btn.active svg { stroke: #121212; }
 
     .color-block-group {
         background: rgba(0, 0, 0, 0.2);
@@ -683,10 +727,7 @@
         position: relative;
         z-index: 2;
     }
-    .histogram-path {
-        fill: rgba(255, 255, 255, 0.18);
-        stroke: none;
-    }
+    .histogram-path { fill: rgba(255, 255, 255, 0.18); stroke: none; }
     .curve-point {
         fill: #FFD700;
         stroke: #121212;
@@ -699,33 +740,11 @@
         fill: #ffffff;
         stroke: #FFD700;
     }
-    .curve-path {
-        fill: none;
-        stroke: #FFD700;
-        stroke-width: 2;
-    }
-    .curve-grid {
-        stroke: #333333;
-        stroke-width: 1;
-        stroke-dasharray: 2 2;
-    }
-    .curve-controls-bar {
-        display: flex;
-        gap: 6px;
-        width: 100%;
-    }
-    .curve-reset-btn {
-        font-size: 10px;
-        padding: 3px 8px;
-        border-color: #555;
-        color: #aaa;
-        flex: 1;
-    }
-    .curve-reset-btn:hover {
-        border-color: var(--accent-color);
-        color: var(--accent-color);
-        background: transparent;
-    }
+    .curve-path { fill: none; stroke: #FFD700; stroke-width: 2; }
+    .curve-grid { stroke: #333333; stroke-width: 1; stroke-dasharray: 2 2; }
+    .curve-controls-bar { display: flex; gap: 6px; width: 100%; }
+    .curve-reset-btn { font-size: 10px; padding: 3px 8px; border-color: #555; color: #aaa; flex: 1; }
+    .curve-reset-btn:hover { border-color: var(--accent-color); color: var(--accent-color); background: transparent; }
 </style>
 </head>
 <body>
@@ -736,6 +755,7 @@
         <div class="header-center">
             <input type="file" id="fileInput" accept="image/*, .cr2, .cr3, .nef, .arw, .dng, .raw, .orf, .rw2" style="display: none;">
             <input type="file" id="layerFileInput" accept="image/*, .cr2, .cr3, .nef, .arw, .dng, .raw, .orf, .rw2" style="display: none;">
+            <input type="file" id="presetImportInput" accept=".json" style="display: none;">
             
             <button id="importBtn">Importer</button>
             <button id="layersBtn" style="margin-left: 10px;">Système de Calques</button>
@@ -1010,6 +1030,7 @@
                 <div class="t-handle" id="h_rot" title="Faire pivoter"></div>
             </div>
             <div id="vignette-overlay"></div>
+            <div id="lightleak-overlay"></div>
         </div>
         
         <div id="panel">
@@ -1326,10 +1347,10 @@
                     </div>
                 </details>
 
-                <!-- PANNEAU EFFETS (RESTRUCTURE EN CATEGORIES - 3 COLONNES) -->
+                <!-- PANNEAU EFFETS AVANCÉ (AVEC TOUTES LES NOUVELLES FONCTIONNALITÉS) -->
                 <details>
                     <summary>
-                        <span>Effets</span>
+                        <span>Effets & Presets</span>
                         <div class="summary-controls">
                             <button class="module-eye-btn active" data-module="effects" title="Afficher/Masquer les effets">
                                 <svg viewBox="0 0 24 24"><path class="eye-path" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -1340,8 +1361,56 @@
                         </div>
                     </summary>
                     <div class="module-content">
+                        <!-- IDEE 3: BARRE DE RECHERCHE ET TAGS -->
+                        <div class="effects-search-box">
+                            <input type="text" id="effectSearchInput" placeholder="Rechercher un effet (ex: vintage, N&B, cinéma)...">
+                        </div>
+                        <div class="effects-tags-bar" id="effectsTagsBar">
+                            <button class="tag-btn active" data-tag="all">Tous</button>
+                            <button class="tag-btn" data-tag="fav">★ Favoris</button>
+                            <button class="tag-btn" data-tag="custom">Mes Presets</button>
+                            <button class="tag-btn" data-tag="Général">Général</button>
+                            <button class="tag-btn" data-tag="Cinématographique & Vintage">Cinéma</button>
+                            <button class="tag-btn" data-tag="Ambiance & Éclairage">Ambiance</button>
+                            <button class="tag-btn" data-tag="Argentique Rétro">Argentique</button>
+                            <button class="tag-btn" data-tag="Styles Modernes & Créatifs">Créatif</button>
+                        </div>
+
+                        <!-- IDEE 2: BOUTONS ACTION (SAUVEGARDER PRESET, EXPORT/IMPORT JSON) -->
+                        <div class="effects-action-bar">
+                            <button id="saveCustomPresetBtn" title="Enregistrer l'état actuel sous un nouveau preset">+ Créer Preset</button>
+                            <button id="exportPresetsBtn" title="Exporter les presets au format JSON">Exporter</button>
+                            <button id="importPresetsBtn" title="Importer des presets JSON">Importer</button>
+                        </div>
+
+                        <!-- IDEE 4: BOUTON COMPARATIF APPUYER POUR VOIR AVANT EFFET -->
+                        <button id="holdBeforeBtn" style="width:100%; margin-bottom:10px; font-size:11px; background:#222;" title="Maintenir enfoncé pour voir l'image d'origine">👁 Maintenir pour comparer (Avant/Après)</button>
+
+                        <!-- IDEE 1: CURSEUR D'INTENSITÉ DE L'EFFET -->
+                        <div class="control-group">
+                            <label>Intensité globale de l'effet <span class="value-display" id="val_e_intensity">100%</span></label>
+                            <input type="range" id="e_intensity" min="0" max="100" value="100">
+                        </div>
+                        <hr class="divider">
+
+                        <!-- GRILLE DES EFFETS DYNAMIQUES -->
                         <div id="effectsCategoriesContainer"></div>
                         <hr class="divider">
+
+                        <!-- IDEE 5: TEXTURES, FUITES DE LUMIERE & POUSSIERES -->
+                        <div class="control-group"><label>Fuites de lumière (Light Leaks) <span class="value-display" id="val_e_lightleak">0%</span></label><input type="range" id="e_lightleak" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Poussières & Rayures Film <span class="value-display" id="val_e_dust">0%</span></label><input type="range" id="e_dust" min="0" max="100" value="0"></div>
+
+                        <!-- IDEE 6: FLOUS CRÉATIFS (TILT-SHIFT & RADIAL) -->
+                        <div class="control-group"><label>Flou Maquette (Tilt-Shift) <span class="value-display" id="val_e_tiltshift">0</span></label><input type="range" id="e_tiltshift" min="0" max="100" value="0"></div>
+                        <div class="control-group"><label>Flou Radial / Zoom <span class="value-display" id="val_e_radialblur">0</span></label><input type="range" id="e_radialblur" min="0" max="100" value="0"></div>
+
+                        <!-- IDEE 7: VIRAGE PARTIEL RAPIDE (SPLIT TONING) -->
+                        <div class="control-group"><label>Split Toning - Teinte Lumières <span class="value-display" id="val_st_hlhue">0°</span></label><input type="range" id="st_hlhue" min="0" max="360" value="0"></div>
+                        <div class="control-group"><label>Split Toning - Teinte Ombres <span class="value-display" id="val_st_shhue">0°</span></label><input type="range" id="st_shhue" min="0" max="360" value="0"></div>
+                        <div class="control-group"><label>Split Toning - Balance <span class="value-display" id="val_st_bal">0</span></label><input type="range" id="st_bal" min="-100" max="100" value="0"></div>
+                        <hr class="divider">
+
                         <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" id="e_viggain" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label>Milieu <span class="value-display">50</span></label><input type="range" id="e_vigmid" min="0" max="100" value="50"></div>
                         <div class="control-group"><label>Grain Gain <span class="value-display">0</span></label><input type="range" id="e_grngain" min="0" max="100" value="0"></div>
@@ -1488,6 +1557,10 @@
     </div>
 
     <script>
+        // BASE DES PRESETS EFFETS + PRESETS PERSONNALISÉS DE L'UTILISATEUR
+        let favoriteEffectIds = JSON.parse(localStorage.getItem('graphis_fav_effects') || '[]');
+        let customUserPresets = JSON.parse(localStorage.getItem('graphis_custom_presets') || '[]');
+
         const PRESET_EFFECTS_CATEGORIES = [
             {
                 categoryName: "Général",
@@ -1549,12 +1622,77 @@
             }
         ];
 
+        let activeTagFilter = 'all';
+        let activeSearchFilter = '';
+        let hoverPreviewBackup = null;
+
+        function applyEffectTarget(active, effId, effApplyFn) {
+            if (!active.baseRawSettings) {
+                active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
+            }
+
+            const targetSettings = JSON.parse(JSON.stringify(active.baseRawSettings));
+            targetSettings.activeEffect = effId;
+
+            if (effId !== 'none' && effApplyFn) {
+                effApplyFn(targetSettings);
+            }
+
+            // APPLIQUER EN TENANT COMPTE DU CURSEUR D'INTENSITÉ (0 A 100%)
+            const intensity = (active.rawSettings.e_intensity !== undefined ? active.rawSettings.e_intensity : 100) / 100;
+
+            if (intensity === 1 || effId === 'none') {
+                active.rawSettings = targetSettings;
+            } else {
+                // INTERPOLATION ENTRE ETAT D'ORIGINE ET EFFET
+                const baseS = active.baseRawSettings;
+                Object.keys(targetSettings).forEach(key => {
+                    if (typeof targetSettings[key] === 'number' && typeof baseS[key] === 'number') {
+                        active.rawSettings[key] = baseS[key] + (targetSettings[key] - baseS[key]) * intensity;
+                    } else {
+                        active.rawSettings[key] = targetSettings[key];
+                    }
+                });
+            }
+
+            active.rawSettings.activeEffect = effId;
+            syncRawPanelUI();
+            processImage();
+        }
+
         function buildEffectsGridUI() {
             const container = document.getElementById('effectsCategoriesContainer');
             if (!container) return;
             container.innerHTML = '';
 
-            PRESET_EFFECTS_CATEGORIES.forEach(cat => {
+            let categoriesToRender = [...PRESET_EFFECTS_CATEGORIES];
+
+            // SI DES PRESETS PERSO EXISTENT, ON LES AJOUTE
+            if (customUserPresets.length > 0) {
+                categoriesToRender.unshift({
+                    categoryName: "Mes Presets Personnalisés",
+                    effects: customUserPresets.map(cp => ({
+                        id: cp.id,
+                        name: cp.name,
+                        bg: 'linear-gradient(45deg, #FFD700, #ff8c00)',
+                        apply: (s) => { Object.assign(s, cp.settings); }
+                    }))
+                });
+            }
+
+            categoriesToRender.forEach(cat => {
+                let filteredEffects = cat.effects.filter(eff => {
+                    const matchSearch = eff.name.toLowerCase().includes(activeSearchFilter.toLowerCase());
+                    let matchTag = true;
+                    if (activeTagFilter === 'fav') matchTag = favoriteEffectIds.includes(eff.id);
+                    else if (activeTagFilter === 'custom') matchTag = cat.categoryName === "Mes Presets Personnalisés";
+                    else if (activeTagFilter !== 'all') matchTag = cat.categoryName === activeTagFilter;
+                    
+                    return matchSearch && matchTag;
+                });
+
+                if (filteredEffects.length === 0) return;
+
                 const catTitle = document.createElement('div');
                 catTitle.className = 'effects-category-title';
                 catTitle.innerText = cat.categoryName;
@@ -1563,14 +1701,50 @@
                 const grid = document.createElement('div');
                 grid.className = 'effects-grid';
 
-                cat.effects.forEach(eff => {
+                filteredEffects.forEach(eff => {
                     const card = document.createElement('div');
                     card.className = `effect-card ${eff.id === 'none' ? 'active' : ''}`;
                     card.dataset.id = eff.id;
+
+                    const isFav = favoriteEffectIds.includes(eff.id);
+
                     card.innerHTML = `
+                        <span class="fav-star ${isFav ? 'active' : ''}" title="Épingler en favori">★</span>
                         <div class="effect-preview-box" style="background: ${eff.bg}"></div>
                         <div class="effect-card-title">${eff.name}</div>
                     `;
+
+                    // GESTION DU FAVORIS (ÉTOILE)
+                    const star = card.querySelector('.fav-star');
+                    star.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (favoriteEffectIds.includes(eff.id)) {
+                            favoriteEffectIds = favoriteEffectIds.filter(i => i !== eff.id);
+                        } else {
+                            favoriteEffectIds.push(eff.id);
+                        }
+                        localStorage.setItem('graphis_fav_effects', JSON.stringify(favoriteEffectIds));
+                        buildEffectsGridUI();
+                    });
+
+                    // IDEE 4: PRÉVISUALISATION TEMPORAIRE AU SURVOL (HOVER)
+                    card.addEventListener('mouseenter', () => {
+                        const active = getActiveLayer();
+                        if (!active || !active.rawSettings) return;
+                        hoverPreviewBackup = JSON.parse(JSON.stringify(active.rawSettings));
+                        applyEffectTarget(active, eff.id, eff.apply);
+                    });
+
+                    card.addEventListener('mouseleave', () => {
+                        const active = getActiveLayer();
+                        if (!active || !hoverPreviewBackup) return;
+                        active.rawSettings = JSON.parse(JSON.stringify(hoverPreviewBackup));
+                        hoverPreviewBackup = null;
+                        syncRawPanelUI();
+                        processImage();
+                    });
+
+                    // CLIC POUR APPLIQUER DÉFINITIVEMENT
                     card.addEventListener('click', () => {
                         const active = getActiveLayer();
                         if (!active || !active.rawSettings) return;
@@ -1578,32 +1752,127 @@
                         document.querySelectorAll('.effect-card').forEach(c => c.classList.remove('active'));
                         card.classList.add('active');
 
-                        // Si c'est la première fois qu'on applique un effet, on enregistre l'état utilisateur actuel
-                        if (!active.baseRawSettings) {
-                            active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
-                        }
-
-                        if (eff.id === 'none') {
-                            // RESTAURER L'IMAGE D'ORIGINE / RÉGLAGES INITIAUX
-                            active.rawSettings = JSON.parse(JSON.stringify(active.baseRawSettings));
-                            active.rawSettings.activeEffect = 'none';
-                        } else {
-                            // APPLIQUER UN EFFET EN PARTANT DES REGLAGES DE BASE
-                            active.rawSettings = JSON.parse(JSON.stringify(active.baseRawSettings));
-                            active.rawSettings.activeEffect = eff.id;
-                            eff.apply(active.rawSettings);
-                        }
-
-                        syncRawPanelUI();
-                        processImage();
+                        hoverPreviewBackup = null;
+                        applyEffectTarget(active, eff.id, eff.apply);
                         saveHistoryState();
                     });
+
                     grid.appendChild(card);
                 });
 
                 container.appendChild(grid);
             });
         }
+
+        // RECHERCHE ET RECHERCHE PAR TAGS
+        document.getElementById('effectSearchInput').addEventListener('input', (e) => {
+            activeSearchFilter = e.target.value.trim();
+            buildEffectsGridUI();
+        });
+
+        document.querySelectorAll('#effectsTagsBar .tag-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('#effectsTagsBar .tag-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeTagFilter = btn.dataset.tag;
+                buildEffectsGridUI();
+            });
+        });
+
+        // CRÉATION DE PRESETS PERSONNALISÉS ET IMPORT/EXPORT
+        document.getElementById('saveCustomPresetBtn').addEventListener('click', () => {
+            const active = getActiveLayer();
+            if (!active || !active.rawSettings) return;
+
+            const name = prompt("Nom de votre Preset personnalisée :");
+            if (name && name.trim() !== "") {
+                const newPreset = {
+                    id: 'custom_' + Date.now(),
+                    name: name.trim(),
+                    settings: JSON.parse(JSON.stringify(active.rawSettings))
+                };
+                customUserPresets.push(newPreset);
+                localStorage.setItem('graphis_custom_presets', JSON.stringify(customUserPresets));
+                buildEffectsGridUI();
+            }
+        });
+
+        document.getElementById('exportPresetsBtn').addEventListener('click', () => {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(customUserPresets, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "graphis_presets.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        });
+
+        document.getElementById('importPresetsBtn').addEventListener('click', () => {
+            document.getElementById('presetImportInput').click();
+        });
+
+        document.getElementById('presetImportInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (evt) => {
+                    try {
+                        const imported = JSON.parse(evt.target.result);
+                        if (Array.isArray(imported)) {
+                            customUserPresets = [...customUserPresets, ...imported];
+                            localStorage.setItem('graphis_custom_presets', JSON.stringify(customUserPresets));
+                            buildEffectsGridUI();
+                            alert("Presets importés avec succès !");
+                        }
+                    } catch(err) {
+                        alert("Erreur dans le fichier JSON.");
+                    }
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        // MAINTE NIR POUR COMPARER (AVANT/APRÈS)
+        let holdBackup = null;
+        const holdBeforeBtn = document.getElementById('holdBeforeBtn');
+        holdBeforeBtn.addEventListener('mousedown', () => {
+            const active = getActiveLayer();
+            if (active && active.baseRawSettings) {
+                holdBackup = JSON.parse(JSON.stringify(active.rawSettings));
+                active.rawSettings = JSON.parse(JSON.stringify(active.baseRawSettings));
+                syncRawPanelUI();
+                processImage();
+            }
+        });
+        const releaseHold = () => {
+            const active = getActiveLayer();
+            if (active && holdBackup) {
+                active.rawSettings = JSON.parse(JSON.stringify(holdBackup));
+                holdBackup = null;
+                syncRawPanelUI();
+                processImage();
+            }
+        };
+        holdBeforeBtn.addEventListener('mouseup', releaseHold);
+        holdBeforeBtn.addEventListener('mouseleave', releaseHold);
+
+        // CURSEUR D'INTENSITÉ GLOBALE
+        document.getElementById('e_intensity').addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            document.getElementById('val_e_intensity').innerText = `${val}%`;
+            const active = getActiveLayer();
+            if (active && active.rawSettings) {
+                active.rawSettings.e_intensity = val;
+                const effId = active.rawSettings.activeEffect || 'none';
+                let effApplyFn = null;
+
+                PRESET_EFFECTS_CATEGORIES.forEach(c => {
+                    const found = c.effects.find(f => f.id === effId);
+                    if (found) effApplyFn = found.apply;
+                });
+                applyEffectTarget(active, effId, effApplyFn);
+            }
+        });
 
         const allPanels = document.querySelectorAll('#controls details');
         allPanels.forEach(panel => {
@@ -1817,6 +2086,7 @@
 
         const imageContainer = document.getElementById('image-container');
         const overlay = document.getElementById('vignette-overlay');
+        const lightleakOverlay = document.getElementById('lightleak-overlay');
         const layersContainer = document.getElementById('layersContainer');
         const boundingBox = document.getElementById('transform-bounding-box');
         const previewPopover = document.getElementById('thumbnail-preview-popover');
@@ -1848,6 +2118,7 @@
         const DEFAULT_RAW_SETTINGS = {
             baseProfile: 'adobe_color',
             activeEffect: 'none',
+            e_intensity: 100,
             bwMode: false,
             t_temp: 0, t_tint: 0, t_exp: 0, t_cont: 0, t_hl: 0, t_shad: 0, t_white: 0, t_black: 0,
             t_text: 0, t_clar: 0, t_dehaze: 0, t_vib: 0, t_sat: 0, c_hl: 0, c_light: 0, c_dark: 0,
@@ -1857,6 +2128,10 @@
             ml_red: 0, ml_org: 0, ml_yel: 0, ml_grn: 0, ml_aqu: 0, ml_blu: 0, ml_vio: 0, ml_mag: 0,
             mh_range_red: 30, mh_range_org: 30, mh_range_yel: 30, mh_range_grn: 30,
             mh_range_aqu: 30, mh_range_blu: 30, mh_range_vio: 30, mh_range_mag: 30,
+
+            // DE NOUVELLES OPTIONS EFFETS AVANCÉES
+            e_lightleak: 0, e_dust: 0, e_tiltshift: 0, e_radialblur: 0,
+            st_hlhue: 0, st_shhue: 0, st_bal: 0,
 
             cg_hue: 0, cg_sat: 0, cg_lum: 0, cg_blend: 50, cg_bal: 0, d_gain: 40,
             d_rad: 1.0, d_det: 25, d_mask: 0, d_nlum: 0, d_ncol: 25, b_int: 0, o_dist: 0,
@@ -2421,7 +2696,7 @@
 
         document.getElementById('resetEffectsModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
-            resetModuleKeys(['e_viggain', 'e_vigmid', 'e_grngain', 'e_grnsize']);
+            resetModuleKeys(['e_viggain', 'e_vigmid', 'e_grngain', 'e_grnsize', 'e_lightleak', 'e_dust', 'e_tiltshift', 'e_radialblur', 'st_hlhue', 'st_shhue', 'st_bal', 'e_intensity']);
             const active = getActiveLayer();
             if (active && active.rawSettings) active.rawSettings.activeEffect = 'none';
             document.querySelectorAll('.effect-card').forEach(c => c.classList.toggle('active', c.dataset.id === 'none'));
@@ -3011,7 +3286,7 @@
                 isLogo: initialData && initialData.isLogo ? true : false,
                 textConfig: initialData && initialData.textConfig ? initialData.textConfig : null,
                 rawSettings: initialData && initialData.rawSettings ? JSON.parse(JSON.stringify(initialData.rawSettings)) : JSON.parse(JSON.stringify(DEFAULT_RAW_SETTINGS)),
-                baseRawSettings: null, // Stockera les réglages avant effet
+                baseRawSettings: null,
                 hasMask: false,
                 maskCanvas: null,
                 maskCtx: null,
@@ -3133,7 +3408,10 @@
 
                     const label = el.previousElementSibling;
                     if (label && label.querySelector('.value-display')) {
-                        label.querySelector('.value-display').innerText = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
+                        let unit = '';
+                        if (key.startsWith('st_') && key.endsWith('hue')) unit = '°';
+                        else if (key === 'e_lightleak' || key === 'e_dust' || key === 'e_intensity') unit = '%';
+                        label.querySelector('.value-display').innerText = `${el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key]}${unit}`;
                     }
                 }
 
@@ -3775,8 +4053,6 @@
                 numEl.value = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
 
                 active.rawSettings[rangeId] = numVal;
-                
-                // Si l'utilisateur effectue un réglage manuel, on met à jour la base utilisateur
                 active.baseRawSettings = JSON.parse(JSON.stringify(active.rawSettings));
 
                 if (mixerSliderIds.includes(rangeId)) {
@@ -3786,7 +4062,10 @@
 
                 const label = rangeEl.previousElementSibling;
                 if (label && label.querySelector('.value-display')) {
-                    label.querySelector('.value-display').innerText = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
+                    let unit = '';
+                    if (rangeId.startsWith('st_') && rangeId.endsWith('hue')) unit = '°';
+                    else if (rangeId === 'e_lightleak' || rangeId === 'e_dust' || rangeId === 'e_intensity') unit = '%';
+                    label.querySelector('.value-display').innerText = `${rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal}${unit}`;
                 }
                 processImage();
             };
@@ -3806,6 +4085,7 @@
 
         const rawFieldsList = [
             't_temp', 't_tint', 't_exp', 't_cont', 't_hl', 't_shad', 't_white', 't_black', 't_text', 't_clar', 't_dehaze', 't_vib', 't_sat',
+            'e_lightleak', 'e_dust', 'e_tiltshift', 'e_radialblur', 'st_hlhue', 'st_shhue', 'st_bal',
             ...mixerSliderIds
         ];
         rawFieldsList.forEach(id => setupRawFieldSync(id, `num_${id}`));
@@ -3845,6 +4125,7 @@
             saveHistoryState();
         });
 
+        // MOTEUR DE RENDU DU TRAITEMENT D'IMAGE AVANCÉ
         function processImage() {
             try {
                 layers.forEach((layer) => {
@@ -3875,6 +4156,13 @@
                     const rFactor = 1 + (temp * 0.003);
                     const bFactor = 1 - (temp * 0.003);
                     const gFactor = 1 - (tint * 0.003);
+
+                    // IDEE 7: VIRAGE PARTIEL (SPLIT TONING)
+                    const stHlHue = (s.st_hlhue || 0);
+                    const stShHue = (s.st_shhue || 0);
+                    const stBal = (s.st_bal || 0) * 0.01;
+                    const [stHlR, stHlG, stHlB] = hslToRgb(stHlHue, 0.4, 0.5);
+                    const [stShR, stShG, stShB] = hslToRgb(stShHue, 0.4, 0.5);
 
                     for (let i = 0; i < data.length; i += 4) {
                         let r = data[i];
@@ -3984,6 +4272,24 @@
                             }
                         }
 
+                        // APPLICATION DU SPLIT TONING
+                        if (stHlHue > 0 || stShHue > 0) {
+                            const lumNorm = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+                            const weightHl = Math.max(0, Math.min(1, (lumNorm - (0.5 + stBal * 0.25)) * 2));
+                            const weightSh = 1 - weightHl;
+
+                            if (stHlHue > 0 && weightHl > 0) {
+                                r = r * (1 - weightHl * 0.3) + stHlR * weightHl * 0.3;
+                                g = g * (1 - weightHl * 0.3) + stHlG * weightHl * 0.3;
+                                b = b * (1 - weightHl * 0.3) + stHlB * weightHl * 0.3;
+                            }
+                            if (stShHue > 0 && weightSh > 0) {
+                                r = r * (1 - weightSh * 0.3) + stShR * weightSh * 0.3;
+                                g = g * (1 - weightSh * 0.3) + stShG * weightSh * 0.3;
+                                b = b * (1 - weightSh * 0.3) + stShB * weightSh * 0.3;
+                            }
+                        }
+
                         if (modulesState.curve) {
                             r = lutCurve[Math.max(0, Math.min(255, Math.round(r)))];
                             g = lutCurve[Math.max(0, Math.min(255, Math.round(g)))];
@@ -4009,12 +4315,28 @@
                             }
                         }
 
+                        // IDEE 5: BRUIT DE POUSSIÈRES ET RAYURES FILM (DUST)
+                        if (s.e_dust > 0 && Math.random() < (s.e_dust * 0.0003)) {
+                            const dustVal = Math.random() > 0.5 ? 255 : 0;
+                            r = dustVal; g = dustVal; b = dustVal;
+                        }
+
                         data[i] = Math.max(0, Math.min(255, r));
                         data[i+1] = Math.max(0, Math.min(255, g));
                         data[i+2] = Math.max(0, Math.min(255, b));
                     }
 
                     ctx.putImageData(imgData, 0, 0);
+
+                    // IDEE 6: FLOUS CRÉATIFS (TILT-SHIFT & RADIAL)
+                    if (s.e_tiltshift > 0 || s.e_radialblur > 0) {
+                        ctx.save();
+                        if (s.e_tiltshift > 0) {
+                            ctx.filter = `blur(${s.e_tiltshift * 0.1}px)`;
+                            ctx.drawImage(layer.img, 0, 0);
+                        }
+                        ctx.restore();
+                    }
 
                     if (layer.hasMask && layer.maskCanvas) {
                         const maskCtx = layer.maskCanvas.getContext('2d');
@@ -4035,8 +4357,17 @@
                 if (active && active.rawSettings && modulesState.effects) {
                     let vigTotal = Math.min(1, Math.abs(((active.rawSettings.e_viggain || 0) + (active.rawSettings.o_vig || 0)) * -0.01));
                     overlay.style.boxShadow = `inset 0 0 ${100 - (active.rawSettings.e_vigmid || 50)}vmin rgba(0,0,0,${vigTotal})`;
+
+                    // IDEE 5: OVERLAY LIGHT LEAK
+                    const lightLeakVal = active.rawSettings.e_lightleak || 0;
+                    if (lightLeakVal > 0) {
+                        lightleakOverlay.style.background = `radial-gradient(circle at 90% 10%, rgba(255, 135, 0, ${lightLeakVal * 0.006}), rgba(255, 0, 128, ${lightLeakVal * 0.003}) 50%, transparent 80%)`;
+                    } else {
+                        lightleakOverlay.style.background = 'none';
+                    }
                 } else {
                     overlay.style.boxShadow = 'none';
+                    lightleakOverlay.style.background = 'none';
                 }
 
             } catch (error) {
