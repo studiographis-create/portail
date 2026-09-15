@@ -1332,7 +1332,7 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <!-- GRILLE DES 12 EFFETS EN VIGNETTES -->
+                        <!-- GRILLE DES 24 EFFETS CUMULÉS EN VIGNETTES -->
                         <div class="effects-grid" id="effectsGrid"></div>
                         <hr class="divider">
                         <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" id="e_viggain" min="-100" max="100" value="0"></div>
@@ -1481,8 +1481,23 @@
     </div>
 
     <script>
-        // LISTE DES 12 NOUVEAUX PRESETS EFFETS AVEC STYLES ET PARAMETRES DE RENDU DYNAMIQUES
+        // CUMUL DE TOUS LES PRESETS EFFETS (12 PREMIERS + 12 NOUVEAUX = 24 PRESETS TOTAL)
         const PRESET_EFFECTS = [
+            // --- 12 EFFETS D'ORIGINE ---
+            { id: 'none', name: 'Aucun', bg: 'linear-gradient(45deg, #444, #666)', apply: (s) => {} },
+            { id: 'dramatic', name: 'Dramatique', bg: 'linear-gradient(45deg, #1a1c29, #4a3b52)', apply: (s) => { s.t_cont = 40; s.e_viggain = -60; s.t_dehaze = 30; } },
+            { id: 'vintage', name: 'Vintage', bg: 'linear-gradient(45deg, #4d3826, #806843)', apply: (s) => { s.t_temp = 25; s.e_viggain = -30; s.t_cont = -15; } },
+            { id: 'cinema_blue', name: 'Cinéma Bleu', bg: 'linear-gradient(45deg, #0f2027, #203a43)', apply: (s) => { s.t_temp = -30; s.e_viggain = -50; s.t_cont = 20; } },
+            { id: 'high_contrast', name: 'Haut Contraste', bg: 'linear-gradient(45deg, #000, #888)', apply: (s) => { s.t_cont = 65; s.t_exp = 0.3; } },
+            { id: 'soft_dream', name: 'Rêve Doux', bg: 'linear-gradient(45deg, #ffc3a0, #ffafbd)', apply: (s) => { s.t_cont = -30; s.t_clar = -40; s.t_exp = 0.4; } },
+            { id: 'noir', name: 'Noir & Blanc Profond', bg: 'linear-gradient(45deg, #111, #444)', apply: (s) => { s.bwMode = true; s.t_cont = 50; s.e_viggain = -40; } },
+            { id: 'warm_sunset', name: 'Coucher de Soleil', bg: 'linear-gradient(45deg, #f857a6, #ff5858)', apply: (s) => { s.t_temp = 45; s.t_tint = 15; s.t_vib = 25; } },
+            { id: 'faded_film', name: 'Film Décoloré', bg: 'linear-gradient(45deg, #2c3e50, #3498db)', apply: (s) => { s.t_cont = -20; s.t_black = 35; s.t_sat = -25; } },
+            { id: 'urban_hdr', name: 'Urbain HDR', bg: 'linear-gradient(45deg, #373b44, #4286f4)', apply: (s) => { s.t_dehaze = 45; s.t_clar = 35; s.t_cont = 25; } },
+            { id: 'cyberpunk', name: 'Cyberpunk', bg: 'linear-gradient(45deg, #000428, #004e92)', apply: (s) => { s.t_temp = -40; s.t_tint = 50; s.t_vib = 40; } },
+            { id: 'old_photo', name: 'Ancienne Photo', bg: 'linear-gradient(45deg, #3b2314, #6b4c35)', apply: (s) => { s.bwMode = true; s.t_temp = 50; s.e_viggain = -70; s.e_grngain = 40; } },
+
+            // --- 12 NOUVEAUX EFFETS ---
             { id: 'teal_magenta', name: 'Teal & Magenta', bg: 'linear-gradient(45deg, #008080, #ff00ff)', apply: (s) => { s.t_temp = -15; s.t_tint = 30; s.mh_blu = 20; s.mh_mag = -20; } },
             { id: 'golden_hour', name: 'Golden Hour', bg: 'linear-gradient(45deg, #ff8c00, #ffd700)', apply: (s) => { s.t_temp = 35; s.t_tint = 10; s.t_exp = 0.2; s.t_vib = 20; } },
             { id: 'effet_mat', name: 'Effet Mat', bg: 'linear-gradient(45deg, #3a3a3a, #777777)', apply: (s) => { s.t_cont = -25; s.t_black = 40; s.t_sat = -15; } },
