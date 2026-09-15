@@ -532,7 +532,7 @@
         display: inline-block;
     }
 
-    .tat-btn {
+    .tat-btn, .solo-color-btn {
         background: #181818;
         border: 1px solid #444;
         border-radius: 4px;
@@ -544,22 +544,22 @@
         transition: all 0.2s;
         flex-shrink: 0;
     }
-    .tat-btn svg {
+    .tat-btn svg, .solo-color-btn svg {
         width: 14px;
         height: 14px;
         stroke: #aaa;
         fill: none;
         stroke-width: 2;
     }
-    .tat-btn:hover {
+    .tat-btn:hover, .solo-color-btn:hover {
         border-color: var(--accent-color);
     }
-    .tat-btn:hover svg { stroke: var(--accent-color); }
-    .tat-btn.active {
+    .tat-btn:hover svg, .solo-color-btn:hover svg { stroke: var(--accent-color); }
+    .tat-btn.active, .solo-color-btn.active {
         background: var(--accent-color);
         border-color: var(--accent-color);
     }
-    .tat-btn.active svg {
+    .tat-btn.active svg, .solo-color-btn.active svg {
         stroke: #121212;
     }
 
@@ -584,6 +584,19 @@
         display: flex;
         align-items: center;
         gap: 6px;
+    }
+    .range-tolerance-box {
+        background: rgba(255, 215, 0, 0.04);
+        border: 1px dashed rgba(255, 215, 0, 0.25);
+        border-radius: 4px;
+        padding: 6px;
+        margin-top: 6px;
+        margin-bottom: 8px;
+    }
+    .range-tolerance-box summary {
+        font-size: 10px;
+        padding: 2px 0;
+        color: #aaa;
     }
 
     /* COURBE DES TONALITÉS */
@@ -1240,7 +1253,7 @@
                             </label>
                         </div>
 
-                        <!-- SOUS-ONGLETS TEINTE / SATURATION / LUMINANCE / TOUT + OUTIL TAT -->
+                        <!-- SOUS-ONGLETS TEINTE / SATURATION / LUMINANCE / TOUT + OUTIL TAT + SOLO COLOR -->
                         <div class="hsl-subnav-container">
                             <div class="hsl-subnav">
                                 <button class="hsl-subnav-btn" data-hsl="hue">
@@ -1259,241 +1272,30 @@
                             <button class="tat-btn" id="tatToolBtn" title="Outil d'Ajustement Cible (TAT) : Clic + Glissé sur la photo">
                                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="1" x2="12" y2="5"></line><line x1="12" y1="19" x2="12" y2="23"></line><line x1="1" y1="12" x2="5" y2="12"></line><line x1="19" y1="12" x2="23" y2="12"></line></svg>
                             </button>
+                            <!-- BOUTON MODE SOLO COLOR / ISOLATION -->
+                            <button class="solo-color-btn" id="soloColorBtn" title="Mode Solo Color : Isole la couleur modifiée et passe le reste en N&B">
+                                <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
                         </div>
 
                         <!-- TEINTE -->
                         <div class="hsl-tab-content" id="hsl-tab-hue">
-                            <div class="control-group">
-                                <label style="color:#ff4a4a">Rouge
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('mh_red', 0)" title="Réinitialiser Rouge"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_mh_red" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="mh_red" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ffa500">Orange
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('mh_org', 0)" title="Réinitialiser Orange"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_mh_org" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="mh_org" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ffff00">Jaune
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('mh_yel', 0)" title="Réinitialiser Jaune"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_mh_yel" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="mh_yel" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#00ff00">Vert
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('mh_grn', 0)" title="Réinitialiser Vert"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_mh_grn" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="mh_grn" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#00ffff">Aqua
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('mh_aqu', 0)" title="Réinitialiser Aqua"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_mh_aqu" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="mh_aqu" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#4a4aff">Bleu
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('mh_blu', 0)" title="Réinitialiser Bleu"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_mh_blu" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="mh_blu" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ff00ff">Violet
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('mh_vio', 0)" title="Réinitialiser Violet"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_mh_vio" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="mh_vio" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ff00a5">Magenta
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('mh_mag', 0)" title="Réinitialiser Magenta"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_mh_mag" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="mh_mag" min="-100" max="100" value="0">
-                            </div>
+                            <div id="hsl-hue-container"></div>
                         </div>
 
                         <!-- SATURATION -->
                         <div class="hsl-tab-content active" id="hsl-tab-sat">
-                            <div class="control-group">
-                                <label style="color:#ff4a4a">Rouge
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('m_red', 0)" title="Réinitialiser Rouge"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_m_red" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="m_red" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ffa500">Orange
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('m_org', 0)" title="Réinitialiser Orange"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_m_org" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="m_org" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ffff00">Jaune
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('m_yel', 0)" title="Réinitialiser Jaune"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_m_yel" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="m_yel" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#00ff00">Vert
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('m_grn', 0)" title="Réinitialiser Vert"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_m_grn" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="m_grn" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#00ffff">Aqua
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('m_aqu', 0)" title="Réinitialiser Aqua"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_m_aqu" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="m_aqu" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#4a4aff">Bleu
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('m_blu', 0)" title="Réinitialiser Bleu"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_m_blu" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="m_blu" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ff00ff">Violet
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('m_vio', 0)" title="Réinitialiser Violet"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_m_vio" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="m_vio" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ff00a5">Magenta
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('m_mag', 0)" title="Réinitialiser Magenta"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_m_mag" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="m_mag" min="-100" max="100" value="0">
-                            </div>
+                            <div id="hsl-sat-container"></div>
                         </div>
 
                         <!-- LUMINANCE -->
                         <div class="hsl-tab-content" id="hsl-tab-lum">
-                            <div class="control-group">
-                                <label style="color:#ff4a4a">Rouge
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('ml_red', 0)" title="Réinitialiser Rouge"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_ml_red" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="ml_red" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ffa500">Orange
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('ml_org', 0)" title="Réinitialiser Orange"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_ml_org" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="ml_org" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ffff00">Jaune
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('ml_yel', 0)" title="Réinitialiser Jaune"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_ml_yel" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="ml_yel" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#00ff00">Vert
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('ml_grn', 0)" title="Réinitialiser Vert"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_ml_grn" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="ml_grn" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#00ffff">Aqua
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('ml_aqu', 0)" title="Réinitialiser Aqua"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_ml_aqu" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="ml_aqu" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#4a4aff">Bleu
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('ml_blu', 0)" title="Réinitialiser Bleu"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_ml_blu" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="ml_blu" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ff00ff">Violet
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('ml_vio', 0)" title="Réinitialiser Violet"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_ml_vio" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="ml_vio" min="-100" max="100" value="0">
-                            </div>
-                            <div class="control-group">
-                                <label style="color:#ff00a5">Magenta
-                                    <div class="transform-input-wrapper">
-                                        <button class="reset-btn" onclick="resetRawField('ml_mag', 0)" title="Réinitialiser Magenta"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
-                                        <input type="number" id="num_ml_mag" class="number-input" value="0" min="-100" max="100">
-                                    </div>
-                                </label>
-                                <input type="range" id="ml_mag" min="-100" max="100" value="0">
-                            </div>
+                            <div id="hsl-lum-container"></div>
                         </div>
 
                         <!-- MODE TOUT (ALL) -->
                         <div class="hsl-tab-content" id="hsl-tab-all">
-                            <div id="hsl-all-container">
-                                <!-- Généré dynamiquement en JS pour regrouper Teinte/Sat/Lum par couleur -->
-                            </div>
+                            <div id="hsl-all-container"></div>
                         </div>
                     </div>
                 </details>
@@ -1672,6 +1474,29 @@
             });
         });
 
+        // DEFINITIONS DES COULEURS AVEC RANGE D'ORIGINE
+        const COLOR_DEFINITIONS = [
+            { key: 'red', name: 'Rouge', color: '#ff4a4a', center: 0, defaultRange: 30 },
+            { key: 'org', name: 'Orange', color: '#ffa500', center: 30, defaultRange: 30 },
+            { key: 'yel', name: 'Jaune', color: '#ffff00', center: 60, defaultRange: 30 },
+            { key: 'grn', name: 'Vert', color: '#00ff00', center: 120, defaultRange: 30 },
+            { key: 'aqu', name: 'Aqua', color: '#00ffff', center: 180, defaultRange: 30 },
+            { key: 'blu', name: 'Bleu', color: '#4a4aff', center: 240, defaultRange: 30 },
+            { key: 'vio', name: 'Violet', color: '#ff00ff', center: 270, defaultRange: 30 },
+            { key: 'mag', name: 'Magenta', color: '#ff00a5', center: 300, defaultRange: 30 }
+        ];
+
+        // ETAT GLOBAL SOLO COLOR ET CANAL ACTIF
+        let isSoloColorActive = false;
+        let activeColorChannel = 'red';
+
+        const soloColorBtn = document.getElementById('soloColorBtn');
+        soloColorBtn.addEventListener('click', () => {
+            isSoloColorActive = !isSoloColorActive;
+            soloColorBtn.classList.toggle('active', isSoloColorActive);
+            processImage();
+        });
+
         // GESTION DES SOUS-ONGLETS HSL (TEINTE / SATURATION / LUMINANCE / TOUT)
         const hslSubnavBtns = document.querySelectorAll('.hsl-subnav-btn');
         const hslTabContents = document.querySelectorAll('.hsl-tab-content');
@@ -1690,31 +1515,75 @@
             });
         });
 
-        // GENERATION DU MODE "TOUT" (ALL) DYNAMIQUEMENT
-        const COLOR_DEFINITIONS = [
-            { key: 'red', name: 'Rouge', color: '#ff4a4a' },
-            { key: 'org', name: 'Orange', color: '#ffa500' },
-            { key: 'yel', name: 'Jaune', color: '#ffff00' },
-            { key: 'grn', name: 'Vert', color: '#00ff00' },
-            { key: 'aqu', name: 'Aqua', color: '#00ffff' },
-            { key: 'blu', name: 'Bleu', color: '#4a4aff' },
-            { key: 'vio', name: 'Violet', color: '#ff00ff' },
-            { key: 'mag', name: 'Magenta', color: '#ff00a5' }
-        ];
+        // GENERATION DYNAMIQUE DES INTERFACES HSL (TEINTE / SAT / LUM / TOUT) AVEC HUE RANGE
+        function buildHslTabs() {
+            const hueContainer = document.getElementById('hsl-hue-container');
+            const satContainer = document.getElementById('hsl-sat-container');
+            const lumContainer = document.getElementById('hsl-lum-container');
+            const allContainer = document.getElementById('hsl-all-container');
 
-        function buildHslAllTab() {
-            const container = document.getElementById('hsl-all-container');
-            if (!container) return;
-            container.innerHTML = '';
+            if (!hueContainer || !satContainer || !lumContainer || !allContainer) return;
+
+            hueContainer.innerHTML = '';
+            satContainer.innerHTML = '';
+            lumContainer.innerHTML = '';
+            allContainer.innerHTML = '';
 
             COLOR_DEFINITIONS.forEach(col => {
-                const group = document.createElement('div');
-                group.className = 'color-block-group';
+                // ONGLET TEINTE
+                const hueGroup = document.createElement('div');
+                hueGroup.className = 'control-group';
+                hueGroup.innerHTML = `
+                    <label style="color:${col.color}">${col.name}
+                        <div class="transform-input-wrapper">
+                            <button class="reset-btn" onclick="resetRawField('mh_${col.key}', 0)" title="Réinitialiser"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                            <input type="number" id="num_mh_${col.key}" class="number-input" value="0" min="-100" max="100">
+                        </div>
+                    </label>
+                    <input type="range" id="mh_${col.key}" min="-100" max="100" value="0">
+                    <details class="range-tolerance-box">
+                        <summary>Tolérance / Étendue de teinte (Hue Range)</summary>
+                        <div class="control-group" style="margin-top:4px; margin-bottom:0;">
+                            <label style="font-size:10px;">Plage <span class="value-display" id="val_mh_range_${col.key}">30°</span></label>
+                            <input type="range" id="mh_range_${col.key}" min="10" max="90" value="30">
+                        </div>
+                    </details>
+                `;
+                hueContainer.appendChild(hueGroup);
 
-                group.innerHTML = `
+                // ONGLET SATURATION
+                const satGroup = document.createElement('div');
+                satGroup.className = 'control-group';
+                satGroup.innerHTML = `
+                    <label style="color:${col.color}">${col.name}
+                        <div class="transform-input-wrapper">
+                            <button class="reset-btn" onclick="resetRawField('m_${col.key}', 0)" title="Réinitialiser"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                            <input type="number" id="num_m_${col.key}" class="number-input" value="0" min="-100" max="100">
+                        </div>
+                    </label>
+                    <input type="range" id="m_${col.key}" min="-100" max="100" value="0">
+                `;
+                satContainer.appendChild(satGroup);
+
+                // ONGLET LUMINANCE
+                const lumGroup = document.createElement('div');
+                lumGroup.className = 'control-group';
+                lumGroup.innerHTML = `
+                    <label style="color:${col.color}">${col.name}
+                        <div class="transform-input-wrapper">
+                            <button class="reset-btn" onclick="resetRawField('ml_${col.key}', 0)" title="Réinitialiser"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg></button>
+                            <input type="number" id="num_ml_${col.key}" class="number-input" value="0" min="-100" max="100">
+                        </div>
+                    </label>
+                    <input type="range" id="ml_${col.key}" min="-100" max="100" value="0">
+                `;
+                lumContainer.appendChild(lumGroup);
+
+                // ONGLET TOUT (ALL)
+                const allGroup = document.createElement('div');
+                allGroup.className = 'color-block-group';
+                allGroup.innerHTML = `
                     <div class="color-block-title" style="color:${col.color}">● ${col.name}</div>
-                    
-                    <!-- TEINTE -->
                     <div class="control-group">
                         <label>Teinte
                             <div class="transform-input-wrapper">
@@ -1724,8 +1593,6 @@
                         </label>
                         <input type="range" id="mh_${col.key}_all" min="-100" max="100" value="0">
                     </div>
-
-                    <!-- SATURATION -->
                     <div class="control-group">
                         <label>Saturation
                             <div class="transform-input-wrapper">
@@ -1735,8 +1602,6 @@
                         </label>
                         <input type="range" id="m_${col.key}_all" min="-100" max="100" value="0">
                     </div>
-
-                    <!-- LUMINANCE -->
                     <div class="control-group">
                         <label>Luminance
                             <div class="transform-input-wrapper">
@@ -1746,16 +1611,56 @@
                         </label>
                         <input type="range" id="ml_${col.key}_all" min="-100" max="100" value="0">
                     </div>
+                    <details class="range-tolerance-box">
+                        <summary>Tolérance de teinte (Hue Range)</summary>
+                        <div class="control-group" style="margin-top:4px; margin-bottom:0;">
+                            <label style="font-size:10px;">Plage <span class="value-display" id="val_mh_range_${col.key}_all">30°</span></label>
+                            <input type="range" id="mh_range_${col.key}_all" min="10" max="90" value="30">
+                        </div>
+                    </details>
                 `;
-                container.appendChild(group);
+                allContainer.appendChild(allGroup);
 
+                // SYNC INTERACTIVE ET DÉTECTION DU CANAL ACTIF
                 ['mh_', 'm_', 'ml_'].forEach(prefix => {
                     const id = prefix + col.key;
                     setupRawFieldSync(`${id}_all`, `num_${id}_all`, id);
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.addEventListener('focus', () => { activeColorChannel = col.key; });
+                        el.addEventListener('pointerdown', () => { activeColorChannel = col.key; });
+                    }
                 });
+
+                // SYNC HUE RANGE TOLERANCE SLIDERS
+                const rangeRange = document.getElementById(`mh_range_${col.key}`);
+                const rangeRangeAll = document.getElementById(`mh_range_${col.key}_all`);
+
+                const syncRange = (val) => {
+                    const active = getActiveLayer();
+                    if (!active || !active.rawSettings) return;
+                    active.rawSettings[`mh_range_${col.key}`] = parseFloat(val);
+                    if (rangeRange) rangeRange.value = val;
+                    if (rangeRangeAll) rangeRangeAll.value = val;
+
+                    const v1 = document.getElementById(`val_mh_range_${col.key}`);
+                    const v2 = document.getElementById(`val_mh_range_${col.key}_all`);
+                    if (v1) v1.innerText = `${val}°`;
+                    if (v2) v2.innerText = `${val}°`;
+                    processImage();
+                };
+
+                if (rangeRange) {
+                    rangeRange.addEventListener('input', (e) => syncRange(e.target.value));
+                    rangeRange.addEventListener('change', () => saveHistoryState());
+                }
+                if (rangeRangeAll) {
+                    rangeRangeAll.addEventListener('input', (e) => syncRange(e.target.value));
+                    rangeRangeAll.addEventListener('change', () => saveHistoryState());
+                }
             });
         }
-        buildHslAllTab();
+        buildHslTabs();
 
         // METTENT A JOUR LES TÉMOINS LUMINEUX DES ONGLETS HSL
         function updateHslTabDots() {
@@ -1817,24 +1722,25 @@
             return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
         }
 
-        // CALCUL DU WEIGHT PAR CANAL COLORIMÉTRIQUE (ANGLE DE TEINTE H: 0-360)
-        function getColorWeights(h) {
-            const getWeight = (centerHue) => {
+        // CALCUL DE WEIGHT AVEC TOLÉRANCE DE TEINTE DYNAMIQUE (HUE RANGE)
+        function getColorWeights(h, rawSettings = {}) {
+            const getWeight = (centerHue, tolerance) => {
                 let diff = Math.abs(h - centerHue);
                 if (diff > 180) diff = 360 - diff;
-                return Math.max(0, 1 - (diff / 30));
+                return Math.max(0, 1 - (diff / (tolerance || 30)));
             };
 
-            return {
-                red: Math.max(getWeight(0), getWeight(360)),
-                org: getWeight(30),
-                yel: getWeight(60),
-                grn: getWeight(120),
-                aqu: getWeight(180),
-                blu: getWeight(240),
-                vio: getWeight(270),
-                mag: getWeight(300)
-            };
+            const weights = {};
+            COLOR_DEFINITIONS.forEach(col => {
+                const tol = rawSettings[`mh_range_${col.key}`] || col.defaultRange;
+                if (col.key === 'red') {
+                    weights.red = Math.max(getWeight(0, tol), getWeight(360, tol));
+                } else {
+                    weights[col.key] = getWeight(col.center, tol);
+                }
+            });
+
+            return weights;
         }
 
         const imageContainer = document.getElementById('image-container');
@@ -1879,7 +1785,10 @@
             m_red: 0, m_org: 0, m_yel: 0, m_grn: 0, m_aqu: 0, m_blu: 0, m_vio: 0, m_mag: 0,
             // LUMINANCE
             ml_red: 0, ml_org: 0, ml_yel: 0, ml_grn: 0, ml_aqu: 0, ml_blu: 0, ml_vio: 0, ml_mag: 0,
-            
+            // HUE RANGE (TOLÉRANCE DE TEINTE)
+            mh_range_red: 30, mh_range_org: 30, mh_range_yel: 30, mh_range_grn: 30,
+            mh_range_aqu: 30, mh_range_blu: 30, mh_range_vio: 30, mh_range_mag: 30,
+
             cg_hue: 0, cg_sat: 0, cg_lum: 0, cg_blend: 50, cg_bal: 0, d_gain: 40,
             d_rad: 1.0, d_det: 25, d_mask: 0, d_nlum: 0, d_ncol: 25, b_int: 0, o_dist: 0,
             o_vig: 0, g_vert: 0, g_horiz: 0, g_rot: 0, e_viggain: 0, e_vigmid: 50, e_grngain: 0,
@@ -2411,13 +2320,15 @@
             resetCurveBtn.click();
         });
 
-        // RESET MÉLANGEUR (TEINTE + SATURATION + LUMINANCE)
+        // RESET MÉLANGEUR (TEINTE + SATURATION + LUMINANCE + TOLERANCE)
         document.getElementById('resetMixerModuleBtn').addEventListener('click', (e) => {
             e.stopPropagation();
             resetModuleKeys([
                 'mh_red', 'mh_org', 'mh_yel', 'mh_grn', 'mh_aqu', 'mh_blu', 'mh_vio', 'mh_mag',
                 'm_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag',
-                'ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag'
+                'ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag',
+                'mh_range_red', 'mh_range_org', 'mh_range_yel', 'mh_range_grn',
+                'mh_range_aqu', 'mh_range_blu', 'mh_range_vio', 'mh_range_mag'
             ]);
             const active = getActiveLayer();
             if (active && active.rawSettings) active.rawSettings.bwMode = false;
@@ -2687,7 +2598,7 @@
             const pixel = tempCtx.getImageData(px, py, 1, 1).data;
             const [h] = rgbToHsl(pixel[0], pixel[1], pixel[2]);
 
-            tatWeights = getColorWeights(h);
+            tatWeights = getColorWeights(h, layerObj.rawSettings);
             isTatDragging = true;
             tatStartY = e.clientY;
 
@@ -3177,6 +3088,17 @@
                     if (label && label.querySelector('.value-display')) {
                         label.querySelector('.value-display').innerText = el.step === '0.1' ? parseFloat(settings[key]).toFixed(1) : settings[key];
                     }
+                }
+
+                if (key.startsWith('mh_range_')) {
+                    const rEl = document.getElementById(key);
+                    const rAllEl = document.getElementById(`${key}_all`);
+                    if (rEl) rEl.value = settings[key];
+                    if (rAllEl) rAllEl.value = settings[key];
+                    const v1 = document.getElementById(`val_${key}`);
+                    const v2 = document.getElementById(`val_${key}_all`);
+                    if (v1) v1.innerText = `${settings[key]}°`;
+                    if (v2) v2.innerText = `${settings[key]}°`;
                 }
             });
 
@@ -3884,7 +3806,7 @@
             saveHistoryState();
         });
 
-        // MOTEUR DE RENDU DU TRAITEMENT D'IMAGE (INCLUANT LE MIXEUR N&B ET HSL)
+        // MOTEUR DE RENDU DU TRAITEMENT D'IMAGE (AVEC SOLO COLOR ET HUE RANGE)
         function processImage() {
             try {
                 layers.forEach((layer) => {
@@ -3943,8 +3865,8 @@
                         // MIXEUR NOIR & BLANC A 8 CANAUX OU MÉLANGEUR HSL STANDARD
                         if (modulesState.mixer) {
                             if (isBwMode) {
-                                const [h, sVal, lVal] = rgbToHsl(r, g, b);
-                                const w = getColorWeights(h);
+                                const [h] = rgbToHsl(r, g, b);
+                                const w = getColorWeights(h, s);
 
                                 const bwShift = 
                                     (s.ml_red || 0) * w.red +
@@ -3962,49 +3884,73 @@
                                 r = gray; g = gray; b = gray;
                             } else {
                                 let [h, sVal, lVal] = rgbToHsl(r, g, b);
-                                const w = getColorWeights(h);
+                                const w = getColorWeights(h, s);
 
-                                // TEINTE
-                                const hueShift = 
-                                    (s.mh_red || 0) * w.red +
-                                    (s.mh_org || 0) * w.org +
-                                    (s.mh_yel || 0) * w.yel +
-                                    (s.mh_grn || 0) * w.grn +
-                                    (s.mh_aqu || 0) * w.aqu +
-                                    (s.mh_blu || 0) * w.blu +
-                                    (s.mh_vio || 0) * w.vio +
-                                    (s.mh_mag || 0) * w.mag;
+                                // GESTION DU MODE SOLO COLOR (ISOLATION TEMPORAIRE DE CANAL)
+                                if (isSoloColorActive) {
+                                    const activeWeight = w[activeColorChannel] || 0;
+                                    if (activeWeight < 0.1) {
+                                        const gray = 0.299 * r + 0.587 * g + 0.114 * b;
+                                        r = gray; g = gray; b = gray;
+                                    } else {
+                                        // TEINTE
+                                        const hueShift = (s[`mh_${activeColorChannel}`] || 0) * activeWeight;
+                                        h = (h + (hueShift * 0.3) + 360) % 360;
 
-                                h = (h + (hueShift * 0.3) + 360) % 360;
+                                        // SATURATION
+                                        const satShift = (s[`m_${activeColorChannel}`] || 0) * activeWeight;
+                                        sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
 
-                                // SATURATION
-                                const satShift = 
-                                    (s.m_red || 0) * w.red +
-                                    (s.m_org || 0) * w.org +
-                                    (s.m_yel || 0) * w.yel +
-                                    (s.m_grn || 0) * w.grn +
-                                    (s.m_aqu || 0) * w.aqu +
-                                    (s.m_blu || 0) * w.blu +
-                                    (s.m_vio || 0) * w.vio +
-                                    (s.m_mag || 0) * w.mag;
+                                        // LUMINANCE
+                                        const lumShift = (s[`ml_${activeColorChannel}`] || 0) * activeWeight;
+                                        lVal = Math.max(0, Math.min(1, lVal * (1 + (lumShift * 0.005))));
 
-                                sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
+                                        const [newR, newG, newB] = hslToRgb(h, sVal, lVal);
+                                        r = newR; g = newG; b = newB;
+                                    }
+                                } else {
+                                    // TEINTE
+                                    const hueShift = 
+                                        (s.mh_red || 0) * w.red +
+                                        (s.mh_org || 0) * w.org +
+                                        (s.mh_yel || 0) * w.yel +
+                                        (s.mh_grn || 0) * w.grn +
+                                        (s.mh_aqu || 0) * w.aqu +
+                                        (s.mh_blu || 0) * w.blu +
+                                        (s.mh_vio || 0) * w.vio +
+                                        (s.mh_mag || 0) * w.mag;
 
-                                // LUMINANCE
-                                const lumShift = 
-                                    (s.ml_red || 0) * w.red +
-                                    (s.ml_org || 0) * w.org +
-                                    (s.ml_yel || 0) * w.yel +
-                                    (s.ml_grn || 0) * w.grn +
-                                    (s.ml_aqu || 0) * w.aqu +
-                                    (s.ml_blu || 0) * w.blu +
-                                    (s.ml_vio || 0) * w.vio +
-                                    (s.ml_mag || 0) * w.mag;
+                                    h = (h + (hueShift * 0.3) + 360) % 360;
 
-                                lVal = Math.max(0, Math.min(1, lVal * (1 + (lumShift * 0.005))));
+                                    // SATURATION
+                                    const satShift = 
+                                        (s.m_red || 0) * w.red +
+                                        (s.m_org || 0) * w.org +
+                                        (s.m_yel || 0) * w.yel +
+                                        (s.m_grn || 0) * w.grn +
+                                        (s.m_aqu || 0) * w.aqu +
+                                        (s.m_blu || 0) * w.blu +
+                                        (s.m_vio || 0) * w.vio +
+                                        (s.m_mag || 0) * w.mag;
 
-                                const [newR, newG, newB] = hslToRgb(h, sVal, lVal);
-                                r = newR; g = newG; b = newB;
+                                    sVal = Math.max(0, Math.min(1, sVal * (1 + (satShift * 0.01))));
+
+                                    // LUMINANCE
+                                    const lumShift = 
+                                        (s.ml_red || 0) * w.red +
+                                        (s.ml_org || 0) * w.org +
+                                        (s.ml_yel || 0) * w.yel +
+                                        (s.ml_grn || 0) * w.grn +
+                                        (s.ml_aqu || 0) * w.aqu +
+                                        (s.ml_blu || 0) * w.blu +
+                                        (s.ml_vio || 0) * w.vio +
+                                        (s.ml_mag || 0) * w.mag;
+
+                                    lVal = Math.max(0, Math.min(1, lVal * (1 + (lumShift * 0.005))));
+
+                                    const [newR, newG, newB] = hslToRgb(h, sVal, lVal);
+                                    r = newR; g = newG; b = newB;
+                                }
                             }
                         }
 
@@ -4152,7 +4098,7 @@
         document.getElementById('fitScreenBtn').addEventListener('click', () => { currentScale = 1.0; processImage(); updateBoundingBoxPosition(); updateBrushCursorDimensions(); });
 
         document.getElementById('controls').addEventListener('input', (e) => {
-            if (e.target.type === 'range' && !rawFieldsList.includes(e.target.id) && !['c_hl', 'c_light', 'c_dark', 'c_shad'].includes(e.target.id)) {
+            if (e.target.type === 'range' && !rawFieldsList.includes(e.target.id) && !['c_hl', 'c_light', 'c_dark', 'c_shad'].includes(e.target.id) && !e.target.id.startsWith('mh_range_')) {
                 const active = getActiveLayer();
                 if (active && active.rawSettings) {
                     active.rawSettings[e.target.id] = parseFloat(e.target.value);
