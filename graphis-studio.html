@@ -1141,6 +1141,21 @@
                         </div>
                     </summary>
                     <div class="module-content">
+                        <!-- MENU DÉROULANT DE PRESETS HSL -->
+                        <div class="control-group" style="margin-bottom:12px;">
+                            <label>Presets HSL / Couleurs
+                                <select id="hslPresetSelect">
+                                    <option value="custom">Personnalisé (Par défaut)</option>
+                                    <option value="teal_orange">Teal & Orange</option>
+                                    <option value="dramatic_bw">Noir & Blanc dramatique</option>
+                                    <option value="selective_desat">Désaturation sélective</option>
+                                    <option value="vintage_fade">Vintage / Fade</option>
+                                    <option value="autumn_leaves">Feuillage d'automne</option>
+                                    <option value="skin_tones">Tons chair optimisés</option>
+                                </select>
+                            </label>
+                        </div>
+
                         <!-- SOUS-ONGLETS TEINTE / SATURATION / LUMINANCE -->
                         <div class="hsl-subnav">
                             <button class="hsl-subnav-btn" data-hsl="hue">Teinte</button>
@@ -2056,6 +2071,70 @@
             }
         });
 
+        // GESTION DU MENU DÉROULANT DES PRESETS HSL
+        const hslPresetSelect = document.getElementById('hslPresetSelect');
+
+        const HSL_PRESETS = {
+            teal_orange: {
+                mh_red: 10, mh_org: -10, mh_yel: -35, mh_grn: -20, mh_aqu: 30, mh_blu: 25, mh_vio: 0, mh_mag: 0,
+                m_red: 20, m_org: 30, m_yel: 10, m_grn: -60, m_aqu: 45, m_blu: 50, m_vio: -80, m_mag: -80,
+                ml_red: 5, ml_org: 15, ml_yel: 0, ml_grn: -20, ml_aqu: 10, ml_blu: -10, ml_vio: 0, ml_mag: 0
+            },
+            dramatic_bw: {
+                mh_red: 0, mh_org: 0, mh_yel: 0, mh_grn: 0, mh_aqu: 0, mh_blu: 0, mh_vio: 0, mh_mag: 0,
+                m_red: -100, m_org: -100, m_yel: -100, m_grn: -100, m_aqu: -100, m_blu: -100, m_vio: -100, m_mag: -100,
+                ml_red: 30, ml_org: 20, ml_yel: -10, ml_grn: -40, ml_aqu: -30, ml_blu: -50, ml_vio: -20, ml_mag: 0
+            },
+            selective_desat: {
+                mh_red: 0, mh_org: 0, mh_yel: 0, mh_grn: 0, mh_aqu: 0, mh_blu: 0, mh_vio: 0, mh_mag: 0,
+                m_red: 40, m_org: 20, m_yel: -100, m_grn: -100, m_aqu: -100, m_blu: -100, m_vio: -100, m_mag: -100,
+                ml_red: 10, ml_org: 5, ml_yel: 0, ml_grn: 0, ml_aqu: 0, ml_blu: 0, ml_vio: 0, ml_mag: 0
+            },
+            vintage_fade: {
+                mh_red: -10, mh_org: 10, mh_yel: 20, mh_grn: 15, mh_aqu: -15, mh_blu: -20, mh_vio: 10, mh_mag: 0,
+                m_red: -25, m_org: -15, m_yel: -20, m_grn: -30, m_aqu: -35, m_blu: -40, m_vio: -25, m_mag: -20,
+                ml_red: 15, ml_org: 10, ml_yel: 10, ml_grn: 20, ml_aqu: 15, ml_blu: 25, ml_vio: 15, ml_mag: 10
+            },
+            autumn_leaves: {
+                mh_red: -15, mh_org: -25, mh_yel: -50, mh_grn: -70, mh_aqu: 0, mh_blu: 0, mh_vio: 0, mh_mag: 0,
+                m_red: 35, m_org: 55, m_yel: 40, m_grn: -30, m_aqu: -50, m_blu: -20, m_vio: 0, m_mag: 0,
+                ml_red: 10, ml_org: 15, ml_yel: 5, ml_grn: -15, ml_aqu: 0, ml_blu: 0, ml_vio: 0, ml_mag: 0
+            },
+            skin_tones: {
+                mh_red: -5, mh_org: 5, mh_yel: 10, mh_grn: 0, mh_aqu: 0, mh_blu: 0, mh_vio: 0, mh_mag: 0,
+                m_red: 10, m_org: 15, m_yel: -15, m_grn: -20, m_aqu: 0, m_blu: 0, m_vio: 0, m_mag: 0,
+                ml_red: 5, ml_org: 20, ml_yel: 15, ml_grn: 0, ml_aqu: 0, ml_blu: 0, ml_vio: 0, ml_mag: 0
+            }
+        };
+
+        hslPresetSelect.addEventListener('change', (e) => {
+            const active = getActiveLayer();
+            if (!active || !active.rawSettings) return;
+
+            const presetKey = e.target.value;
+            if (presetKey === 'custom') return;
+
+            const preset = HSL_PRESETS[presetKey];
+            if (preset) {
+                Object.keys(preset).forEach(key => {
+                    active.rawSettings[key] = preset[key];
+                    
+                    const rangeEl = document.getElementById(key);
+                    const numEl = document.getElementById(`num_${key}`);
+                    if (rangeEl) rangeEl.value = preset[key];
+                    if (numEl) numEl.value = preset[key];
+
+                    const label = rangeEl ? rangeEl.previousElementSibling : null;
+                    if (label && label.querySelector('.value-display')) {
+                        label.querySelector('.value-display').innerText = preset[key];
+                    }
+                });
+
+                processImage();
+                saveHistoryState();
+            }
+        });
+
         // GESTION DES YEUX (TOGGLE)
         document.querySelectorAll('.module-eye-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -2118,6 +2197,7 @@
                 'm_red', 'm_org', 'm_yel', 'm_grn', 'm_aqu', 'm_blu', 'm_vio', 'm_mag',
                 'ml_red', 'ml_org', 'ml_yel', 'ml_grn', 'ml_aqu', 'ml_blu', 'ml_vio', 'ml_mag'
             ]);
+            hslPresetSelect.value = 'custom';
         });
 
         // RESET COLOR GRADING
@@ -3417,6 +3497,10 @@
                 numEl.value = rangeEl.step === '0.1' ? numVal.toFixed(1) : numVal;
 
                 active.rawSettings[rangeId] = numVal;
+
+                if (mixerSliderIds.includes(rangeId)) {
+                    hslPresetSelect.value = 'custom';
+                }
 
                 const label = rangeEl.previousElementSibling;
                 if (label && label.querySelector('.value-display')) {
