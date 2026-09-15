@@ -480,17 +480,30 @@
 
     hr.divider { border-color: #333; margin: 15px 0; border-style: solid; border-width: 1px 0 0 0; }
 
-    /* STYLES VIGNETTES ET GRILLE EFFETS */
+    /* STYLES VIGNETTES ET GRILLE EFFETS (PAR CATEGORIES - 3 COLONNES) */
+    .effects-category-title {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--accent-color);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin: 10px 0 6px 0;
+        border-bottom: 1px dashed #333;
+        padding-bottom: 3px;
+    }
+    .effects-category-title:first-child {
+        margin-top: 0;
+    }
     .effects-grid {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-        margin-bottom: 15px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        margin-bottom: 12px;
     }
     .effect-card {
         background: #1a1a1a;
         border: 1px solid #333;
-        border-radius: 6px;
+        border-radius: 4px;
         overflow: hidden;
         cursor: pointer;
         transition: all 0.2s ease;
@@ -504,23 +517,26 @@
     }
     .effect-card.active {
         border-color: var(--accent-color);
-        box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+        box-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
     }
     .effect-preview-box {
         width: 100%;
-        height: 60px;
+        height: 42px;
         background-size: cover;
         background-position: center;
     }
     .effect-card-title {
-        font-size: 10px;
+        font-size: 9px;
         font-weight: 600;
-        padding: 5px;
+        padding: 4px 2px;
         text-align: center;
         color: #ccc;
         width: 100%;
         background: #141414;
         box-sizing: border-box;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
     .effect-card.active .effect-card-title {
         color: var(--accent-color);
@@ -1318,7 +1334,7 @@
                     </div>
                 </details>
 
-                <!-- PANNEAU EFFETS (REMONTÉ EN DESSOUS DU MÉLANGEUR DE COULEURS) -->
+                <!-- PANNEAU EFFETS (RESTRUCTURE EN CATEGORIES - 3 COLONNES) -->
                 <details>
                     <summary>
                         <span>Effets</span>
@@ -1332,8 +1348,8 @@
                         </div>
                     </summary>
                     <div class="module-content">
-                        <!-- GRILLE DES 24 EFFETS CUMULÉS EN VIGNETTES -->
-                        <div class="effects-grid" id="effectsGrid"></div>
+                        <!-- GRILLE DES 33 EFFETS REGROUPES PAR CATEGORIES -->
+                        <div id="effectsCategoriesContainer"></div>
                         <hr class="divider">
                         <div class="control-group"><label>Vignettage Gain <span class="value-display">0</span></label><input type="range" id="e_viggain" min="-100" max="100" value="0"></div>
                         <div class="control-group"><label>Milieu <span class="value-display">50</span></label><input type="range" id="e_vigmid" min="0" max="100" value="50"></div>
@@ -1481,65 +1497,108 @@
     </div>
 
     <script>
-        // CUMUL DE TOUS LES PRESETS EFFETS (12 PREMIERS + 12 NOUVEAUX = 24 PRESETS TOTAL)
-        const PRESET_EFFECTS = [
-            // --- 12 EFFETS D'ORIGINE ---
-            { id: 'none', name: 'Aucun', bg: 'linear-gradient(45deg, #444, #666)', apply: (s) => {} },
-            { id: 'dramatic', name: 'Dramatique', bg: 'linear-gradient(45deg, #1a1c29, #4a3b52)', apply: (s) => { s.t_cont = 40; s.e_viggain = -60; s.t_dehaze = 30; } },
-            { id: 'vintage', name: 'Vintage', bg: 'linear-gradient(45deg, #4d3826, #806843)', apply: (s) => { s.t_temp = 25; s.e_viggain = -30; s.t_cont = -15; } },
-            { id: 'cinema_blue', name: 'Cinéma Bleu', bg: 'linear-gradient(45deg, #0f2027, #203a43)', apply: (s) => { s.t_temp = -30; s.e_viggain = -50; s.t_cont = 20; } },
-            { id: 'high_contrast', name: 'Haut Contraste', bg: 'linear-gradient(45deg, #000, #888)', apply: (s) => { s.t_cont = 65; s.t_exp = 0.3; } },
-            { id: 'soft_dream', name: 'Rêve Doux', bg: 'linear-gradient(45deg, #ffc3a0, #ffafbd)', apply: (s) => { s.t_cont = -30; s.t_clar = -40; s.t_exp = 0.4; } },
-            { id: 'noir', name: 'Noir & Blanc Profond', bg: 'linear-gradient(45deg, #111, #444)', apply: (s) => { s.bwMode = true; s.t_cont = 50; s.e_viggain = -40; } },
-            { id: 'warm_sunset', name: 'Coucher de Soleil', bg: 'linear-gradient(45deg, #f857a6, #ff5858)', apply: (s) => { s.t_temp = 45; s.t_tint = 15; s.t_vib = 25; } },
-            { id: 'faded_film', name: 'Film Décoloré', bg: 'linear-gradient(45deg, #2c3e50, #3498db)', apply: (s) => { s.t_cont = -20; s.t_black = 35; s.t_sat = -25; } },
-            { id: 'urban_hdr', name: 'Urbain HDR', bg: 'linear-gradient(45deg, #373b44, #4286f4)', apply: (s) => { s.t_dehaze = 45; s.t_clar = 35; s.t_cont = 25; } },
-            { id: 'cyberpunk', name: 'Cyberpunk', bg: 'linear-gradient(45deg, #000428, #004e92)', apply: (s) => { s.t_temp = -40; s.t_tint = 50; s.t_vib = 40; } },
-            { id: 'old_photo', name: 'Ancienne Photo', bg: 'linear-gradient(45deg, #3b2314, #6b4c35)', apply: (s) => { s.bwMode = true; s.t_temp = 50; s.e_viggain = -70; s.e_grngain = 40; } },
-
-            // --- 12 NOUVEAUX EFFETS ---
-            { id: 'teal_magenta', name: 'Teal & Magenta', bg: 'linear-gradient(45deg, #008080, #ff00ff)', apply: (s) => { s.t_temp = -15; s.t_tint = 30; s.mh_blu = 20; s.mh_mag = -20; } },
-            { id: 'golden_hour', name: 'Golden Hour', bg: 'linear-gradient(45deg, #ff8c00, #ffd700)', apply: (s) => { s.t_temp = 35; s.t_tint = 10; s.t_exp = 0.2; s.t_vib = 20; } },
-            { id: 'effet_mat', name: 'Effet Mat', bg: 'linear-gradient(45deg, #3a3a3a, #777777)', apply: (s) => { s.t_cont = -25; s.t_black = 40; s.t_sat = -15; } },
-            { id: 'dark_moody', name: 'Dark Moody', bg: 'linear-gradient(45deg, #11141a, #2c3540)', apply: (s) => { s.t_exp = -0.5; s.t_cont = 30; s.e_viggain = -65; s.t_sat = -20; } },
-            { id: 'forest_moody', name: 'Forest Moody', bg: 'linear-gradient(45deg, #0d2613, #2d5a37)', apply: (s) => { s.t_temp = -10; s.mh_grn = -15; s.m_grn = 25; s.e_viggain = -40; } },
-            { id: 'kodachrome', name: 'Kodachrome', bg: 'linear-gradient(45deg, #a82c15, #e09f3e)', apply: (s) => { s.t_cont = 25; s.t_temp = 15; s.m_red = 30; s.m_yel = 20; } },
-            { id: 'warm_vintage', name: 'Warm Vintage', bg: 'linear-gradient(45deg, #6e4726, #c29b68)', apply: (s) => { s.t_temp = 30; s.t_cont = -10; s.e_viggain = -35; s.t_black = 20; } },
-            { id: 'matte_pastel', name: 'Matte Pastel', bg: 'linear-gradient(45deg, #ffc0cb, #b0e0e6)', apply: (s) => { s.t_cont = -35; s.t_exp = 0.3; s.t_sat = -20; s.t_white = -15; } },
-            { id: 'high_key_soft', name: 'High-Key Soft', bg: 'linear-gradient(45deg, #e6e6e6, #ffffff)', apply: (s) => { s.t_exp = 0.8; s.t_cont = -20; s.t_hl = -30; s.t_clar = -20; } },
-            { id: 'cyberpunk_night', name: 'Cyberpunk / Night', bg: 'linear-gradient(45deg, #050515, #ff0055)', apply: (s) => { s.t_temp = -45; s.t_tint = 55; s.t_cont = 35; s.t_vib = 45; } },
-            { id: 'film_noir_bw', name: 'Film Noir B&W', bg: 'linear-gradient(45deg, #000000, #444444)', apply: (s) => { s.bwMode = true; s.t_cont = 60; s.e_viggain = -75; s.t_dehaze = 25; } },
-            { id: 'sepia_dream', name: 'Sepia Dream', bg: 'linear-gradient(45deg, #422a1d, #a37c5b)', apply: (s) => { s.bwMode = true; s.t_temp = 45; s.t_tint = 20; s.t_cont = -15; } }
+        // TOTAL DE 33 PRESETS REGROUPES PAR CATEGORIES (ORIGINE + NOUVEAUX)
+        const PRESET_EFFECTS_CATEGORIES = [
+            {
+                categoryName: "Général",
+                effects: [
+                    { id: 'none', name: 'Aucun', bg: 'linear-gradient(45deg, #444, #666)', apply: (s) => {} },
+                    { id: 'dramatic', name: 'Dramatique', bg: 'linear-gradient(45deg, #1a1c29, #4a3b52)', apply: (s) => { s.t_cont = 40; s.e_viggain = -60; s.t_dehaze = 30; } },
+                    { id: 'high_contrast', name: 'Haut Contraste', bg: 'linear-gradient(45deg, #000, #888)', apply: (s) => { s.t_cont = 65; s.t_exp = 0.3; } }
+                ]
+            },
+            {
+                categoryName: "Cinématographique & Vintage",
+                effects: [
+                    { id: 'cinema_blue', name: 'Cinéma Bleu', bg: 'linear-gradient(45deg, #0f2027, #203a43)', apply: (s) => { s.t_temp = -30; s.e_viggain = -50; s.t_cont = 20; } },
+                    { id: 'cross_process', name: 'Traitement Croisé', bg: 'linear-gradient(45deg, #43e97b, #38f9d7)', apply: (s) => { s.t_cont = 35; s.t_tint = -25; s.mh_grn = 30; s.mh_yel = 20; s.mh_blu = -30; } },
+                    { id: 'bleach_bypass', name: 'Bleach Bypass', bg: 'linear-gradient(45deg, #232526, #414345)', apply: (s) => { s.t_cont = 55; s.t_sat = -50; s.t_clar = 40; s.e_grngain = 20; } },
+                    { id: 'infrared_faux', name: 'Infrarouge Faux', bg: 'linear-gradient(45deg, #ff0844, #ffb199)', apply: (s) => { s.mh_grn = -100; s.mh_yel = -90; s.m_red = 45; s.t_tint = 40; } },
+                    { id: 'vintage', name: 'Vintage', bg: 'linear-gradient(45deg, #4d3826, #806843)', apply: (s) => { s.t_temp = 25; s.e_viggain = -30; s.t_cont = -15; } },
+                    { id: 'faded_film', name: 'Film Décoloré', bg: 'linear-gradient(45deg, #2c3e50, #3498db)', apply: (s) => { s.t_cont = -20; s.t_black = 35; s.t_sat = -25; } }
+                ]
+            },
+            {
+                categoryName: "Ambiance & Éclairage",
+                effects: [
+                    { id: 'low_key', name: 'Low-Key Mystère', bg: 'linear-gradient(45deg, #050505, #1a1a2e)', apply: (s) => { s.t_exp = -1.2; s.t_cont = 45; s.t_shad = -40; s.e_viggain = -80; } },
+                    { id: 'orton_effect', name: 'Effet Orton', bg: 'linear-gradient(45deg, #e0c3fc, #8ec5fc)', apply: (s) => { s.t_clar = -45; s.t_exp = 0.3; s.t_hl = 30; s.t_vib = 25; } },
+                    { id: 'sun_flare', name: 'Brume Solaire', bg: 'linear-gradient(45deg, #f6d365, #fda085)', apply: (s) => { s.t_temp = 35; s.t_clar = -20; s.t_exp = 0.4; s.t_hl = 25; } },
+                    { id: 'warm_sunset', name: 'Coucher Soleil', bg: 'linear-gradient(45deg, #f857a6, #ff5858)', apply: (s) => { s.t_temp = 45; s.t_tint = 15; s.t_vib = 25; } },
+                    { id: 'soft_dream', name: 'Rêve Doux', bg: 'linear-gradient(45deg, #ffc3a0, #ffafbd)', apply: (s) => { s.t_cont = -30; s.t_clar = -40; s.t_exp = 0.4; } },
+                    { id: 'dark_moody', name: 'Dark Moody', bg: 'linear-gradient(45deg, #11141a, #2c3540)', apply: (s) => { s.t_exp = -0.5; s.t_cont = 30; s.e_viggain = -65; s.t_sat = -20; } },
+                    { id: 'forest_moody', name: 'Forest Moody', bg: 'linear-gradient(45deg, #0d2613, #2d5a37)', apply: (s) => { s.t_temp = -10; s.mh_grn = -15; s.m_grn = 25; s.e_viggain = -40; } },
+                    { id: 'golden_hour', name: 'Golden Hour', bg: 'linear-gradient(45deg, #ff8c00, #ffd700)', apply: (s) => { s.t_temp = 35; s.t_tint = 10; s.t_exp = 0.2; s.t_vib = 20; } }
+                ]
+            },
+            {
+                categoryName: "Argentique Rétro",
+                effects: [
+                    { id: 'agfachrome', name: 'Agfachrome', bg: 'linear-gradient(45deg, #d4a373, #fefae0)', apply: (s) => { s.t_temp = 20; s.t_black = 25; s.t_cont = -10; s.m_org = 15; } },
+                    { id: 'tri_x_400', name: 'Kodak Tri-X 400', bg: 'linear-gradient(45deg, #000000, #666666)', apply: (s) => { s.bwMode = true; s.t_cont = 55; s.e_grngain = 50; s.e_grnsize = 35; } },
+                    { id: 'polaroid_land', name: 'Polaroid Land', bg: 'linear-gradient(45deg, #ccd5ae, #e9edc9)', apply: (s) => { s.t_cont = -20; s.t_black = 30; s.t_sat = -20; s.t_tint = -15; } },
+                    { id: 'kodachrome', name: 'Kodachrome', bg: 'linear-gradient(45deg, #a82c15, #e09f3e)', apply: (s) => { s.t_cont = 25; s.t_temp = 15; s.m_red = 30; s.m_yel = 20; } },
+                    { id: 'old_photo', name: 'Ancienne Photo', bg: 'linear-gradient(45deg, #3b2314, #6b4c35)', apply: (s) => { s.bwMode = true; s.t_temp = 50; s.e_viggain = -70; s.e_grngain = 40; } },
+                    { id: 'warm_vintage', name: 'Warm Vintage', bg: 'linear-gradient(45deg, #6e4726, #c29b68)', apply: (s) => { s.t_temp = 30; s.t_cont = -10; s.e_viggain = -35; s.t_black = 20; } }
+                ]
+            },
+            {
+                categoryName: "Styles Modernes & Créatifs",
+                effects: [
+                    { id: 'teal_magenta', name: 'Teal & Magenta', bg: 'linear-gradient(45deg, #008080, #ff00ff)', apply: (s) => { s.t_temp = -15; s.t_tint = 30; s.mh_blu = 20; s.mh_mag = -20; } },
+                    { id: 'urban_hdr', name: 'Urbain HDR', bg: 'linear-gradient(45deg, #373b44, #4286f4)', apply: (s) => { s.t_dehaze = 45; s.t_clar = 35; s.t_cont = 25; } },
+                    { id: 'cyberpunk', name: 'Cyberpunk', bg: 'linear-gradient(45deg, #000428, #004e92)', apply: (s) => { s.t_temp = -40; s.t_tint = 50; s.t_vib = 40; } },
+                    { id: 'cyberpunk_night', name: 'Cyberpunk Night', bg: 'linear-gradient(45deg, #050515, #ff0055)', apply: (s) => { s.t_temp = -45; s.t_tint = 55; s.t_cont = 35; s.t_vib = 45; } },
+                    { id: 'effet_mat', name: 'Effet Mat', bg: 'linear-gradient(45deg, #3a3a3a, #777777)', apply: (s) => { s.t_cont = -25; s.t_black = 40; s.t_sat = -15; } },
+                    { id: 'matte_pastel', name: 'Matte Pastel', bg: 'linear-gradient(45deg, #ffc0cb, #b0e0e6)', apply: (s) => { s.t_cont = -35; s.t_exp = 0.3; s.t_sat = -20; s.t_white = -15; } },
+                    { id: 'high_key_soft', name: 'High-Key Soft', bg: 'linear-gradient(45deg, #e6e6e6, #ffffff)', apply: (s) => { s.t_exp = 0.8; s.t_cont = -20; s.t_hl = -30; s.t_clar = -20; } },
+                    { id: 'noir', name: 'Noir & Blanc Prof', bg: 'linear-gradient(45deg, #111, #444)', apply: (s) => { s.bwMode = true; s.t_cont = 50; s.e_viggain = -40; } },
+                    { id: 'film_noir_bw', name: 'Film Noir N&B', bg: 'linear-gradient(45deg, #000000, #444444)', apply: (s) => { s.bwMode = true; s.t_cont = 60; s.e_viggain = -75; s.t_dehaze = 25; } },
+                    { id: 'sepia_dream', name: 'Rêve Sépia', bg: 'linear-gradient(45deg, #422a1d, #a37c5b)', apply: (s) => { s.bwMode = true; s.t_temp = 45; s.t_tint = 20; s.t_cont = -15; } }
+                ]
+            }
         ];
 
         function buildEffectsGridUI() {
-            const grid = document.getElementById('effectsGrid');
-            if (!grid) return;
-            grid.innerHTML = '';
+            const container = document.getElementById('effectsCategoriesContainer');
+            if (!container) return;
+            container.innerHTML = '';
 
-            PRESET_EFFECTS.forEach(eff => {
-                const card = document.createElement('div');
-                card.className = `effect-card ${eff.id === 'none' ? 'active' : ''}`;
-                card.dataset.id = eff.id;
-                card.innerHTML = `
-                    <div class="effect-preview-box" style="background: ${eff.bg}"></div>
-                    <div class="effect-card-title">${eff.name}</div>
-                `;
-                card.addEventListener('click', () => {
-                    const active = getActiveLayer();
-                    if (!active || !active.rawSettings) return;
+            PRESET_EFFECTS_CATEGORIES.forEach(cat => {
+                const catTitle = document.createElement('div');
+                catTitle.className = 'effects-category-title';
+                catTitle.innerText = cat.categoryName;
+                container.appendChild(catTitle);
 
-                    document.querySelectorAll('.effect-card').forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
+                const grid = document.createElement('div');
+                grid.className = 'effects-grid';
 
-                    active.rawSettings.activeEffect = eff.id;
-                    eff.apply(active.rawSettings);
+                cat.effects.forEach(eff => {
+                    const card = document.createElement('div');
+                    card.className = `effect-card ${eff.id === 'none' ? 'active' : ''}`;
+                    card.dataset.id = eff.id;
+                    card.innerHTML = `
+                        <div class="effect-preview-box" style="background: ${eff.bg}"></div>
+                        <div class="effect-card-title">${eff.name}</div>
+                    `;
+                    card.addEventListener('click', () => {
+                        const active = getActiveLayer();
+                        if (!active || !active.rawSettings) return;
 
-                    syncRawPanelUI();
-                    processImage();
-                    saveHistoryState();
+                        document.querySelectorAll('.effect-card').forEach(c => c.classList.remove('active'));
+                        card.classList.add('active');
+
+                        active.rawSettings.activeEffect = eff.id;
+                        eff.apply(active.rawSettings);
+
+                        syncRawPanelUI();
+                        processImage();
+                        saveHistoryState();
+                    });
+                    grid.appendChild(card);
                 });
-                grid.appendChild(card);
+
+                container.appendChild(grid);
             });
         }
 
