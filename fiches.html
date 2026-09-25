@@ -710,7 +710,7 @@
       </article>
 
 
-      <!-- FICHE 5 : DNG VS RAW PROPRIÉTAIRES (NOUVELLE FICHE) -->
+      <!-- FICHE 5 : DNG VS RAW PROPRIÉTAIRES -->
       <article class="fiche-card krea-card overflow-hidden" data-category="workflow" data-title="dng vs raw propriétaires nef cr2 cr3 arw raf convertisseur adobe">
         
         <!-- En-tête du volet (Cliquable) -->
@@ -2083,6 +2083,189 @@
               </p>
               <p class="text-xs text-slate-300">
                 • <strong>Si vous photographiez exclusivement en RAW :</strong> Le réglage importe peu. Vous pouvez choisir <strong>Adobe RVB</strong> pour bénéficier d'un histogramme légèrement plus fidèle, ou laisser <strong>sRVB</strong> par sécurité si vous modifiez vos habitudes de format selon les projets.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </article>
+
+      <!-- FICHE 12 : LIGHTROOM CHOIX DE L'APERÇU -->
+      <article class="fiche-card krea-card overflow-hidden" data-category="workflow" data-title="lightroom choix apercu aperçu import importation minimum fichier annexe incorpore standard 1:1 1 1 comparatif">
+        
+        <!-- En-tête du volet (Cliquable) -->
+        <button onclick="toggleFiche('fiche-lr-previews')" class="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-800/40 transition-colors cursor-pointer focus:outline-none">
+          <div class="flex items-center gap-3">
+            <div class="p-2.5 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-0.5">
+                <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-semibold uppercase">Logiciels &amp; Workflow</span>
+                <span class="text-[10px] text-slate-500">• Fiche #12</span>
+              </div>
+              <h2 class="text-base md:text-lg font-bold text-white leading-tight">
+                Lightroom Classic : Choix des aperçus à l'importation
+              </h2>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="text-xs text-slate-400 hidden sm:inline">Consulter la fiche</span>
+            <div class="p-1.5 rounded-lg bg-slate-800 text-slate-300">
+              <svg id="icon-fiche-lr-previews" class="fiche-icon w-4 h-4 transition-transform duration-300" data-target="fiche-lr-previews" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </button>
+
+        <!-- Contenu du Volet -->
+        <div id="fiche-lr-previews" class="fiche-body hidden border-t border-slate-800 p-6 space-y-6">
+
+          <!-- Barre d'actions supérieures -->
+          <div class="flex justify-between items-center bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+            <div class="text-xs text-slate-400">
+              Auteur : <strong class="text-slate-200">Dimitri Damblon</strong> — Graphis Studio
+            </div>
+            <button onclick="printFiche('Lightroom : Choix des aperçus à l\'importation', 'content-lr-previews')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              <span>Télécharger / Imprimer la Fiche</span>
+            </button>
+          </div>
+
+          <!-- CONTENU DE LA FICHE -->
+          <div id="content-lr-previews" class="space-y-6 text-sm text-slate-300 leading-relaxed">
+            
+            <!-- Intro -->
+            <div class="space-y-2">
+              <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                Optimiser la fluidité dès l'importation
+              </h3>
+              <p>
+                Lors de l'importation de vos fichiers RAW dans Lightroom Classic, le logiciel doit générer des « aperçus » pour vous permettre de visualiser vos photos avant de les développer. Ce choix crucial impacte directement la vitesse d'importation, la fluidité lors du tri et l'espace consommé sur votre disque dur.
+              </p>
+            </div>
+
+            <!-- Grille d'Analyse des 4 options -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              <!-- MINIMUM -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h4 class="font-bold text-slate-200 text-base border-b border-slate-800 pb-2">1. Minimum (Minimal)</h4>
+                <p class="text-xs text-slate-400">
+                  Lightroom extrait uniquement la minuscule vignette JPEG de basse résolution pré-intégrée dans le fichier RAW par votre appareil photo.
+                </p>
+                <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                  <li><strong class="text-emerald-400">Avantage :</strong> Importation quasi instantanée.</li>
+                  <li><strong class="text-rose-400">Inconvénient :</strong> Dès que vous zoomez ou passez d'une image à l'autre en plein écran, le logiciel fige le temps de générer un aperçu de meilleure qualité (très lent lors du tri).</li>
+                </ul>
+              </div>
+
+              <!-- FICHIER ANNEXE INCORPORÉ -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-emerald-500/30 space-y-3 relative overflow-hidden">
+                <div class="absolute top-0 right-0 px-2 py-1 bg-emerald-500/20 text-emerald-400 text-[9px] font-bold uppercase rounded-bl-lg">Recommandé pour le tri</div>
+                <h4 class="font-bold text-emerald-400 text-base border-b border-slate-800 pb-2">2. Fichier annexe incorporé</h4>
+                <p class="text-xs text-slate-400">
+                  Lightroom extrait le fichier JPEG <strong>pleine résolution</strong> généré par votre boîtier en arrière-plan. Il n'utilise pas son propre moteur de rendu.
+                </p>
+                <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                  <li><strong class="text-emerald-400">Avantage :</strong> Importation très rapide. Permet de faire défiler les images et de zoomer à 100% sans aucun temps de chargement pour vérifier la netteté.</li>
+                  <li><strong class="text-rose-400">Inconvénient :</strong> Les couleurs affichées sont celles du JPEG du boîtier et changeront légèrement dès que vous entrerez dans le module Développement.</li>
+                </ul>
+              </div>
+
+              <!-- STANDARD -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h4 class="font-bold text-slate-200 text-base border-b border-slate-800 pb-2">3. Standard</h4>
+                <p class="text-xs text-slate-400">
+                  Lightroom génère son propre aperçu en interprétant le RAW, redimensionné à la taille de l'écran de votre ordinateur (ex: 1920px ou 2560px).
+                </p>
+                <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                  <li><strong class="text-emerald-400">Avantage :</strong> Les couleurs et contrastes affichés correspondent fidèlement à l'interprétation par défaut de Lightroom.</li>
+                  <li><strong class="text-rose-400">Inconvénient :</strong> L'importation est plus longue, et le zoom 100% nécessite tout de même un temps de calcul de quelques secondes.</li>
+                </ul>
+              </div>
+
+              <!-- 1:1 -->
+              <div class="bg-slate-900/80 p-5 rounded-xl border border-slate-800 space-y-3">
+                <h4 class="font-bold text-slate-200 text-base border-b border-slate-800 pb-2">4. 1:1 (Taille Réelle)</h4>
+                <p class="text-xs text-slate-400">
+                  Lightroom calcule et génère un rendu exhaustif, pixel par pixel, de chaque fichier RAW dès l'importation.
+                </p>
+                <ul class="text-xs space-y-1.5 list-disc list-inside text-slate-300">
+                  <li><strong class="text-emerald-400">Avantage :</strong> Fluidité totale et absolue. Le zoom à 100% (pour retoucher un œil, une texture) est immédiat lors du développement.</li>
+                  <li><strong class="text-rose-400">Inconvénient :</strong> L'importation est extrêmement lente (le PC calcule à 100%). Les aperçus 1:1 prennent énormément de place sur le disque dur.</li>
+                </ul>
+              </div>
+
+            </div>
+
+            <!-- Tableau Récapitulatif -->
+            <div class="space-y-2 pt-2">
+              <h3 class="text-sm font-bold text-white">Comparatif des Performances</h3>
+              <div class="overflow-x-auto">
+                <table class="w-full text-xs text-left border-collapse">
+                  <thead>
+                    <tr class="bg-slate-800 text-slate-200 border-b border-slate-700">
+                      <th class="p-2.5">Type d'aperçu</th>
+                      <th class="p-2.5">Vitesse d'importation</th>
+                      <th class="p-2.5">Fluidité du Tri (Défilement)</th>
+                      <th class="p-2.5">Vitesse Zoom 100%</th>
+                      <th class="p-2.5">Espace Disque</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Minimum</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Très Rapide</td>
+                      <td class="p-2.5 text-rose-400 font-medium">Lente (Saccades)</td>
+                      <td class="p-2.5 text-rose-400 font-medium">Lente</td>
+                      <td class="p-2.5 text-emerald-400">Faible</td>
+                    </tr>
+                    <tr class="bg-emerald-900/10">
+                      <td class="p-2.5 font-semibold text-emerald-400">Fichier annexe incorporé</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Rapide</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Instantanée</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Instantanée</td>
+                      <td class="p-2.5 text-emerald-400">Moyen</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">Standard</td>
+                      <td class="p-2.5 text-amber-400 font-medium">Modérée</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Fluide (sans zoom)</td>
+                      <td class="p-2.5 text-amber-400 font-medium">Modérée</td>
+                      <td class="p-2.5 text-amber-400">Élevé</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2.5 font-semibold text-slate-200">1:1</td>
+                      <td class="p-2.5 text-rose-400 font-medium">Très Lente</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Parfaite</td>
+                      <td class="p-2.5 text-emerald-400 font-medium">Immédiate</td>
+                      <td class="p-2.5 text-rose-400">Très Lourd</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+         <!-- Conclusion & Recommandation Studio -->
+            <div class="stat-box space-y-2 border-emerald-500/30">
+              <h3 class="text-sm font-bold text-emerald-400">Verdict Pro &amp; Conseil Graphis Studio</h3>
+              <p class="text-xs text-slate-300">
+                • <strong>Pour un gros reportage ou un mariage (Tri massif) :</strong> Sélectionnez <strong>Fichier annexe incorporé</strong>. Vous pourrez parcourir vos milliers d'images et zoomer pour vérifier la netteté à la vitesse de l'éclair sans attendre que Lightroom ne "charge".
+              </p>
+              <p class="text-xs text-slate-300">
+                • <strong>Pour un usage quotidien et équilibré :</strong> Le choix <strong>Standard</strong> est également une excellente option. C'est le compromis idéal pour des séances courantes, offrant un temps d'importation raisonnable tout en garantissant un affichage fidèle au moteur de rendu de Lightroom dès le départ.
+              </p>
+              <p class="text-xs text-slate-300">
+                • <strong>Pour un shoot studio, beauté ou paysage (Retouche de précision) :</strong> Sélectionnez <strong>1:1</strong>. Le nombre d'images est plus restreint, vous pouvez laisser l'ordinateur calculer. Dès votre retour, vous disposerez d'une fluidité parfaite pour la retouche au pixel.
               </p>
             </div>
 
